@@ -1,22 +1,54 @@
-var path = require('path');
+const path = require('path');
+const { join } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { lstatSync, readdirSync } = require('fs');
 
-module.exports = {
-    entry: './src/index',
-    mode: 'development',
-    // mode: 'production',
-    devtool: 'inline-source-map',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'app.bundle.js'
-    },
-    resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json']
-    },
-    module: {
-        rules: [{
-            test: /\.(tsx?)|(js)$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-        }],
-    }
+const isDirectory = path => lstatSync(path).isDirectory();
+const getExamples = path => {
+    const files = readdirSync(path);
+    const examples = [];
+    files.forEach(name => {
+        if (name === 'lib') {
+            throw new Error("Example folder can't be named 'lib' " +
+                "since this is the 'outDir' for both TS and Babel.");
+        }
+        if (isDirectory(join(path, name))) {
+            examples.push({path, name});
+        }
+    });
+    return examples;
 };
+
+const srcPath = path.resolve(__dirname, 'src');
+const distPath = path.resolve(__dirname, 'dist');
+
+const moduleExports = getExamples(srcPath).map(example => {
+    return {
+        entry: join(example.path, example.name, 'index'),
+        mode: 'development',
+        devtool: 'inline-source-map',
+        output: {
+            path: join(distPath, example.name),
+            filename: 'app.bundle.js'
+        },
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js', '.json']
+        },
+        module: {
+            rules: [{
+                test: /\.(tsx?)|(js)$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+            }],
+        },
+        plugins: [
+            new HtmlWebpackPlugin({
+                filename: 'index.html'
+            })
+        ]
+    };
+});
+
+// console.log(moduleExports);
+
+module.exports = moduleExports;
