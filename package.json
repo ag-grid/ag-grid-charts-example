@@ -1,0 +1,27 @@
+{
+  "name": "ag-grid-charts-example",
+  "version": "20.0.0",
+  "description": "ag-Grid Charts Examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ag-grid/ag-grid-charts-example.git"
+  },
+  "keywords": [
+    "grid",
+    "charts"
+  ],
+  "author": "Vitaly Kravchenko <vitaly.kravchenko@ag-grid.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ag-grid/ag-grid-charts-example/issues"
+  },
+  "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
+  "dependencies": {
+    "ag-grid-community": "^19.1.4",
+    "ag-grid-enterprise": "^19.1.4"
+  }
+}
