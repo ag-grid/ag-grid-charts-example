@@ -58,6 +58,7 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
     // of the values of its fields. `isFullStack` option is useful when you want to show percentage values, rather than
     // absolute. For example, when you want to show what percentage of the market share belongs to each of the components
     // at any given time (category).
+    const xField = 'month';
     const yFields = ['desktops', 'laptops', 'tablets'];
     const colors = colorTheme;
 
@@ -70,7 +71,7 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
 
     const n = data.length;
     // Map field names to their values.
-    const xData = data.map(datum => datum.month);
+    const xData = data.map(datum => (datum as any)[xField]);
     // `yData` - `n` arrays of size `yFields.length` each.
     // For each category returns an array of values representing the top
     // of each point in the stack, the last value being the height of the stack.

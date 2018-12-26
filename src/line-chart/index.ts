@@ -141,6 +141,7 @@ function renderChart() {
     xAxis.flippedLabels = true;
     xAxis.render(ctx);
 
+    // legend
     const legendLeft = canvasWidth - padding.right;
     const legendItemHeight = 30;
     const legendMarkerPadding = 20;
