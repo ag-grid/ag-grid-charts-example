@@ -1,6 +1,7 @@
 import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
 import {createHdpiCanvas} from "ag-grid-enterprise/src/charts/canvas/canvas";
 import {Axis} from "ag-grid-enterprise/src/charts/axis";
+import carData, {ICarInfo} from './auto-mpg';
 
 const colors = [
     '#5BC0EB',
@@ -173,12 +174,30 @@ function renderChart(data: any[][], configs: SeriesConfig[], minRadius = 2, maxR
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const commonConfig = {
-        xField: 'height', yField: 'weight', radiusField: 'age'
-    };
-    renderChart(data, [
-        {name: 'Class A', ...commonConfig},
-        {name: 'Class B', ...commonConfig},
-        {name: 'Class C', ...commonConfig}
-    ]);
+    {
+        const commonConfig = {
+            xField: 'height', yField: 'weight', radiusField: 'age'
+        };
+        renderChart(data, [
+            {name: 'Class A', ...commonConfig},
+            {name: 'Class B', ...commonConfig},
+            {name: 'Class C', ...commonConfig}
+        ]);
+    }
+
+    {
+        const carsByCountry: {[key: string]: ICarInfo[]} = {};
+        carData.forEach(car => {
+            const countryCars = carsByCountry[car.origin] || (carsByCountry[car.origin] = []);
+            countryCars.push(car);
+        });
+        const commonConfig = {
+            xField: 'horsepower', yField: 'weight', radiusField: 'cylinders'
+        };
+        const countries = Object.keys(carsByCountry);
+        renderChart(
+            countries.map(country => carsByCountry[country]),
+            countries.map(country => ({name: country, ...commonConfig})),
+        );
+    }
 });
