@@ -94,12 +94,12 @@ function renderChart() {
     ctx.translate(padding.left, padding.top);
     yData.forEach((fieldData, j) => {
         ctx.save();
-        ctx.beginPath();
         ctx.shadowColor = 'rgba(0,0,0,0.2)';
         ctx.shadowBlur = 15;
         ctx.lineWidth = 3;
         ctx.strokeStyle = colors[j % colors.length];
         ctx.fillStyle = 'none';
+        ctx.beginPath();
         for (let i = 0; i < n; i++) {
             const category = xData[i];
             const value = fieldData[i];
@@ -141,6 +141,7 @@ function renderChart() {
     xAxis.flippedLabels = true;
     xAxis.render(ctx);
 
+    // legend
     const legendLeft = canvasWidth - padding.right;
     const legendItemHeight = 30;
     const legendMarkerPadding = 20;

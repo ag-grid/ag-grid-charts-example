@@ -19,6 +19,9 @@ const getExamples = path => {
     return examples;
 };
 
+// Note: empty directories in the source folder will result in a bundling error.
+// All directories in source folder should contain a file that serves as an entry,
+// as specified below.
 const srcPath = path.resolve(__dirname, 'src');
 const distPath = path.resolve(__dirname, 'dist');
 
