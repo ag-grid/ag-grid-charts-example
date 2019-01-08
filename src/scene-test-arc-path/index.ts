@@ -1,6 +1,6 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arcPath";
+import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 
 document.addEventListener('DOMContentLoaded', () => {
