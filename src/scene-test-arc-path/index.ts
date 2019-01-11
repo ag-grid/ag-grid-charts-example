@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const deltas: [number, number][] = [];
     for (let i = 0; i < n; i++) {
         const arc = new Arc();
-        arc.x = Math.random() * width;
-        arc.y = Math.random() * height;
-        arc.radius = 7;
+        arc.centerX = Math.random() * width;
+        arc.centerY = Math.random() * height;
+        arc.radiusX = 7;
+        arc.radiusY = 7;
         arc.lineWidth = 3;
         arc.startAngle = 0;
         arc.endAngle = 3 * Math.PI / 2;
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);
     }
-    group.add(...arcs);
+    group.add(arcs);
 
     scene.root = group;
 
@@ -35,19 +36,19 @@ document.addEventListener('DOMContentLoaded', () => {
         fpsCounter.countFrame();
         arcs.forEach((arc, i) => {
             const delta = deltas[i];
-            arc.x += delta[0];
-            arc.y += delta[1];
-            if (arc.x > width) {
-                arc.x -= width;
+            arc.centerX += delta[0];
+            arc.centerY += delta[1];
+            if (arc.centerX > width) {
+                arc.centerX -= width;
             }
-            else if (arc.x < 0) {
-                arc.x += width;
+            else if (arc.centerX < 0) {
+                arc.centerX += width;
             }
-            if (arc.y > height) {
-                arc.y -= height;
+            if (arc.centerY > height) {
+                arc.centerY -= height;
             }
-            else if (arc.y < 0) {
-                arc.y += height;
+            else if (arc.centerY < 0) {
+                arc.centerY += height;
             }
         });
 

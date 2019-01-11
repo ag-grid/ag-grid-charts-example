@@ -14,14 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const rects: Rect[] = [];
     const deltas: [number, number][] = [];
     for (let i = 0; i < n; i++) {
-        const arc = new Rect();
-        arc.x = Math.random() * width;
-        arc.y = Math.random() * height;
-        rects.push(arc);
+        const rect = new Rect();
+        rect.x = Math.random() * width;
+        rect.y = Math.random() * height;
+        rects.push(rect);
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);
     }
-    group.add(...rects);
+    group.add(rects);
 
     scene.root = group;
 

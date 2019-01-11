@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (let i = 0; i < n; i++) {
         data.push({
-            x: width * Math.random(),
-            y: height * Math.random(),
+            centerX: width * Math.random(),
+            centerY: height * Math.random(),
             dx: Math.random() - 0.5,
             dy: Math.random() - 0.5
         });
@@ -45,22 +45,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         circles
             .attr('cx', d => {
-                d.x += d.dx;
-                if (d.x > width) {
-                    d.x -= width
-                } else if (d.x < 0) {
-                    d.x += width;
+                d.centerX += d.dx;
+                if (d.centerX > width) {
+                    d.centerX -= width
+                } else if (d.centerX < 0) {
+                    d.centerX += width;
                 }
-                return d.x;
+                return d.centerX;
             })
             .attr('cy', d => {
-                d.y += d.dy;
-                if (d.y > height) {
-                    d.y -= height
-                } else if (d.y < 0) {
-                    d.y += height;
+                d.centerY += d.dy;
+                if (d.centerY > height) {
+                    d.centerY -= height
+                } else if (d.centerY < 0) {
+                    d.centerY += height;
                 }
-                return d.y;
+                return d.centerY;
             });
     });
 });
