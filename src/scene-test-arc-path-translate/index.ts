@@ -1,7 +1,13 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arcPath2D";
+import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
+
+// This example uses translationX/Y properties to position arcs,
+// so that the arc paths are not recalculated on every frame.
+// Instead, the transformation matrix of each arc is recalculated
+// on every frame. This should result in a better performance,
+// especially in case of complex paths.
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene(document.body, 800, 400);
@@ -13,9 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const arcs: Arc[] = [];
     const deltas: [number, number][] = [];
+
     for (let i = 0; i < n; i++) {
-        const arc = new Arc(Math.random() * width, Math.random() * height,
-            7, 0, 3 * Math.PI / 2);
+        const arc = new Arc(0, 0, 7, 7, 0, 3 * Math.PI / 2);
+        arc.translationX = Math.random() * width;
+        arc.translationY = Math.random() * height;
         arc.lineWidth = 3;
         arcs.push(arc);
 
@@ -31,19 +39,22 @@ document.addEventListener('DOMContentLoaded', () => {
         fpsCounter.countFrame();
         arcs.forEach((arc, i) => {
             const delta = deltas[i];
-            arc.x += delta[0];
-            arc.y += delta[1];
-            if (arc.x > width) {
-                arc.x -= width;
+
+            arc.translationX += delta[0];
+            arc.translationY += delta[1];
+
+            if (arc.translationX > width) {
+                arc.translationX -= width;
             }
-            else if (arc.x < 0) {
-                arc.x += width;
+            else if (arc.translationX < 0) {
+                arc.translationX += width;
             }
-            if (arc.y > height) {
-                arc.y -= height;
+
+            if (arc.translationY > height) {
+                arc.translationY -= height;
             }
-            else if (arc.y < 0) {
-                arc.y += height;
+            else if (arc.translationY < 0) {
+                arc.translationY += height;
             }
         });
 

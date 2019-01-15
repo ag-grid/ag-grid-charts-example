@@ -12,17 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene(document.body, 800, 400);
     const group = new Group();
 
-    const arc = new Arc();
-    arc.centerX = 50;
-    arc.centerY = 100;
-    arc.radiusX = 30;
-    arc.radiusY = 20;
+    const arc = new Arc(50, 100, 30, 20, 0, Math.PI * 2);
 
-    const rect = new Rect();
-    rect.x = 100;
-    rect.y = 100;
-    rect.width = 50;
-    rect.height = 50;
+    const rect = new Rect(100, 100, 50, 50);
 
     rect.scalingX = 2;
     rect.rotationDeg = 10;

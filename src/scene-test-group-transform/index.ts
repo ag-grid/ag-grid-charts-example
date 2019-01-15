@@ -2,7 +2,6 @@ import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 import * as d3 from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,17 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene(document.body, 800, 400);
     const group = new Group();
 
-    const arc = new Arc();
-    arc.centerX = 100;
-    arc.centerY = 100;
-    arc.radiusX = 30;
-    arc.radiusY = 20;
-
-    const rect = new Rect();
-    rect.x = 200;
-    rect.y = 100;
-    rect.width = 50;
-    rect.height = 50;
+    const arc = new Arc(100, 100, 30, 20, 0, Math.PI * 2);
+    const rect = new Rect(200, 100, 50, 50);
 
     group.add([arc, rect]);
     // The order of transformation doesn't matter here.

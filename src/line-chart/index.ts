@@ -98,7 +98,6 @@ function renderChart() {
         ctx.shadowBlur = 15;
         ctx.lineWidth = 3;
         ctx.strokeStyle = colors[j % colors.length];
-        ctx.fillStyle = 'none';
         ctx.beginPath();
         for (let i = 0; i < n; i++) {
             const category = xData[i];

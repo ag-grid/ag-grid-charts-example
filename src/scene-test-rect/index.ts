@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const rects: Rect[] = [];
     const deltas: [number, number][] = [];
     for (let i = 0; i < n; i++) {
-        const rect = new Rect();
-        rect.x = Math.random() * width;
-        rect.y = Math.random() * height;
+        const rect = new Rect(
+            Math.random() * width,
+            Math.random() * height,
+            10, 10);
         rects.push(rect);
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);

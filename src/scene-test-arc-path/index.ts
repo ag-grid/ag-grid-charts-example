@@ -14,14 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const arcs: Arc[] = [];
     const deltas: [number, number][] = [];
     for (let i = 0; i < n; i++) {
-        const arc = new Arc();
-        arc.centerX = Math.random() * width;
-        arc.centerY = Math.random() * height;
-        arc.radiusX = 7;
-        arc.radiusY = 7;
+        const arc = new Arc(Math.random() * width, Math.random() * height,
+            7, 7, 0, 3 * Math.PI / 2);
         arc.lineWidth = 3;
-        arc.startAngle = 0;
-        arc.endAngle = 3 * Math.PI / 2;
         arcs.push(arc);
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);
