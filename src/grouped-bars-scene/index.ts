@@ -67,18 +67,17 @@ class NodeAxis<D> {
                     const rotation = normalizeAngle(this.rotation);
                     let flipFlag = (rotation >= 0 && rotation <= Math.PI) ? -1 : 1;
 
-                    label = new Text(ticks[i].toString(), -sideFlag * 10, -sideFlag * flipFlag * this.tickPadding);
+                    label = new Text(ticks[i].toString(), 0, -sideFlag * flipFlag * this.tickPadding);
                     label.translationX = sideFlag * (this.tickSize + this.tickPadding);
                     label.translationY = r;
                     label.rotation = flipFlag * Math.PI / 2;
-                    // const labelWidth = ctx.measureText(ticks[i].toString()).width;
-                    // const label = new Text(ticks[i].toString(), -sideFlag * labelWidth / 2, -sideFlag * flipFlag * this.tickPadding);
+                    label.textAlign = 'center';
                 } else {
                     label = new Text(ticks[i].toString(), sideFlag * (this.tickSize + this.tickPadding), r);
+                    label.textAlign = sideFlag === -1 ? 'end' : 'start';
                 }
                 label.font = this.labelFont;
                 label.fillStyle = this.labelColor;
-                label.textAlign = sideFlag === -1 ? 'end' : 'start';
                 label.textBaseline = 'middle';
                 nodes.push(label);
             }
@@ -214,12 +213,11 @@ function renderChart() {
             }
 
             const labelText = yFieldNames[j];
-            const label = new Text(labelText, x + barWidth / 2 - 10, y + 20);
+            const label = new Text(labelText, x + barWidth / 2, y + 20);
             label.fillStyle = 'black';
             label.font = '14px Verdana';
+            label.textAlign = 'center';
             barGroup.addAll([rect, label]);
-            // const labelWidth = ctx.measureText(labelText).width;
-            // ctx.fillText(labelText, x + barWidth / 2 - labelWidth / 2, y + 20);
         })
     }
 
