@@ -30,16 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (function step() {
         fpsCounter.countFrame();
+
         rects.forEach((rect, i) => {
             const delta = deltas[i];
+
             rect.x += delta[0];
             rect.y += delta[1];
+
             if (rect.x > width) {
                 rect.x -= width;
             }
             else if (rect.x < 0) {
                 rect.x += width;
             }
+
             if (rect.y > height) {
                 rect.y -= height;
             }
