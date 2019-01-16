@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);
     }
-    group.add(rects);
+    group.addAll(rects);
 
     scene.root = group;
 

@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     strokeText.strokeStyle = 'red';
     strokeText.lineWidth = 3;
 
-    group.add([
+    group.addAll([
         verticalLine,
         startText,
         endText,

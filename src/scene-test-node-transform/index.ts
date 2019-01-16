@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rect.translationX = 100;
     rect.translationY = -100;
 
-    group.add([arc, rect]);
+    group.addAll([arc, rect]);
 
     scene.root = group;
 

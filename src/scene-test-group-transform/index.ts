@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const arc = new Arc(100, 100, 30, 20, 0, Math.PI * 2);
     const rect = new Rect(200, 100, 50, 50);
 
-    group.add([arc, rect]);
+    group.addAll([arc, rect]);
     // The order of transformation doesn't matter here.
     // It's always: scale, rotate, translate.
     group.scalingX = 1.5;

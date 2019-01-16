@@ -11,48 +11,6 @@ const gradientTheme = [
     ['#FB9D5D', '#FA8535'],
 ];
 
-const data = [
-    {
-        category: 'Coffee',
-
-        q1Budget: 500,
-        q2Budget: 500,
-        q3Budget: 500,
-        q4Budget: 500,
-
-        q1Actual: 450,
-        q2Actual: 560,
-        q3Actual: 600,
-        q4Actual: 700
-    },
-    {
-        category: 'Tea',
-
-        q1Budget: 350,
-        q2Budget: 400,
-        q3Budget: 450,
-        q4Budget: 500,
-
-        q1Actual: 270,
-        q2Actual: 380,
-        q3Actual: 450,
-        q4Actual: 520
-    },
-    {
-        category: 'Milk',
-
-        q1Budget: 200,
-        q2Budget: 180,
-        q3Budget: 180,
-        q4Budget: 180,
-
-        q1Actual: 180,
-        q2Actual: 170,
-        q3Actual: 190,
-        q4Actual: 200
-    },
-];
-
 function renderChart() {
     const data = [
         {

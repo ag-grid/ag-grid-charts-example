@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     movingLine1.lineWidth = 1;
     movingLine2.lineWidth = 1;
 
-    group.add([
+    group.addAll([
         diagonalLine,
         verticalLine,
         horizontalLine,
