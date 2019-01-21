@@ -1,0 +1,26 @@
+import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
+import {Group} from "ag-grid-enterprise/src/charts/scene/group";
+import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
+
+document.addEventListener('DOMContentLoaded', () => {
+    const scene = new Scene(document.body, 800, 400);
+    const rootGroup = new Group();
+    const pimpGroup = new Group();
+    const textGroup = new Group();
+
+    rootGroup.translationX = 100;
+    pimpGroup.rotationDeg = 30;
+    textGroup.scalingY = 2;
+
+    const text = new Text();
+    text.text = 'Scrooggle';
+    text.x = 100;
+    text.y = 100;
+    text.rotation = -Math.PI / 6;
+
+    rootGroup.add(pimpGroup);
+    pimpGroup.add(textGroup);
+    textGroup.add(text);
+
+    scene.root = rootGroup;
+});

@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let x1 = 50;
     let x2 = 100;
-    const diagonalLine = new Line(50, 50, 100, 100);
-    const verticalLine = new Line(150, 150, 150, 250);
-    const horizontalLine = new Line(200, 100, 300, 100);
-    const movingLine1 = new Line(x1, 200, x1, 300);
-    const movingLine2 = new Line(x2, 200, x2, 300);
+    const diagonalLine = Line.create(50, 50, 100, 100);
+    const verticalLine = Line.create(150, 150, 150, 250);
+    const horizontalLine = Line.create(200, 100, 300, 100);
+    const movingLine1 = Line.create(x1, 200, x1, 300);
+    const movingLine2 = Line.create(x2, 200, x2, 300);
 
     diagonalLine.lineWidth = 1;
     verticalLine.lineWidth = 1;

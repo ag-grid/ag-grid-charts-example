@@ -9,16 +9,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const group = new Group();
 
     const x = 200;
-    const verticalLine = new Line(x, 0, x, 400);
+    const verticalLine = Line.create(x, 0, x, 400);
 
-    const testText = 'LpImK gqjTF';
+    const testText = 'Groggy Frog';
 
     // `textAlign` tests
-    const startText = new Text(testText, x, 60);
+    const startText = new Text();
+    startText.text = testText;
+    startText.x = x;
+    startText.y = 60;
     // assuming `textAlign = 'start'` default
-    const endText = new Text(testText, x, 80);
+    const endText = new Text();
+    endText.text = testText;
+    endText.x = x;
+    endText.y = 80;
     endText.textAlign = 'end';
-    const centerText = new Text(testText, x, 100);
+    const centerText = new Text();
+    centerText.text = testText;
+    centerText.x = x;
+    centerText.y = 100;
     centerText.textAlign = 'center';
 
     // `textBaseline` tests
@@ -32,28 +41,39 @@ document.addEventListener('DOMContentLoaded', () => {
     ] as CanvasTextBaseline[];
 
     const alphabeticTextY = 140;
-    const alphabeticText = new Text('alphabetic ' + testText, x, alphabeticTextY);
+    const alphabeticText = new Text();
+    alphabeticText.text = 'alphabetic ' + testText;
+    alphabeticText.x = x;
+    alphabeticText.y = alphabeticTextY;
     alphabeticText.textAlign = 'center';
     alphabeticText.font = font;
     // assuming `textBaseline = 'alphabetic'` default
-    const alphabeticTextLine = new Line(50, alphabeticTextY, 350, alphabeticTextY);
+    const alphabeticTextLine = Line.create(50, alphabeticTextY, 350, alphabeticTextY);
 
     const baselineNodes: Node[] = [];
     baselines.forEach((baseline, i) => {
         const y = alphabeticTextY + (i + 1) * 40;
-        const text = new Text(baseline + ' ' + testText, x, y);
+        const text = new Text();
+        text.text = baseline + ' ' + testText;
+        text.x = x;
+        text.y = y;
         text.font = font;
         text.textAlign = 'center';
         text.textBaseline = baseline;
-        const textLine = new Line(50, y, 350, y);
+        const textLine = Line.create(50, y, 350, y);
         baselineNodes.push(text, textLine);
     });
 
     // `strokeStyle` test
-    const strokeText = new Text('Lorem Ipsum', 400, 100);
+    const strokeText = new Text();
+    strokeText.text = 'Lorem Ipsum';
+    strokeText.x = 400;
+    strokeText.y = 100;
     strokeText.font = 'italic bold 44px Tahoma';
     strokeText.strokeStyle = 'red';
     strokeText.lineWidth = 3;
+    // strokeText.translationX = 50;
+    // strokeText.rotation = Math.PI / 8;
 
     group.addAll([
         verticalLine,

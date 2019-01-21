@@ -57,7 +57,11 @@ class NodeAxis<D> {
 
             for (let i = 0; i < tickCount; i++) {
                 const r = scale.convert(ticks[i]) - this.tickWidth / 2 + bandwidth;
-                const tick = new Line(sideFlag * this.tickSize, r + pxShift, 0, r + pxShift);
+                const tick = new Line();
+                tick.x1 = sideFlag * this.tickSize;
+                tick.y1 = r + pxShift;
+                tick.x2 = 0;
+                tick.y2 = r + pxShift;
                 tick.lineWidth = this.tickWidth;
                 tick.strokeStyle = this.tickColor;
                 nodes.push(tick);
@@ -67,13 +71,19 @@ class NodeAxis<D> {
                     const rotation = normalizeAngle(this.rotation);
                     let flipFlag = (rotation >= 0 && rotation <= Math.PI) ? -1 : 1;
 
-                    label = new Text(ticks[i].toString(), 0, -sideFlag * flipFlag * this.tickPadding);
+                    label = new Text();
+                    label.text = ticks[i].toString();
+                    label.x = 0;
+                    label.y = -sideFlag * flipFlag * this.tickPadding;
                     label.translationX = sideFlag * (this.tickSize + this.tickPadding);
                     label.translationY = r;
                     label.rotation = flipFlag * Math.PI / 2;
                     label.textAlign = 'center';
                 } else {
-                    label = new Text(ticks[i].toString(), sideFlag * (this.tickSize + this.tickPadding), r);
+                    label = new Text();
+                    label.text = ticks[i].toString();
+                    label.x = sideFlag * (this.tickSize + this.tickPadding);
+                    label.y = r;
                     label.textAlign = sideFlag === -1 ? 'end' : 'start';
                 }
                 label.font = this.labelFont;
@@ -86,7 +96,11 @@ class NodeAxis<D> {
         // Render axis line.
         {
             const delta = pixelSnap(this.lineWidth, PixelSnapBias.Negative);
-            const line = new Line(delta, scale.range[0], delta, scale.range[scale.range.length - 1]);
+            const line = new Line();
+            line.x1 = delta;
+            line.y1 = scale.range[0];
+            line.x2 = delta;
+            line.y2 = scale.range[scale.range.length - 1];
             line.lineWidth = this.lineWidth;
             line.strokeStyle = this.lineColor;
             nodes.push(line);
@@ -200,7 +214,7 @@ function renderChart() {
             const y = yScale.convert(value);
 
             const color = colors[j % colors.length];
-            const rect = new Rect(x, y, barWidth, seriesHeight - y);
+            const rect = Rect.create(x, y, barWidth, seriesHeight - y);
             if (Array.isArray(color)) {
                 // const gradient = ctx.createLinearGradient(x, y, x + barWidth, seriesHeight);
                 // gradient.addColorStop(0, color[0]);
@@ -211,14 +225,20 @@ function renderChart() {
             else {
                 rect.fillStyle = color;
             }
+            rect.strokeStyle = 'black';
+            rect.shadowColor = 'rgba(0,0,0,0.2)';
+            rect.shadowBlur = 15;
 
             const labelText = yFieldNames[j];
-            const label = new Text(labelText, x + barWidth / 2, y + 20);
+            const label = new Text();
+            label.text = labelText;
+            label.textAlign = 'center';
+            label.x = x + barWidth / 2;
+            label.y = y + 20;
             label.fillStyle = 'black';
             label.font = '14px Verdana';
-            label.textAlign = 'center';
             barGroup.addAll([rect, label]);
-        })
+        });
     }
 
     // y-axis

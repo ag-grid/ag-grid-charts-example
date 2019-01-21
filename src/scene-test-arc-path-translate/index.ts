@@ -21,9 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const deltas: [number, number][] = [];
 
     for (let i = 0; i < n; i++) {
-        const arc = new Arc(0, 0, 7, 7, 0, 3 * Math.PI / 2);
+        const arc = new Arc();
+        arc.centerX = 0;
+        arc.centerY = 0;
+        arc.radiusX = 7;
+        arc.radiusY = 7;
+        arc.endAngle = 3 * Math.PI / 2;
         arc.translationX = Math.random() * width;
         arc.translationY = Math.random() * height;
+        arc.fillStyle = 'red';
+        arc.strokeStyle = 'black';
         arc.lineWidth = 3;
         arcs.push(arc);
 

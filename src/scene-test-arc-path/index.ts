@@ -14,8 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const arcs: Arc[] = [];
     const deltas: [number, number][] = [];
     for (let i = 0; i < n; i++) {
-        const arc = new Arc(Math.random() * width, Math.random() * height,
-            7, 7, 0, 3 * Math.PI / 2);
+        const arc = new Arc();
+        arc.centerX = Math.random() * width;
+        arc.centerY = Math.random() * height;
+        arc.radiusX = 7;
+        arc.radiusY = 7;
+        arc.endAngle = 3 * Math.PI / 2;
+        arc.fillStyle = 'red';
+        arc.strokeStyle = 'black';
         arc.lineWidth = 3;
         arcs.push(arc);
 
@@ -31,14 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
         fpsCounter.countFrame();
         arcs.forEach((arc, i) => {
             const delta = deltas[i];
+
             arc.centerX += delta[0];
             arc.centerY += delta[1];
+
             if (arc.centerX > width) {
                 arc.centerX -= width;
             }
             else if (arc.centerX < 0) {
                 arc.centerX += width;
             }
+
             if (arc.centerY > height) {
                 arc.centerY -= height;
             }

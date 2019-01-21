@@ -11,8 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene(document.body, 800, 400);
     const group = new Group();
 
-    const arc = new Arc(100, 100, 30, 20, 0, Math.PI * 2);
-    const rect = new Rect(200, 100, 50, 50);
+    const arc = new Arc();
+    arc.centerX = 100;
+    arc.centerY = 100;
+    arc.radiusX = 30;
+    arc.radiusY = 20;
+    arc.fillStyle = 'red';
+    arc.strokeStyle = 'black';
+
+    const rect = Rect.create(200, 100, 50, 50);
+    rect.fillStyle = 'red';
+    rect.strokeStyle = 'black';
 
     group.addAll([arc, rect]);
     // The order of transformation doesn't matter here.
