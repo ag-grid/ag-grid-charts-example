@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scene1.root = rootGroup1;
 
     // scene root group should never have a parent
-    console.assert(rootGroup1.parent === undefined);
+    console.assert(rootGroup1.parent === null);
     console.assert(rootGroup1.scene === scene1);
 
     // Setting the `root` schedules a render for the next frame,
@@ -29,56 +29,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const parentGroup = new Group();
     const childGroup = new Group();
 
-    const rect1 = new Rect();
-    rect1.x = 10;
-    rect1.y = 10;
-    rect1.width = 10;
-    rect1.height = 10;
-    rect1.fillStyle = 'red';
+    const redRect = new Rect();
+    redRect.x = 20;
+    redRect.y = 0;
+    redRect.width = 20;
+    redRect.height = 20;
+    redRect.fillStyle = 'red';
 
-    const rect2 = new Rect();
-    rect2.x = 30;
-    rect2.y = 10;
-    rect2.width = 20;
-    rect2.height = 20;
-    rect2.fillStyle = 'orange';
+    const orangeRect = new Rect();
+    orangeRect.x = 30;
+    orangeRect.y = 10;
+    orangeRect.width = 20;
+    orangeRect.height = 20;
+    orangeRect.fillStyle = 'orange';
 
-    const rect3 = new Rect();
-    rect3.x = 40;
-    rect3.y = 20;
-    rect3.width = 20;
-    rect3.height = 20;
-    rect3.fillStyle = 'magenta';
+    const magentaRect = new Rect();
+    magentaRect.x = 40;
+    magentaRect.y = 20;
+    magentaRect.width = 20;
+    magentaRect.height = 20;
+    magentaRect.fillStyle = 'magenta';
+
+    const cyanRect = new Rect();
+    cyanRect.x = 50;
+    cyanRect.y = 30;
+    cyanRect.width = 20;
+    cyanRect.height = 20;
+    cyanRect.fillStyle = 'cyan';
 
     // All newly created nodes shouldn't have a parent.
-    console.assert(rect1.parent === undefined);
-    console.assert(rect2.parent === undefined);
-    console.assert(rect3.parent === undefined);
-    console.assert(childGroup.parent === undefined);
+    console.assert(redRect.parent === null);
+    console.assert(orangeRect.parent === null);
+    console.assert(magentaRect.parent === null);
+    console.assert(cyanRect.parent === null);
+    console.assert(childGroup.parent === null);
 
-    parentGroup.add(rect1);
+    parentGroup.add(redRect);
     parentGroup.add(childGroup);
 
-    childGroup.add(rect2);
-    childGroup.add(rect3);
+    childGroup.add(orangeRect);
+    childGroup.add(magentaRect);
+    childGroup.add(cyanRect);
 
     // The `parent` properties should be updated accordingly
     // when the nodes are added to their respective groups.
-    console.assert(rect1.parent === parentGroup);
-    console.assert(rect2.parent === childGroup);
-    console.assert(rect3.parent === childGroup);
+    console.assert(redRect.parent === parentGroup);
+    console.assert(orangeRect.parent === childGroup);
+    console.assert(magentaRect.parent === childGroup);
+    console.assert(cyanRect.parent === childGroup);
     console.assert(childGroup.parent === parentGroup);
 
-    // `rect3` (magenta) should render on top of `rect2`.
-    console.assert(childGroup.children[0] === rect2);
-    console.assert(childGroup.children[1] === rect3);
+    // The index in the group determined the order of rendering.
+    // `magentaRect` (magenta) should render on top of `orangeRect`.
+    // `cyanRect` (cyan) on top of `magentaRect`.
+    console.assert(childGroup.children[0] === orangeRect);
+    console.assert(childGroup.children[1] === magentaRect);
+    console.assert(childGroup.children[2] === cyanRect);
 
     // Nodes shouldn't have their `scene` property set
     // until they are added to a parent that belongs to a scene.
-    console.assert(parentGroup.scene === undefined);
-    console.assert(childGroup.scene === undefined);
-    console.assert(rect1.scene === undefined);
-    console.assert(rect2.scene === undefined);
+    console.assert(parentGroup.scene === null);
+    console.assert(childGroup.scene === null);
+    console.assert(redRect.scene === null);
+    console.assert(orangeRect.scene === null);
 
     rootGroup1.add(parentGroup);
 
@@ -87,8 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // this change should also propagate down the subtree.
     console.assert(parentGroup.scene === scene1);
     console.assert(childGroup.scene === scene1);
-    console.assert(rect1.scene === scene1);
-    console.assert(rect2.scene === scene1);
+    console.assert(redRect.scene === scene1);
+    console.assert(orangeRect.scene === scene1);
 
     nextFrame().then(() => {
         // `scene1` should've rendered once.
@@ -102,5 +115,65 @@ document.addEventListener('DOMContentLoaded', () => {
         // The root of `scene2` has been set in the previous
         // requestAnimationFrame callback, so it should've rendered once now.
         console.assert(scene2.frameIndex === 1);
+        // `scene1` shouldn't have rendered, as we didn't change anything there.
+        console.assert(scene1.frameIndex === 1);
+
+        // The `cyanRect` renders on top of the `magentaRect` ATM,
+        // but `magentaRect` should render of top of the `cyanRect`
+        // on the next frame. The `cyanRect` is already in the `childGroup`
+        // but this should not throw, as the `cyanRect` is first removed
+        // from the tree before being re-inserted.
+        childGroup.insertBefore(cyanRect, magentaRect);
+    }).then(nextFrame).then(() => {
+        console.assert(scene1.frameIndex === 2);
+        console.assert(scene2.frameIndex === 1);
+
+        console.assert(childGroup.children[0] === orangeRect);
+        console.assert(childGroup.children[1] === cyanRect);
+        console.assert(childGroup.children[2] === magentaRect);
+
+        // `redRect` belongs to the `parentGroup` at this point and we are moving
+        // it to the `childGroup`.
+        childGroup.insertBefore(redRect, cyanRect);
+    }).then(nextFrame).then(() => {
+        console.assert(scene1.frameIndex === 3);
+        console.assert(scene2.frameIndex === 1);
+
+        console.assert(childGroup.children[0] === orangeRect);
+        console.assert(childGroup.children[1] === redRect);
+        console.assert(childGroup.children[2] === cyanRect);
+        console.assert(childGroup.children[3] === magentaRect);
+
+        console.assert(redRect.parent === childGroup);
+        console.assert(parentGroup.children.length === 1);
+        console.assert(parentGroup.children[0] === childGroup);
+
+        // Move the `redRect` back to the `parentGroup`, and the
+        // `childGroup` to the root of another scene (`scene2`).
+        // Both scenes should re-render.
+        parentGroup.insertBefore(redRect);
+        rootGroup2.insertBefore(childGroup);
+    }).then(nextFrame).then(() => {
+        console.assert(scene1.frameIndex === 4);
+        console.assert(scene2.frameIndex === 2);
+
+        console.assert(redRect.parent === parentGroup);
+        console.assert(childGroup.parent === rootGroup2);
+        console.assert(childGroup.scene === scene2);
+
+        // Same as we did before, but this time the `redRect` is moved over
+        // from another scene.
+        childGroup.insertBefore(redRect, cyanRect);
+    }).then(nextFrame).then(() => {
+        console.assert(scene1.frameIndex === 5);
+        console.assert(scene2.frameIndex === 3);
+
+        console.assert(childGroup.children[0] === orangeRect);
+        console.assert(childGroup.children[1] === redRect);
+        console.assert(childGroup.children[2] === cyanRect);
+        console.assert(childGroup.children[3] === magentaRect);
+
+        console.assert(redRect.parent === childGroup);
+        console.assert(redRect.scene === scene2);
     });
 });
