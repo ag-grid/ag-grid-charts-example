@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rect.translationX = 100;
     rect.translationY = -100;
 
-    group.addAll([arc, rect]);
+    group.append([arc, rect]);
 
     scene.root = group;
 

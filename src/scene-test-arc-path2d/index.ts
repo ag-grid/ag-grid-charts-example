@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);
     }
-    group.addAll(arcs);
+    group.append(arcs);
 
     scene.root = group;
 

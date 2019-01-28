@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
     mobilePath.strokeStyle = 'black';
     mobilePath.lineWidth = 3;
 
-    rootGroup.addAll([applePath, mobilePath, pimpGroup]);
-    pimpGroup.addAll([innerGroup]);
-    innerGroup.add(applePath2);
+    rootGroup.append([applePath, mobilePath, pimpGroup]);
+    pimpGroup.append([innerGroup]);
+    innerGroup.append(applePath2);
 
     scene.root = rootGroup;
 });

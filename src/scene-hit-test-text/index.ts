@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     text.y = 100;
     text.rotation = -Math.PI / 6;
 
-    rootGroup.add(pimpGroup);
-    pimpGroup.add(textGroup);
-    textGroup.add(text);
+    rootGroup.append(pimpGroup);
+    pimpGroup.append(textGroup);
+    textGroup.append(text);
 
     scene.root = rootGroup;
 });

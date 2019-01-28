@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rect.rotationDeg = 10;
     rect.translationY = -50;
 
-    group.addAll([arc, rect]);
+    group.append([arc, rect]);
     // The order of transformation doesn't matter here.
     // It's always: scale, rotate, translate.
     group.scalingY = 1.5;

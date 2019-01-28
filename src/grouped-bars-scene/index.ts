@@ -9,6 +9,7 @@ import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import {Node} from "ag-grid-enterprise/src/charts/scene/node";
 import Scale from "ag-grid-enterprise/src/charts/scale/scale";
 import {normalizeAngle} from "ag-grid-enterprise/src/charts/util/angle";
+import {DropShadow, Offset} from "ag-grid-enterprise/src/charts/scene/dropShadow";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -106,7 +107,7 @@ class NodeAxis<D> {
             nodes.push(line);
         }
 
-        group.addAll(nodes);
+        group.append(nodes);
     }
 }
 
@@ -226,8 +227,7 @@ function renderChart() {
                 rect.fillStyle = color;
             }
             rect.strokeStyle = 'black';
-            rect.shadowColor = 'rgba(0,0,0,0.2)';
-            rect.shadowBlur = 15;
+            rect.shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 
             const labelText = yFieldNames[j];
             const label = new Text();
@@ -237,7 +237,7 @@ function renderChart() {
             label.y = y + 20;
             label.fillStyle = 'black';
             label.font = '14px Verdana';
-            barGroup.addAll([rect, label]);
+            barGroup.append([rect, label]);
         });
     }
 
@@ -255,7 +255,7 @@ function renderChart() {
     xAxis.flippedLabels = true;
     xAxis.render(xAxisGroup);
 
-    rootGroup.addAll([barGroup, xAxisGroup, yAxisGroup]);
+    rootGroup.append([barGroup, xAxisGroup, yAxisGroup]);
     scene.root = rootGroup;
 }
 

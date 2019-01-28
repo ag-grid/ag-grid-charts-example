@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     arc3.startAngle = 0;
     arc3.endAngle = Math.PI * 2;
 
-    rootGroup.addAll([pimpGroup, arc2]);
-    pimpGroup.addAll([arcGroup, arc3]);
-    arcGroup.add(arc);
+    rootGroup.append([pimpGroup, arc2]);
+    pimpGroup.append([arcGroup, arc3]);
+    arcGroup.append(arc);
 
     scene.root = rootGroup;
 });

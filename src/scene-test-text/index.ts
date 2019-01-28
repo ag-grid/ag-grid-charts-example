@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // strokeText.translationX = 50;
     // strokeText.rotation = Math.PI / 8;
 
-    group.addAll([
+    group.append([
         verticalLine,
         startText,
         endText,

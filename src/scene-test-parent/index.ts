@@ -57,6 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
     cyanRect.height = 20;
     cyanRect.fillStyle = 'cyan';
 
+    const blueRect = new Rect();
+    blueRect.x = 50;
+    blueRect.y = 50;
+    blueRect.width = 100;
+    blueRect.height = 100;
+    blueRect.fillStyle = 'blue';
+
     // All newly created nodes shouldn't have a parent.
     console.assert(redRect.parent === null);
     console.assert(orangeRect.parent === null);
@@ -64,12 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
     console.assert(cyanRect.parent === null);
     console.assert(childGroup.parent === null);
 
-    parentGroup.add(redRect);
-    parentGroup.add(childGroup);
+    parentGroup.append(redRect);
+    parentGroup.append(childGroup);
 
-    childGroup.add(orangeRect);
-    childGroup.add(magentaRect);
-    childGroup.add(cyanRect);
+    childGroup.append(orangeRect);
+    childGroup.append(magentaRect);
+    childGroup.append(cyanRect);
 
     // The `parent` properties should be updated accordingly
     // when the nodes are added to their respective groups.
@@ -93,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.assert(redRect.scene === null);
     console.assert(orangeRect.scene === null);
 
-    rootGroup1.add(parentGroup);
+    rootGroup1.append(parentGroup);
 
     // Now that the `parentGroup` has been added to the `rootGroup1`,
     // which belongs to a scene, it's `scene` property should get updated,
@@ -175,5 +182,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.assert(redRect.parent === childGroup);
         console.assert(redRect.scene === scene2);
+
+        // Test that swapping roots resets the other scene's root automatically,
+        // and the `scene` properties of affected nodes are updated accordingly.
+        scene1.root = scene2.root;
+    }).then(nextFrame).then(() => {
+        console.assert(scene1.frameIndex === 6);
+        console.assert(scene2.frameIndex === 4);
+
+        console.assert(scene1.root === rootGroup2);
+        console.assert(scene2.root === null);
+
+        console.assert(rootGroup1.scene === null);
+        console.assert(parentGroup.scene === null);
+
+        console.assert(rootGroup2.scene === scene1);
+        console.assert(childGroup.scene === scene1);
+        console.assert(magentaRect.scene === scene1);
+
+        console.assert(childGroup.parent === rootGroup2);
+
+        // Test that non-parent nodes can be used as scene roots too.
+        scene2.root = blueRect;
+    }).then(nextFrame).then(() => {
+        console.assert(scene1.frameIndex === 6);
+        console.assert(scene2.frameIndex === 5);
+
+        console.assert(blueRect.scene === scene2);
+        console.assert(blueRect.parent === null);
     });
 });

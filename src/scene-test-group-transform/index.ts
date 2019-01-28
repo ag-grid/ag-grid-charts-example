@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rect.fillStyle = 'red';
     rect.strokeStyle = 'black';
 
-    group.addAll([arc, rect]);
+    group.append([arc, rect]);
     // The order of transformation doesn't matter here.
     // It's always: scale, rotate, translate.
     group.scalingX = 1.5;
