@@ -5,11 +5,12 @@ import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {Node} from "ag-grid-enterprise/src/charts/scene/node";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(document.body, 800, 400);
+    const scene = new Scene(document.body, 800, 600);
+    scene.isRenderFrameIndex = false;
     const group = new Group();
 
     const x = 200;
-    const verticalLine = Line.create(x, 0, x, 400);
+    const verticalLine = Line.create(x, 0, x, 600);
 
     const testText = 'Groggy Frog';
 
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     centerText.textAlign = 'center';
 
     // `textBaseline` tests
-    const font = '18px Verdana';
+    const font = '18px Papyrus';
     const baselines = [ // all possible baselines excluding 'alphabetic'
         'top',
         'hanging',
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const baselineNodes: Node[] = [];
     baselines.forEach((baseline, i) => {
-        const y = alphabeticTextY + (i + 1) * 40;
+        const y = alphabeticTextY + (i + 1) * 60;
         const text = new Text();
         text.text = baseline + ' ' + testText;
         text.x = x;
