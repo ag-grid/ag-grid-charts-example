@@ -24,8 +24,16 @@ const getExamples = path => {
 // as specified below.
 const srcPath = path.resolve(__dirname, 'src');
 const distPath = path.resolve(__dirname, 'dist');
+// If we have the `_` directory in the `srcPath`, process only that.
+// No need to re-bundle all the examples when one typically works
+// on a single example at a time. This example is supposed to be
+// in the `_` directory that should be given a proper name when
+// one is done working on the example.
+const examples = isDirectory(join(srcPath, '_'))
+    ? [{ path: srcPath, name: '_' }]
+    : getExamples(srcPath);
 
-const moduleExports = getExamples(srcPath).map(example => {
+const moduleExports = examples.map(example => {
     return {
         entry: join(example.path, example.name, 'index'),
         mode: 'development',
