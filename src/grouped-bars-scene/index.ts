@@ -216,16 +216,7 @@ function renderChart() {
 
             const color = colors[j % colors.length];
             const rect = Rect.create(x, y, barWidth, seriesHeight - y);
-            if (Array.isArray(color)) {
-                // const gradient = ctx.createLinearGradient(x, y, x + barWidth, seriesHeight);
-                // gradient.addColorStop(0, color[0]);
-                // gradient.addColorStop(1, color[1]);
-                // ctx.fillStyle = gradient;
-                rect.fillStyle = color[1]; // there's no support for gradients in scene graph nodes yet
-            }
-            else {
-                rect.fillStyle = color;
-            }
+            rect.fillStyle = color[0];
             rect.strokeStyle = 'black';
             rect.shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 
