@@ -26,7 +26,8 @@
   "dependencies": {
     "ag-grid-community": "^20.0.0",
     "ag-grid-enterprise": "^20.0.0",
-    "d3": "^5.7.0"
+    "d3": "^5.7.0",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -37,6 +38,7 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/d3": "^5.7.0",
+    "@types/lodash": "^4.14.120",
     "babel-loader": "^8.0.4",
     "html-webpack-plugin": "^3.2.0",
     "typescript": "^3.2.2",
