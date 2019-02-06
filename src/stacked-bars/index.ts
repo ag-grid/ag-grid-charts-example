@@ -1,7 +1,7 @@
 import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
 import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
 import {createHdpiCanvas} from "ag-grid-enterprise/src/charts/canvas/canvas";
-import {Axis} from "ag-grid-enterprise/src/charts/axis";
+import {CanvasAxis} from "ag-grid-enterprise/src/charts/canvasAxis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -138,12 +138,12 @@ function renderChart() {
     ctx.restore();
 
     // y-axis
-    const yAxis = new Axis<number>(yScale);
+    const yAxis = new CanvasAxis<number>(yScale);
     yAxis.translation = [padding.left, padding.top];
     yAxis.render(ctx);
 
     // x-axis
-    const xAxis = new Axis<string>(xScale);
+    const xAxis = new CanvasAxis<string>(xScale);
     xAxis.rotation = -Math.PI / 2;
     xAxis.translation = [padding.left, padding.top + seriesHeight];
     xAxis.flippedLabels = true;

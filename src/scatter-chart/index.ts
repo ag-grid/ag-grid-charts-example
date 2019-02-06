@@ -1,6 +1,6 @@
 import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
 import {createHdpiCanvas} from "ag-grid-enterprise/src/charts/canvas/canvas";
-import {Axis} from "ag-grid-enterprise/src/charts/axis";
+import {CanvasAxis} from "ag-grid-enterprise/src/charts/canvasAxis";
 import carData, {ICarInfo} from './auto-mpg';
 
 const colors = [
@@ -140,14 +140,14 @@ function renderChart(data: any[][], configs: SeriesConfig[], minRadius = 2, maxR
     ctx.restore();
 
     // x-axis
-    const xAxis = new Axis<number>(xScale);
+    const xAxis = new CanvasAxis<number>(xScale);
     xAxis.translation = [padding.left, padding.top + seriesHeight];
     xAxis.rotation = -Math.PI / 2;
     xAxis.flippedLabels = true;
     xAxis.render(ctx);
 
     // y-axis
-    const yAxis = new Axis<number>(yScale);
+    const yAxis = new CanvasAxis<number>(yScale);
     yAxis.translation = [padding.left, padding.top];
     yAxis.render(ctx);
 
