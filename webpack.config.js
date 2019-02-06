@@ -1,7 +1,7 @@
 const path = require('path');
 const { join } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { lstatSync, readdirSync } = require('fs');
+const { lstatSync, readdirSync, existsSync } = require('fs');
 
 const isDirectory = path => lstatSync(path).isDirectory();
 const getExamples = path => {
@@ -29,7 +29,7 @@ const distPath = path.resolve(__dirname, 'dist');
 // on a single example at a time. This example is supposed to be
 // in the `_` directory that should be given a proper name when
 // one is done working on the example.
-const examples = isDirectory(join(srcPath, '_'))
+const examples = existsSync(join(srcPath, '_'))
     ? [{ path: srcPath, name: '_' }]
     : getExamples(srcPath);
 
