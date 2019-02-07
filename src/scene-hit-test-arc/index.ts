@@ -3,7 +3,8 @@ import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(document.body, 800, 400);
+    const scene = new Scene(800, 400);
+    scene.parent = document.body;
     const rootGroup = new Group();
     const pimpGroup = new Group();
     const arcGroup = new Group();

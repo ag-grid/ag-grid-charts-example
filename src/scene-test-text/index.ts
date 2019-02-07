@@ -5,7 +5,8 @@ import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {Node} from "ag-grid-enterprise/src/charts/scene/node";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(document.body, 800, 600);
+    const scene = new Scene(800, 600);
+    scene.parent = document.body;
     scene.isRenderFrameIndex = false;
     const group = new Group();
 

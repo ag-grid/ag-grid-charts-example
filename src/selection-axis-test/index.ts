@@ -33,7 +33,8 @@ function renderAxes() {
     xScale.paddingInner = 0.1;
     xScale.paddingOuter = 0.3;
 
-    const scene = new Scene(document.body, chartWidth, chartHeight);
+    const scene = new Scene(chartWidth, chartHeight);
+    scene.parent = document.body;
     const rootGroup = new Group();
 
     // y-axis
@@ -61,15 +62,13 @@ function renderAxes() {
 
         yScale.domain = [0, 50];
         yAxis.render();
-        return delay();
-    }).then(() => {
+    }).then(delay).then(() => {
         xScale.domain = ['Amanda', 'Bob', 'Casey', 'Don', 'Edward', 'Fred', 'George'];
         xAxis.render();
 
         yScale.domain = [-100, 40];
         yAxis.render();
-        return delay();
-    }).then(() => {
+    }).then(delay).then(() => {
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 300];
         xAxis.mirroredLabels = true;
@@ -78,8 +77,7 @@ function renderAxes() {
         yScale.domain = [1, 2];
         yScale.range = [0, 300];
         yAxis.render();
-        return delay();
-    }).then(() => {
+    }).then(delay).then(() => {
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 600];
         xAxis.rotation -= Math.PI / 5;

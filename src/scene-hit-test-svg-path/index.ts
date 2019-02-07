@@ -3,7 +3,8 @@ import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {SvgPath} from "ag-grid-enterprise/src/charts/scene/shape/svgPath";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(document.body, 1000, 400);
+    const scene = new Scene(1000, 400);
+    scene.parent = document.body;
     const rootGroup = new Group();
     const pimpGroup = new Group();
     const innerGroup = new Group();

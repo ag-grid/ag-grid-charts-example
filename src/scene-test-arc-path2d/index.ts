@@ -4,7 +4,8 @@ import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arcPath2D";
 import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(document.body, 800, 400);
+    const scene = new Scene(800, 400);
+    scene.parent = document.body;
     const group = new Group();
 
     const n = 1000;

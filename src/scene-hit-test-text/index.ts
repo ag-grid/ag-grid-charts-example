@@ -3,7 +3,8 @@ import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(document.body, 800, 400);
+    const scene = new Scene(800, 400);
+    scene.parent = document.body;
     const rootGroup = new Group();
     const pimpGroup = new Group();
     const textGroup = new Group();

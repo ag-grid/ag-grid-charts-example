@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Canvas scene graph API
 
-    const scene = new Scene(document.body, 800, 400);
+    const scene = new Scene(800, 400);
+    scene.parent = document.body;
     const group = new Group();
 
     const arc = new Arc();

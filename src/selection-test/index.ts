@@ -6,18 +6,20 @@ import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 
 function test_SelectionSelect() {
-    const scene = new Scene(document.body, 100, 100);
+    const scene = new Scene(100, 100);
+    scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
 
     const rootSelection: Selection<Group, Node | EnterNode, any, any> = Selection.select(rootGroup);
     console.assert(Group.isGroup(rootSelection.node()) === true);
 
-    scene.remove();
+    scene.parent = null;
 }
 
 function test_append_setDatum_attr_each() {
-    const scene = new Scene(document.body, 100, 100);
+    const scene = new Scene(100, 100);
+    scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
 
@@ -51,11 +53,12 @@ function test_append_setDatum_attr_each() {
     console.assert(rootGroup.countChildren() === 2);
     console.assert((rootGroup.children[1] as Rect).fillStyle === 'magenta');
 
-    scene.remove();
+    scene.parent = null;
 }
 
 function test_selectAll_setData_enter() {
-    const scene = new Scene(document.body, 300, 150);
+    const scene = new Scene(300, 150);
+    scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
 
@@ -83,11 +86,12 @@ function test_selectAll_setData_enter() {
 
     console.assert(_.isEqual(selection.data, data) === true);
 
-    scene.remove();
+    scene.parent = null;
 }
 
 function test_call_merge() {
-    const scene = new Scene(document.body, 500, 250);
+    const scene = new Scene(500, 250);
+    scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
 
@@ -165,7 +169,7 @@ function test_call_merge() {
         });
     }
 
-    scene.remove();
+    scene.parent = null;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

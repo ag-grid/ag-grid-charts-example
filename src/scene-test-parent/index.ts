@@ -9,8 +9,10 @@ function nextFrame() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene1 = new Scene(document.body, 200, 200);
-    const scene2 = new Scene(document.body, 200, 200);
+    const scene1 = new Scene(200, 200);
+    const scene2 = new Scene(200, 200);
+    scene1.parent = document.body;
+    scene2.parent = document.body;
 
     const rootGroup1 = new Group();
     const rootGroup2 = new Group();
