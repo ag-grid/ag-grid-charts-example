@@ -63,7 +63,7 @@ function test_selectAll_setData_enter() {
 
     const data = [1, 2, 3, 4];
 
-    const selection: Selection<Rect, EnterNode, number, number> = rootSelection.selectAll()
+    const selection: Selection<Rect, Group, number, number> = rootSelection.selectAll()
         .setData(data).enter.append(Rect).each((rect, datum, index) => {
             rect.x = index * 80;
             rect.y = 50;
