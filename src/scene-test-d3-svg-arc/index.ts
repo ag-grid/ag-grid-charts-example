@@ -2,7 +2,6 @@ import * as d3 from 'd3';
 import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 
 document.addEventListener('DOMContentLoaded', () => {
-    (window as any).d3 = d3;
     const width = 800;
     const height = 400;
     let data = [];
@@ -30,11 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }); // creates an arc at origin, so we have to apply the translation transform
         // to move arcs around
 
-    let arcs = svg.append('g')
-        .selectAll()
-        .data(data)
-        .enter()
-        .append('path')
+    let arcs = svg.append('g').selectAll().data(data).enter().append('path')
         // Unlike with Canvas based implementations, we don't re-render the arc
         // each time, we generate the `arcPath` string once, assign it here
         // to all `path` elements once and inside the animation timer merely
@@ -47,9 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
         .attr('stroke-width', 3);
 
     const svgEl = svg.node()!;
+    let lastPath: SVGPathElement | null = null;
     svgEl.addEventListener('mousemove', (e: MouseEvent) => {
-        if (e.target instanceof SVGCircleElement) {
+        if (e.target instanceof SVGPathElement) {
+            if (lastPath) {
+                d3.select(lastPath).attr('fill', 'red');
+            }
+            lastPath = e.target;
             d3.select(e.target).attr('fill', 'yellow');
+        } else if (lastPath) {
+            d3.select(lastPath).attr('fill', 'red');
+            lastPath = null;
         }
     });
 
@@ -58,23 +61,22 @@ document.addEventListener('DOMContentLoaded', () => {
     d3.timer(() => {
         fpsCounter.countFrame();
 
-        arcs
-            .attr('transform', d => {
-                d.centerX += d.dx;
-                if (d.centerX > width) {
-                    d.centerX -= width
-                } else if (d.centerX < 0) {
-                    d.centerX += width;
-                }
+        arcs.attr('transform', d => {
+            d.centerX += d.dx;
+            if (d.centerX > width) {
+                d.centerX -= width
+            } else if (d.centerX < 0) {
+                d.centerX += width;
+            }
 
-                d.centerY += d.dy;
-                if (d.centerY > height) {
-                    d.centerY -= height
-                } else if (d.centerY < 0) {
-                    d.centerY += height;
-                }
+            d.centerY += d.dy;
+            if (d.centerY > height) {
+                d.centerY -= height
+            } else if (d.centerY < 0) {
+                d.centerY += height;
+            }
 
-                return `translate(${d.centerX},${d.centerY})`;
-            });
+            return `translate(${d.centerX},${d.centerY})`;
+        });
     });
 });
