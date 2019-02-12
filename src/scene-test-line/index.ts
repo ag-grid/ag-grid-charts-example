@@ -5,6 +5,13 @@ import {PixelSnapBias} from "ag-grid-enterprise/src/charts/canvas/canvas";
 import * as d3 from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
+    sceneGraphTest();
+    d3SvgTest();
+
+    lineDashTest();
+});
+
+function sceneGraphTest() {
     const scene = new Scene(800, 400);
     scene.parent = document.body;
     const group = new Group();
@@ -62,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     scene.root = group;
+}
 
-    // D3/SVG API
-
+function d3SvgTest() {
     const g = d3.select(document.body).append('svg')
         .attr('width', 800)
         .attr('height', 400)
@@ -96,60 +103,89 @@ document.addEventListener('DOMContentLoaded', () => {
         .attr('stroke-width', 1)
         .attr('shape-rendering', 'crispEdges');
 
-    {
-        let x1 = 50;
-        let x2 = 100;
-        let x3 = 150;
+    let x1 = 50;
+    let x2 = 100;
+    let x3 = 150;
 
-        const movingLine1 = g.append('line')
+    const movingLine1 = g.append('line')
+        .attr('x1', x1)
+        .attr('y1', '200')
+        .attr('x2', x1)
+        .attr('y2', '300')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1)
+        .attr('shape-rendering', 'crispEdges');
+
+    const movingLine2 = g.append('line')
+        .attr('x1', x2)
+        .attr('y1', '200')
+        .attr('x2', x2)
+        .attr('y2', '300')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1)
+        .attr('shape-rendering', 'crispEdges');
+
+    const movingLine3 = g.append('line')
+        .attr('x1', x3)
+        .attr('y1', '200')
+        .attr('x2', x3)
+        .attr('y2', '300')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1);
+
+    (function step() {
+        x1 += 1;
+        movingLine1
             .attr('x1', x1)
-            .attr('y1', '200')
-            .attr('x2', x1)
-            .attr('y2', '300')
-            .attr('stroke', 'black')
-            .attr('stroke-width', 1)
-            .attr('shape-rendering', 'crispEdges');
+            .attr('x2', x1);
 
-        const movingLine2 = g.append('line')
+        // It's interesting that the `crispEdges` option
+        // always snaps to the pixel grid. Looks like it does
+        // the rounding of the final value. We can emulate that
+        // if desired.
+        x2 += 0.2;
+        movingLine2
             .attr('x1', x2)
-            .attr('y1', '200')
-            .attr('x2', x2)
-            .attr('y2', '300')
-            .attr('stroke', 'black')
-            .attr('stroke-width', 1)
-            .attr('shape-rendering', 'crispEdges');
+            .attr('x2', x2);
 
-        const movingLine3 = g.append('line')
+        x3 += 0.2;
+        movingLine3
             .attr('x1', x3)
-            .attr('y1', '200')
-            .attr('x2', x3)
-            .attr('y2', '300')
-            .attr('stroke', 'black')
-            .attr('stroke-width', 1);
+            .attr('x2', x3);
 
-        (function step() {
-            x1 += 1;
-            movingLine1
-                .attr('x1', x1)
-                .attr('x2', x1);
+        if (x1 < 750) {
+            requestAnimationFrame(step);
+        }
+    })();
+}
 
-            // It's interesting that the `crispEdges` option
-            // always snaps to the pixel grid. Looks like it does
-            // the rounding of the final value. We can emulate that
-            // if desired.
-            x2 += 0.2;
-            movingLine2
-                .attr('x1', x2)
-                .attr('x2', x2);
+function lineDashTest() {
+    const scene = new Scene(800, 200);
+    scene.parent = document.body;
+    const rootGroup = new Group();
 
-            x3 += 0.2;
-            movingLine3
-                .attr('x1', x3)
-                .attr('x2', x3);
+    const line1 = Line.create(50, 30, 750, 30);
+    line1.lineWidth = 10;
+    line1.lineDash = [20, 10, 5];
 
-            if (x1 < 750) {
-                requestAnimationFrame(step);
-            }
-        })();
-    }
-});
+    const line2 = Line.create(50, 60, 750, 60);
+    line2.lineWidth = 10;
+    line2.lineDash = [20, 5, 5, 5];
+
+    const line3 = Line.create(50, 90, 750, 90);
+    line3.lineWidth = 10;
+    line3.lineDash = [30, 15];
+
+    const line4 = Line.create(50, 120, 750, 120);
+    line4.lineWidth = 10;
+    line4.lineDash = [30, 15];
+    line4.lineCap = 'round';
+
+    const line5 = Line.create(50, 150, 750, 150);
+    line5.lineWidth = 10;
+    line5.lineDash = [30, 15];
+    line5.lineCap = 'square';
+
+    rootGroup.append([line1, line2, line3, line4, line5]);
+    scene.root = rootGroup;
+}
