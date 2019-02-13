@@ -4,23 +4,26 @@ import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Axis} from "ag-grid-enterprise/src/charts/axis";
 
-function delay() {
-    return new Promise(resolve => {
-        setTimeout(resolve, 2000);
-    });
-}
-
 function nextFrame() {
     return new Promise(resolve => {
         requestAnimationFrame(resolve);
     });
 }
 
+function delay() {
+    return new Promise(resolve => {
+        setTimeout(resolve, 2000);
+    }).then(nextFrame); // `then(nextFrame)` will prevent the delay
+    // from resolving, if during the delay we switched to another
+    // browser tab, which effectively pauses the execution, until we
+    // switch the tab back, and prevents our assertions from failing.
+}
+
 function renderAxes() {
     const padding = {
-        top: 20,
+        top: 40,
         right: 40,
-        bottom: 40,
+        bottom: 80,
         left: 60
     };
 
@@ -41,6 +44,7 @@ function renderAxes() {
 
     const scene = new Scene(chartWidth, chartHeight);
     scene.parent = document.body;
+    scene.isRenderFrameIndex = true;
     const rootGroup = new Group();
 
     // y-axis
@@ -56,7 +60,7 @@ function renderAxes() {
     xAxis.rotation = -Math.PI / 2;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight;
-    xAxis.flippedLabels = true;
+    xAxis.isFlipLabels = true;
     xAxis.render();
 
     rootGroup.append([xAxisGroup,yAxisGroup]);
@@ -79,7 +83,7 @@ function renderAxes() {
     }).then(delay).then(() => {
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 300];
-        xAxis.mirroredLabels = true;
+        xAxis.isMirrorLabels = true;
         xAxis.render();
 
         yScale.domain = [1, 2];

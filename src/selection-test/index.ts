@@ -12,7 +12,7 @@ function test_SelectionSelect() {
     scene.root = rootGroup;
 
     const rootSelection: Selection<Group, Node | EnterNode, any, any> = Selection.select(rootGroup);
-    console.assert(Group.isGroup(rootSelection.node()) === true);
+    console.assert(rootSelection.node() instanceof Group === true);
 
     scene.parent = null;
 }

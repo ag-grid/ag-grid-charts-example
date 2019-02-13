@@ -8,7 +8,7 @@ import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import {Node} from "ag-grid-enterprise/src/charts/scene/node";
 import Scale from "ag-grid-enterprise/src/charts/scale/scale";
-import {normalizeAngle} from "ag-grid-enterprise/src/charts/util/angle";
+import {normalizeAngle360} from "ag-grid-enterprise/src/charts/util/angle";
 import {DropShadow, Offset} from "ag-grid-enterprise/src/charts/scene/dropShadow";
 
 const gradientTheme = [
@@ -69,7 +69,7 @@ class NodeAxis<D> {
 
                 let label: Text;
                 if (this.flippedLabels) {
-                    const rotation = normalizeAngle(this.rotation);
+                    const rotation = normalizeAngle360(this.rotation);
                     let flipFlag = (rotation >= 0 && rotation <= Math.PI) ? -1 : 1;
 
                     label = new Text();
