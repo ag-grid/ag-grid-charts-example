@@ -60,7 +60,7 @@ function renderAxes() {
     xAxis.rotation = -Math.PI / 2;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight;
-    xAxis.isFlipLabels = true;
+    xAxis.isParallelLabels = true;
     xAxis.render();
 
     rootGroup.append([xAxisGroup,yAxisGroup]);
