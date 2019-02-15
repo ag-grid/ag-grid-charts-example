@@ -6,10 +6,16 @@ import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
 import {ClipRect} from "ag-grid-enterprise/src/charts/scene/clipRect";
 import {Selection} from "ag-grid-enterprise/src/charts/scene/selection";
 
+function nextFrame() {
+    return new Promise(resolve => {
+        requestAnimationFrame(resolve);
+    });
+}
+
 function delay() {
     return new Promise(resolve => {
-        setTimeout(resolve, 2000);
-    });
+        setTimeout(resolve, 3000);
+    }).then(nextFrame);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -56,6 +62,10 @@ function testClipRect() {
     }).then(delay).then(() => {
         rootGroup.translationX = 100;
         rootGroup.translationY = 100;
+    }).then(delay).then(() => {
+        clipRect.isActive = false;
+    }).then(delay).then(() => {
+        clipRect.isActive = true;
     });
 }
 
