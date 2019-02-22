@@ -1,15 +1,11 @@
 import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
 import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {pixelSnap, PixelSnapBias} from "ag-grid-enterprise/src/charts/canvas/canvas";
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
 import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {Node} from "ag-grid-enterprise/src/charts/scene/node";
-import Scale from "ag-grid-enterprise/src/charts/scale/scale";
-import {normalizeAngle360} from "ag-grid-enterprise/src/charts/util/angle";
 import {DropShadow, Offset} from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import {Axis} from "ag-grid-enterprise/src/charts/axis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -18,98 +14,6 @@ const gradientTheme = [
     ['#EC866B', '#E76846'],
     ['#FB9D5D', '#FA8535'],
 ];
-
-class NodeAxis<D> {
-    constructor(scale: Scale<D, number>) {
-        this.scale = scale;
-    }
-
-    scale: Scale<D, number>;
-
-    translation: [number, number] = [0, 0];
-    rotation: number = 0; // radians
-
-    lineWidth: number = 1;
-    tickWidth: number = 1;
-    tickSize: number = 6;
-    tickPadding: number = 5;
-    lineColor: string = 'black';
-    tickColor: string = 'black';
-    labelFont: string = '14px Verdana';
-    labelColor: string = 'black';
-    flippedLabels: boolean = false;
-    mirroredLabels: boolean = false;
-
-    render(group: Group) {
-        const nodes: Node[] = [];
-        const scale = this.scale;
-
-        group.translationX = this.translation[0];
-        group.translationY = this.translation[1];
-        group.rotation = this.rotation;
-
-        // Render ticks and labels.
-        {
-            const ticks = scale.ticks!(10);
-            const bandwidth = (scale.bandwidth || 0) / 2;
-            const tickCount = ticks.length;
-            const pxShift = pixelSnap(this.tickWidth);
-            const sideFlag = this.mirroredLabels ? 1 : -1;
-
-            for (let i = 0; i < tickCount; i++) {
-                const r = scale.convert(ticks[i]) - this.tickWidth / 2 + bandwidth;
-                const tick = new Line();
-                tick.x1 = sideFlag * this.tickSize;
-                tick.y1 = r + pxShift;
-                tick.x2 = 0;
-                tick.y2 = r + pxShift;
-                tick.lineWidth = this.tickWidth;
-                tick.strokeStyle = this.tickColor;
-                nodes.push(tick);
-
-                let label: Text;
-                if (this.flippedLabels) {
-                    const rotation = normalizeAngle360(this.rotation);
-                    let flipFlag = (rotation >= 0 && rotation <= Math.PI) ? -1 : 1;
-
-                    label = new Text();
-                    label.text = ticks[i].toString();
-                    label.x = 0;
-                    label.y = -sideFlag * flipFlag * this.tickPadding;
-                    label.translationX = sideFlag * (this.tickSize + this.tickPadding);
-                    label.translationY = r;
-                    label.rotation = flipFlag * Math.PI / 2;
-                    label.textAlign = 'center';
-                } else {
-                    label = new Text();
-                    label.text = ticks[i].toString();
-                    label.x = sideFlag * (this.tickSize + this.tickPadding);
-                    label.y = r;
-                    label.textAlign = sideFlag === -1 ? 'end' : 'start';
-                }
-                label.font = this.labelFont;
-                label.fillStyle = this.labelColor;
-                label.textBaseline = 'middle';
-                nodes.push(label);
-            }
-        }
-
-        // Render axis line.
-        {
-            const delta = pixelSnap(this.lineWidth, PixelSnapBias.Negative);
-            const line = new Line();
-            line.x1 = delta;
-            line.y1 = scale.range[0];
-            line.x2 = delta;
-            line.y2 = scale.range[scale.range.length - 1];
-            line.lineWidth = this.lineWidth;
-            line.strokeStyle = this.lineColor;
-            nodes.push(line);
-        }
-
-        group.append(nodes);
-    }
-}
 
 function renderChart() {
     const data = [
@@ -220,6 +124,7 @@ function renderChart() {
             rect.fillStyle = color[0];
             rect.strokeStyle = 'black';
             rect.shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+            rect.opacity = 0.9;
 
             const labelText = yFieldNames[j];
             const label = new Text();
@@ -235,19 +140,29 @@ function renderChart() {
 
     // y-axis
     const yAxisGroup = new Group();
-    const yAxis = new NodeAxis<number>(yScale);
-    yAxis.translation = [padding.left, padding.top];
-    yAxis.render(yAxisGroup);
+    const yAxis = new Axis<number>(yScale, yAxisGroup);
+    yAxis.translationX = padding.left;
+    yAxis.translationY = padding.top;
+    yAxis.gridLength = seriesWidth;
+    yAxis.gridStyle = [{
+        strokeStyle: null,
+        lineDash: null
+    }, {
+        strokeStyle: 'rgba(0, 0, 0, 0.3)',
+        lineDash: [5, 5]
+    }];
+    yAxis.update();
 
     // x-axis
     const xAxisGroup = new Group();
-    const xAxis = new NodeAxis<string>(xGroupScale);
-    xAxis.rotation = -Math.PI / 2;
-    xAxis.translation = [padding.left, padding.top + seriesHeight];
-    xAxis.flippedLabels = true;
-    xAxis.render(xAxisGroup);
+    const xAxis = new Axis<string>(xGroupScale, xAxisGroup);
+    xAxis.rotation = -90;
+    xAxis.translationX = padding.left;
+    xAxis.translationY = padding.top + seriesHeight + 1;
+    xAxis.isParallelLabels = true;
+    xAxis.update();
 
-    rootGroup.append([barGroup, xAxisGroup, yAxisGroup]);
+    rootGroup.append([xAxisGroup, yAxisGroup, barGroup]);
     scene.root = rootGroup;
 }
 
