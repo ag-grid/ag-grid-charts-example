@@ -1,6 +1,6 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 
 // This example uses translationX/Y properties to position arcs,
@@ -27,12 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
         arc.centerY = 0;
         arc.radiusX = 7;
         arc.radiusY = 7;
-        arc.endAngle = 3 * Math.PI / 2;
+        arc.startAngle = -Math.PI / 2;
+        arc.endAngle = Math.PI;
         arc.translationX = Math.random() * width;
         arc.translationY = Math.random() * height;
         arc.fillStyle = 'red';
         arc.strokeStyle = 'black';
         arc.lineWidth = 3;
+        arc.type = ArcType.Round;
         arcs.push(arc);
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);

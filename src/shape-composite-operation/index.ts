@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Default composite operation is 'source-over'.
 
-    const arc1 = Arc.create(150, 100, 50, 50, 0, Math.PI * 2);
+    const arc1 = Arc.create(150, 100, 50);
     arc1.fillStyle = 'red';
 
-    const arc2 = Arc.create(185, 150, 50, 50, 0, Math.PI * 2);
+    const arc2 = Arc.create(185, 150, 50);
     arc2.fillStyle = 'lime';
 
-    const arc3 = Arc.create(115, 150, 50, 50, 0, Math.PI * 2);
+    const arc3 = Arc.create(115, 150, 50);
     arc3.fillStyle = 'blue';
 
     rootGroup.append([arc1, arc2, arc3, label]);

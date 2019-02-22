@@ -1,6 +1,6 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,10 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
         arc.centerY = Math.random() * height;
         arc.radiusX = 7;
         arc.radiusY = 7;
-        arc.endAngle = 3 * Math.PI / 2;
+        arc.startAngle = -Math.PI / 2;
+        arc.endAngle = Math.PI;
         arc.fillStyle = 'red';
         arc.strokeStyle = 'black';
         arc.lineWidth = 3;
+        arc.type = ArcType.Round;
         arcs.push(arc);
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);

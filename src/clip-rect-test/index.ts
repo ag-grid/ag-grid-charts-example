@@ -1,7 +1,7 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
 import {ClipRect} from "ag-grid-enterprise/src/charts/scene/clipRect";
 import {Selection} from "ag-grid-enterprise/src/charts/scene/selection";
@@ -41,11 +41,13 @@ function testClipRect() {
     label.x = 140;
     label.y = 200;
 
-    const arc1 = Arc.create(50, 50, 50, 50, 0, Math.PI * 2);
+    const arc1 = Arc.create(50, 50, 50);
+    arc1.type = ArcType.Chord;
     arc1.fillStyle = 'red';
 
-    const arc2 = Arc.create(200, 100, 100, 100, 0, Math.PI * 2);
+    const arc2 = Arc.create(200, 100, 100);
     arc2.fillStyle = 'lime';
+    arc2.type = ArcType.Chord;
     arc2.opacity = 0.7;
 
     const hLine = Line.create(0, 150, 300, 150);
@@ -104,5 +106,6 @@ function testClipRectSelection() {
             arc.endAngle = Math.PI * 2;
             arc.fillStyle = 'lime';
             arc.opacity = 0.7;
+            arc.type = ArcType.Chord;
         });
 }

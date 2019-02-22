@@ -3,6 +3,7 @@ import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Axis} from "ag-grid-enterprise/src/charts/axis";
+import {toDegrees} from "ag-grid-enterprise/src/charts/util/angle";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -52,16 +53,16 @@ function renderAxes() {
     const yAxis = new Axis<number>(yScale, yAxisGroup);
     yAxis.translationX = padding.left;
     yAxis.translationY = padding.top;
-    yAxis.render();
+    yAxis.update();
 
     // x-axis
     const xAxisGroup = new Group();
     const xAxis = new Axis<string>(xScale, xAxisGroup);
-    xAxis.rotation = -Math.PI / 2;
+    xAxis.rotation = -90;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight;
     xAxis.isParallelLabels = true;
-    xAxis.render();
+    xAxis.update();
 
     rootGroup.append([xAxisGroup,yAxisGroup]);
     scene.root = rootGroup;
@@ -70,44 +71,44 @@ function renderAxes() {
 
     delay().then(() => {
         xScale.domain = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-        xAxis.render();
+        xAxis.update();
 
         yScale.domain = [0, 50];
-        yAxis.render();
+        yAxis.update();
     }).then(delay).then(() => {
         xScale.domain = ['Amanda', 'Bob', 'Casey', 'Don', 'Edward', 'Fred', 'George'];
-        xAxis.render();
+        xAxis.update();
 
         yScale.domain = [-100, 40];
-        yAxis.render();
+        yAxis.update();
     }).then(delay).then(() => {
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 300];
         xAxis.isMirrorLabels = true;
-        xAxis.render();
+        xAxis.update();
 
         yScale.domain = [1, 2];
         yScale.range = [0, 300];
-        yAxis.render();
+        yAxis.update();
     }).then(delay).then(() => {
         console.assert(scene.frameIndex === 4);
 
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 600];
-        xAxis.rotation -= Math.PI / 5;
-        xAxis.render();
+        xAxis.rotation -= toDegrees(Math.PI / 5);
+        xAxis.update();
 
         yScale.domain = [1.95, 2];
         yScale.range = [0, seriesHeight];
-        yAxis.render();
+        yAxis.update();
     }).then(delay).then(() => {
         // In the previous block, the `render` method was called for both axes,
         // but the scene graph is expected to render only once because all
         // DOM changes are delayed until the next frame.
         console.assert(scene.frameIndex === 5);
 
-        xAxis.render();
-        yAxis.render();
+        xAxis.update();
+        yAxis.update();
     }).then(nextFrame).then(() => {
         // In the previous block, we called the `render` method
         // of both axes. This will result in the regeneration

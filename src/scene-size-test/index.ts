@@ -1,6 +1,6 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
 
 function nextFrame() {
@@ -26,8 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     rect.translationX = 50;
     root.append(rect);
 
-    const arc = Arc.create(300, 200, 150, 150, 0, Math.PI * 2);
+    const arc = Arc.create(300, 200, 150);
     arc.fillStyle = 'orange';
+    arc.type = ArcType.Chord;
     root.append(arc);
 
     scene.root = root;
