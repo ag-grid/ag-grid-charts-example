@@ -45,7 +45,13 @@ class LeftAxis extends ChartAxis {
 abstract class ChartSeries {
     abstract set data(data: any[]);
     abstract get data(): any[];
+
+    protected _chart: Chart | null = null;
+    abstract set chart(chart: Chart | null);
+    abstract get chart(): Chart | null;
+
     readonly group: Group = new Group();
+    abstract processData(): void;
     abstract update(): void;
 }
 
@@ -91,13 +97,14 @@ abstract class PolarSeries extends ChartSeries {
     // radialAxis: any;
 }
 
-type SectorData = {
+type PieSectorData = {
     index: number,
     radius: number,
     startAngle: number,
     endAngle: number,
     fillStyle: string,
     callout: {
+        angle: number,
         start: {
             x: number,
             y: number
@@ -106,8 +113,8 @@ type SectorData = {
             x: number,
             y: number
         },
-        angle: number,
         label?: {
+            text: string,
             x: number,
             y: number
         },
@@ -130,6 +137,16 @@ class PieSeries extends PolarSeries {
     calloutLength: number = 10;
     calloutPadding: number = 3;
 
+    set chart(chart: Chart | null) {
+        if (this._chart !== chart) {
+            this._chart = chart;
+            this.update();
+        }
+    }
+    get chart(): Chart | null {
+        return this._chart;
+    }
+
     /**
      * The name of the numeric field to use to determine pie slice
      */
@@ -145,19 +162,33 @@ class PieSeries extends PolarSeries {
 
     private radiusScale?: LinearScale<number>;
 
-    private groupSelection: Selection<Group, Group, SectorData, any> = Selection.select(this.group).selectAll<Group>();
+    private groupSelection: Selection<Group, Group, PieSectorData, any> = Selection.select(this.group).selectAll<Group>();
+
+    private sectorsData: PieSectorData[] = [];
 
     private _data: any[] = [];
     set data(data: any[]) {
         this._data = data;
+        this.processData();
 
-        const centerX = this.centerX;
-        const centerY = this.centerY;
+        if (this.chart && this.chart.isLayoutPending) {
+            return;
+        }
+
+        this.update();
+    }
+    get data(): any[] {
+        return this._data;
+    }
+
+    processData(): void {
+        const data = this.data;
+        const centerX = this.centerX + this.offsetX;
+        const centerY = this.centerY + this.offsetY;
 
         this.group.translationX = centerX;
         this.group.translationY = centerY;
 
-        const n = data.length;
         const angleData: number[] = data.map(datum => datum[this.angleField]);
         const angleDataTotal = angleData.reduce((a, b) => a + b, 0);
         // The ratios (in [0, 1] interval) used to calculate the end angle value for every pie slice.
@@ -181,7 +212,8 @@ class PieSeries extends PolarSeries {
 
         const angleScale = this.angleScale;
 
-        let sectorsData: SectorData[] = [];
+        const sectorsData = this.sectorsData;
+        sectorsData.length = 0;
 
         let sectorIndex = 0;
         // Simply use reduce here to pair up adjacent ratios.
@@ -205,6 +237,7 @@ class PieSeries extends PolarSeries {
                 endAngle,
                 fillStyle: colors[sectorIndex % colors.length],
                 callout: {
+                    angle: normalizeAngle180(midAngle),
                     start: {
                         x: midCos * radius,
                         y: midSin * radius
@@ -213,11 +246,11 @@ class PieSeries extends PolarSeries {
                         x: midCos * (radius + calloutLength),
                         y: midSin * (radius + calloutLength)
                     },
-                    label: (span > labelMinAngle) ? {
+                    label: (labelField && span > labelMinAngle) ? {
+                        text: labelData[sectorIndex],
                         x: midCos * (radius + calloutLength + this.calloutPadding),
                         y: midSin * (radius + calloutLength + this.calloutPadding)
-                    } : undefined,
-                    angle: normalizeAngle180(midAngle)
+                    } : undefined
                 }
             });
 
@@ -225,8 +258,14 @@ class PieSeries extends PolarSeries {
 
             return end;
         }, 0);
+    }
 
-        const updateGroups = this.groupSelection.setData(sectorsData);
+    update(): void {
+        if (this.chart && this.chart.isLayoutPending) {
+            return;
+        }
+
+        const updateGroups = this.groupSelection.setData(this.sectorsData);
         updateGroups.exit.remove();
 
         const enterGroups = updateGroups.enter.append(Group);
@@ -237,17 +276,15 @@ class PieSeries extends PolarSeries {
         const groupSelection = updateGroups.merge(enterGroups);
 
         groupSelection.selectByTag<Arc>(PieSeriesNodeTag.Sector)
-            .each((sector, datum) => {
-                sector.type = ArcType.Round;
-                // sector.centerX = centerX;
-                // sector.centerY = centerY;
-                sector.radiusX = datum.radius;
-                sector.radiusY = datum.radius;
-                sector.startAngle = datum.startAngle;
-                sector.endAngle = datum.endAngle;
-                sector.fillStyle = datum.fillStyle;
-                sector.lineWidth = 2;
-                sector.lineJoin = 'round';
+            .each((arc, datum) => {
+                arc.type = ArcType.Round;
+                arc.radiusX = datum.radius;
+                arc.radiusY = datum.radius;
+                arc.startAngle = datum.startAngle;
+                arc.endAngle = datum.endAngle;
+                arc.fillStyle = datum.fillStyle;
+                arc.lineWidth = 2;
+                arc.lineJoin = 'round';
             });
 
         groupSelection.selectByTag<Line>(PieSeriesNodeTag.Callout)
@@ -268,46 +305,39 @@ class PieSeries extends PolarSeries {
         const halfPi = Math.PI / 2;
 
         groupSelection.selectByTag<Text>(PieSeriesNodeTag.Label)
-            .each((label, datum, index) => {
+            .each((text, datum, index) => {
                 const angle = datum.callout.angle;
                 // Split the circle into quadrants like so: ⊗
                 let quadrantStart = -3 * Math.PI / 4; // same as `normalizeAngle180(toRadians(-135))`
 
                 if (angle >= quadrantStart && angle < (quadrantStart += halfPi)) {
-                    label.textAlign = 'center';
-                    label.textBaseline = 'bottom';
+                    text.textAlign = 'center';
+                    text.textBaseline = 'bottom';
                 } else if (angle >= quadrantStart && angle < (quadrantStart += halfPi)) {
-                    label.textAlign = 'left';
-                    label.textBaseline = 'middle';
+                    text.textAlign = 'left';
+                    text.textBaseline = 'middle';
                 } else if (angle >= quadrantStart && angle < (quadrantStart += halfPi)) {
-                    label.textAlign = 'center';
-                    label.textBaseline = 'hanging';
+                    text.textAlign = 'center';
+                    text.textBaseline = 'hanging';
                 } else {
-                    label.textAlign = 'right';
-                    label.textBaseline = 'middle';
+                    text.textAlign = 'right';
+                    text.textBaseline = 'middle';
                 }
 
-                const labelPosition = datum.callout.label;
-                if (labelPosition) {
-                    label.fillStyle = 'black';
-                    label.font = this.labelFont;
-                    label.fillStyle = this.labelColor;
-                    label.text = labelData[index];
-                    label.x = labelPosition.x;
-                    label.y = labelPosition.y;
+                const label = datum.callout.label;
+                if (label) {
+                    text.fillStyle = 'black';
+                    text.font = this.labelFont;
+                    text.fillStyle = this.labelColor;
+                    text.text = label.text;
+                    text.x = label.x;
+                    text.y = label.y;
                 } else {
-                    label.fillStyle = null;
+                    text.fillStyle = null;
                 }
             });
 
         this.groupSelection = groupSelection;
-    }
-    get data(): any[] {
-        return this._data;
-    }
-
-    update(): void {
-        this.data = this._data;
     }
 }
 
@@ -316,7 +346,7 @@ type Padding = {
     right: number,
     bottom: number,
     left: number
-}
+};
 
 abstract class Chart {
     protected scene: Scene = new Scene();
@@ -372,13 +402,18 @@ abstract class Chart {
             this.layoutCallbackId = 0;
         }
     }
+
+    /**
+     * Only `true` while we are waiting for the layout to start.
+     * This will be `false` if the layout has already started and is ongoing.
+     */
     get isLayoutPending(): boolean {
         return !!this.layoutCallbackId;
     }
 
     private readonly _performLayout = () => {
-        this.performLayout();
         this.layoutCallbackId = 0;
+        this.performLayout();
     };
 
     abstract performLayout(): void;
@@ -397,6 +432,7 @@ export class PolarChart extends Chart {
             this.scene.root.append(series.group);
         }
         this._series.push(series);
+        series.chart = this;
         this.isLayoutPending = true;
     }
 
@@ -422,6 +458,7 @@ export class PolarChart extends Chart {
             series.centerX = centerX;
             series.centerY = centerY;
             series.radius = radius;
+            series.processData();
             series.update();
         });
     }
@@ -458,6 +495,8 @@ const data2 = [
 
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart();
+    chart.width = 900;
+    chart.height = 400;
     chart.padding = {
         top: 50,
         right: 50,
@@ -465,16 +504,36 @@ document.addEventListener('DOMContentLoaded', () => {
         left: 50
     };
     const pieSeries = new PieSeries();
+    pieSeries.offsetX = -200;
     chart.addSeries(pieSeries);
     pieSeries.angleField = 'value';
     pieSeries.labelField = 'label';
     pieSeries.data = data;
 
-    setTimeout(() => {
-        pieSeries.data = data2;
-    }, 2000);
+    const pieSeries2 = new PieSeries();
+    pieSeries2.offsetX = 200;
+    chart.addSeries(pieSeries2);
+    pieSeries2.angleField = 'value';
+    pieSeries2.labelField = 'label';
+    pieSeries2.data = data2;
 
     setTimeout(() => {
-        chart.size = [400, 300];
+        pieSeries.offsetX = -150;
+        pieSeries2.offsetX = 150;
+        chart.padding = {
+            top: 70,
+            right: 100,
+            bottom: 70,
+            left: 100
+        };
+        chart.size = [640, 300];
     }, 4000);
+
+    setTimeout(() => {
+        pieSeries.data = data2;
+    }, 6000);
+
+    setTimeout(() => {
+        pieSeries.data = data;
+    }, 8000);
 });
