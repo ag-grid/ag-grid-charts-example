@@ -1,6 +1,6 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import * as d3 from "d3";
 
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     arc.radiusY = 20;
     arc.fillStyle = 'red';
     arc.strokeStyle = 'black';
+    arc.type = ArcType.Chord;
 
     const rect = Rect.create(200, 100, 50, 50);
     rect.fillStyle = 'red';

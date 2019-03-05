@@ -1,6 +1,7 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {SvgPath} from "ag-grid-enterprise/src/charts/scene/shape/svgPath";
+import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 
 function delay() {
     return new Promise(resolve => {
@@ -43,15 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const fpsCounter = new FpsCounter(document.body);
+
     function animateLineDash() {
         svgPath.lineDash = [0, 2000];
         let inc = 0;
         return new Promise(resolve => {
             function step() {
                 if (svgPath.lineDash && svgPath.lineDash.length === 2) {
+                    fpsCounter.countFrame();
                     let [a, b] = svgPath.lineDash;
                     svgPath.lineDash = [a += 1 + (inc += 0.01), b];
-                    console.log(svgPath.lineDash);
+                    //console.log(svgPath.lineDash);
                     if (a > 1400) {
                         resolve();
                         return;
