@@ -77,14 +77,35 @@ export class CartesianChart {
 }
 
 abstract class PolarSeries extends ChartSeries {
+    /**
+     * The center of the polar series (for example, the center of a pie).
+     * If the polar chart has multiple series, all of them will have their
+     * center set to the same value as a result of the polar chart layout.
+     * The center coordinates are not supposed to be set by the user.
+     */
     centerX: number = 0;
     centerY: number = 0;
 
+    /**
+     * The offset from the center. If layering multiple polar series on top of
+     * another is not the desired behavior, one can specify the offset from the
+     * center (determined by the chart's layout) to position each series anywhere
+     * in the chart. Note that this value is absolute and will have to be changed
+     * when the size of the chart changes.
+     */
     offsetX: number = 0;
     offsetY: number = 0;
 
+    /**
+     * The series rotation in degrees.
+     */
     rotation: number = 0;
 
+    /**
+     * The maximum radius the series can use.
+     * This value is set automatically as a result of the polar chart layout
+     * and is not supposed to be set by the user.
+     */
     radius: number = 0;
 
     /**
@@ -215,12 +236,14 @@ class PieSeries extends PolarSeries {
         const sectorsData = this.sectorsData;
         sectorsData.length = 0;
 
+        const rotation = toRadians(this.rotation);
+
         let sectorIndex = 0;
         // Simply use reduce here to pair up adjacent ratios.
         angleDataRatios.reduce((start, end) => {
             const radius = radiusField ? this.radiusScale!.convert(radiusData[sectorIndex]) : this.radius;
-            const startAngle = angleScale.convert(start);
-            const endAngle = angleScale.convert(end);
+            const startAngle = angleScale.convert(start + rotation);
+            const endAngle = angleScale.convert(end + rotation);
 
             const midAngle = (startAngle + endAngle) / 2;
             const span = Math.abs(endAngle - startAngle);
@@ -305,7 +328,7 @@ class PieSeries extends PolarSeries {
         const halfPi = Math.PI / 2;
 
         groupSelection.selectByTag<Text>(PieSeriesNodeTag.Label)
-            .each((text, datum, index) => {
+            .each((text, datum) => {
                 const angle = datum.callout.angle;
                 // Split the circle into quadrants like so: ⊗
                 let quadrantStart = -3 * Math.PI / 4; // same as `normalizeAngle180(toRadians(-135))`
@@ -536,4 +559,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         pieSeries.data = data;
     }, 8000);
+
+    setTimeout(() => {
+        (function step() {
+            pieSeries2.rotation += 0.1;
+            pieSeries2.processData();
+            pieSeries2.update();
+            requestAnimationFrame(step);
+        })();
+    }, 10000);
 });
