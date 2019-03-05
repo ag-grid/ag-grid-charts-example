@@ -206,7 +206,17 @@ class PieSeries extends PolarSeries {
     /**
      * The name of the numeric field to use to determine pie slice
      */
-    radiusField?: string;
+    _radiusField?: string;
+    set radiusField(value: string | undefined) {
+        if (this._radiusField !== value) {
+            this._radiusField = value;
+            this.processData();
+            this.update();
+        }
+    }
+    get radiusField(): string | undefined {
+        return this._radiusField;
+    }
 
     private angleScale: LinearScale<number> = (() => {
         const scale = scaleLinear();
@@ -216,7 +226,7 @@ class PieSeries extends PolarSeries {
         return scale;
     })();
 
-    private radiusScale?: LinearScale<number>;
+    private radiusScale: LinearScale<number> = scaleLinear();
 
     private groupSelection: Selection<Group, Group, PieSectorData, any> = Selection.select(this.group).selectAll<Group>();
 
@@ -264,6 +274,8 @@ class PieSeries extends PolarSeries {
         let radiusData: number[] = [];
         if (radiusField) {
             radiusData = data.map(datum => datum[radiusField]);
+            this.radiusScale.domain = [0, Math.max(...radiusData, 1)];
+            this.radiusScale.range = [0, this.radius];
         }
 
         const angleScale = this.angleScale;
@@ -276,7 +288,7 @@ class PieSeries extends PolarSeries {
         let sectorIndex = 0;
         // Simply use reduce here to pair up adjacent ratios.
         angleDataRatios.reduce((start, end) => {
-            const radius = radiusField ? this.radiusScale!.convert(radiusData[sectorIndex]) : this.radius;
+            const radius = radiusField ? this.radiusScale.convert(radiusData[sectorIndex]) : this.radius;
             const startAngle = angleScale.convert(start + rotation);
             const endAngle = angleScale.convert(end + rotation);
 
@@ -553,8 +565,8 @@ const data2 = [
     { label: 'Rick', value: 4, other: 10 },
     { label: 'Lucy', value: 8, other: 11 },
     { label: 'Ben', value: 5, other: 12 },
-    { label: 'Barbara', value: 3, other: 12 },
-    { label: 'Maria', value: 3, other: 12 }
+    { label: 'Barbara', value: 3, other: 10 },
+    { label: 'Maria', value: 3, other: 8 }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -606,6 +618,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 10000);
 
     setTimeout(() => {
+        pieSeries2.angleField = 'value';
+        pieSeries2.radiusField = 'other';
+    }, 12000);
+
+    setTimeout(() => {
         pieSeries2.strokeStyle = 'white';
         pieSeries2.lineWidth = 3;
         pieSeries2.calloutWidth = 1;
@@ -613,5 +630,5 @@ document.addEventListener('DOMContentLoaded', () => {
             pieSeries2.rotation += 0.1;
             requestAnimationFrame(step);
         })();
-    }, 12000);
+    }, 14000);
 });
