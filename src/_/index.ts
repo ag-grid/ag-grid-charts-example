@@ -99,7 +99,9 @@ abstract class PolarSeries extends ChartSeries {
     /**
      * The series rotation in degrees.
      */
-    rotation: number = 0;
+    _rotation: number = 0;
+    abstract set rotation(value: number);
+    abstract get rotation(): number;
 
     /**
      * The maximum radius the series can use.
@@ -112,7 +114,9 @@ abstract class PolarSeries extends ChartSeries {
      * The name of the numeric field to use to determine the angle (for example,
      * a pie slice angle).
      */
-    angleField: string = '';
+    _angleField: string = '';
+    abstract set angleField(value: string);
+    abstract get angleField(): string;
 
     // angularAxis: any;
     // radialAxis: any;
@@ -123,9 +127,18 @@ type PieSectorData = {
     radius: number,
     startAngle: number,
     endAngle: number,
+    midAngle: number,
+
     fillStyle: string,
-    callout: {
-        angle: number,
+    strokeStyle: string,
+
+    label?: {
+        text: string,
+        x: number,
+        y: number
+    },
+
+    callout?: {
         start: {
             x: number,
             y: number
@@ -133,12 +146,7 @@ type PieSectorData = {
         end: {
             x: number,
             y: number
-        },
-        label?: {
-            text: string,
-            x: number,
-            y: number
-        },
+        }
     }
 };
 
@@ -155,6 +163,8 @@ class PieSeries extends PolarSeries {
     labelRotation: number = 0;
     labelMinAngle: number = 20; // in degrees
 
+    calloutColor: string = 'black';
+    calloutWidth: number = 2;
     calloutLength: number = 10;
     calloutPadding: number = 3;
 
@@ -167,6 +177,31 @@ class PieSeries extends PolarSeries {
     get chart(): Chart | null {
         return this._chart;
     }
+
+    set angleField(value: string) {
+        if (this._angleField !== value) {
+            this._angleField = value;
+            this.processData();
+            this.update();
+        }
+    }
+    get angleField(): string {
+        return this._angleField;
+    }
+
+    set rotation(value: number) {
+        if (this._rotation !== value) {
+            this._rotation = value;
+            this.processData();
+            this.update();
+        }
+    }
+    get rotation(): number {
+        return this._rotation;
+    }
+
+    strokeStyle: string = 'black';
+    lineWidth: number = 2;
 
     /**
      * The name of the numeric field to use to determine pie slice
@@ -252,15 +287,25 @@ class PieSeries extends PolarSeries {
             const calloutLength = this.calloutLength;
 
             const labelMinAngle = toRadians(this.labelMinAngle);
+            const isLabelVisible = labelField && span > labelMinAngle;
 
             sectorsData.push({
                 index: sectorIndex,
                 radius,
                 startAngle,
                 endAngle,
+                midAngle: normalizeAngle180(midAngle),
+
                 fillStyle: colors[sectorIndex % colors.length],
-                callout: {
-                    angle: normalizeAngle180(midAngle),
+                strokeStyle: 'black',
+
+                label: isLabelVisible ? {
+                    text: labelData[sectorIndex],
+                    x: midCos * (radius + calloutLength + this.calloutPadding),
+                    y: midSin * (radius + calloutLength + this.calloutPadding)
+                } : undefined,
+
+                callout: isLabelVisible ? {
                     start: {
                         x: midCos * radius,
                         y: midSin * radius
@@ -268,13 +313,8 @@ class PieSeries extends PolarSeries {
                     end: {
                         x: midCos * (radius + calloutLength),
                         y: midSin * (radius + calloutLength)
-                    },
-                    label: (labelField && span > labelMinAngle) ? {
-                        text: labelData[sectorIndex],
-                        x: midCos * (radius + calloutLength + this.calloutPadding),
-                        y: midSin * (radius + calloutLength + this.calloutPadding)
-                    } : undefined
-                }
+                    }
+                } : undefined
             });
 
             sectorIndex++;
@@ -306,20 +346,21 @@ class PieSeries extends PolarSeries {
                 arc.startAngle = datum.startAngle;
                 arc.endAngle = datum.endAngle;
                 arc.fillStyle = datum.fillStyle;
-                arc.lineWidth = 2;
+                arc.strokeStyle = this.strokeStyle;
+                arc.lineWidth = this.lineWidth;
                 arc.lineJoin = 'round';
             });
 
         groupSelection.selectByTag<Line>(PieSeriesNodeTag.Callout)
             .each((line, datum) => {
-                const labelPosition = datum.callout.label;
-                if (labelPosition) {
-                    line.lineWidth = 2;
-                    line.strokeStyle = 'black';
-                    line.x1 = datum.callout.start.x;
-                    line.y1 = datum.callout.start.y;
-                    line.x2 = datum.callout.end.x;
-                    line.y2 = datum.callout.end.y;
+                const callout = datum.callout;
+                if (callout) {
+                    line.lineWidth = this.calloutWidth;
+                    line.strokeStyle = this.calloutColor;
+                    line.x1 = callout.start.x;
+                    line.y1 = callout.start.y;
+                    line.x2 = callout.end.x;
+                    line.y2 = callout.end.y;
                 } else {
                     line.strokeStyle = null;
                 }
@@ -329,7 +370,7 @@ class PieSeries extends PolarSeries {
 
         groupSelection.selectByTag<Text>(PieSeriesNodeTag.Label)
             .each((text, datum) => {
-                const angle = datum.callout.angle;
+                const angle = datum.midAngle;
                 // Split the circle into quadrants like so: ⊗
                 let quadrantStart = -3 * Math.PI / 4; // same as `normalizeAngle180(toRadians(-135))`
 
@@ -347,7 +388,7 @@ class PieSeries extends PolarSeries {
                     text.textBaseline = 'middle';
                 }
 
-                const label = datum.callout.label;
+                const label = datum.label;
                 if (label) {
                     text.fillStyle = 'black';
                     text.font = this.labelFont;
@@ -561,11 +602,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 8000);
 
     setTimeout(() => {
+        pieSeries2.angleField = 'other';
+    }, 10000);
+
+    setTimeout(() => {
+        pieSeries2.strokeStyle = 'white';
+        pieSeries2.lineWidth = 3;
+        pieSeries2.calloutWidth = 1;
         (function step() {
             pieSeries2.rotation += 0.1;
-            pieSeries2.processData();
-            pieSeries2.update();
             requestAnimationFrame(step);
         })();
-    }, 10000);
+    }, 12000);
 });
