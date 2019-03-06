@@ -49,25 +49,23 @@ function renderAxes() {
     const rootGroup = new Group();
 
     // y-axis
-    const yAxisGroup = new Group();
-    const yAxis = new Axis<number>(yScale, yAxisGroup);
+    const yAxis = new Axis<number>(yScale);
     yAxis.translationX = padding.left;
     yAxis.translationY = padding.top;
     yAxis.update();
 
     // x-axis
-    const xAxisGroup = new Group();
-    const xAxis = new Axis<string>(xScale, xAxisGroup);
+    const xAxis = new Axis<string>(xScale);
     xAxis.rotation = -90;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight;
     xAxis.isParallelLabels = true;
     xAxis.update();
 
-    rootGroup.append([xAxisGroup,yAxisGroup]);
+    rootGroup.append([xAxis.group, yAxis.group]);
     scene.root = rootGroup;
 
-    console.assert(yAxisGroup.countChildren(1) === 16); // 15 tick-label Groups + Line
+    console.assert(yAxis.group.countChildren(1) === 16); // 15 tick-label Groups + Line
 
     delay().then(() => {
         xScale.domain = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];

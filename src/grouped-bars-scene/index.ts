@@ -139,8 +139,7 @@ function renderChart() {
     }
 
     // y-axis
-    const yAxisGroup = new Group();
-    const yAxis = new Axis<number>(yScale, yAxisGroup);
+    const yAxis = new Axis<number>(yScale);
     yAxis.translationX = padding.left;
     yAxis.translationY = padding.top;
     yAxis.gridLength = seriesWidth;
@@ -154,15 +153,14 @@ function renderChart() {
     yAxis.update();
 
     // x-axis
-    const xAxisGroup = new Group();
-    const xAxis = new Axis<string>(xGroupScale, xAxisGroup);
+    const xAxis = new Axis<string>(xGroupScale);
     xAxis.rotation = -90;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight + 1;
     xAxis.isParallelLabels = true;
     xAxis.update();
 
-    rootGroup.append([xAxisGroup, yAxisGroup, barGroup]);
+    rootGroup.append([xAxis.group, yAxis.group, barGroup]);
     scene.root = rootGroup;
 }
 
