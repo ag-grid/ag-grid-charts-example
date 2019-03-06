@@ -2,9 +2,9 @@ import scaleLinear, {LinearScale} from "ag-grid-enterprise/src/charts/scale/line
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Selection} from "ag-grid-enterprise/src/charts/scene/selection";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/Arc";
-import {Line} from "ag-grid-enterprise/src/charts/scene/shape/Line";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/Text";
+import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
+import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {normalizeAngle180, toRadians} from "ag-grid-enterprise/src/charts/util/angle";
 
 export interface ChartOptions {
