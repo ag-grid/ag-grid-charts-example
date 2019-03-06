@@ -42,7 +42,7 @@ class LeftAxis extends ChartAxis {
     }
 }
 
-abstract class ChartSeries {
+abstract class Series {
     abstract set data(data: any[]);
     abstract get data(): any[];
 
@@ -58,7 +58,7 @@ abstract class ChartSeries {
 export class CartesianChart {
 
     private _axes: ChartAxis[] = [];
-    private _series: ChartSeries[] = [];
+    private _series: Series[] = [];
 
     constructor(options: ChartOptions) {
         this.initialConfig = options;
@@ -76,7 +76,7 @@ export class CartesianChart {
 
 }
 
-abstract class PolarSeries extends ChartSeries {
+abstract class PolarSeries extends Series {
     /**
      * The center of the polar series (for example, the center of a pie).
      * If the polar chart has multiple series, all of them will have their
