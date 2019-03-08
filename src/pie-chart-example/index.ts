@@ -1,7 +1,13 @@
 import {PolarChart} from "ag-grid-enterprise/src/charts/chart/polarChart";
 import {PieSeries} from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 
-const data = [
+type Datum = {
+    label: string,
+    value: number,
+    other: number
+};
+
+const data: Datum[] = [
     { label: 'Android', value: 56.9, other: 7 },
     { label: 'iOS', value: 22.5, other: 8 },
     { label: 'BlackBerry', value: 6.8, other: 9 },
@@ -10,7 +16,7 @@ const data = [
     { label: 'Windows', value: 1.9, other: 12 }
 ];
 
-const data2 = [
+const data2: Datum[] = [
     { label: 'John', value: 3, other: 7 },
     { label: 'Nige', value: 7, other: 8 },
     { label: 'Vicky', value: 6, other: 9 },
@@ -22,7 +28,7 @@ const data2 = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new PolarChart();
+    const chart = new PolarChart<Datum>();
     chart.width = 900;
     chart.height = 400;
     chart.padding = {
@@ -31,14 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
         bottom: 50,
         left: 50
     };
-    const pieSeries = new PieSeries();
+
+    const pieSeries = new PieSeries<Datum>();
     pieSeries.offsetX = -200;
     chart.addSeries(pieSeries);
     pieSeries.angleField = 'value';
     pieSeries.labelField = 'label';
     pieSeries.data = data;
 
-    const pieSeries2 = new PieSeries();
+    const pieSeries2 = new PieSeries<Datum>();
     pieSeries2.offsetX = 200;
     chart.addSeries(pieSeries2);
     pieSeries2.angleField = 'value';
@@ -58,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 4000);
 
     setTimeout(() => {
-        pieSeries.labelField = '';
+        pieSeries.labelField = null;
     }, 5000);
 
     setTimeout(() => {
