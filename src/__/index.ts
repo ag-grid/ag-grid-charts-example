@@ -8,16 +8,14 @@ import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {normalizeAngle180, toRadians} from "ag-grid-enterprise/src/charts/util/angle";
 import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import {BarSeries} from "ag-grid-enterprise/src/charts/chart/series/barSeries";
+import {CategoryAxis} from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 
 type Datum = {
     label: string,
     value: number,
     other: number
 };
-
-class ChartAxis {
-
-}
 
 const data: Datum[] = [
     { label: 'Android', value: 56.9, other: 7 },
@@ -40,7 +38,10 @@ const data2: Datum[] = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new CartesianChart<Datum>();
+    const chart = new CartesianChart<Datum, string, number>(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
     chart.width = 900;
     chart.height = 500;
     chart.padding = {
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         left: 50
     };
 
-    const barSeries = new BarSeries<Datum>();
+    const barSeries = new BarSeries<Datum, string, number>();
     chart.series = [barSeries];
     barSeries.xField = 'label';
     barSeries.yFields = ['value'];

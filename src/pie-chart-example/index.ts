@@ -1,5 +1,7 @@
 import {PolarChart} from "ag-grid-enterprise/src/charts/chart/polarChart";
 import {PieSeries} from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
+import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import {Offset} from "ag-grid-enterprise/src/charts/scene/offset";
 
 type Datum = {
     label: string,
@@ -28,7 +30,7 @@ const data2: Datum[] = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new PolarChart<Datum>();
+    const chart = new PolarChart<Datum, number, any>();
     chart.width = 900;
     chart.height = 400;
     chart.padding = {
@@ -38,12 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
         left: 50
     };
 
+    const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+
     const pieSeries = new PieSeries<Datum>();
     pieSeries.offsetX = -200;
     chart.addSeries(pieSeries);
     pieSeries.angleField = 'value';
     pieSeries.labelField = 'label';
     pieSeries.data = data;
+    pieSeries.shadow = shadow;
+    pieSeries.lineWidth = 1;
+    pieSeries.calloutWidth = 1;
 
     const pieSeries2 = new PieSeries<Datum>();
     pieSeries2.offsetX = 200;
