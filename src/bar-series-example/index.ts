@@ -78,13 +78,37 @@ const data: Datum[] = [
     },
 ];
 
+function generateData() {
+    const n = 50;
+    const yFieldCount = 10;
+    const data: any[] = [];
+    const yFields: string[] = [];
+    for (let i = 0; i < yFieldCount; i++) {
+        yFields[i] = 'Y' + (i + 1);
+    }
+    for (let i = 0; i < n; i++) {
+        const datum: any = {
+            category: 'A' + (i + 1)
+        };
+        yFields.forEach(field => {
+            datum[field] = Math.random() * 10;
+        });
+        data.push(datum);
+    }
+    return {
+        data,
+        xField: 'category',
+        yFields
+    };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new CartesianChart<Datum, string, number>(
+    const chart = new CartesianChart<any, string, number>(
         new CategoryAxis(),
         new NumberAxis()
     );
-    chart.width = 900;
-    chart.height = 500;
+    chart.width = 1200;
+    chart.height = 800;
     chart.padding = {
         top: 50,
         right: 50,
@@ -92,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         left: 50
     };
 
-    const barSeries = new BarSeries<Datum>();
+    const barSeries = new BarSeries<any>();
     chart.addSeries(barSeries);
     barSeries.xField = 'category';
     barSeries.yFields = ['q1Actual'];
@@ -100,17 +124,28 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.data = data;
 
     setTimeout(() => {
-        barSeries.yFields = ['q1Actual', 'q2Actual'];
+        barSeries.lineWidth = 3;
+    }, 2000);
+
+    setTimeout(() => {
+        const config = generateData();
+        barSeries.lineWidth = 1;
+        barSeries.yFieldNames = [];
+        barSeries.setDataAndFields(config.data, config.xField, config.yFields);
     }, 3000);
-    setTimeout(() => {
-        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
-    }, 6000);
-    setTimeout(() => {
-        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    }, 9000);
-    setTimeout(() => {
-        barSeries.isGrouped = true;
-    }, 12000);
+
+    // setTimeout(() => {
+    //     barSeries.yFields = ['q1Actual', 'q2Actual'];
+    // }, 3000);
+    // setTimeout(() => {
+    //     barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
+    // }, 6000);
+    // setTimeout(() => {
+    //     barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    // }, 9000);
+    // setTimeout(() => {
+    //     barSeries.isGrouped = true;
+    // }, 12000);
 
     // barSeries.xField = 'xField';
     // barSeries.yFields = ['yField1', 'yField2', 'yField3'];
