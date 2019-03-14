@@ -120,32 +120,38 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.addSeries(barSeries);
     barSeries.xField = 'category';
     barSeries.yFields = ['q1Actual'];
-    barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.data = data;
 
-    setTimeout(() => {
-        barSeries.lineWidth = 3;
-    }, 2000);
-
-    setTimeout(() => {
-        const config = generateData();
-        barSeries.lineWidth = 1;
-        barSeries.yFieldNames = [];
-        barSeries.setDataAndFields(config.data, config.xField, config.yFields);
-    }, 3000);
-
     // setTimeout(() => {
-    //     barSeries.yFields = ['q1Actual', 'q2Actual'];
+    //     barSeries.lineWidth = 20;
+    //     barSeries.labelColor = 'red';
+    //     barSeries.labelFont = '20px serif';
+    // }, 2000);
+    //
+    // setTimeout(() => {
+    //     const config = generateData();
+    //     barSeries.lineWidth = 1;
+    //     barSeries.yFieldNames = []; // don't show bar labels
+    //     barSeries.setDataAndFields(config.data, config.xField, config.yFields);
     // }, 3000);
+
     // setTimeout(() => {
-    //     barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
-    // }, 6000);
-    // setTimeout(() => {
-    //     barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    // }, 9000);
-    // setTimeout(() => {
-    //     barSeries.isGrouped = true;
-    // }, 12000);
+    //     chart.scene.hdpiCanvas.download('Vitaly');
+    // }, 5000);
+
+    setTimeout(() => {
+        barSeries.yFields = ['q1Actual', 'q2Actual'];
+    }, 3000);
+    setTimeout(() => {
+        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
+    }, 6000);
+    setTimeout(() => {
+        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    }, 9000);
+    setTimeout(() => {
+        barSeries.isGrouped = true;
+    }, 12000);
 
     // barSeries.xField = 'xField';
     // barSeries.yFields = ['yField1', 'yField2', 'yField3'];
