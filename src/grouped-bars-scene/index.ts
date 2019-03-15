@@ -157,7 +157,7 @@ function renderChart() {
     xAxis.rotation = -90;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight + 1;
-    xAxis.isParallelLabels = true;
+    xAxis.parallelLabels = true;
     xAxis.update();
 
     rootGroup.append([xAxis.group, yAxis.group, barGroup]);

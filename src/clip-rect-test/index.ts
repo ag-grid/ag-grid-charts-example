@@ -65,9 +65,9 @@ function testClipRect() {
         rootGroup.translationX = 100;
         rootGroup.translationY = 100;
     }).then(delay).then(() => {
-        clipRect.isActive = false;
+        clipRect.active = false;
     }).then(delay).then(() => {
-        clipRect.isActive = true;
+        clipRect.active = true;
     });
 }
 

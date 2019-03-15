@@ -78,6 +78,22 @@ const data: Datum[] = [
     },
 ];
 
+const data3: Datum[] = [
+    {
+        category: 'Coffee',
+
+        q1Budget: 500,
+        q2Budget: 500,
+        q3Budget: 500,
+        q4Budget: 500,
+
+        q1Actual: 0,
+        q2Actual: 0,
+        q3Actual: 0,
+        q4Actual: 0
+    }
+];
+
 function generateData() {
     const n = 50;
     const yFieldCount = 10;
@@ -118,10 +134,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const barSeries = new BarSeries<any>();
     chart.addSeries(barSeries);
-    barSeries.xField = 'category';
-    barSeries.yFields = ['q1Actual'];
+    // barSeries.xField = 'category';
+    // barSeries.yFields = ['q1Actual'];
     barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
-    barSeries.data = data;
+    // barSeries.data = data;
+    barSeries.setDataAndFields(data, 'category', ['q1Actual']);
 
     // setTimeout(() => {
     //     barSeries.lineWidth = 20;
@@ -142,16 +159,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
         barSeries.yFields = ['q1Actual', 'q2Actual'];
-    }, 3000);
+    }, 2000);
     setTimeout(() => {
         barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
-    }, 6000);
+    }, 4000);
     setTimeout(() => {
         barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    }, 9000);
+    }, 6000);
     setTimeout(() => {
-        barSeries.isGrouped = true;
+        barSeries.grouped = true;
+    }, 8000);
+    setTimeout(() => {
+        barSeries.data = data3;
+    }, 10000);
+    setTimeout(() => {
+        barSeries.data = [];
     }, 12000);
+    setTimeout(() => {
+        const config = generateData();
+        barSeries.lineWidth = 1;
+        barSeries.yFieldNames = []; // don't show bar labels
+        barSeries.grouped = false;
+        barSeries.setDataAndFields(config.data, config.xField, config.yFields);
+    }, 14000);
 
     // barSeries.xField = 'xField';
     // barSeries.yFields = ['yField1', 'yField2', 'yField3'];

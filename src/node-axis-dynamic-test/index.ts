@@ -45,7 +45,7 @@ function renderAxes() {
 
     const scene = new Scene(chartWidth, chartHeight);
     scene.parent = document.body;
-    scene.isRenderFrameIndex = true;
+    scene.renderFrameIndex = true;
     const rootGroup = new Group();
 
     // y-axis
@@ -59,7 +59,7 @@ function renderAxes() {
     xAxis.rotation = -90;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight;
-    xAxis.isParallelLabels = true;
+    xAxis.parallelLabels = true;
     xAxis.update();
 
     rootGroup.append([xAxis.group, yAxis.group]);
@@ -82,7 +82,7 @@ function renderAxes() {
     }).then(delay).then(() => {
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 300];
-        xAxis.isMirrorLabels = true;
+        xAxis.mirrorLabels = true;
         xAxis.update();
 
         yScale.domain = [1, 2];

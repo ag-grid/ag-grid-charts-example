@@ -7,7 +7,7 @@ import {Node} from "ag-grid-enterprise/src/charts/scene/node";
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene(800, 600);
     scene.parent = document.body;
-    scene.isRenderFrameIndex = false;
+    scene.renderFrameIndex = false;
     const group = new Group();
 
     const x = 200;
