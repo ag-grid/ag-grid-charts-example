@@ -94,9 +94,7 @@ const data3: Datum[] = [
     }
 ];
 
-function generateData() {
-    const n = 50;
-    const yFieldCount = 10;
+function generateData(n = 50, yFieldCount = 10) {
     const data: any[] = [];
     const yFields: string[] = [];
     for (let i = 0; i < yFieldCount; i++) {
@@ -153,10 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //     barSeries.setDataAndFields(config.data, config.xField, config.yFields);
     // }, 3000);
 
-    // setTimeout(() => {
-    //     chart.scene.hdpiCanvas.download('Vitaly');
-    // }, 5000);
-
     setTimeout(() => {
         barSeries.yFields = ['q1Actual', 'q2Actual'];
     }, 2000);
@@ -182,6 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.grouped = false;
         barSeries.setDataAndFields(config.data, config.xField, config.yFields);
     }, 14000);
+    setTimeout(() => {
+        const config = generateData(10, 10);
+        barSeries.setDataAndFields(config.data, config.xField, config.yFields);
+        barSeries.grouped = true;
+    }, 16000);
+    setTimeout(() => {
+        chart.scene.hdpiCanvas.download('bar-chart');
+    }, 18000);
 
     // barSeries.xField = 'xField';
     // barSeries.yFields = ['yField1', 'yField2', 'yField3'];
