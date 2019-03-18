@@ -22,7 +22,7 @@ type Datum2 = {
     yField1: number,
     yField2: number,
     yField3: number
-}
+};
 
 const data2: Datum2[] = [{
     xField: 'Jan',
