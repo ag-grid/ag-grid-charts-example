@@ -102,4 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(step);
         })();
     }, 14000);
+
+    const saveImageButton = document.createElement('button');
+    saveImageButton.textContent = 'Save Chart Image';
+    document.body.appendChild(saveImageButton);
+    saveImageButton.addEventListener('click', () => {
+        chart.scene.hdpiCanvas.download('pie-chart');
+    });
 });

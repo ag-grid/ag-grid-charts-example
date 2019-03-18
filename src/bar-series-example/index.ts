@@ -121,8 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
         new CategoryAxis(),
         new NumberAxis()
     );
-    chart.width = 1200;
-    chart.height = 800;
+    chart.width = document.body.clientWidth;
+    chart.height = document.body.clientHeight;
     chart.padding = {
         top: 50,
         right: 50,
@@ -171,27 +171,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 12000);
     setTimeout(() => {
         const config = generateData();
-        barSeries.lineWidth = 1;
         barSeries.yFieldNames = []; // don't show bar labels
         barSeries.grouped = false;
+        chart.xAxis.labelRotation = 45;
         barSeries.setDataAndFields(config.data, config.xField, config.yFields);
     }, 14000);
     setTimeout(() => {
         const config = generateData(10, 10);
         barSeries.setDataAndFields(config.data, config.xField, config.yFields);
         barSeries.grouped = true;
+        chart.xAxis.labelRotation = 0;
+        chart.xAxis.update();
     }, 16000);
-    setTimeout(() => {
+
+    const saveImageButton = document.createElement('button');
+    saveImageButton.textContent = 'Save Chart Image';
+    document.body.appendChild(saveImageButton);
+    saveImageButton.addEventListener('click', () => {
         chart.scene.hdpiCanvas.download('bar-chart');
-    }, 18000);
-
-    // barSeries.xField = 'xField';
-    // barSeries.yFields = ['yField1', 'yField2', 'yField3'];
-    // barSeries.yFieldNames = ['1', '2', '3'];
-    // // barSeries.isGrouped = true;
-    // barSeries.data = data2;
-
-    // setTimeout(() => {
-    //     barSeries.yFields = ['q1Budget', 'q2Budget', 'q3Budget', 'q4Budget'];
-    // }, 2000);
+    });
 });
