@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
         pieSeries2.strokeStyle = 'white';
+        pieSeries2.calloutColor = 'black';
         pieSeries2.lineWidth = 3;
         pieSeries2.calloutWidth = 1;
         (function step() {
