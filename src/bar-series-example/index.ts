@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const barSeries = new BarSeries<any>();
+    barSeries.lineWidth = 4;
     chart.addSeries(barSeries);
     // barSeries.xField = 'category';
     // barSeries.yFields = ['q1Actual'];
@@ -161,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
     }, 6000);
     setTimeout(() => {
+        barSeries.lineWidth = 2;
         barSeries.grouped = true;
     }, 8000);
     setTimeout(() => {
