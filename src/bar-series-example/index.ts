@@ -190,6 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
     saveImageButton.textContent = 'Save Chart Image';
     document.body.appendChild(saveImageButton);
     saveImageButton.addEventListener('click', () => {
-        chart.scene.hdpiCanvas.download('bar-chart');
+        chart.scene.download('bar-chart');
     });
 });
