@@ -45,9 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries = new PieSeries<Datum>();
     pieSeries.offsetX = -200;
     chart.addSeries(pieSeries);
-    pieSeries.angleField = 'value';
-    pieSeries.labelField = 'label';
-    pieSeries.data = data;
+    pieSeries.setDataAndFields(data, 'value', 'label');
     pieSeries.shadow = shadow;
     pieSeries.lineWidth = 1;
     pieSeries.calloutWidth = 1;
@@ -55,9 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries2 = new PieSeries<Datum>();
     pieSeries2.offsetX = 200;
     chart.addSeries(pieSeries2);
-    pieSeries2.angleField = 'value';
-    pieSeries2.labelField = 'label';
-    pieSeries2.data = data2;
+    pieSeries2.setDataAndFields(data2, 'value', 'label');
 
     setTimeout(() => {
         pieSeries.offsetX = -150;
@@ -76,8 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
 
     setTimeout(() => {
-        pieSeries.labelField = 'label';
-        pieSeries.data = data2;
+        pieSeries.setDataAndFields(data2, 'value', 'label');
     }, 6000);
 
     setTimeout(() => {
@@ -89,8 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 10000);
 
     setTimeout(() => {
-        pieSeries2.angleField = 'value';
-        pieSeries2.radiusField = 'other';
+        pieSeries2.setDataAndFields(data2, 'value', 'label', 'other');
     }, 12000);
 
     setTimeout(() => {
@@ -103,6 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(step);
         })();
     }, 14000);
+
+    document.body.appendChild(document.createElement('br'));
 
     const saveImageButton = document.createElement('button');
     saveImageButton.textContent = 'Save Chart Image';

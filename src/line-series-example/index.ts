@@ -101,6 +101,8 @@ function createCategoryLineChart() {
     chart.addSeries(lineSeries);
     lineSeries.setDataAndFields(categoryData, 'category', 'value');
 
+    document.body.appendChild(document.createElement('br'));
+
     const saveImageButton = document.createElement('button');
     saveImageButton.textContent = 'Save Chart Image';
     document.body.appendChild(saveImageButton);
