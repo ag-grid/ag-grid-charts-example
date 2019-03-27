@@ -152,7 +152,7 @@ function createNumericLineChart() {
     };
 
     const lineSeries = new LineSeries<NumericDatum, number, number>();
-    lineSeries.lineWidth = 4;
+    lineSeries.lineWidth = 2;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.setDataAndFields(generateSinData(), 'xValue', 'yValue');
@@ -225,6 +225,45 @@ function createNumericLineChart() {
                 requestAnimationFrame(nextFrame);
             }
         })();
+    });
+
+    document.body.appendChild(document.createElement('br'));
+    const lineWidthSlider = document.createElement('input');
+    lineWidthSlider.type = 'range';
+    lineWidthSlider.min = 0;
+    lineWidthSlider.max = 10;
+    lineWidthSlider.step = 0.5;
+    lineWidthSlider.value = 2;
+    lineWidthSlider.style.width = '400px';
+    document.body.appendChild(lineWidthSlider);
+    lineWidthSlider.addEventListener('input', (e) => {
+        lineSeries.lineWidth = +e.target.value;
+    });
+
+    document.body.appendChild(document.createElement('br'));
+    const markerLineWidthSlider = document.createElement('input');
+    markerLineWidthSlider.type = 'range';
+    markerLineWidthSlider.min = 0;
+    markerLineWidthSlider.max = 10;
+    markerLineWidthSlider.step = 0.5;
+    markerLineWidthSlider.value = 2;
+    markerLineWidthSlider.style.width = '400px';
+    document.body.appendChild(markerLineWidthSlider);
+    markerLineWidthSlider.addEventListener('input', (e) => {
+        lineSeries.markerLineWidth = +e.target.value;
+    });
+
+    document.body.appendChild(document.createElement('br'));
+    const markerRadiusSlider = document.createElement('input');
+    markerRadiusSlider.type = 'range';
+    markerRadiusSlider.min = 0;
+    markerRadiusSlider.max = 10;
+    markerRadiusSlider.step = 0.5;
+    markerRadiusSlider.value = 5;
+    markerRadiusSlider.style.width = '400px';
+    document.body.appendChild(markerRadiusSlider);
+    markerRadiusSlider.addEventListener('input', (e) => {
+        lineSeries.markerRadius = +e.target.value;
     });
 }
 
