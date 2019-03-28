@@ -2,6 +2,7 @@ import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart
 import {CategoryAxis} from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
+import {BarSeries} from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 
 type CategoryDatum = {
     category: string,
@@ -11,6 +12,13 @@ type CategoryDatum = {
 type NumericDatum = {
     xValue: number,
     yValue: number
+};
+
+type MultiValue = {
+    category: string,
+    value1: number,
+    value2: number,
+    value3: number
 };
 
 const categoryData: CategoryDatum[] = [
@@ -30,6 +38,20 @@ function generateCategoryData(n = 50): CategoryDatum[] {
         const datum: CategoryDatum = {
             category: 'A' + (i + 1),
             value: Math.random() * 10
+        };
+        data.push(datum);
+    }
+    return data;
+}
+
+function generateMultiValueData(n = 50): MultiValue[] {
+    const data: MultiValue[] = [];
+    for (let i = 0; i < n; i++) {
+        const datum: MultiValue = {
+            category: 'A' + (i + 1),
+            value1: Math.random() * 10,
+            value2: Math.random() * 20,
+            value3: Math.random() * 15,
         };
         data.push(datum);
     }
@@ -107,7 +129,7 @@ function createCategoryLineChart() {
     saveImageButton.textContent = 'Save Chart Image';
     document.body.appendChild(saveImageButton);
     saveImageButton.addEventListener('click', () => {
-        chart.scene.download('pie-chart');
+        chart.scene.download('chart');
     });
 
     const changeDataButton = document.createElement('button');
@@ -163,7 +185,7 @@ function createNumericLineChart() {
     saveImageButton.textContent = 'Save Chart Image';
     document.body.appendChild(saveImageButton);
     saveImageButton.addEventListener('click', () => {
-        chart.scene.download('pie-chart');
+        chart.scene.download('chart');
     });
 
     const logDataButton = document.createElement('button');
@@ -289,7 +311,100 @@ function createNumericLineChart() {
     });
 }
 
+function createMultiLineChart() {
+    const chart = new CartesianChart<MultiValue, string, number>(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.width = document.body.clientWidth;
+    chart.height = 600;
+    chart.padding = {
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50
+    };
+    chart.xAxis.labelRotation = 90;
+
+    const data = generateMultiValueData(10);
+
+    const lineSeries1 = new LineSeries<MultiValue, string, number>();
+    lineSeries1.lineWidth = 4;
+    lineSeries1.color = '#f3622d';
+    lineSeries1.setDataAndFields(data, 'category', 'value1');
+
+    const lineSeries2 = new LineSeries<MultiValue, string, number>();
+    lineSeries2.lineWidth = 4;
+    lineSeries2.color = '#fba71b';
+    lineSeries2.setDataAndFields(data, 'category', 'value2');
+
+    const lineSeries3 = new LineSeries<MultiValue, string, number>();
+    lineSeries3.lineWidth = 4;
+    lineSeries3.color = '#57b757';
+    lineSeries3.setDataAndFields(data, 'category', 'value3');
+
+    const barSeries = new BarSeries<MultiValue, string, number>();
+    barSeries.colors = ['#41a9c9'];
+    barSeries.setDataAndFields(data, 'category', ['value3']);
+
+    chart.addSeries(barSeries);
+    chart.addSeries(lineSeries1);
+    chart.addSeries(lineSeries2);
+    chart.addSeries(lineSeries3);
+
+    document.body.appendChild(document.createElement('br'));
+    const saveImageButton = document.createElement('button');
+    saveImageButton.textContent = 'Save Chart Image';
+    document.body.appendChild(saveImageButton);
+    saveImageButton.addEventListener('click', () => {
+        chart.scene.download('chart');
+    });
+
+    const changeDataButton = document.createElement('button');
+    changeDataButton.textContent = 'Change data';
+    document.body.appendChild(changeDataButton);
+    changeDataButton.addEventListener('click', () => {
+        const data = generateMultiValueData(Math.random() * 30);
+        lineSeries1.setDataAndFields(data, 'category', 'value1');
+        lineSeries2.setDataAndFields(data, 'category', 'value2');
+        lineSeries3.setDataAndFields(data, 'category', 'value3');
+        barSeries.setDataAndFields(data, 'category', ['value3']);
+    });
+
+    const animateButton = document.createElement('button');
+    animateButton.textContent = 'Animate';
+    document.body.appendChild(animateButton);
+    animateButton.addEventListener('click', () => {
+        const data: MultiValue[] = [];
+        const step = 0.1;
+        let i = -10;
+        let index = 0;
+
+        (function nextFrame() {
+            data.push({
+                category: 'A' + (++index),
+                value1: Math.sin(i) * 0.5,
+                value2: Math.cos(i),
+                value3: Math.sin(i)
+            });
+            i += step;
+
+            lineSeries1.setDataAndFields(data, 'category', 'value1');
+            lineSeries2.setDataAndFields(data, 'category', 'value2');
+            lineSeries3.setDataAndFields(data, 'category', 'value3');
+            barSeries.setDataAndFields(data, 'category', ['value3']);
+
+            if (i < 10) {
+                i += step;
+                setTimeout(nextFrame, 33);
+            }
+        })();
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     createCategoryLineChart();
     createNumericLineChart();
+    createMultiLineChart();
 });
