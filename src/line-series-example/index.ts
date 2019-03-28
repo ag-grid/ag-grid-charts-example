@@ -228,6 +228,28 @@ function createNumericLineChart() {
     });
 
     document.body.appendChild(document.createElement('br'));
+    const niceCheckboxLabel = document.createElement('label');
+    niceCheckboxLabel.innerHTML = 'Data domain auto-rounding (desirable for static charts but not for animated ones)';
+    const niceCheckbox = document.createElement('input');
+    niceCheckbox.type = 'checkbox';
+    niceCheckbox.checked = true;
+    niceCheckboxLabel.appendChild(niceCheckbox);
+    document.body.appendChild(niceCheckboxLabel);
+    niceCheckbox.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        const xAxis = chart.xAxis;
+        const yAxis = chart.yAxis;
+
+        if (xAxis instanceof NumberAxis) {
+            xAxis.nice = target.checked;
+        }
+        if (yAxis instanceof NumberAxis) {
+            yAxis.nice = target.checked;
+        }
+        chart.layoutPending = true;
+    });
+
+    document.body.appendChild(document.createElement('br'));
     const lineWidthSlider = document.createElement('input');
     lineWidthSlider.type = 'range';
     lineWidthSlider.min = '0';
