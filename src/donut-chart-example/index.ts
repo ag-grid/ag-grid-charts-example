@@ -23,8 +23,8 @@ const data: Datum[] = [
 
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart<Datum, number, any>();
-    chart.width = 900;
-    chart.height = 400;
+    chart.width = 700;
+    chart.height = 700;
     chart.padding = {
         top: 50,
         right: 50,
@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 
     const pieSeries1 = new PieSeries<Datum>();
-    pieSeries1.offsetX = -200;
     chart.addSeries(pieSeries1);
     pieSeries1.setDataAndFields(data, 'value1', 'label');
     pieSeries1.shadow = shadow;
@@ -43,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries1.calloutWidth = 1;
 
     const pieSeries2 = new PieSeries<Datum>();
-    pieSeries2.offsetX = -200;
     chart.addSeries(pieSeries2);
     pieSeries2.setDataAndFields(data, 'value2', 'label');
     pieSeries2.shadow = shadow;
@@ -51,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries2.calloutWidth = 1;
 
     const pieSeries3 = new PieSeries<Datum>();
-    pieSeries3.offsetX = -200;
     chart.addSeries(pieSeries3);
     pieSeries3.setDataAndFields(data, 'value3', 'label');
     pieSeries3.shadow = shadow;
@@ -59,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries3.calloutWidth = 1;
 
     const series = chart.series as PieSeries<Datum>[];
-    const thickness = 20;
-    const padding = 5;
+    const thickness = 40;
+    const padding = 40;
     let offset = 0;
     series.forEach(series => {
         series.outerRadiusOffset = offset;
