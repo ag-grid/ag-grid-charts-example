@@ -110,12 +110,6 @@ function createCategoryLineChart() {
     );
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.padding = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-    };
 
     const lineSeries = new LineSeries<CategoryDatum, string, number>();
     lineSeries.lineWidth = 4;
@@ -166,12 +160,6 @@ function createNumericLineChart() {
     );
     chart.width = 600;
     chart.height = 600;
-    chart.padding = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-    };
 
     const lineSeries = new LineSeries<NumericDatum, number, number>();
     lineSeries.lineWidth = 2;
@@ -318,12 +306,6 @@ function createMultiLineChart() {
     );
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.padding = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-    };
     chart.xAxis.labelRotation = 90;
 
     const data = generateMultiValueData(10);

@@ -26,12 +26,6 @@ function createCategoryLineChart() {
     );
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.padding = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-    };
 
     setTimeout(() => {
         const lineSeries = new LineSeries<CategoryDatum, string, number>();

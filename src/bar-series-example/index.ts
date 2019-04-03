@@ -123,12 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     chart.width = document.body.clientWidth;
     chart.height = document.body.clientHeight;
-    chart.padding = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-    };
 
     const barSeries = new BarSeries<any>();
     barSeries.lineWidth = 4;
