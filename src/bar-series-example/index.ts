@@ -24,18 +24,6 @@ type Datum2 = {
     yField3: number
 };
 
-const data2: Datum2[] = [{
-    xField: 'Jan',
-    yField1: 5,
-    yField2: 7,
-    yField3: -9,
-}, {
-    xField: 'Feb',
-    yField1: 10,
-    yField2: -15,
-    yField3: 20
-}];
-
 const data: Datum[] = [
     {
         category: 'Coffee',
@@ -78,7 +66,7 @@ const data: Datum[] = [
     },
 ];
 
-const data3: Datum[] = [
+const data2: Datum[] = [
     {
         category: 'Coffee',
 
@@ -93,6 +81,18 @@ const data3: Datum[] = [
         q4Actual: 0
     }
 ];
+
+const data3: Datum2[] = [{
+    xField: 'Jan',
+    yField1: 5,
+    yField2: 7,
+    yField3: -9,
+}, {
+    xField: 'Feb',
+    yField1: 10,
+    yField2: -15,
+    yField3: 20
+}];
 
 function generateData(n = 50, yFieldCount = 10) {
     const data: any[] = [];
@@ -116,6 +116,14 @@ function generateData(n = 50, yFieldCount = 10) {
     };
 }
 
+function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.textContent = text;
+    document.body.appendChild(button);
+    button.addEventListener('click', action);
+    return button;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new CartesianChart<any, string, number>(
         new CategoryAxis(),
@@ -127,63 +135,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const barSeries = new BarSeries<any>();
     barSeries.lineWidth = 4;
     chart.addSeries(barSeries);
-    // barSeries.xField = 'category';
-    // barSeries.yFields = ['q1Actual'];
     barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
-    // barSeries.data = data;
     barSeries.setDataAndFields(data, 'category', ['q1Actual']);
 
-    // setTimeout(() => {
-    //     barSeries.lineWidth = 20;
-    //     barSeries.labelColor = 'red';
-    //     barSeries.labelFont = '20px serif';
-    // }, 2000);
-    //
-    // setTimeout(() => {
-    //     const config = generateData();
-    //     barSeries.lineWidth = 1;
-    //     barSeries.yFieldNames = []; // don't show bar labels
-    //     barSeries.setDataAndFields(config.data, config.xField, config.yFields);
-    // }, 3000);
+    createButton('Save Chart Image', () => {
+        chart.scene.download('bar-chart');
+    });
 
-    setTimeout(() => {
-        barSeries.yFields = ['q1Actual', 'q2Actual'];
-    }, 2000);
-    setTimeout(() => {
-        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
-    }, 4000);
-    setTimeout(() => {
-        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    }, 6000);
-    setTimeout(() => {
-        barSeries.lineWidth = 2;
+    createButton('1 y-field', () => {
+        barSeries.setDataAndFields(data, 'category', ['q1Actual']);
+    });
+    createButton('2 y-fields', () => {
+        barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual']);
+    });
+    createButton('3 y-fields', () => {
+        barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual', 'q3Actual']);
+    });
+    createButton('4 y-fields', () => {
+        barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual']);
+    });
+
+    createButton('Grouped', () => {
         barSeries.grouped = true;
-    }, 8000);
-    setTimeout(() => {
-        barSeries.data = data3;
-    }, 10000);
-    setTimeout(() => {
-        barSeries.data = [];
-    }, 12000);
-    setTimeout(() => {
+    });
+    createButton('Stacked', () => {
+        barSeries.grouped = false;
+    });
+
+    createButton('Generate 50 points', () => {
         const config = generateData();
         barSeries.yFieldNames = []; // don't show bar labels
         barSeries.grouped = false;
+        barSeries.lineWidth = 2;
         chart.xAxis.labelRotation = 45;
         barSeries.setDataAndFields(config.data, config.xField, config.yFields);
-    }, 14000);
-    setTimeout(() => {
+    });
+    createButton('Generate 10 points', () => {
         const config = generateData(10, 10);
+        barSeries.yFieldNames = []; // don't show bar labels
         barSeries.setDataAndFields(config.data, config.xField, config.yFields);
         barSeries.grouped = true;
+        barSeries.lineWidth = 2;
         chart.xAxis.labelRotation = 0;
         chart.xAxis.update();
-    }, 16000);
+    });
 
-    const saveImageButton = document.createElement('button');
-    saveImageButton.textContent = 'Save Chart Image';
-    document.body.appendChild(saveImageButton);
-    saveImageButton.addEventListener('click', () => {
-        chart.scene.download('bar-chart');
+    createButton('No data', () => {
+        barSeries.data = [];
+    });
+    // createButton('Data set #3', () => {
+    //     barSeries.setDataAndFields(data3, 'xField', ['yField1', 'yField2', 'yField3']);
+    // });
+
+    createButton('Show labels (for non-generated data)', () => {
+        barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    });
+    createButton('Show labels (for generated data)', () => {
+        barSeries.yFieldNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+    });
+    createButton('Hide labels', () => {
+        barSeries.yFieldNames = [];
     });
 });
