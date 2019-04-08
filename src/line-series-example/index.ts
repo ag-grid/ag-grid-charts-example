@@ -115,6 +115,13 @@ function createCategoryLineChart() {
     lineSeries.lineWidth = 4;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
+    lineSeries.tooltip = true;
+    lineSeries.tooltipRenderer = (datum, yField, xField) => {
+        if (datum[xField] === 'Rick') {
+            return ''; // don't show tooltip for this guy
+        }
+        return '<strong>Value: </strong>' + datum[yField].toString();
+    };
     lineSeries.setDataAndFields(categoryData, 'category', 'value');
 
     document.body.appendChild(document.createElement('br'));

@@ -196,4 +196,18 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Hide labels', () => {
         barSeries.yFieldNames = [];
     });
+    createButton('Show tooltips', () => {
+        barSeries.tooltip = true;
+    });
+    createButton('Hide tooltips', () => {
+        barSeries.tooltip = false;
+    });
+    createButton('Use tooltip renderer', () => {
+        barSeries.tooltipRenderer = (datum, yField, xField) => {
+            return `<div style="background-color: #d4d1d6; padding: 5px;">X: ${datum[xField]}<br>Y: ${datum[yField]}</div>`;
+        };
+    });
+    createButton('Remove tooltip renderer', () => {
+        barSeries.tooltipRenderer = undefined;
+    });
 });

@@ -29,6 +29,14 @@ const data2: Datum[] = [
     { label: 'Maria', value: 3, other: 8 }
 ];
 
+function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.textContent = text;
+    document.body.appendChild(button);
+    button.addEventListener('click', action);
+    return button;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart<Datum, number, any>();
     chart.width = 900;
@@ -55,55 +63,88 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.addSeries(pieSeries2);
     pieSeries2.setDataAndFields(data2, 'value', 'label');
 
-    setTimeout(() => {
-        pieSeries.offsetX = -150;
-        pieSeries2.offsetX = 150;
-        chart.padding = {
-            top: 70,
-            right: 100,
-            bottom: 70,
-            left: 100
-        };
-        chart.size = [640, 300];
-    }, 4000);
-
-    setTimeout(() => {
-        pieSeries.labelField = null;
-    }, 5000);
-
-    setTimeout(() => {
-        pieSeries.setDataAndFields(data2, 'value', 'label');
-    }, 6000);
-
-    setTimeout(() => {
-        pieSeries.data = data;
-    }, 8000);
-
-    setTimeout(() => {
-        pieSeries2.angleField = 'other';
-    }, 10000);
-
-    setTimeout(() => {
-        pieSeries2.setDataAndFields(data2, 'value', 'label', 'other');
-    }, 12000);
-
-    setTimeout(() => {
-        pieSeries2.strokeStyle = 'white';
-        pieSeries2.calloutColor = 'black';
-        pieSeries2.lineWidth = 3;
-        pieSeries2.calloutWidth = 1;
-        (function step() {
-            pieSeries2.rotation += 0.1;
-            requestAnimationFrame(step);
-        })();
-    }, 14000);
-
     document.body.appendChild(document.createElement('br'));
 
-    const saveImageButton = document.createElement('button');
-    saveImageButton.textContent = 'Save Chart Image';
-    document.body.appendChild(saveImageButton);
-    saveImageButton.addEventListener('click', () => {
+    createButton('Save Chart Image', () => {
         chart.scene.download('pie-chart');
+    });
+    createButton('Show tooltips', () => {
+        pieSeries.tooltip = true;
+        pieSeries2.tooltip = true;
+    });
+    createButton('Hide tooltips', () => {
+        pieSeries.tooltip = false;
+        pieSeries2.tooltip = false;
+    });
+    createButton('Use tooltip renderer', () => {
+        pieSeries.tooltipRenderer = (datum, angleField) => {
+            return `<em>Value</em>: <span style="color: red;">${datum[angleField]}</span>`;
+        };
+
+        pieSeries2.tooltipRenderer = (datum, angleField, radiusField) => {
+            const radiusValue = radiusField ? `<br>Radius: ${datum[radiusField]}` : '';
+            return `Angle: ${datum[angleField]}${radiusValue}`;
+        };
+    });
+    createButton('Remove tooltip renderer', () => {
+        pieSeries.tooltipRenderer = undefined;
+        pieSeries2.tooltipRenderer = undefined;
+    });
+
+    let rotation = false;
+    createButton('Moar Rotation!', () => {
+        rotation = true;
+        (function step() {
+            pieSeries2.rotation += 0.1;
+            if (rotation) {
+                requestAnimationFrame(step);
+            }
+        })();
+    });
+    createButton('Rotation OFF', () => {
+        rotation = false;
+    });
+    createButton('Use radius field', () => {
+        pieSeries2.setDataAndFields(data2, 'value', 'label', 'other');
+    });
+    createButton('Remove radius field', () => {
+        pieSeries2.setDataAndFields(data2, 'value', 'label');
+    });
+    createButton('Run other tests', () => {
+        setTimeout(() => {
+            pieSeries.offsetX = -150;
+            pieSeries2.offsetX = 150;
+            chart.padding = {
+                top: 70,
+                right: 100,
+                bottom: 70,
+                left: 100
+            };
+            chart.size = [640, 300];
+        }, 2000);
+
+        setTimeout(() => {
+            pieSeries.labelField = null;
+        }, 4000);
+
+        setTimeout(() => {
+            pieSeries.setDataAndFields(data2, 'value', 'label');
+        }, 6000);
+
+        setTimeout(() => {
+            pieSeries.data = data;
+        }, 8000);
+
+        setTimeout(() => {
+            pieSeries2.angleField = 'other';
+        }, 10000);
+
+        setTimeout(() => {
+            pieSeries2.setDataAndFields(data2, 'value', 'label', 'other');
+            pieSeries2.strokeStyle = 'white';
+            pieSeries2.calloutColor = 'black';
+            pieSeries2.lineWidth = 3;
+            pieSeries2.calloutWidth = 1;
+        }, 12000);
     });
 });
