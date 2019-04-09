@@ -400,7 +400,20 @@ function createMultiLineChart() {
     });
 
     createButton('Add the bar series back', () => {
-        chart.addSeries(barSeries);
+        if (chart.addSeries(barSeries)) {
+            console.log('Bar series was successfully added.');
+        } else {
+            console.log('Could not add bar series.');
+        }
+    });
+
+    createButton('Insert bar series before line series', () => {
+        console.log(lineSeries1.id);
+        if (chart.addSeries(barSeries, lineSeries1)) {
+            console.log('Bar series was successfully inserted.');
+        } else {
+            console.log('Could not insert bar series.');
+        }
     });
 }
 
