@@ -103,6 +103,14 @@ function generateSpiralData(): NumericDatum[] {
     return data;
 }
 
+function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.textContent = text;
+    document.body.appendChild(button);
+    button.addEventListener('click', action);
+    return button;
+}
+
 function createCategoryLineChart() {
     const chart = new CartesianChart<CategoryDatum, string, number>(
         new CategoryAxis(),
@@ -176,31 +184,19 @@ function createNumericLineChart() {
 
     document.body.appendChild(document.createElement('br'));
 
-    const saveImageButton = document.createElement('button');
-    saveImageButton.textContent = 'Save Chart Image';
-    document.body.appendChild(saveImageButton);
-    saveImageButton.addEventListener('click', () => {
+    createButton('Save Chart Image', () => {
         chart.scene.download('chart');
     });
 
-    const logDataButton = document.createElement('button');
-    logDataButton.textContent = 'Math.log data';
-    document.body.appendChild(logDataButton);
-    logDataButton.addEventListener('click', () => {
+    createButton('Math.log data', () => {
         lineSeries.setDataAndFields(generateLogData(), 'xValue', 'yValue');
     });
 
-    const spiralDataButton = document.createElement('button');
-    spiralDataButton.textContent = 'Spiral data';
-    document.body.appendChild(spiralDataButton);
-    spiralDataButton.addEventListener('click', () => {
+    createButton('Spiral data', () => {
         lineSeries.setDataAndFields(generateSpiralData(), 'xValue', 'yValue');
     });
 
-    const animateSinDataButton = document.createElement('button');
-    animateSinDataButton.textContent = 'Animate Math.sin data';
-    document.body.appendChild(animateSinDataButton);
-    animateSinDataButton.addEventListener('click', () => {
+    createButton('Animate Math.sin data', () => {
         const data: NumericDatum[] = [];
         const step = 0.1;
         let i = -10;
@@ -219,10 +215,7 @@ function createNumericLineChart() {
         })();
     });
 
-    const animateSpiralDataButton = document.createElement('button');
-    animateSpiralDataButton.textContent = 'Animate spiral data';
-    document.body.appendChild(animateSpiralDataButton);
-    animateSpiralDataButton.addEventListener('click', () => {
+    createButton('Animate spiral data', () => {
         const a = 1;
         const b = 1;
         const data: NumericDatum[] = [];
@@ -388,6 +381,16 @@ function createMultiLineChart() {
                 setTimeout(nextFrame, 33);
             }
         })();
+    });
+
+    createButton('Remove the bar series', () => {
+        if (chart.removeSeries(barSeries)) {
+            alert('The bar series was removed.');
+        }
+    });
+
+    createButton('Add the bar series back', () => {
+        chart.addSeries(barSeries);
     });
 }
 

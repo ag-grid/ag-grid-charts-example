@@ -132,9 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.width = document.body.clientWidth;
     chart.height = document.body.clientHeight;
 
+    function addSeriesIf() {
+        if (!chart.series.length) {
+            chart.addSeries(barSeries);
+        }
+    }
+
     const barSeries = new BarSeries<any>();
     barSeries.lineWidth = 4;
-    chart.addSeries(barSeries);
+    addSeriesIf();
     barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.setDataAndFields(data, 'category', ['q1Actual']);
 
@@ -143,15 +149,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createButton('1 y-field', () => {
+        addSeriesIf();
         barSeries.setDataAndFields(data, 'category', ['q1Actual']);
     });
     createButton('2 y-fields', () => {
+        addSeriesIf();
         barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual']);
     });
     createButton('3 y-fields', () => {
+        addSeriesIf();
         barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual', 'q3Actual']);
     });
     createButton('4 y-fields', () => {
+        addSeriesIf();
         barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual']);
     });
 
@@ -163,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createButton('Generate 50 points', () => {
+        addSeriesIf();
         const config = generateData();
         barSeries.yFieldNames = []; // don't show bar labels
         barSeries.grouped = false;
@@ -171,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.setDataAndFields(config.data, config.xField, config.yFields);
     });
     createButton('Generate 10 points', () => {
+        addSeriesIf();
         const config = generateData(10, 10);
         barSeries.yFieldNames = []; // don't show bar labels
         barSeries.setDataAndFields(config.data, config.xField, config.yFields);
@@ -209,5 +221,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Remove tooltip renderer', () => {
         barSeries.tooltipRenderer = undefined;
+    });
+    createButton('Remove all series', () => {
+        chart.removeAllSeries();
     });
 });
