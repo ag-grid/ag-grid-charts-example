@@ -1,7 +1,8 @@
-import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import {BarSeries} from "ag-grid-enterprise/src/charts/chart/series/barSeries";
-import {CategoryAxis} from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
+import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 
 type Datum = {
     category: string,
@@ -124,6 +125,29 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
     return button;
 }
 
+function makeChartResizeable(chart: Chart<any, any, any>) {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    let chartSize: [number, number];
+    chart.scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+        startX = e.offsetX;
+        startY = e.offsetY;
+        chartSize = chart.size;
+        isDragging = true;
+    });
+    chart.scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+        if (isDragging) {
+            const dx = e.offsetX - startX;
+            const dy = e.offsetY - startY;
+            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
+        }
+    });
+    chart.scene.hdpiCanvas.canvas.addEventListener('mouseup', (e: MouseEvent) => {
+        isDragging = false;
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new CartesianChart<any, string, number>(
         new CategoryAxis(),
@@ -225,4 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Remove all series', () => {
         chart.removeAllSeries();
     });
+
+    makeChartResizeable(chart);
 });

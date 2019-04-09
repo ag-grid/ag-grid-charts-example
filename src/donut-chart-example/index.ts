@@ -2,6 +2,7 @@ import {PolarChart} from "ag-grid-enterprise/src/charts/chart/polarChart";
 import {PieSeries} from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import {Offset} from "ag-grid-enterprise/src/charts/scene/offset";
+import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 
 type Datum = {
     label: string,
@@ -27,6 +28,29 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
     document.body.appendChild(button);
     button.addEventListener('click', action);
     return button;
+}
+
+function makeChartResizeable(chart: Chart<any, any, any>) {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    let chartSize: [number, number];
+    chart.scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+        startX = e.offsetX;
+        startY = e.offsetY;
+        chartSize = chart.size;
+        isDragging = true;
+    });
+    chart.scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+        if (isDragging) {
+            const dx = e.offsetX - startX;
+            const dy = e.offsetY - startY;
+            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
+        }
+    });
+    chart.scene.hdpiCanvas.canvas.addEventListener('mouseup', (e: MouseEvent) => {
+        isDragging = false;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -104,24 +128,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    chart.scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    chart.scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    chart.scene.hdpiCanvas.canvas.addEventListener('mouseup', (e: MouseEvent) => {
-        isDragging = false;
-    });
+    makeChartResizeable(chart);
 });
