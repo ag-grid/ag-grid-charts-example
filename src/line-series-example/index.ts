@@ -329,10 +329,18 @@ function createMultiLineChart() {
     barSeries.colors = ['#41a9c9'];
     barSeries.setDataAndFields(data, 'category', ['value3']);
 
-    chart.addSeries(barSeries);
-    chart.addSeries(lineSeries1);
-    chart.addSeries(lineSeries2);
-    chart.addSeries(lineSeries3);
+    // Both approaches are valid here:
+    // chart.addSeries(barSeries);
+    // chart.addSeries(lineSeries1);
+    // chart.addSeries(lineSeries2);
+    // chart.addSeries(lineSeries3);
+
+    chart.series = [
+        barSeries,
+        lineSeries1,
+        lineSeries2,
+        lineSeries3
+    ];
 
     document.body.appendChild(document.createElement('br'));
     const saveImageButton = document.createElement('button');
@@ -385,7 +393,9 @@ function createMultiLineChart() {
 
     createButton('Remove the bar series', () => {
         if (chart.removeSeries(barSeries)) {
-            alert('The bar series was removed.');
+            console.log('The bar series was removed.');
+        } else {
+            console.log('No series removed. The chart does not contain the given series.');
         }
     });
 
