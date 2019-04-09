@@ -21,6 +21,14 @@ const data: Datum[] = [
     { label: 'Maria', value1: 3, value2: 8, value3: 5 }
 ];
 
+function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.textContent = text;
+    document.body.appendChild(button);
+    button.addEventListener('click', action);
+    return button;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart<Datum, number, any>();
     chart.width = 700;
@@ -68,10 +76,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.appendChild(document.createElement('br'));
 
-    const saveImageButton = document.createElement('button');
-    saveImageButton.textContent = 'Save Chart Image';
-    document.body.appendChild(saveImageButton);
-    saveImageButton.addEventListener('click', () => {
+    createButton('Save Chart Image', () => {
         chart.scene.download('pie-chart');
+    });
+
+    createButton('Remove the inner series', () => {
+        if (chart.removeSeries(pieSeries3)) {
+            console.log('The inner series was removed.');
+        } else {
+            console.log('No series removed. The chart does not contain the given series.');
+        }
+    });
+
+    createButton('Add the inner series back', () => {
+        if (chart.addSeries(pieSeries3)) {
+            console.log('The inner series was successfully added.');
+        } else {
+            console.log('Could not add the inner series.');
+        }
+    });
+
+    createButton('Insert the inner series before other series', () => {
+        if (chart.addSeries(pieSeries3, pieSeries2)) {
+            console.log('The inner series was successfully inserted.');
+        } else {
+            console.log('Could not insert the inner series.');
+        }
     });
 });

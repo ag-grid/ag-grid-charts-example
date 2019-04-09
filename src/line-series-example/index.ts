@@ -408,7 +408,6 @@ function createMultiLineChart() {
     });
 
     createButton('Insert bar series before line series', () => {
-        console.log(lineSeries1.id);
         if (chart.addSeries(barSeries, lineSeries1)) {
             console.log('Bar series was successfully inserted.');
         } else {
