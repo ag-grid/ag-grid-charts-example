@@ -168,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.setDataAndFields(data, 'category', ['q1Actual']);
 
+    document.body.appendChild(document.createElement('br'));
+
     createButton('Save Chart Image', () => {
         chart.scene.download('bar-chart');
     });
