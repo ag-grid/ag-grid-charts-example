@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries.data = data;
     pieSeries.angleField = 'value';
     pieSeries.labelField = 'label';
+    pieSeries.label = false;
     pieSeries.shadow = shadow;
     pieSeries.lineWidth = 1;
     pieSeries.calloutWidth = 1;
@@ -66,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries2.data = data2;
     pieSeries2.angleField = 'value';
     pieSeries2.labelField = 'label';
+    pieSeries2.label = false;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -79,6 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Hide tooltips', () => {
         pieSeries.tooltip = false;
         pieSeries2.tooltip = false;
+    });
+    createButton('Show labels', () => {
+        pieSeries.label = true;
+        pieSeries2.label = true;
+    });
+    createButton('Hide labels', () => {
+        pieSeries.label = false;
+        pieSeries2.label = false;
     });
     createButton('Use tooltip renderer', () => {
         pieSeries.tooltipRenderer = params => {
