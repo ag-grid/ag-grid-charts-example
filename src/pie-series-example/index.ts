@@ -53,7 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries = new PieSeries<Datum>();
     pieSeries.offsetX = -200;
     chart.addSeries(pieSeries);
-    pieSeries.setDataAndFields(data, 'value', 'label');
+    pieSeries.data = data;
+    pieSeries.angleField = 'value';
+    pieSeries.labelField = 'label';
     pieSeries.shadow = shadow;
     pieSeries.lineWidth = 1;
     pieSeries.calloutWidth = 1;
@@ -61,7 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries2 = new PieSeries<Datum>();
     pieSeries2.offsetX = 200;
     chart.addSeries(pieSeries2);
-    pieSeries2.setDataAndFields(data2, 'value', 'label');
+    pieSeries2.data = data2;
+    pieSeries2.angleField = 'value';
+    pieSeries2.labelField = 'label';
 
     document.body.appendChild(document.createElement('br'));
 
@@ -77,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.tooltip = false;
     });
     createButton('Use tooltip renderer', () => {
-        pieSeries.tooltipRenderer = (datum, angleField) => {
-            return `<em>Value</em>: <span style="color: red;">${datum[angleField]}</span>`;
+        pieSeries.tooltipRenderer = params => {
+            return `<em>Value</em>: <span style="color: red;">${params.datum[params.angleField]}</span>`;
         };
 
-        pieSeries2.tooltipRenderer = (datum, angleField, radiusField) => {
-            const radiusValue = radiusField ? `<br>Radius: ${datum[radiusField]}` : '';
-            return `Angle: ${datum[angleField]}${radiusValue}`;
+        pieSeries2.tooltipRenderer = params => {
+            const radiusValue = params.radiusField ? `<br>Radius: ${params.datum[params.radiusField]}` : '';
+            return `Angle: ${params.datum[params.angleField]}${radiusValue}`;
         };
     });
     createButton('Remove tooltip renderer', () => {
@@ -105,10 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
         rotation = false;
     });
     createButton('Use radius field', () => {
-        pieSeries2.setDataAndFields(data2, 'value', 'label', 'other');
+        pieSeries2.data = data2;
+        pieSeries2.angleField = 'value';
+        pieSeries2.labelField = 'label';
+        pieSeries2.radiusField = 'other';
     });
     createButton('Remove radius field', () => {
-        pieSeries2.setDataAndFields(data2, 'value', 'label');
+        pieSeries2.radiusField = undefined;
     });
     createButton('Run other tests', () => {
         setTimeout(() => {
@@ -124,11 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
 
         setTimeout(() => {
-            pieSeries.labelField = null;
+            pieSeries.labelField = undefined;
         }, 4000);
 
         setTimeout(() => {
-            pieSeries.setDataAndFields(data2, 'value', 'label');
+            pieSeries.data = data2;
+            pieSeries.angleField = 'value';
+            pieSeries.labelField = 'label';
         }, 6000);
 
         setTimeout(() => {
@@ -140,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 10000);
 
         setTimeout(() => {
-            pieSeries2.setDataAndFields(data2, 'value', 'label', 'other');
+            pieSeries2.radiusField = 'other';
             pieSeries2.strokeStyle = 'white';
             pieSeries2.calloutColor = 'black';
             pieSeries2.lineWidth = 3;
