@@ -90,6 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries.label = false;
         pieSeries2.label = false;
     });
+    createButton('Set series name', () => {
+        pieSeries.name = 'Super series';
+        pieSeries2.name = 'Duper series';
+    });
+    createButton('Remove series name', () => {
+        pieSeries.name = '';
+        pieSeries2.name = '';
+    });
     createButton('Use tooltip renderer', () => {
         pieSeries.tooltipRenderer = params => {
             return `<em>Value</em>: <span style="color: red;">${params.datum[params.angleField]}</span>`;
