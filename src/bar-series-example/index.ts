@@ -241,8 +241,10 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.tooltip = false;
     });
     createButton('Use tooltip renderer', () => {
-        barSeries.tooltipRenderer = (datum, yField, xField) => {
-            return `<div style="background-color: #d4d1d6; padding: 5px;">X: ${datum[xField]}<br>Y: ${datum[yField]}</div>`;
+        barSeries.tooltipRenderer = params => {
+            return `<div style="background-color: #d4d1d6; padding: 5px;">
+                X: ${params.datum[params.xField]}<br>Y: ${params.datum[params.yField]}
+            </div>`;
         };
     });
     createButton('Remove tooltip renderer', () => {

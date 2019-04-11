@@ -124,11 +124,11 @@ function createCategoryLineChart() {
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.tooltip = true;
-    lineSeries.tooltipRenderer = (datum, yField, xField) => {
-        if (datum[xField] === 'Rick') {
+    lineSeries.tooltipRenderer = params => {
+        if (params.datum[params.xField] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }
-        return '<strong>Value: </strong>' + datum[yField].toString();
+        return '<strong>Value: </strong>' + params.datum[params.yField].toString();
     };
     lineSeries.setDataAndFields(categoryData, 'category', 'value');
 
