@@ -130,7 +130,9 @@ function createCategoryLineChart() {
         }
         return '<strong>Value: </strong>' + params.datum[params.yField].toString();
     };
-    lineSeries.setDataAndFields(categoryData, 'category', 'value');
+    lineSeries.data = categoryData;
+    lineSeries.xField = 'category';
+    lineSeries.yField = 'value';
 
     document.body.appendChild(document.createElement('br'));
 
@@ -145,24 +147,24 @@ function createCategoryLineChart() {
     changeDataButton.textContent = 'Change data';
     document.body.appendChild(changeDataButton);
     changeDataButton.addEventListener('click', () => {
-        lineSeries.setDataAndFields(generateCategoryData(Math.floor(Math.random() * 50)), 'category', 'value');
+        lineSeries.data = generateCategoryData(Math.floor(Math.random() * 50));
     });
 
     const noDataButton = document.createElement('button');
     noDataButton.textContent = 'No data';
     document.body.appendChild(noDataButton);
     noDataButton.addEventListener('click', () => {
-        lineSeries.setDataAndFields([], 'category', 'value');
+        lineSeries.data = [];
     });
 
     const onePointButton = document.createElement('button');
     onePointButton.textContent = 'Single data point';
     document.body.appendChild(onePointButton);
     onePointButton.addEventListener('click', () => {
-        lineSeries.setDataAndFields([{
+        lineSeries.data = [{
             category: 'One',
             value: 17
-        }], 'category', 'value');
+        }];
     });
 }
 
@@ -180,7 +182,9 @@ function createNumericLineChart() {
     lineSeries.lineWidth = 2;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
-    lineSeries.setDataAndFields(generateSinData(), 'xValue', 'yValue');
+    lineSeries.data = generateSinData();
+    lineSeries.xField = 'xValue';
+    lineSeries.yField = 'yValue';
 
     document.body.appendChild(document.createElement('br'));
 
@@ -189,11 +193,11 @@ function createNumericLineChart() {
     });
 
     createButton('Math.log data', () => {
-        lineSeries.setDataAndFields(generateLogData(), 'xValue', 'yValue');
+        lineSeries.data = generateLogData();
     });
 
     createButton('Spiral data', () => {
-        lineSeries.setDataAndFields(generateSpiralData(), 'xValue', 'yValue');
+        lineSeries.data = generateSpiralData();
     });
 
     createButton('Animate Math.sin data', () => {
@@ -206,7 +210,7 @@ function createNumericLineChart() {
                 xValue: i,
                 yValue: Math.sin(i)
             });
-            lineSeries.setDataAndFields(data, 'xValue', 'yValue');
+            lineSeries.data = data;
 
             if (i < 10) {
                 i += step;
@@ -228,7 +232,7 @@ function createNumericLineChart() {
                 xValue: r * Math.cos(th),
                 yValue: r * Math.sin(th)
             });
-            lineSeries.setDataAndFields(data, 'xValue', 'yValue');
+            lineSeries.data = data;
 
             if (th < 50) {
                 th += step;
@@ -313,21 +317,25 @@ function createMultiLineChart() {
     const lineSeries1 = new LineSeries<MultiValue, string, number>();
     lineSeries1.lineWidth = 4;
     lineSeries1.color = '#f3622d';
-    lineSeries1.setDataAndFields(data, 'category', 'value1');
+    lineSeries1.xField = 'category';
+    lineSeries1.yField = 'value1';
 
     const lineSeries2 = new LineSeries<MultiValue, string, number>();
     lineSeries2.lineWidth = 4;
     lineSeries2.color = '#fba71b';
-    lineSeries2.setDataAndFields(data, 'category', 'value2');
+    lineSeries2.xField = 'category';
+    lineSeries2.yField = 'value2';
 
     const lineSeries3 = new LineSeries<MultiValue, string, number>();
     lineSeries3.lineWidth = 4;
     lineSeries3.color = '#57b757';
-    lineSeries3.setDataAndFields(data, 'category', 'value3');
+    lineSeries3.xField = 'category';
+    lineSeries3.yField = 'value3';
 
     const barSeries = new BarSeries<MultiValue, string, number>();
     barSeries.colors = ['#41a9c9'];
-    barSeries.setDataAndFields(data, 'category', ['value3']);
+    barSeries.xField = 'category';
+    barSeries.yFields = ['value3'];
 
     // Both approaches are valid here:
     // chart.addSeries(barSeries);
@@ -342,6 +350,8 @@ function createMultiLineChart() {
         lineSeries3
     ];
 
+    chart.data = data;
+
     document.body.appendChild(document.createElement('br'));
     const saveImageButton = document.createElement('button');
     saveImageButton.textContent = 'Save Chart Image';
@@ -354,11 +364,7 @@ function createMultiLineChart() {
     changeDataButton.textContent = 'Change data';
     document.body.appendChild(changeDataButton);
     changeDataButton.addEventListener('click', () => {
-        const data = generateMultiValueData(Math.random() * 30);
-        lineSeries1.setDataAndFields(data, 'category', 'value1');
-        lineSeries2.setDataAndFields(data, 'category', 'value2');
-        lineSeries3.setDataAndFields(data, 'category', 'value3');
-        barSeries.setDataAndFields(data, 'category', ['value3']);
+        chart.data = generateMultiValueData(Math.random() * 30);
     });
 
     const animateButton = document.createElement('button');
@@ -379,10 +385,7 @@ function createMultiLineChart() {
             });
             i += step;
 
-            lineSeries1.setDataAndFields(data, 'category', 'value1');
-            lineSeries2.setDataAndFields(data, 'category', 'value2');
-            lineSeries3.setDataAndFields(data, 'category', 'value3');
-            barSeries.setDataAndFields(data, 'category', ['value3']);
+            chart.data = data;
 
             if (i < 10) {
                 i += step;

@@ -32,7 +32,9 @@ function createCategoryLineChart() {
         lineSeries.lineWidth = 4;
         chart.xAxis.labelRotation = 45;
         chart.addSeries(lineSeries);
-        lineSeries.setDataAndFields(categoryData, 'category', 'value');
+        lineSeries.data = categoryData;
+        lineSeries.xField = 'category';
+        lineSeries.yField = 'value';
     }, 3000);
 }
 

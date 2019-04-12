@@ -166,7 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.lineWidth = 4;
     addSeriesIf();
     barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
-    barSeries.setDataAndFields(data, 'category', ['q1Actual']);
+    barSeries.xField = 'category';
+    barSeries.yFields = ['q1Actual'];
+    barSeries.data = data;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -176,19 +178,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createButton('1 y-field', () => {
         addSeriesIf();
-        barSeries.setDataAndFields(data, 'category', ['q1Actual']);
+        barSeries.xField = 'category';
+        barSeries.yFields = ['q1Actual'];
+        barSeries.data = data;
     });
     createButton('2 y-fields', () => {
         addSeriesIf();
-        barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual']);
+        barSeries.xField = 'category';
+        barSeries.yFields = ['q1Actual', 'q2Actual'];
+        barSeries.data = data;
     });
     createButton('3 y-fields', () => {
         addSeriesIf();
-        barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual', 'q3Actual']);
+        barSeries.xField = 'category';
+        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
+        barSeries.data = data;
     });
     createButton('4 y-fields', () => {
         addSeriesIf();
-        barSeries.setDataAndFields(data, 'category', ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual']);
+        barSeries.xField = 'category';
+        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+        barSeries.data = data;
     });
 
     createButton('Grouped', () => {
@@ -205,13 +215,17 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.grouped = false;
         barSeries.lineWidth = 2;
         chart.xAxis.labelRotation = 45;
-        barSeries.setDataAndFields(config.data, config.xField, config.yFields);
+        barSeries.xField = config.xField;
+        barSeries.yFields = config.yFields;
+        barSeries.data = config.data;
     });
     createButton('Generate 10 points', () => {
         addSeriesIf();
         const config = generateData(10, 10);
         barSeries.yFieldNames = []; // don't show bar labels
-        barSeries.setDataAndFields(config.data, config.xField, config.yFields);
+        barSeries.xField = config.xField;
+        barSeries.yFields = config.yFields;
+        barSeries.data = config.data;
         barSeries.grouped = true;
         barSeries.lineWidth = 2;
         chart.xAxis.labelRotation = 0;
