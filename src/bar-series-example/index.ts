@@ -130,20 +130,25 @@ function makeChartResizeable(chart: Chart<any, any, any>) {
     let startY = 0;
     let isDragging = false;
     let chartSize: [number, number];
-    chart.scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+    const scene = chart.scene;
+
+    scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
         startX = e.offsetX;
         startY = e.offsetY;
         chartSize = chart.size;
         isDragging = true;
     });
-    chart.scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+    scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
         if (isDragging) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
             chart.size = [chartSize[0] + dx, chartSize[1] + dy];
         }
     });
-    chart.scene.hdpiCanvas.canvas.addEventListener('mouseup', (e: MouseEvent) => {
+    scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+    scene.hdpiCanvas.canvas.addEventListener('mouseout', () => {
         isDragging = false;
     });
 }

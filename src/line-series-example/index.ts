@@ -310,7 +310,7 @@ function createMultiLineChart() {
     );
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.xAxis.labelRotation = 90;
+    chart.xAxis.labelRotation = -90;
 
     const data = generateMultiValueData(10);
 
@@ -418,7 +418,6 @@ function createMultiLineChart() {
         }
     });
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     createCategoryLineChart();
