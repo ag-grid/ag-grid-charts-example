@@ -2,6 +2,7 @@ import {PolarChart} from "ag-grid-enterprise/src/charts/chart/polarChart";
 import {PieSeries} from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import {Offset} from "ag-grid-enterprise/src/charts/scene/offset";
+import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 
 type Datum = {
     label: string,
@@ -37,6 +38,34 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
     return button;
 }
 
+function makeChartResizeable(chart: Chart<any, any, any>) {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    let chartSize: [number, number];
+    const scene = chart.scene;
+
+    scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+        startX = e.offsetX;
+        startY = e.offsetY;
+        chartSize = chart.size;
+        isDragging = true;
+    });
+    scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+        if (isDragging) {
+            const dx = e.offsetX - startX;
+            const dy = e.offsetY - startY;
+            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
+        }
+    });
+    scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+    scene.hdpiCanvas.canvas.addEventListener('mouseout', () => {
+        isDragging = false;
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart<Datum, number, any>();
     chart.width = 900;
@@ -48,10 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
         left: 50
     };
 
+    makeChartResizeable(chart);
+
     const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 
     const pieSeries = new PieSeries<Datum>();
-    pieSeries.offsetX = -200;
+    pieSeries.innerRadiusOffset = -40;
     chart.addSeries(pieSeries);
     pieSeries.data = data;
     pieSeries.angleField = 'value';
@@ -62,7 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries.calloutWidth = 1;
 
     const pieSeries2 = new PieSeries<Datum>();
-    pieSeries2.offsetX = 200;
+    pieSeries2.outerRadiusOffset = -80;
+    pieSeries2.innerRadiusOffset = -120;
     chart.addSeries(pieSeries2);
     pieSeries2.data = data2;
     pieSeries2.angleField = 'value';
@@ -137,8 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Run other tests', () => {
         setTimeout(() => {
-            pieSeries.offsetX = -150;
-            pieSeries2.offsetX = 150;
             chart.padding = {
                 top: 70,
                 right: 100,
