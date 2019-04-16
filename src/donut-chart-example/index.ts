@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries2.shadow = shadow;
     pieSeries2.lineWidth = 1;
     pieSeries2.calloutWidth = 1;
+    pieSeries2.showInLegend = false;
 
     const pieSeries3 = new PieSeries<Datum>();
     chart.addSeries(pieSeries3);
@@ -97,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries3.shadow = shadow;
     pieSeries3.lineWidth = 1;
     pieSeries3.calloutWidth = 1;
+    pieSeries3.showInLegend = false;
 
     const series = chart.series as PieSeries<Datum>[];
     const thickness = 40;
