@@ -19,7 +19,12 @@ const data: Datum[] = [
     { label: 'Lucy', value1: 8, value2: 11, value3: 6 },
     { label: 'Ben', value1: 5, value2: 12, value3: 7 },
     { label: 'Barbara', value1: 3, value2: 10, value3: 5 },
-    { label: 'Maria', value1: 3, value2: 8, value3: 5 }
+    { label: 'Vitaly', value1: 7, value2: 7, value3: 7 },
+    { label: 'Rob', value1: 5, value2: 8, value3: 5 },
+    { label: 'Mary', value1: 3, value2: 7, value3: 9 },
+    { label: 'Dave', value1: 3, value2: 3, value3: 3 },
+    { label: 'Katrine', value1: 4, value2: 5, value3: 6 },
+    { label: 'Donald', value1: 1, value2: 2, value3: 3 }
 ];
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
