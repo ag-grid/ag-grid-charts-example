@@ -148,9 +148,6 @@ function makeChartResizeable(chart: Chart<any, any, any>) {
     scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
         isDragging = false;
     });
-    scene.hdpiCanvas.canvas.addEventListener('mouseout', () => {
-        isDragging = false;
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

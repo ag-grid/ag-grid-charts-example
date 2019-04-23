@@ -1,7 +1,7 @@
-import {PolarChart} from "ag-grid-enterprise/src/charts/chart/polarChart";
-import {PieSeries} from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
-import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
-import {Offset} from "ag-grid-enterprise/src/charts/scene/offset";
+import { PolarChart } from "ag-grid-enterprise/src/charts/chart/polarChart";
+import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
+import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import { Offset } from "ag-grid-enterprise/src/charts/scene/offset";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 
 type Datum = {
@@ -61,15 +61,13 @@ function makeChartResizeable(chart: Chart<any, any, any>) {
     scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
         isDragging = false;
     });
-    scene.hdpiCanvas.canvas.addEventListener('mouseout', () => {
-        isDragging = false;
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart<Datum, number, any>();
     chart.width = 900;
     chart.height = 400;
+    chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
     chart.padding = {
         top: 50,
         right: 50,
@@ -87,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries.data = data;
     pieSeries.angleField = 'value';
     pieSeries.labelField = 'label';
-    pieSeries.label = false;
+    pieSeries.label = true;
+    pieSeries.title = 'Mobile OSes';
     pieSeries.shadow = shadow;
     pieSeries.lineWidth = 1;
     pieSeries.calloutWidth = 1;
@@ -97,9 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries2.innerRadiusOffset = -120;
     chart.addSeries(pieSeries2);
     pieSeries2.data = data2;
+    pieSeries2.title = 'Users';
     pieSeries2.angleField = 'value';
     pieSeries2.labelField = 'label';
-    pieSeries2.label = false;
+    pieSeries2.label = true;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -113,22 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Hide tooltips', () => {
         pieSeries.tooltip = false;
         pieSeries2.tooltip = false;
-    });
-    createButton('Show labels', () => {
-        pieSeries.label = true;
-        pieSeries2.label = true;
-    });
-    createButton('Hide labels', () => {
-        pieSeries.label = false;
-        pieSeries2.label = false;
-    });
-    createButton('Set series name', () => {
-        pieSeries.name = 'Super series';
-        pieSeries2.name = 'Duper series';
-    });
-    createButton('Remove series name', () => {
-        pieSeries.name = '';
-        pieSeries2.name = '';
     });
     createButton('Use tooltip renderer', () => {
         pieSeries.tooltipRenderer = params => {
@@ -144,15 +128,29 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries.tooltipRenderer = undefined;
         pieSeries2.tooltipRenderer = undefined;
     });
+    createButton('Show labels', () => {
+        pieSeries.label = true;
+        pieSeries2.label = true;
+    });
+    createButton('Hide labels', () => {
+        pieSeries.label = false;
+        pieSeries2.label = false;
+    });
+    createButton('Set series name', () => {
+        pieSeries.title = 'Super series';
+        pieSeries2.title = 'Duper series';
+    });
+    createButton('Remove series name', () => {
+        pieSeries.title = '';
+        pieSeries2.title = '';
+    });
 
     let rotation = false;
-    createButton('Moar Rotation!', () => {
+    createButton('Rotation', () => {
         rotation = true;
         (function step() {
-            pieSeries2.rotation += 0.1;
-            if (rotation) {
-                requestAnimationFrame(step);
-            }
+            pieSeries2.rotation += 0.2;
+            chart.onLayoutDone = rotation ? step : undefined;
         })();
     });
     createButton('Rotation OFF', () => {
@@ -166,6 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Remove radius field', () => {
         pieSeries2.radiusField = undefined;
+    });
+    createButton('Use inner radius', () => {
+        pieSeries2.innerRadiusOffset = -120;
+    });
+    createButton('Remove inner radius', () => {
+        pieSeries2.innerRadiusOffset = 0;
     });
     createButton('Run other tests', () => {
         setTimeout(() => {
