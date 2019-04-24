@@ -3,6 +3,7 @@ import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries"
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
+import { material, teal } from "ag-grid-enterprise/src/charts/chart/colors";
 
 type Datum = {
     category: string,
@@ -171,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.xField = 'category';
     barSeries.yFields = ['q1Actual'];
     barSeries.data = data;
+    barSeries.colors = material;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -223,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Generate 10 points', () => {
         addSeriesIf();
-        const config = generateData(10, 10);
+        const config = generateData(10, 16);
         barSeries.yFieldNames = []; // don't show bar labels
         barSeries.xField = config.xField;
         barSeries.yFields = config.yFields;
@@ -268,6 +270,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Remove all series', () => {
         chart.removeAllSeries();
+    });
+    createButton('Use Material colors', () => {
+        barSeries.colors = material;
+    });
+    createButton('Use Teal colors', () => {
+        barSeries.colors = teal;
+    });
+    createButton('Light theme', () => {
+        chart.xAxis.labelColor = 'black';
+        chart.xAxis.gridStyle = [{
+            strokeStyle: 'rgb(219, 219, 219)',
+            lineDash: [4, 2]
+        }];
+
+        chart.yAxis.labelColor = 'black';
+        chart.yAxis.gridStyle = [{
+            strokeStyle: 'rgb(219, 219, 219)',
+            lineDash: [4, 2]
+        }];
+
+        chart.legend.labelColor = 'black';
+        document.body.style.backgroundColor = 'white';
+    });
+    createButton('Dark theme', () => {
+        chart.xAxis.labelColor = 'rgb(221, 221, 221)';
+        chart.xAxis.gridStyle = [{
+            strokeStyle: 'rgb(100, 100, 100)',
+            lineDash: [4, 2]
+        }];
+
+        chart.yAxis.labelColor = 'rgb(221, 221, 221)';
+        chart.yAxis.gridStyle = [{
+            strokeStyle: 'rgb(100, 100, 100)',
+            lineDash: [4, 2]
+        }];
+
+        chart.legend.labelColor = 'rgb(221, 221, 221)';
+        document.body.style.backgroundColor = '#1e1e1e';
     });
 
     makeChartResizeable(chart);
