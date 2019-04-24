@@ -3,7 +3,7 @@ import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries"
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
-import { material, teal } from "ag-grid-enterprise/src/charts/chart/colors";
+import { material, nord, teal } from "ag-grid-enterprise/src/charts/chart/colors";
 
 type Datum = {
     category: string,
@@ -277,6 +277,9 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Use Teal colors', () => {
         barSeries.colors = teal;
     });
+    createButton('Use Nord colors', () => {
+        barSeries.colors = nord;
+    });
     createButton('Light theme', () => {
         chart.xAxis.labelColor = 'black';
         chart.xAxis.gridStyle = [{
@@ -308,6 +311,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         chart.legend.labelColor = 'rgb(221, 221, 221)';
         document.body.style.backgroundColor = '#1e1e1e';
+    });
+
+    const lineWidthSlider = document.createElement('input');
+    lineWidthSlider.type = 'range';
+    lineWidthSlider.min = '0';
+    lineWidthSlider.max = '10';
+    lineWidthSlider.step = '0.5';
+    lineWidthSlider.value = '4';
+    lineWidthSlider.style.width = '400px';
+    document.body.appendChild(lineWidthSlider);
+    lineWidthSlider.addEventListener('input', (e) => {
+        barSeries.lineWidth = +(e.target as HTMLInputElement).value;
     });
 
     makeChartResizeable(chart);
