@@ -3,7 +3,7 @@ import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries"
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
-import { material, nord, teal } from "ag-grid-enterprise/src/charts/chart/colors";
+import { material, nord, sharepoint, teal } from "ag-grid-enterprise/src/charts/chart/colors";
 
 type Datum = {
     category: string,
@@ -279,6 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Use Nord colors', () => {
         barSeries.colors = nord;
+    });
+    createButton('Use SharePoint colors', () => {
+        barSeries.colors = sharepoint;
     });
     createButton('Light theme', () => {
         chart.xAxis.labelColor = 'black';
