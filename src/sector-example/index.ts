@@ -1,7 +1,7 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Sector} from "ag-grid-enterprise/src/charts/scene/shape/sector";
-import colors from "ag-grid-enterprise/src/charts/chart/colors";
+import {java as colors} from "ag-grid-enterprise/src/charts/chart/palettes";
 import {Color} from "ag-grid-enterprise/src/charts/util/color";
 
 document.addEventListener('DOMContentLoaded', () => {

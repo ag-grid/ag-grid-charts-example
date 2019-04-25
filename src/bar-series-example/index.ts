@@ -3,7 +3,7 @@ import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries"
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
-import { material, nord, office, teal } from "ag-grid-enterprise/src/charts/chart/colors";
+import { material, nord, office, deep, teal, flat, flat2 } from "ag-grid-enterprise/src/charts/chart/palettes";
 
 type Datum = {
     category: string,
@@ -271,17 +271,26 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Remove all series', () => {
         chart.removeAllSeries();
     });
-    createButton('Use Material colors', () => {
+    createButton('Material colors', () => {
         barSeries.colors = material;
     });
-    createButton('Use Teal colors', () => {
+    createButton('Teal colors', () => {
         barSeries.colors = teal;
     });
-    createButton('Use Nord colors', () => {
+    createButton('Nord colors', () => {
         barSeries.colors = nord;
     });
-    createButton('Use SharePoint colors', () => {
+    createButton('Office colors', () => {
         barSeries.colors = office;
+    });
+    createButton('Deep colors', () => {
+        barSeries.colors = deep;
+    });
+    createButton('Flat colors', () => {
+        barSeries.colors = flat;
+    });
+    createButton('Flat2 colors', () => {
+        barSeries.colors = flat2;
     });
     createButton('Light theme', () => {
         chart.xAxis.labelColor = 'black';
