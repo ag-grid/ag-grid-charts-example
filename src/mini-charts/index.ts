@@ -9,6 +9,7 @@ import { Line } from "ag-grid-enterprise/src/charts/scene/shape/line";
 import linearScale from "ag-grid-enterprise/src/charts/scale/linearScale";
 import { BandScale } from "ag-grid-enterprise/src/charts/scale/bandScale";
 import { Rect } from "ag-grid-enterprise/src/charts/scene/shape/rect";
+import { ClipRect } from "ag-grid-enterprise/src/charts/scene/clipRect";
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
     const button = document.createElement('button');
@@ -19,44 +20,22 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
 }
 
 abstract class MiniChart {
-    protected scene: Scene;
-    protected root = new Group();
-    element: HTMLElement;
+    protected readonly size = 80;
+    protected readonly padding = 5;
+    protected readonly root = new Group();
+    protected readonly scene: Scene = (() => {
+        const scene = new Scene(this.size, this.size);
+        scene.root = this.root;
+        return scene;
+    })();
 
-    protected size = 120;
-    protected padding = 5;
-
-    constructor(parent: HTMLElement, colors: string[]) {
-        this.scene = new Scene(this.size, this.size);
-        this.scene.parent = document.body;
-        this.scene.root = this.root;
-        this.scene.parent = parent;
-        this.element = this.scene.hdpiCanvas.canvas;
-        this.init();
-        this.updateColors(colors);
-    }
-
-    protected abstract init(): void;
+    readonly element: HTMLElement = this.scene.hdpiCanvas.canvas;
 
     abstract updateColors(colors: string[]): void;
 }
 
 class MiniPie extends MiniChart {
-    // private static angles = [
-    //     [toRadians(-90), toRadians(-20)],
-    //     [toRadians(-20), toRadians(60)],
-    //     [toRadians(60), toRadians(135)],
-    //     [toRadians(135), toRadians(235)],
-    //     [toRadians(235), toRadians(270)]
-    // ];
-
-    // private static angles = [
-    //     [toRadians(-30), toRadians(90)],
-    //     [toRadians(90), toRadians(210)],
-    //     [toRadians(210), toRadians(330)]
-    // ];
-
-    protected static angles = [
+    static readonly angles = [
         [toRadians(-90), toRadians(30)],
         [toRadians(30), toRadians(120)],
         [toRadians(120), toRadians(180)],
@@ -65,22 +44,25 @@ class MiniPie extends MiniChart {
         [toRadians(240), toRadians(270)]
     ];
 
-    // protected sectors?: Sector[];
+    private readonly radius = (this.size - this.padding * 2) / 2;
+    private readonly center = this.radius + this.padding;
 
-    init() {
-        const radius = (this.size - this.padding * 2) / 2;
-        const center = radius + this.padding;
-        const sectors = MiniPie.angles.map(pair => {
-            const sector = Sector.create(center, center, 0, radius, pair[0], pair[1]);
-            sector.lineWidth = 0;
-            return sector;
-        });
-        (this as any).sectors = sectors;
-        this.root.append(sectors);
+    private readonly sectors = MiniPie.angles.map(pair => {
+        const sector = Sector.create(this.center, this.center, 0, this.radius, pair[0], pair[1]);
+        sector.strokeStyle = null;
+        return sector;
+    });
+
+    constructor(parent: HTMLElement, colors: string[]) {
+        super();
+
+        this.scene.parent = parent;
+        this.root.append(this.sectors);
+        this.updateColors(colors);
     }
 
     updateColors(colors: string[]) {
-        ((this as any).sectors as Sector[]).forEach((sector, i) => {
+        this.sectors.forEach((sector, i) => {
             const color = colors[i];
             sector.fillStyle = color;
             sector.strokeStyle = Color.fromString(color).darker().toHexString();
@@ -88,23 +70,41 @@ class MiniPie extends MiniChart {
     }
 }
 
-class MiniDonut extends MiniPie {
-    init() {
-        const r1 = (this.size - this.padding * 2) / 2;
-        const r0 = r1 * 0.6;
-        const center = r1 + this.padding;
-        const sectors = MiniPie.angles.map(pair => {
-            const sector = Sector.create(center, center, r0, r1, pair[0], pair[1]);
-            sector.lineWidth = 0;
-            return sector;
+class MiniDonut extends MiniChart {
+    private readonly radius = (this.size - this.padding * 2) / 2;
+    private readonly center = this.radius + this.padding;
+
+    private readonly sectors = MiniPie.angles.map(pair => {
+        const sector = Sector.create(this.center, this.center, this.radius * 0.6, this.radius, pair[0], pair[1]);
+        sector.strokeStyle = null;
+        return sector;
+    });
+
+    constructor(parent: HTMLElement, colors: string[]) {
+        super();
+
+        this.scene.parent = parent;
+        this.root.append(this.sectors);
+        this.updateColors(colors);
+    }
+
+    updateColors(colors: string[]) {
+        this.sectors.forEach((sector, i) => {
+            const color = colors[i];
+            sector.fillStyle = color;
+            sector.strokeStyle = Color.fromString(color).darker().toHexString();
         });
-        (this as any).sectors = sectors;
-        this.root.append(sectors);
     }
 }
 
 class MiniLine extends MiniChart {
-    init() {
+    private readonly lines: Path[];
+
+    constructor(parent: HTMLElement, colors: string[]) {
+        super();
+
+        this.scene.parent = parent;
+
         const size = this.size;
         const padding = this.padding;
 
@@ -125,14 +125,15 @@ class MiniLine extends MiniChart {
         const leftAxis = Line.create(padding, padding, padding, size);
         leftAxis.strokeStyle = 'gray';
         leftAxis.lineWidth = 1;
+
         const bottomAxis = Line.create(0, size - padding, size - padding, size - padding);
         bottomAxis.strokeStyle = 'gray';
         bottomAxis.lineWidth = 1;
-        (this as any).axes = [leftAxis, bottomAxis];
 
-        (this as any).lines = data.map(series => {
+        this.lines = data.map(series => {
             const line = new Path();
             line.lineWidth = 3;
+            line.lineCap = 'round';
             line.fillStyle = null;
             series.forEach((datum, i) => {
                 line.path[i > 0 ? 'lineTo' : 'moveTo'](xScale.convert(i), yScale.convert(datum));
@@ -140,12 +141,23 @@ class MiniLine extends MiniChart {
             return line;
         });
 
-        this.root.append((this as any).lines);
-        this.root.append((this as any).axes);
+        const clipRect = new ClipRect();
+        clipRect.x = padding;
+        clipRect.y = padding;
+        clipRect.width = size - padding * 2;
+        clipRect.height = size - padding * 2;
+
+        clipRect.append(this.lines);
+        const root = this.root;
+        root.append(clipRect);
+        root.append(leftAxis);
+        root.append(bottomAxis);
+
+        this.updateColors(colors);
     }
 
     updateColors(colors: string[]) {
-        ((this as any).lines as Path[]).forEach((line, i) => {
+        this.lines.forEach((line, i) => {
             const color = colors[i];
             line.strokeStyle = Color.fromString(color).darker().toHexString();
         });
@@ -153,7 +165,13 @@ class MiniLine extends MiniChart {
 }
 
 class MiniBar extends MiniChart {
-    init() {
+    private readonly bars: Rect[];
+
+    constructor(parent: HTMLElement, colors: string[]) {
+        super();
+
+        this.scene.parent = parent;
+
         const size = this.size;
         const padding = this.padding;
 
@@ -172,13 +190,14 @@ class MiniBar extends MiniChart {
         const leftAxis = Line.create(padding, padding, padding, size);
         leftAxis.strokeStyle = 'gray';
         leftAxis.lineWidth = 1;
+
         const bottomAxis = Line.create(0, size - padding, size - padding, size - padding);
         bottomAxis.strokeStyle = 'gray';
         bottomAxis.lineWidth = 1;
         (this as any).axes = [leftAxis, bottomAxis];
 
         const bottom = yScale.convert(0);
-        (this as any).bars = data.map((datum, i) => {
+        this.bars = data.map((datum, i) => {
             const top = yScale.convert(datum);
             const rect = new Rect();
             rect.lineWidth = 1;
@@ -189,12 +208,16 @@ class MiniBar extends MiniChart {
             return rect;
         });
 
-        this.root.append((this as any).bars);
-        this.root.append((this as any).axes);
+        const root = this.root;
+        root.append(this.bars);
+        root.append(leftAxis);
+        root.append(bottomAxis);
+
+        this.updateColors(colors);
     }
 
     updateColors(colors: string[]) {
-        ((this as any).bars as Rect[]).forEach((bar, i) => {
+        this.bars.forEach((bar, i) => {
             const color = colors[i];
             bar.fillStyle = color;
             bar.strokeStyle = Color.fromString(color).darker().toHexString();
@@ -203,7 +226,13 @@ class MiniBar extends MiniChart {
 }
 
 class MiniStackedBar extends MiniChart {
-    init() {
+    private readonly bars: Rect[][];
+
+    constructor(parent: HTMLElement, colors: string[]) {
+        super();
+
+        this.scene.parent = parent;
+
         const size = this.size;
         const padding = this.padding;
 
@@ -226,13 +255,13 @@ class MiniStackedBar extends MiniChart {
         const leftAxis = Line.create(padding, padding, padding, size);
         leftAxis.strokeStyle = 'gray';
         leftAxis.lineWidth = 1;
+
         const bottomAxis = Line.create(0, size - padding, size - padding, size - padding);
         bottomAxis.strokeStyle = 'gray';
         bottomAxis.lineWidth = 1;
-        (this as any).axes = [leftAxis, bottomAxis];
 
         const bottom = yScale.convert(0);
-        (this as any).bars = data.map(series => {
+        this.bars = data.map(series => {
             return series.map((datum, i) => {
                 const top = yScale.convert(datum);
                 const rect = new Rect();
@@ -245,13 +274,16 @@ class MiniStackedBar extends MiniChart {
             });
         });
 
-        // @ts-ignore
-        this.root.append(Array.concat.apply(null, (this as any).bars));
-        this.root.append((this as any).axes);
+        const root = this.root;
+        root.append(([] as Rect[]).concat.apply([], this.bars));
+        root.append(leftAxis);
+        root.append(bottomAxis);
+
+        this.updateColors(colors);
     }
 
     updateColors(colors: string[]) {
-        ((this as any).bars as Rect[][]).forEach((series, i) => {
+        this.bars.forEach((series, i) => {
             series.forEach(bar => {
                 const color = colors[i];
                 bar.fillStyle = color;
@@ -260,12 +292,6 @@ class MiniStackedBar extends MiniChart {
         });
     }
 }
-
-// palettes.forEach(palette => {
-//     new MiniPie(document.body, palette);
-//     new MiniDonut(document.body, palette);
-//     new MiniLine(document.body, palette);
-// });
 
 const miniPie = new MiniPie(document.body, palettes[0]);
 const miniDonut = new MiniDonut(document.body, palettes[0]);
