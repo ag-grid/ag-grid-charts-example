@@ -3,7 +3,7 @@ import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries"
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
-import { material, nord, office, deep, teal, flat, flat2 } from "ag-grid-enterprise/src/charts/chart/palettes";
+import { material, nord } from "ag-grid-enterprise/src/charts/chart/palettes";
 
 type Datum = {
     category: string,
@@ -274,23 +274,8 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Material colors', () => {
         barSeries.colors = material;
     });
-    createButton('Teal colors', () => {
-        barSeries.colors = teal;
-    });
     createButton('Nord colors', () => {
         barSeries.colors = nord;
-    });
-    createButton('Office colors', () => {
-        barSeries.colors = office;
-    });
-    createButton('Deep colors', () => {
-        barSeries.colors = deep;
-    });
-    createButton('Flat colors', () => {
-        barSeries.colors = flat;
-    });
-    createButton('Flat2 colors', () => {
-        barSeries.colors = flat2;
     });
     createButton('Light theme', () => {
         chart.xAxis.labelColor = 'black';
@@ -323,6 +308,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         chart.legend.labelColor = 'rgb(221, 221, 221)';
         document.body.style.backgroundColor = '#1e1e1e';
+    });
+    createButton('No y-fields', () => {
+        barSeries.yFields = [];
     });
 
     const lineWidthSlider = document.createElement('input');
