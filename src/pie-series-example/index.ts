@@ -208,4 +208,19 @@ document.addEventListener('DOMContentLoaded', () => {
             pieSeries2.calloutWidth = 1;
         }, 12000);
     });
+
+    createButton('Light theme', () => {
+        const labelColor = 'black';
+        chart.legend.labelColor = labelColor;
+        pieSeries.labelColor = labelColor;
+        pieSeries2.labelColor = labelColor;
+        document.body.style.backgroundColor = 'white';
+    });
+    createButton('Dark theme', () => {
+        const labelColor = 'rgb(221, 221, 221)';
+        chart.legend.labelColor = labelColor;
+        pieSeries.labelColor = labelColor;
+        pieSeries2.labelColor = labelColor;
+        document.body.style.backgroundColor = '#1e1e1e';
+    });
 });
