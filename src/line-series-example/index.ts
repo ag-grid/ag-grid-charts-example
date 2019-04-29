@@ -136,35 +136,37 @@ function createCategoryLineChart() {
 
     document.body.appendChild(document.createElement('br'));
 
-    const saveImageButton = document.createElement('button');
-    saveImageButton.textContent = 'Save Chart Image';
-    document.body.appendChild(saveImageButton);
-    saveImageButton.addEventListener('click', () => {
+    createButton('Save Chart Image', () => {
         chart.scene.download('chart');
     });
 
-    const changeDataButton = document.createElement('button');
-    changeDataButton.textContent = 'Change data';
-    document.body.appendChild(changeDataButton);
-    changeDataButton.addEventListener('click', () => {
+    createButton('Change data', () => {
         lineSeries.data = generateCategoryData(Math.floor(Math.random() * 50));
+        lineSeries.xField = 'category';
+        lineSeries.yField = 'value';
     });
 
-    const noDataButton = document.createElement('button');
-    noDataButton.textContent = 'No data';
-    document.body.appendChild(noDataButton);
-    noDataButton.addEventListener('click', () => {
+    createButton('No data', () => {
         lineSeries.data = [];
+        lineSeries.xField = 'category';
+        lineSeries.yField = 'value';
     });
 
-    const onePointButton = document.createElement('button');
-    onePointButton.textContent = 'Single data point';
-    document.body.appendChild(onePointButton);
-    onePointButton.addEventListener('click', () => {
+    createButton('No x-field', () => {
+        lineSeries.xField = undefined;
+    });
+
+    createButton('No y-field', () => {
+        lineSeries.yField = undefined;
+    });
+
+    createButton('Single data point', () => {
         lineSeries.data = [{
             category: 'One',
             value: 17
         }];
+        lineSeries.xField = 'category';
+        lineSeries.yField = 'value';
     });
 }
 
