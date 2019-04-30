@@ -202,17 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.title = '';
     });
 
-    let rotation = false;
-    createButton('Rotation', () => {
-        rotation = true;
-        (function step() {
-            pieSeries2.rotation += 0.2;
-            chart.onLayoutDone = rotation ? step : undefined;
-        })();
-    });
-    createButton('Rotation OFF', () => {
-        rotation = false;
-    });
     createButton('Use radius field', () => {
         pieSeries2.data = data2;
         pieSeries2.angleField = 'value';
@@ -221,12 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Remove radius field', () => {
         pieSeries2.radiusField = undefined;
-    });
-    createButton('Use inner radius', () => {
-        pieSeries2.innerRadiusOffset = -120;
-    });
-    createButton('Remove inner radius', () => {
-        pieSeries2.innerRadiusOffset = 0;
     });
     createButton('Run other tests', () => {
         setTimeout(() => {
@@ -264,6 +247,46 @@ document.addEventListener('DOMContentLoaded', () => {
             pieSeries2.lineWidth = 3;
             pieSeries2.calloutWidth = 1;
         }, 12000);
+    });
+
+    createSlider('innerRadiusOffset', [-120, 0], v => {
+        pieSeries2.innerRadiusOffset = v;
+    });
+    createSlider('calloutColor', [null, 'red', 'green', 'blue', 'rgba(0,0,0,0)'], v => {
+        pieSeries2.calloutColor = v;
+    });
+    createSlider('calloutWidth', [2, 3, 4, 5, 6], v => {
+        pieSeries2.calloutWidth = v;
+    });
+
+    let rotationIncrement = 0;
+    createSlider('rotation', [0, 0.2, 0.4, 0.6], v => {
+        rotationIncrement = v;
+        (function step() {
+            pieSeries.rotation -= rotationIncrement;
+            pieSeries2.rotation += rotationIncrement;
+            chart.onLayoutDone = rotationIncrement ? step : undefined;
+        })();
+    });
+
+    createSlider('calloutLength', [10, 20, 30], v => {
+        pieSeries.calloutLength = v;
+    });
+
+    createSlider('calloutPadding', [3, 6, 9, 12], v => {
+        pieSeries2.calloutPadding = v;
+    });
+
+    createSlider('labelFont', ['12px Tahoma', 'bold 14px Verdana', '16px serif'], v => {
+        pieSeries.labelFont = v;
+    });
+
+    createSlider('labelColor', ['black', 'red', 'gold', 'rgb(221, 221, 221)'], v => {
+        pieSeries.labelColor = v;
+    });
+
+    createSlider('labelMinAngle', [20, 40, 60], v => {
+        pieSeries2.labelMinAngle = v;
     });
 
     createButton('Light theme', () => {
