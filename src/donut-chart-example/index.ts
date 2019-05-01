@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download('pie-chart');
+        chart.scene.download({ fileName: 'pie-chart' });
     });
 
     createButton('Remove the inner series', () => {

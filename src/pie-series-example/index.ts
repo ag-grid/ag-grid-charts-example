@@ -20,14 +20,14 @@ const data: Datum[] = [
 ];
 
 const data2: Datum[] = [
-    { label: 'John', value: 3, other: 7 },
-    { label: 'Nige', value: 7, other: 8 },
-    { label: 'Vicky', value: 6, other: 9 },
+    { label: 'Nigel', value: 7, other: 8 },
+    { label: 'Lucy', value: 6, other: 9 },
     { label: 'Rick', value: 4, other: 10 },
-    { label: 'Lucy', value: 8, other: 11 },
+    { label: 'Barbara', value: 3, other: 8 },
+    { label: 'John', value: 3, other: 7 },
     { label: 'Ben', value: 5, other: 12 },
-    { label: 'Barbara', value: 3, other: 10 },
-    { label: 'Maria', value: 3, other: 8 }
+    { label: 'Maria', value: 3, other: 10 },
+    { label: 'Vicky', value: 8, other: 11 }
 ];
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
@@ -44,7 +44,7 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
     const sliderId = 'slider-' + id;
     const datalistId = 'slider-list-' + id;
     const wrapper = document.createElement('div');
-    wrapper.style.display = 'flex';
+    wrapper.style.display = 'inline-flex';
     wrapper.style.alignItems = 'center';
     wrapper.style.width = '250px';
     wrapper.style.padding = '5px';
@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     makeChartResizeable(chart);
 
+    let backgroundColor = 'white';
     const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 
     const pieSeries = new PieSeries<Datum>();
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download('pie-chart');
+        chart.scene.download({ fileName: 'pie-chart', background: backgroundColor });
     });
     createButton('Show tooltips', () => {
         pieSeries.tooltip = true;
@@ -249,6 +250,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 12000);
     });
 
+    document.body.appendChild(document.createElement('br'));
+
+    createButton('Light theme', () => {
+        const labelColor = 'black';
+        chart.legend.labelColor = labelColor;
+        pieSeries.labelColor = labelColor;
+        pieSeries2.labelColor = labelColor;
+        document.body.style.backgroundColor = backgroundColor = 'white';
+    });
+    createButton('Dark theme', () => {
+        const labelColor = 'rgb(221, 221, 221)';
+        chart.legend.labelColor = labelColor;
+        pieSeries.labelColor = labelColor;
+        pieSeries2.labelColor = labelColor;
+        document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
+    });
+
+    document.body.appendChild(document.createElement('br'));
+
     createSlider('innerRadiusOffset', [-120, 0], v => {
         pieSeries2.innerRadiusOffset = v;
     });
@@ -277,8 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.calloutPadding = v;
     });
 
-    createSlider('labelFont', ['12px Tahoma', 'bold 14px Verdana', '16px serif'], v => {
+    createSlider('labelFont', ['12px Tahoma', 'bold 14px Verdana', '16px Papyrus'], v => {
         pieSeries.labelFont = v;
+    });
+
+    createSlider('titleFont', ['bold 12px Tahoma', 'italic 14px Verdana', '20px Papyrus'], v => {
+        pieSeries.titleFont = v;
     });
 
     createSlider('labelColor', ['black', 'red', 'gold', 'rgb(221, 221, 221)'], v => {
@@ -287,20 +311,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createSlider('labelMinAngle', [20, 40, 60], v => {
         pieSeries2.labelMinAngle = v;
-    });
-
-    createButton('Light theme', () => {
-        const labelColor = 'black';
-        chart.legend.labelColor = labelColor;
-        pieSeries.labelColor = labelColor;
-        pieSeries2.labelColor = labelColor;
-        document.body.style.backgroundColor = 'white';
-    });
-    createButton('Dark theme', () => {
-        const labelColor = 'rgb(221, 221, 221)';
-        chart.legend.labelColor = labelColor;
-        pieSeries.labelColor = labelColor;
-        pieSeries2.labelColor = labelColor;
-        document.body.style.backgroundColor = '#1e1e1e';
     });
 });

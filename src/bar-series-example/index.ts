@@ -165,6 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let backgroundColor = 'white';
+
     const barSeries = new BarSeries<any>();
     barSeries.lineWidth = 4;
     addSeriesIf();
@@ -177,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download('bar-chart');
+        chart.scene.download({ fileName: 'bar-chart', background: backgroundColor });
     });
 
     createButton('1 y-field', () => {
@@ -291,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }];
 
         chart.legend.labelColor = 'black';
-        document.body.style.backgroundColor = 'white';
+        document.body.style.backgroundColor = backgroundColor = 'white';
     });
     createButton('Dark theme', () => {
         chart.xAxis.labelColor = 'rgb(221, 221, 221)';
@@ -307,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }];
 
         chart.legend.labelColor = 'rgb(221, 221, 221)';
-        document.body.style.backgroundColor = '#1e1e1e';
+        document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
     });
     createButton('No y-fields', () => {
         barSeries.yFields = [];

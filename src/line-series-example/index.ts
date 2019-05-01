@@ -137,7 +137,7 @@ function createCategoryLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download('chart');
+        chart.scene.download({ fileName: 'chart' });
     });
 
     createButton('Change data', () => {
@@ -191,7 +191,7 @@ function createNumericLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download('chart');
+        chart.scene.download({ fileName: 'chart' });
     });
 
     createButton('Math.log data', () => {
@@ -359,7 +359,7 @@ function createMultiLineChart() {
     saveImageButton.textContent = 'Save Chart Image';
     document.body.appendChild(saveImageButton);
     saveImageButton.addEventListener('click', () => {
-        chart.scene.download('chart');
+        chart.scene.download({ fileName: 'chart' });
     });
 
     const changeDataButton = document.createElement('button');
