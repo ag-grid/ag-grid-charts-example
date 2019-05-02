@@ -46,7 +46,7 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
     const wrapper = document.createElement('div');
     wrapper.style.display = 'inline-flex';
     wrapper.style.alignItems = 'center';
-    wrapper.style.width = '250px';
+    wrapper.style.width = '300px';
     wrapper.style.padding = '5px';
     wrapper.style.margin = '5px';
     wrapper.style.border = '1px solid lightgray';
@@ -57,6 +57,7 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
     slider.setAttribute('id', sliderId);
     slider.setAttribute('list', datalistId);
     slider.style.height = '1.8em';
+    slider.style.flex = '1';
 
     const label = document.createElement('label');
     label.setAttribute('for', sliderId);
@@ -202,6 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries.title = '';
         pieSeries2.title = '';
     });
+    createButton('Remove inner series', () => {
+        chart.removeSeries(pieSeries2);
+    });
+    createButton('Add inner series', () => {
+        chart.addSeries(pieSeries2);
+    });
 
     createButton('Use radius field', () => {
         pieSeries2.data = data2;
@@ -311,5 +318,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createSlider('labelMinAngle', [20, 40, 60], v => {
         pieSeries2.labelMinAngle = v;
+    });
+
+    createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
+        chart.legend.markerLineWidth = v;
+    });
+    createSlider('legendMarkerSize', [4, 6, 10, 14, 18, 22, 26, 30], v => {
+        chart.legend.markerSize = v;
+    });
+    createSlider('legendItemPadding', [4, 6, 8, 10, 12, 16], v => {
+        chart.legend.itemPadding = v;
+    });
+    createSlider('legendLabelFont', ['12px Tahoma', '18px Tahoma', '24px Tahoma', '30px Tahoma', '36px Tahoma'], v => {
+        chart.legend.labelFont = v;
+    });
+    createSlider('legendLabelColor', ['black', 'red', 'gold', 'green'], v => {
+        chart.legend.labelColor = v;
+    });
+    createSlider('legendMarkerPadding', [8, 12, 16, 20, 24], v => {
+        chart.legend.markerPadding = v;
     });
 });
