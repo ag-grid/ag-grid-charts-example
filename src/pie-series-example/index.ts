@@ -304,11 +304,11 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.calloutPadding = v;
     });
 
-    createSlider('labelFont', ['12px Verdana', 'bold 14px Verdana', '16px Papyrus'], v => {
+    createSlider('labelFont', ['12px sans-serif', 'bold 14px sans-serif', '16px Papyrus'], v => {
         pieSeries.labelFont = v;
     });
 
-    createSlider('titleFont', ['bold 12px Verdana', 'italic 14px Verdana', '20px Papyrus'], v => {
+    createSlider('titleFont', ['bold 12px sans-serif', 'italic 14px sans-serif', '20px Papyrus'], v => {
         pieSeries.titleFont = v;
     });
 
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('legendItemPadding', [4, 6, 8, 10, 12, 16], v => {
         chart.legend.itemPadding = v;
     });
-    createSlider('legendLabelFont', ['12px Verdana', '18px Verdana', '24px Verdana', '30px Verdana', '36px Verdana'], v => {
+    createSlider('legendLabelFont', ['12px sans-serif', '18px sans-serif', '24px sans-serif', '30px sans-serif', '36px sans-serif'], v => {
         chart.legend.labelFont = v;
     });
     createSlider('legendLabelColor', ['black', 'red', 'gold', 'green'], v => {
