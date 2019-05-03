@@ -2,7 +2,8 @@ import { PolarChart } from "ag-grid-enterprise/src/charts/chart/polarChart";
 import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import { Offset } from "ag-grid-enterprise/src/charts/scene/offset";
-import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
+import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
+import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
 
 type Datum = {
     label: string,
@@ -123,15 +124,9 @@ function makeChartResizeable(chart: Chart<any, any, any>) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart<Datum, number, any>();
-    chart.width = 900;
+    chart.width = 800;
     chart.height = 400;
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
-    chart.padding = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-    };
 
     makeChartResizeable(chart);
 
@@ -221,12 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Run other tests', () => {
         setTimeout(() => {
-            chart.padding = {
-                top: 70,
-                right: 100,
-                bottom: 70,
-                left: 100
-            };
+            chart.padding = new Padding(70, 100, 70, 100);
             chart.size = [640, 300];
         }, 2000);
 
@@ -320,6 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.labelMinAngle = v;
     });
 
+    createSlider('legendPosition', [LegendPosition.Right, LegendPosition.Bottom, LegendPosition.Left, LegendPosition.Top], v => {
+        chart.legendPosition = v;
+    });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
         chart.legend.markerLineWidth = v;
     });

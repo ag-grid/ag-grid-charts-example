@@ -2,7 +2,7 @@ import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianCha
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
+import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { material, nord } from "ag-grid-enterprise/src/charts/chart/palettes";
 
 type Datum = {
@@ -126,6 +126,64 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
     return button;
 }
 
+function createSlider<D>(text: string, values: D[], action: (value: D) => void): HTMLInputElement {
+    const n = values.length;
+    const id = String(Date.now());
+    const sliderId = 'slider-' + id;
+    const datalistId = 'slider-list-' + id;
+    const wrapper = document.createElement('div');
+    wrapper.style.display = 'inline-flex';
+    wrapper.style.alignItems = 'center';
+    wrapper.style.width = '300px';
+    wrapper.style.padding = '5px';
+    wrapper.style.margin = '5px';
+    wrapper.style.border = '1px solid lightgray';
+    wrapper.style.borderRadius = '5px';
+    wrapper.style.backgroundColor = 'white';
+
+    const slider = document.createElement('input');
+    slider.setAttribute('id', sliderId);
+    slider.setAttribute('list', datalistId);
+    slider.style.height = '1.8em';
+    slider.style.flex = '1';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', sliderId);
+    label.innerHTML = text;
+    label.style.font = '12px sans-serif';
+    label.style.marginRight = '5px';
+
+    // Currently, no browser fully supports these features.
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
+    const datalist = document.createElement('datalist');
+    datalist.setAttribute('id', datalistId);
+
+    values.forEach((value, index) => {
+        const option = document.createElement('option');
+        option.setAttribute('value', String(index));
+        option.setAttribute('label', String(value));
+        datalist.appendChild(option);
+    });
+
+    slider.type = 'range';
+    slider.min = '0';
+    slider.max = String(n - 1);
+    slider.step = '1';
+    slider.value = '0';
+    slider.style.width = '200px';
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(slider);
+    wrapper.appendChild(datalist);
+    document.body.appendChild(wrapper);
+
+    slider.addEventListener('input', (e) => {
+        const index = +(e.target as HTMLInputElement).value;
+        action(values[index]);
+    });
+    return slider;
+}
+
 function makeChartResizeable(chart: Chart<any, any, any>) {
     let startX = 0;
     let startY = 0;
@@ -158,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     chart.width = document.body.clientWidth;
     chart.height = document.body.clientHeight;
+    chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
 
     function addSeriesIf() {
         if (!chart.series.length) {
@@ -325,6 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(lineWidthSlider);
     lineWidthSlider.addEventListener('input', (e) => {
         barSeries.lineWidth = +(e.target as HTMLInputElement).value;
+    });
+
+    createSlider('legendPosition', [LegendPosition.Right, LegendPosition.Bottom, LegendPosition.Left, LegendPosition.Top], v => {
+        chart.legendPosition = v;
     });
 
     makeChartResizeable(chart);

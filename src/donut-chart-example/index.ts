@@ -64,12 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart<Datum, number, any>();
     chart.width = 700;
     chart.height = 700;
-    chart.padding = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-    };
 
     const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 
