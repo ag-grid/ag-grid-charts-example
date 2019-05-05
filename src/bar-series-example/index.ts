@@ -374,18 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFields = [];
     });
 
-    const lineWidthSlider = document.createElement('input');
-    lineWidthSlider.type = 'range';
-    lineWidthSlider.min = '0';
-    lineWidthSlider.max = '10';
-    lineWidthSlider.step = '0.5';
-    lineWidthSlider.value = '4';
-    lineWidthSlider.style.width = '400px';
-    document.body.appendChild(lineWidthSlider);
-    lineWidthSlider.addEventListener('input', (e) => {
-        barSeries.lineWidth = +(e.target as HTMLInputElement).value;
+    createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6], v => {
+        barSeries.lineWidth = v;
     });
-
     createSlider('legendPosition', [LegendPosition.Right, LegendPosition.Bottom, LegendPosition.Left, LegendPosition.Top], v => {
         chart.legendPosition = v;
     });

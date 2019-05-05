@@ -4,7 +4,6 @@ import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import Scale from "ag-grid-enterprise/src/charts/scale/scale";
-import {pixelSnap, PixelSnapBias} from "ag-grid-enterprise/src/charts/canvas/canvas";
 import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
 import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {normalizeAngle360} from "ag-grid-enterprise/src/charts/util/angle";
@@ -50,7 +49,7 @@ class NodeAxis<D> {
             const ticks = scale.ticks!(10);
             const bandwidth = (scale.bandwidth || 0) / 2;
             const tickCount = ticks.length;
-            const pxShift = pixelSnap(this.tickWidth);
+            const pxShift = Math.floor(this.tickWidth) % 2 / 2;
             const sideFlag = this.mirroredLabels ? 1 : -1;
 
             for (let i = 0; i < tickCount; i++) {
@@ -93,7 +92,7 @@ class NodeAxis<D> {
 
         // Render axis line.
         {
-            const delta = pixelSnap(this.lineWidth, PixelSnapBias.Negative);
+            const delta = Math.floor(this.lineWidth) % 2 / 2;
             const line = new Line();
             line.x1 = delta;
             line.y1 = scale.range[0];

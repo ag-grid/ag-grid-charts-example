@@ -1,7 +1,6 @@
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
-import {PixelSnapBias} from "ag-grid-enterprise/src/charts/canvas/canvas";
 import * as d3 from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,14 +37,6 @@ function sceneGraphTest() {
         movingLine1,
         movingLine2
     ]);
-
-    // Test the other possible option for `pixelSnapBias`.
-    // The vertical line should shift to the left, the vertical
-    // should notch up.
-    setTimeout(() => {
-        verticalLine.pixelSnapBias = PixelSnapBias.Negative;
-        horizontalLine.pixelSnapBias = PixelSnapBias.Negative;
-    }, 2000);
 
     (function step() {
         // Pixel grid alignment causes no issues during animation,
