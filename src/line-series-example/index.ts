@@ -182,6 +182,7 @@ function createNumericLineChart() {
 
     const lineSeries = new LineSeries<NumericDatum, number, number>();
     lineSeries.lineWidth = 2;
+    lineSeries.showInLegend = false;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.data = generateSinData();
@@ -207,7 +208,9 @@ function createNumericLineChart() {
         const step = 0.1;
         let i = -10;
 
-        (function nextFrame() {
+        chart.onLayoutDone = nextFrame;
+
+        function nextFrame() {
             data.push({
                 xValue: i,
                 yValue: Math.sin(i)
@@ -216,9 +219,11 @@ function createNumericLineChart() {
 
             if (i < 10) {
                 i += step;
-                requestAnimationFrame(nextFrame);
+            } else {
+                chart.onLayoutDone = undefined;
             }
-        })();
+        }
+        nextFrame();
     });
 
     createButton('Animate spiral data', () => {
@@ -228,7 +233,9 @@ function createNumericLineChart() {
         const step = 0.1;
         let th = 1;
 
-        (function nextFrame() {
+        chart.onLayoutDone = nextFrame;
+
+        function nextFrame() {
             const r = (a + b * th);
             data.push({
                 xValue: r * Math.cos(th),
@@ -238,9 +245,11 @@ function createNumericLineChart() {
 
             if (th < 50) {
                 th += step;
-                requestAnimationFrame(nextFrame);
+            } else {
+                chart.onLayoutDone = undefined;
             }
-        })();
+        }
+        nextFrame();
     });
 
     document.body.appendChild(document.createElement('br'));
