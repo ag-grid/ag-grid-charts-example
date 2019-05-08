@@ -321,7 +321,7 @@ function createMultiLineChart() {
     );
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.xAxis.labelRotation = -90;
+    chart.xAxis.labelRotation = 90;
 
     const data = generateMultiValueData(10);
 
@@ -387,7 +387,8 @@ function createMultiLineChart() {
         let i = -10;
         let index = 0;
 
-        (function nextFrame() {
+        chart.onLayoutDone = nextFrame;
+        function nextFrame() {
             data.push({
                 category: 'A' + (++index),
                 value1: Math.sin(i) * 0.5,
@@ -400,9 +401,11 @@ function createMultiLineChart() {
 
             if (i < 10) {
                 i += step;
-                setTimeout(nextFrame, 33);
+            } else {
+                chart.onLayoutDone = undefined;
             }
-        })();
+        }
+        nextFrame();
     });
 
     createButton('Remove the bar series', () => {
