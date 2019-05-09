@@ -319,8 +319,11 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('legendMarkerSize', [4, 6, 10, 14, 18, 22, 26, 30], v => {
         chart.legend.markerSize = v;
     });
-    createSlider('legendItemPadding', [4, 6, 8, 10, 12, 16], v => {
-        chart.legend.itemPadding = v;
+    createSlider('legendItemPaddingX', [4, 6, 8, 10, 12, 16], v => {
+        chart.legend.itemPaddingX = v;
+    });
+    createSlider('legendItemPaddingY', [4, 6, 8, 10, 12, 16], v => {
+        chart.legend.itemPaddingY = v;
     });
     createSlider('legendLabelFont', ['12px sans-serif', '18px sans-serif', '24px sans-serif', '30px sans-serif', '36px sans-serif'], v => {
         chart.legend.labelFont = v;
