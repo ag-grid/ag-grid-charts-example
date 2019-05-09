@@ -5,17 +5,17 @@ import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries"
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 
 type CategoryDatum = {
-    country: { toString: () => string, id: string },
+    country: { toString: () => string },
     value: number,
     other: number
 };
 
 const data: CategoryDatum[] = [
-    { country: { toString: () => 'France', id: '0' }, value: 3, other: 2 },
-    { country: { toString: () => 'Italy', id: '1' }, value: 7, other: 3 },
-    { country: { toString: () => 'France', id: '2' }, value: 6, other: 2 },
-    { country: { toString: () => 'Italy', id: '3' }, value: 4, other: 5 },
-    { country: { toString: () => 'Italy', id: '4' }, value: 8, other: 3 }
+    { country: { toString: () => 'France' }, value: 3, other: 2 },
+    { country: { toString: () => 'Italy' }, value: 7, other: 3 },
+    { country: { toString: () => 'France' }, value: 6, other: 2 },
+    { country: { toString: () => 'Italy' }, value: 4, other: 5 },
+    { country: { toString: () => 'Italy' }, value: 8, other: 3 }
 ];
 
 function createCategoryLineChart() {
