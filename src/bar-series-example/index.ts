@@ -227,7 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let backgroundColor = 'white';
 
     const barSeries = new BarSeries<any>();
-    barSeries.lineWidth = 4;
     addSeriesIf();
     barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.xField = 'category';
@@ -278,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const config = generateData();
         barSeries.yFieldNames = []; // don't show bar labels
         barSeries.grouped = false;
-        barSeries.lineWidth = 2;
         chart.xAxis.labelRotation = 45;
         barSeries.xField = config.xField;
         barSeries.yFields = config.yFields;
@@ -292,7 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFields = config.yFields;
         barSeries.data = config.data;
         barSeries.grouped = true;
-        barSeries.lineWidth = 2;
         chart.xAxis.labelRotation = 0;
         chart.xAxis.update();
     });
@@ -344,12 +341,14 @@ document.addEventListener('DOMContentLoaded', () => {
             strokeStyle: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
         }];
+        chart.xAxis.update();
 
         chart.yAxis.labelColor = 'black';
         chart.yAxis.gridStyle = [{
             strokeStyle: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
         }];
+        chart.yAxis.update();
 
         chart.legend.labelColor = 'black';
         document.body.style.backgroundColor = backgroundColor = 'white';
@@ -360,12 +359,14 @@ document.addEventListener('DOMContentLoaded', () => {
             strokeStyle: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
+        chart.xAxis.update();
 
         chart.yAxis.labelColor = 'rgb(221, 221, 221)';
         chart.yAxis.gridStyle = [{
             strokeStyle: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
+        chart.yAxis.update();
 
         chart.legend.labelColor = 'rgb(221, 221, 221)';
         document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
@@ -379,6 +380,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createSlider('legendPosition', [LegendPosition.Right, LegendPosition.Bottom, LegendPosition.Left, LegendPosition.Top], v => {
         chart.legendPosition = v;
+    });
+    createSlider('legend font', ['12px sans-serif', '12px serif', '12px Snell Roundhand'], v => {
+        chart.legend.labelFont = v;
     });
 
     makeChartResizeable(chart);
