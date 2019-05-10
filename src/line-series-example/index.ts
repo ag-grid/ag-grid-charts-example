@@ -111,6 +111,65 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
     return button;
 }
 
+function createSlider<D>(text: string, values: D[], action: (value: D) => void): HTMLInputElement {
+    const n = values.length;
+    const id = String(Date.now());
+    const sliderId = 'slider-' + id;
+    const datalistId = 'slider-list-' + id;
+    const wrapper = document.createElement('div');
+    wrapper.style.display = 'inline-flex';
+    wrapper.style.alignItems = 'center';
+    wrapper.style.width = '300px';
+    wrapper.style.padding = '5px';
+    wrapper.style.margin = '5px';
+    wrapper.style.border = '1px solid lightgray';
+    wrapper.style.borderRadius = '5px';
+    wrapper.style.backgroundColor = 'white';
+
+    const slider = document.createElement('input');
+    slider.setAttribute('id', sliderId);
+    slider.setAttribute('list', datalistId);
+    slider.style.height = '1.8em';
+    slider.style.flex = '1';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', sliderId);
+    label.innerHTML = text;
+    label.style.font = '12px sans-serif';
+    label.style.marginRight = '5px';
+
+    // Currently, no browser fully supports these features.
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
+    const datalist = document.createElement('datalist');
+    datalist.setAttribute('id', datalistId);
+
+    values.forEach((value, index) => {
+        const option = document.createElement('option');
+        option.setAttribute('value', String(index));
+        option.setAttribute('label', String(value));
+        datalist.appendChild(option);
+    });
+
+    slider.type = 'range';
+    slider.min = '0';
+    slider.max = String(n - 1);
+    slider.step = '1';
+    slider.value = '0';
+    slider.style.width = '200px';
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(slider);
+    wrapper.appendChild(datalist);
+    document.body.appendChild(wrapper);
+
+    slider.addEventListener('input', (e) => {
+        const index = +(e.target as HTMLInputElement).value;
+        action(values[index]);
+    });
+    return slider;
+}
+
+
 function createCategoryLineChart() {
     const chart = new CartesianChart<CategoryDatum, string, number>(
         new CategoryAxis(),
@@ -120,7 +179,7 @@ function createCategoryLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries<CategoryDatum, string, number>();
-    lineSeries.lineWidth = 4;
+    lineSeries.marker = true;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.tooltip = true;
@@ -181,6 +240,7 @@ function createNumericLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries<NumericDatum, number, number>();
+    lineSeries.marker = true;
     lineSeries.lineWidth = 2;
     lineSeries.showInLegend = false;
     chart.xAxis.labelRotation = 45;
@@ -201,6 +261,14 @@ function createNumericLineChart() {
 
     createButton('Spiral data', () => {
         lineSeries.data = generateSpiralData();
+    });
+
+    createButton('Hide markers', () => {
+        lineSeries.marker = false;
+    });
+
+    createButton('Show markers', () => {
+        lineSeries.marker = true;
     });
 
     createButton('Animate Math.sin data', () => {
@@ -274,44 +342,9 @@ function createNumericLineChart() {
         chart.layoutPending = true;
     });
 
-    document.body.appendChild(document.createElement('br'));
-    const lineWidthSlider = document.createElement('input');
-    lineWidthSlider.type = 'range';
-    lineWidthSlider.min = '0';
-    lineWidthSlider.max = '10';
-    lineWidthSlider.step = '0.5';
-    lineWidthSlider.value = '2';
-    lineWidthSlider.style.width = '400px';
-    document.body.appendChild(lineWidthSlider);
-    lineWidthSlider.addEventListener('input', (e) => {
-        lineSeries.lineWidth = +(e.target as HTMLInputElement).value;
-    });
-
-    document.body.appendChild(document.createElement('br'));
-    const markerLineWidthSlider = document.createElement('input');
-    markerLineWidthSlider.type = 'range';
-    markerLineWidthSlider.min = '0';
-    markerLineWidthSlider.max = '10';
-    markerLineWidthSlider.step = '0.5';
-    markerLineWidthSlider.value = '2';
-    markerLineWidthSlider.style.width = '400px';
-    document.body.appendChild(markerLineWidthSlider);
-    markerLineWidthSlider.addEventListener('input', (e) => {
-        lineSeries.markerLineWidth = +(e.target as HTMLInputElement).value;
-    });
-
-    document.body.appendChild(document.createElement('br'));
-    const markerRadiusSlider = document.createElement('input');
-    markerRadiusSlider.type = 'range';
-    markerRadiusSlider.min = '0';
-    markerRadiusSlider.max = '10';
-    markerRadiusSlider.step = '0.5';
-    markerRadiusSlider.value = '5';
-    markerRadiusSlider.style.width = '400px';
-    document.body.appendChild(markerRadiusSlider);
-    markerRadiusSlider.addEventListener('input', (e) => {
-        lineSeries.markerRadius = +(e.target as HTMLInputElement).value;
-    });
+    createSlider('lineWidth', [0, 2, 4, 6, 8], value => lineSeries.lineWidth = value);
+    createSlider('markerLineWidth', [0, 2, 4, 6, 8], value => lineSeries.markerLineWidth = value);
+    createSlider('markerRadius', [0, 2, 4, 6, 8], value => lineSeries.markerRadius = value);
 }
 
 function createMultiLineChart() {
