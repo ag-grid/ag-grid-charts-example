@@ -186,7 +186,7 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
     return slider;
 }
 
-function makeChartResizeable(chart: Chart<any, any, any>) {
+function makeChartResizeable(chart: Chart) {
     let startX = 0;
     let startY = 0;
     let isDragging = false;
@@ -212,7 +212,7 @@ function makeChartResizeable(chart: Chart<any, any, any>) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new CartesianChart<any, string, number>(
+    const chart = new CartesianChart(
         new CategoryAxis(),
         new NumberAxis()
     );
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let backgroundColor = 'white';
 
-    const barSeries = new BarSeries<any>();
+    const barSeries = new BarSeries();
     addSeriesIf();
     barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.xField = 'category';

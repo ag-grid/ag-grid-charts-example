@@ -173,14 +173,14 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
 
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart<CategoryDatum, string, number>(
+    const chart = new CartesianChart(
         new CategoryAxis(),
         new NumberAxis()
     );
     chart.width = document.body.clientWidth;
     chart.height = 600;
 
-    const lineSeries = new LineSeries<CategoryDatum, string, number>();
+    const lineSeries = new LineSeries();
     lineSeries.marker = true;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
@@ -214,11 +214,11 @@ function createCategoryLineChart() {
     });
 
     createButton('No x-field', () => {
-        lineSeries.xField = undefined;
+        lineSeries.xField = '';
     });
 
     createButton('No y-field', () => {
-        lineSeries.yField = undefined;
+        lineSeries.yField = '';
     });
 
     createButton('Single data point', () => {
@@ -234,14 +234,14 @@ function createCategoryLineChart() {
 function createNumericLineChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart<NumericDatum, number, number>(
+    const chart = new CartesianChart(
         new NumberAxis(),
         new NumberAxis()
     );
     chart.width = 600;
     chart.height = 600;
 
-    const lineSeries = new LineSeries<NumericDatum, number, number>();
+    const lineSeries = new LineSeries();
     lineSeries.marker = true;
     lineSeries.lineWidth = 2;
     lineSeries.showInLegend = false;
@@ -350,7 +350,7 @@ function createNumericLineChart() {
 }
 
 function createMultiLineChart() {
-    const chart = new CartesianChart<MultiValue, string, number>(
+    const chart = new CartesianChart(
         new CategoryAxis(),
         new NumberAxis()
     );
@@ -360,25 +360,25 @@ function createMultiLineChart() {
 
     const data = generateMultiValueData(10);
 
-    const lineSeries1 = new LineSeries<MultiValue, string, number>();
+    const lineSeries1 = new LineSeries();
     lineSeries1.lineWidth = 4;
     lineSeries1.color = '#f3622d';
     lineSeries1.xField = 'category';
     lineSeries1.yField = 'value1';
 
-    const lineSeries2 = new LineSeries<MultiValue, string, number>();
+    const lineSeries2 = new LineSeries();
     lineSeries2.lineWidth = 4;
     lineSeries2.color = '#fba71b';
     lineSeries2.xField = 'category';
     lineSeries2.yField = 'value2';
 
-    const lineSeries3 = new LineSeries<MultiValue, string, number>();
+    const lineSeries3 = new LineSeries();
     lineSeries3.lineWidth = 4;
     lineSeries3.color = '#57b757';
     lineSeries3.xField = 'category';
     lineSeries3.yField = 'value3';
 
-    const barSeries = new BarSeries<MultiValue, string, number>();
+    const barSeries = new BarSeries();
     barSeries.colors = ['#41a9c9'];
     barSeries.xField = 'category';
     barSeries.yFields = ['value3'];

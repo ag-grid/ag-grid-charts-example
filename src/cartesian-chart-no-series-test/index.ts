@@ -20,7 +20,7 @@ const categoryData: CategoryDatum[] = [
 ];
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart<CategoryDatum, string, number>(
+    const chart = new CartesianChart(
         new CategoryAxis(),
         new NumberAxis()
     );
@@ -28,7 +28,7 @@ function createCategoryLineChart() {
     chart.height = 600;
 
     setTimeout(() => {
-        const lineSeries = new LineSeries<CategoryDatum, string, number>();
+        const lineSeries = new LineSeries();
         lineSeries.lineWidth = 4;
         chart.xAxis.labelRotation = 45;
         chart.addSeries(lineSeries);

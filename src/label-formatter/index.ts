@@ -4,12 +4,7 @@ import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import { toReadableNumber } from "ag-grid-enterprise/src/charts/util/number";
 
-type Datum = {
-    category: string,
-    value: number
-};
-
-const data1: Datum[] = [
+const data1 = [
     { category: '1', value: 0.0001234 },
     { category: '2', value: 0.0002234 },
     { category: '3', value: 0.0003234 },
@@ -20,7 +15,7 @@ const data1: Datum[] = [
     { category: '8', value: 0.0008234 }
 ];
 
-const data2: Datum[] = [
+const data2 = [
     { category: '1', value: 0.000001721 },
     { category: '2', value: 0.000002521 },
     { category: '3', value: 0.000003373 },
@@ -31,7 +26,7 @@ const data2: Datum[] = [
     { category: '8', value: 0.000008231 }
 ];
 
-const data3: Datum[] = [
+const data3 = [
     { category: '1', value: 0.000001721 },
     { category: '2', value: 0.0002521 },
     { category: '3', value: 0.00003373 },
@@ -42,19 +37,19 @@ const data3: Datum[] = [
     { category: '8', value: 0.00008231 }
 ];
 
-const data4: Datum[] = [
+const data4 = [
     { category: 'Ann', value: 65345897348 },
     { category: 'Joe', value: 43597234797 },
     { category: 'Bob', value: 33497234797 }
 ];
 
-const data5: Datum[] = [
+const data5 = [
     { category: 'Pat', value: 33497234 },
     { category: 'Rob', value: 65345897 },
     { category: 'Don', value: 43597234 },
 ];
 
-const data6: Datum[] = [
+const data6 = [
     { category: 'Amy', value: 65345 },
     { category: 'Don', value: 43597 },
     { category: 'Eve', value: 33497 }
@@ -84,7 +79,7 @@ function createCategoryLineChart() {
     dataDiv.style.width = '200px';
     parentDiv.appendChild(dataDiv);
 
-    const chart = new CartesianChart<Datum, string, number>(
+    const chart = new CartesianChart(
         new CategoryAxis(),
         new NumberAxis(),
         parentDiv
@@ -92,7 +87,7 @@ function createCategoryLineChart() {
     chart.width = 800;
     chart.height = 500;
 
-    const lineSeries = new LineSeries<Datum, string, number>();
+    const lineSeries = new LineSeries();
     chart.addSeries(lineSeries);
     lineSeries.tooltip = true;
     lineSeries.tooltipRenderer = params => {

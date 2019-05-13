@@ -4,14 +4,7 @@ import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import {Offset} from "ag-grid-enterprise/src/charts/scene/offset";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 
-type Datum = {
-    label: string,
-    value1: number,
-    value2: number,
-    value3: number
-};
-
-const data: Datum[] = [
+const data = [
     { label: 'John', value1: 3, value2: 7, value3: 5 },
     { label: 'Nige', value1: 7, value2: 8, value3: 4 },
     { label: 'Vicky', value1: 6, value2: 9, value3: 2 },
@@ -35,7 +28,7 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
     return button;
 }
 
-function makeChartResizeable(chart: Chart<any, any, any>) {
+function makeChartResizeable(chart: Chart) {
     let startX = 0;
     let startY = 0;
     let isDragging = false;
@@ -61,13 +54,13 @@ function makeChartResizeable(chart: Chart<any, any, any>) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new PolarChart<Datum, number, any>();
+    const chart = new PolarChart();
     chart.width = 700;
     chart.height = 700;
 
     const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 
-    const pieSeries1 = new PieSeries<Datum>();
+    const pieSeries1 = new PieSeries();
     chart.addSeries(pieSeries1);
     pieSeries1.data = data;
     pieSeries1.angleField = 'value1';
@@ -76,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries1.lineWidth = 1;
     pieSeries1.calloutWidth = 1;
 
-    const pieSeries2 = new PieSeries<Datum>();
+    const pieSeries2 = new PieSeries();
     chart.addSeries(pieSeries2);
     pieSeries2.data = data;
     pieSeries2.angleField = 'value2';
@@ -86,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries2.calloutWidth = 1;
     pieSeries2.showInLegend = false;
 
-    const pieSeries3 = new PieSeries<Datum>();
+    const pieSeries3 = new PieSeries();
     chart.addSeries(pieSeries3);
     pieSeries3.data = data;
     pieSeries3.angleField = 'value3';
@@ -96,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries3.calloutWidth = 1;
     pieSeries3.showInLegend = false;
 
-    const series = chart.series as PieSeries<Datum>[];
+    const series = chart.series as PieSeries[];
     const thickness = 40;
     const padding = 40;
     let offset = 0;

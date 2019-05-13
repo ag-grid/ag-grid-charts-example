@@ -99,7 +99,7 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
     return slider;
 }
 
-function makeChartResizeable(chart: Chart<any, any, any>) {
+function makeChartResizeable(chart: Chart) {
     let startX = 0;
     let startY = 0;
     let isDragging = false;
@@ -125,7 +125,7 @@ function makeChartResizeable(chart: Chart<any, any, any>) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new PolarChart<Datum, number, any>();
+    const chart = new PolarChart();
     chart.width = 800;
     chart.height = 400;
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';

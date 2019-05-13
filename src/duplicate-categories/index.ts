@@ -21,14 +21,14 @@ const data: CategoryDatum[] = [
 ];
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart<CategoryDatum, string, number>(
+    const chart = new CartesianChart(
         new CategoryAxis(),
         new NumberAxis()
     );
     chart.width = 800;
     chart.height = 500;
 
-    const lineSeries = new LineSeries<CategoryDatum, string, number>();
+    const lineSeries = new LineSeries();
     lineSeries.lineWidth = 4;
     lineSeries.data = data;
     lineSeries.xField = 'country';
@@ -40,14 +40,14 @@ function createCategoryLineChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart<CategoryDatum, string, number>(
+    const chart = new CartesianChart(
         new CategoryAxis(),
         new NumberAxis()
     );
     chart.width = 800;
     chart.height = 500;
 
-    const lineSeries = new BarSeries<CategoryDatum, string, number>();
+    const lineSeries = new BarSeries();
     lineSeries.lineWidth = 4;
     lineSeries.data = data;
     lineSeries.xField = 'country';
