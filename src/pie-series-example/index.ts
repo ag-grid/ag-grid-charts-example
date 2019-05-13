@@ -5,6 +5,8 @@ import { Offset } from "ag-grid-enterprise/src/charts/scene/offset";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
 
+import './app.css';
+
 type Datum = {
     label: string,
     value: number,

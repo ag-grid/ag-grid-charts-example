@@ -5,6 +5,8 @@ import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis"
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { material, nord } from "ag-grid-enterprise/src/charts/chart/palettes";
 
+import './app.css';
+
 type Datum = {
     category: string,
 

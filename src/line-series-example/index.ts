@@ -4,6 +4,8 @@ import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import {BarSeries} from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 
+import './app.css';
+
 type CategoryDatum = {
     category: string,
     value: number
