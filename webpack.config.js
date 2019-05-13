@@ -48,9 +48,12 @@ const moduleExports = examples.map(example => {
         module: {
             rules: [{
                 test: /\.(tsx?)|(js)$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-            }],
+                use: ['babel-loader'],
+                exclude: /node_modules/
+            }, {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            }]
         },
         plugins: [
             new HtmlWebpackPlugin({
