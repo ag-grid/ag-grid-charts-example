@@ -21,10 +21,11 @@ const data: CategoryDatum[] = [
 ];
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        parent: document.body,
+        xAxis: new CategoryAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.width = 800;
     chart.height = 500;
 
@@ -40,10 +41,11 @@ function createCategoryLineChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        parent: document.body,
+        xAxis: new CategoryAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.width = 800;
     chart.height = 500;
 

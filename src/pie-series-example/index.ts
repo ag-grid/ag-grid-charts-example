@@ -125,9 +125,11 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new PolarChart();
-    chart.width = 800;
-    chart.height = 400;
+    const chart = new PolarChart({
+        parent: document.body,
+        width: 800,
+        height: 400
+    });
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
 
     makeChartResizeable(chart);

@@ -173,10 +173,11 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
 
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        parent: document.body,
+        xAxis: new CategoryAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.width = document.body.clientWidth;
     chart.height = 600;
 
@@ -234,10 +235,11 @@ function createCategoryLineChart() {
 function createNumericLineChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart(
-        new NumberAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        parent: document.body,
+        xAxis: new NumberAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.width = 600;
     chart.height = 600;
 
@@ -350,10 +352,11 @@ function createNumericLineChart() {
 }
 
 function createMultiLineChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        parent: document.body,
+        xAxis: new CategoryAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.width = document.body.clientWidth;
     chart.height = 600;
     chart.xAxis.labelRotation = 90;

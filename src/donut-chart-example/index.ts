@@ -54,9 +54,11 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new PolarChart();
-    chart.width = 700;
-    chart.height = 700;
+    const chart = new PolarChart({
+        parent: document.body,
+        width: 700,
+        height: 700
+    });
 
     const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
 

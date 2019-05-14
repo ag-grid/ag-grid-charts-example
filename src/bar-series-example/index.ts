@@ -212,10 +212,11 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        parent: document.body,
+        xAxis: new CategoryAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.width = document.body.clientWidth;
     chart.height = document.body.clientHeight;
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
