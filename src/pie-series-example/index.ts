@@ -1,10 +1,9 @@
 import { PolarChart } from "ag-grid-enterprise/src/charts/chart/polarChart";
 import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
-import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
-import { Offset } from "ag-grid-enterprise/src/charts/scene/offset";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
-
+import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import { Offset } from "ag-grid-enterprise/src/charts/scene/offset";
 import './app.css';
 
 type Datum = {
@@ -128,36 +127,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart({
         parent: document.body,
         width: 800,
-        height: 400
+        height: 400,
+        series: [{
+            type: 'pie',
+            data,
+            innerRadiusOffset: -40,
+            angleField: 'value',
+            labelField: 'label',
+            label: true,
+            title: 'Mobile OSes',
+            lineWidth: 1,
+            calloutWidth: 1,
+            shadow: {
+                color: 'rgba(0,0,0,0.2)',
+                blur: 15
+            }
+        }, {
+            type: 'pie',
+            data: data2,
+            outerRadiusOffset: -80,
+            innerRadiusOffset: -120,
+            title: 'Users',
+            angleField: 'value',
+            labelField: 'label',
+            label: true
+        }]
     });
+
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
 
     makeChartResizeable(chart);
 
+    const allSeries = chart.series as PieSeries[];
+    const pieSeries = allSeries[0];
+    const pieSeries2 = allSeries[1];
+
     let backgroundColor = 'white';
-    const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
-
-    const pieSeries = new PieSeries<Datum>();
-    pieSeries.innerRadiusOffset = -40;
-    chart.addSeries(pieSeries);
-    pieSeries.data = data;
-    pieSeries.angleField = 'value';
-    pieSeries.labelField = 'label';
-    pieSeries.label = true;
-    pieSeries.title = 'Mobile OSes';
-    pieSeries.shadow = shadow;
-    pieSeries.lineWidth = 1;
-    pieSeries.calloutWidth = 1;
-
-    const pieSeries2 = new PieSeries<Datum>();
-    pieSeries2.outerRadiusOffset = -80;
-    pieSeries2.innerRadiusOffset = -120;
-    chart.addSeries(pieSeries2);
-    pieSeries2.data = data2;
-    pieSeries2.title = 'Users';
-    pieSeries2.angleField = 'value';
-    pieSeries2.labelField = 'label';
-    pieSeries2.label = true;
+    // const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+    //
+    // const pieSeries = new PieSeries();
+    // pieSeries.innerRadiusOffset = -40;
+    // chart.addSeries(pieSeries);
+    // pieSeries.data = data;
+    // pieSeries.angleField = 'value';
+    // pieSeries.labelField = 'label';
+    // pieSeries.label = true;
+    // pieSeries.title = 'Mobile OSes';
+    // pieSeries.shadow = shadow;
+    // pieSeries.lineWidth = 1;
+    // pieSeries.calloutWidth = 1;
+    //
+    // const pieSeries2 = new PieSeries();
+    // pieSeries2.outerRadiusOffset = -80;
+    // pieSeries2.innerRadiusOffset = -120;
+    // chart.addSeries(pieSeries2);
+    // pieSeries2.data = data2;
+    // pieSeries2.title = 'Users';
+    // pieSeries2.angleField = 'value';
+    // pieSeries2.labelField = 'label';
+    // pieSeries2.label = true;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -216,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.radiusField = 'other';
     });
     createButton('Remove radius field', () => {
-        pieSeries2.radiusField = undefined;
+        pieSeries2.radiusField = '';
     });
     createButton('Run other tests', () => {
         setTimeout(() => {
@@ -225,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
 
         setTimeout(() => {
-            pieSeries.labelField = undefined;
+            pieSeries.labelField = '';
         }, 4000);
 
         setTimeout(() => {

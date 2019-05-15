@@ -1,5 +1,4 @@
 import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import {CategoryAxis} from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import {BarSeries} from "ag-grid-enterprise/src/charts/chart/series/barSeries";
@@ -175,11 +174,11 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
 function createCategoryLineChart() {
     const chart = new CartesianChart({
         parent: document.body,
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
+        width: document.body.clientWidth,
+        height: 600,
+        xAxis: { type: 'category' },
+        yAxis: { type: 'number' }
     });
-    chart.width = document.body.clientWidth;
-    chart.height = 600;
 
     const lineSeries = new LineSeries();
     lineSeries.marker = true;
@@ -237,11 +236,11 @@ function createNumericLineChart() {
 
     const chart = new CartesianChart({
         parent: document.body,
-        xAxis: new NumberAxis(),
-        yAxis: new NumberAxis()
+        width: 600,
+        height: 600,
+        xAxis: { type: 'number' },
+        yAxis: { type: 'number' }
     });
-    chart.width = 600;
-    chart.height = 600;
 
     const lineSeries = new LineSeries();
     lineSeries.marker = true;
@@ -354,12 +353,11 @@ function createNumericLineChart() {
 function createMultiLineChart() {
     const chart = new CartesianChart({
         parent: document.body,
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
+        width: document.body.clientWidth,
+        height: 600,
+        xAxis: { type: 'category', labelRotation: 90 },
+        yAxis: { type: 'number' }
     });
-    chart.width = document.body.clientWidth;
-    chart.height = 600;
-    chart.xAxis.labelRotation = 90;
 
     const data = generateMultiValueData(10);
 

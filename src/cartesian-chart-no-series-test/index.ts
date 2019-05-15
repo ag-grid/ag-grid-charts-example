@@ -1,6 +1,4 @@
 import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import {CategoryAxis} from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 
 type CategoryDatum = {
@@ -22,11 +20,11 @@ const categoryData: CategoryDatum[] = [
 function createCategoryLineChart() {
     const chart = new CartesianChart({
         parent: document.body,
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
+        width: document.body.clientWidth,
+        height: 600,
+        xAxis: { type: 'category' },
+        yAxis: { type: 'number' }
     });
-    chart.width = document.body.clientWidth;
-    chart.height = 600;
 
     setTimeout(() => {
         const lineSeries = new LineSeries();

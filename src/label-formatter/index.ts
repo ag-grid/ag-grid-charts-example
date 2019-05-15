@@ -1,6 +1,4 @@
 import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import {CategoryAxis} from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import { toReadableNumber } from "ag-grid-enterprise/src/charts/util/number";
 
@@ -81,8 +79,8 @@ function createCategoryLineChart() {
 
     const chart = new CartesianChart({
         parent: parentDiv,
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis(),
+        xAxis: { type: 'category' },
+        yAxis: { type: 'number' },
     });
     chart.width = 800;
     chart.height = 500;

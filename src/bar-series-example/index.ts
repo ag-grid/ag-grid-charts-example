@@ -1,7 +1,5 @@
 import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { material, nord } from "ag-grid-enterprise/src/charts/chart/palettes";
 
@@ -214,11 +212,16 @@ function makeChartResizeable(chart: Chart) {
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new CartesianChart({
         parent: document.body,
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
+        width: document.body.clientWidth,
+        height: document.body.clientHeight,
+        xAxis: {
+            type: 'category',
+            labelRotation: 0
+        },
+        yAxis: {
+            type: 'number'
+        }
     });
-    chart.width = document.body.clientWidth;
-    chart.height = document.body.clientHeight;
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
 
     function addSeriesIf() {
