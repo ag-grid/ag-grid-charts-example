@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.labelMinAngle = v;
     });
 
-    createSlider('legendPosition', [LegendPosition.Right, LegendPosition.Bottom, LegendPosition.Left, LegendPosition.Top], v => {
+    createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;
     });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {

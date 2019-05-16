@@ -7,9 +7,9 @@ import {BarSeries} from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 
 function createPieChart() {
-    const chart = new PolarChart({
-        parent: document.body
-    });
+    const chart = new PolarChart();
+    chart.parent = document.body;
+
     const series = new PieSeries();
     series.data = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }];
     series.angleField = 'value';
@@ -17,11 +17,12 @@ function createPieChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart({
-        parent: document.body,
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
-    });
+    const chart = new CartesianChart(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.parent = document.body;
+
     const series = new BarSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];
     series.xField = 'x';
@@ -30,11 +31,12 @@ function createBarChart() {
 }
 
 function createLineChart() {
-    const chart = new CartesianChart({
-        parent: document.body,
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
-    });
+    const chart = new CartesianChart(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.parent = document.body;
+
     const series = new LineSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];
     series.xField = 'x';

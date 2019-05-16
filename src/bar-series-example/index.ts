@@ -384,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6], v => {
         barSeries.lineWidth = v;
     });
-    createSlider('legendPosition', [LegendPosition.Right, LegendPosition.Bottom, LegendPosition.Left, LegendPosition.Top], v => {
+    createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;
     });
     createSlider('legend font', ['12px sans-serif', '12px serif', '12px Snell Roundhand'], v => {
