@@ -1,4 +1,4 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { material, nord } from "ag-grid-enterprise/src/charts/chart/palettes";
@@ -210,7 +210,7 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new CartesianChart({
+    const chart = ChartBuilder.createCartesianChart({
         parent: document.body,
         width: document.body.clientWidth,
         height: document.body.clientHeight,

@@ -1,6 +1,8 @@
 import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import { toReadableNumber } from "ag-grid-enterprise/src/charts/util/number";
+import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 
 const data1 = [
     { category: '1', value: 0.0001234 },
@@ -77,11 +79,11 @@ function createCategoryLineChart() {
     dataDiv.style.width = '200px';
     parentDiv.appendChild(dataDiv);
 
-    const chart = new CartesianChart({
-        parent: parentDiv,
-        xAxis: { type: 'category' },
-        yAxis: { type: 'number' },
-    });
+    const chart = new CartesianChart(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.parent = parentDiv;
     chart.width = 800;
     chart.height = 500;
 

@@ -1,6 +1,8 @@
 import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
+import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 
 import './app.css';
 
@@ -19,13 +21,13 @@ const data: CategoryDatum[] = [
 ];
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart({
-        parent: document.body,
-        width: 800,
-        height: 500,
-        xAxis: { type: 'category' },
-        yAxis: { type: 'number' }
-    });
+    const chart = new CartesianChart(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 500;
 
     const lineSeries = new LineSeries();
     lineSeries.lineWidth = 4;
@@ -39,22 +41,21 @@ function createCategoryLineChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart({
-        parent: document.body,
-        width: 800,
-        height: 500,
-        xAxis: { type: 'category' },
-        yAxis: { type: 'number' }
-    });
+    const chart = new CartesianChart(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 500;
 
-    const lineSeries = new BarSeries({
-        data,
-        lineWidth: 4,
-        xField: 'country',
-        yFields: ['value', 'other'],
-        yFieldNames: ['Countries', 'Whatever'],
-        tooltip: true
-    });
+    const lineSeries = new BarSeries();
+    lineSeries.lineWidth = 4;
+    lineSeries.data = data;
+    lineSeries.xField = 'country';
+    lineSeries.yFields = ['value', 'other'];
+    lineSeries.yFieldNames = ['Countries', 'Whatever'];
+    lineSeries.tooltip = true;
 
     chart.series = [lineSeries];
 }

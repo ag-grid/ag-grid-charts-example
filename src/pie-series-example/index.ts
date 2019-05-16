@@ -1,9 +1,8 @@
-import { PolarChart } from "ag-grid-enterprise/src/charts/chart/polarChart";
+import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
-import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
-import { Offset } from "ag-grid-enterprise/src/charts/scene/offset";
+
 import './app.css';
 
 type Datum = {
@@ -13,23 +12,23 @@ type Datum = {
 };
 
 const data: Datum[] = [
-    { label: 'Android', value: 56.9, other: 7 },
-    { label: 'iOS', value: 22.5, other: 8 },
-    { label: 'BlackBerry', value: 6.8, other: 9 },
-    { label: 'Symbian', value: 8.5, other: 10 },
-    { label: 'Bada', value: 2.6, other: 11 },
-    { label: 'Windows', value: 1.9, other: 12 }
+    {label: 'Android', value: 56.9, other: 7},
+    {label: 'iOS', value: 22.5, other: 8},
+    {label: 'BlackBerry', value: 6.8, other: 9},
+    {label: 'Symbian', value: 8.5, other: 10},
+    {label: 'Bada', value: 2.6, other: 11},
+    {label: 'Windows', value: 1.9, other: 12}
 ];
 
 const data2: Datum[] = [
-    { label: 'Nigel', value: 7, other: 8 },
-    { label: 'Lucy', value: 6, other: 9 },
-    { label: 'Rick', value: 4, other: 10 },
-    { label: 'Barbara', value: 3, other: 8 },
-    { label: 'John', value: 3, other: 7 },
-    { label: 'Ben', value: 5, other: 12 },
-    { label: 'Maria', value: 3, other: 10 },
-    { label: 'Vicky', value: 8, other: 11 }
+    {label: 'Nigel', value: 7, other: 8},
+    {label: 'Lucy', value: 6, other: 9},
+    {label: 'Rick', value: 4, other: 10},
+    {label: 'Barbara', value: 3, other: 8},
+    {label: 'John', value: 3, other: 7},
+    {label: 'Ben', value: 5, other: 12},
+    {label: 'Maria', value: 3, other: 10},
+    {label: 'Vicky', value: 8, other: 11}
 ];
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
@@ -124,7 +123,7 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = new PolarChart({
+    const chart = ChartBuilder.createPolarChart({
         parent: document.body,
         width: 800,
         height: 400,
@@ -190,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({ fileName: 'pie-chart', background: backgroundColor });
+        chart.scene.download({fileName: 'pie-chart', background: backgroundColor});
     });
     createButton('Show tooltips', () => {
         pieSeries.tooltip = true;

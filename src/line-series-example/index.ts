@@ -1,7 +1,8 @@
-import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import {NumberAxis} from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import {BarSeries} from "ag-grid-enterprise/src/charts/chart/series/barSeries";
+import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
+import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 
 import './app.css';
 
@@ -23,14 +24,14 @@ type MultiValue = {
 };
 
 const categoryData: CategoryDatum[] = [
-    { category: 'John', value: 3 },
-    { category: 'Nige', value: 7 },
-    { category: 'Vicky', value: 6 },
-    { category: 'Rick', value: 4 },
-    { category: 'Lucy', value: 8 },
-    { category: 'Ben', value: 5 },
-    { category: 'Barbara', value: 6 },
-    { category: 'Maria', value: 3 }
+    {category: 'John', value: 3},
+    {category: 'Nige', value: 7},
+    {category: 'Vicky', value: 6},
+    {category: 'Rick', value: 4},
+    {category: 'Lucy', value: 8},
+    {category: 'Ben', value: 5},
+    {category: 'Barbara', value: 6},
+    {category: 'Maria', value: 3}
 ];
 
 function generateCategoryData(n = 50): CategoryDatum[] {
@@ -172,13 +173,12 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
 
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart({
-        parent: document.body,
-        width: document.body.clientWidth,
-        height: 600,
-        xAxis: { type: 'category' },
-        yAxis: { type: 'number' }
-    });
+    const chart = new CartesianChart(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.width = document.body.clientWidth;
+    chart.height = 600;
 
     const lineSeries = new LineSeries();
     lineSeries.marker = true;
@@ -198,7 +198,7 @@ function createCategoryLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({ fileName: 'chart' });
+        chart.scene.download({fileName: 'chart'});
     });
 
     createButton('Change data', () => {
@@ -234,13 +234,13 @@ function createCategoryLineChart() {
 function createNumericLineChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart({
-        parent: document.body,
-        width: 600,
-        height: 600,
-        xAxis: { type: 'number' },
-        yAxis: { type: 'number' }
-    });
+    const chart = new CartesianChart(
+        new NumberAxis(),
+        new NumberAxis()
+    );
+    chart.parent = document.body;
+    chart.width = 600;
+    chart.height = 600;
 
     const lineSeries = new LineSeries();
     lineSeries.marker = true;
@@ -255,7 +255,7 @@ function createNumericLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({ fileName: 'chart' });
+        chart.scene.download({fileName: 'chart'});
     });
 
     createButton('Math.log data', () => {
@@ -294,6 +294,7 @@ function createNumericLineChart() {
                 chart.onLayoutDone = undefined;
             }
         }
+
         nextFrame();
     });
 
@@ -320,6 +321,7 @@ function createNumericLineChart() {
                 chart.onLayoutDone = undefined;
             }
         }
+
         nextFrame();
     });
 
@@ -351,13 +353,14 @@ function createNumericLineChart() {
 }
 
 function createMultiLineChart() {
-    const chart = new CartesianChart({
-        parent: document.body,
-        width: document.body.clientWidth,
-        height: 600,
-        xAxis: { type: 'category', labelRotation: 90 },
-        yAxis: { type: 'number' }
-    });
+    const chart = new CartesianChart(
+        new CategoryAxis(),
+        new NumberAxis()
+    );
+    chart.parent = document.body;
+    chart.width = document.body.clientWidth;
+    chart.height = 600;
+    chart.xAxis.labelRotation = 90;
 
     const data = generateMultiValueData(10);
 
@@ -404,7 +407,7 @@ function createMultiLineChart() {
     saveImageButton.textContent = 'Save Chart Image';
     document.body.appendChild(saveImageButton);
     saveImageButton.addEventListener('click', () => {
-        chart.scene.download({ fileName: 'chart' });
+        chart.scene.download({fileName: 'chart'});
     });
 
     const changeDataButton = document.createElement('button');
@@ -424,6 +427,7 @@ function createMultiLineChart() {
         let index = 0;
 
         chart.onLayoutDone = nextFrame;
+
         function nextFrame() {
             data.push({
                 category: 'A' + (++index),
@@ -441,6 +445,7 @@ function createMultiLineChart() {
                 chart.onLayoutDone = undefined;
             }
         }
+
         nextFrame();
     });
 
