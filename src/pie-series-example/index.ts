@@ -123,12 +123,11 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = ChartBuilder.createPolarChart({
+    const chart = ChartBuilder.createPieChart({
         parent: document.body,
         width: 800,
         height: 400,
         series: [{
-            type: 'pie',
             data,
             innerRadiusOffset: -40,
             angleField: 'value',
@@ -142,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 blur: 15
             }
         }, {
-            type: 'pie',
             data: data2,
             outerRadiusOffset: -80,
             innerRadiusOffset: -120,
