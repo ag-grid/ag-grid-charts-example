@@ -366,24 +366,24 @@ function createMultiLineChart() {
 
     const lineSeries1 = new LineSeries();
     lineSeries1.lineWidth = 4;
-    lineSeries1.color = '#f3622d';
+    lineSeries1.fill = '#f3622d';
     lineSeries1.xField = 'category';
     lineSeries1.yField = 'value1';
 
     const lineSeries2 = new LineSeries();
     lineSeries2.lineWidth = 4;
-    lineSeries2.color = '#fba71b';
+    lineSeries2.fill = '#fba71b';
     lineSeries2.xField = 'category';
     lineSeries2.yField = 'value2';
 
     const lineSeries3 = new LineSeries();
     lineSeries3.lineWidth = 4;
-    lineSeries3.color = '#57b757';
+    lineSeries3.fill = '#57b757';
     lineSeries3.xField = 'category';
     lineSeries3.yField = 'value3';
 
     const barSeries = new BarSeries();
-    barSeries.colors = ['#41a9c9'];
+    barSeries.fills = ['#41a9c9'];
     barSeries.xField = 'category';
     barSeries.yFields = ['value3'];
 

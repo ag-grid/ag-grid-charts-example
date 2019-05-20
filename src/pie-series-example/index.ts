@@ -269,8 +269,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             pieSeries2.radiusField = 'other';
-            pieSeries2.strokeStyle = 'white';
-            pieSeries2.calloutColor = 'black';
+            pieSeries2.strokes = ['white'];
+            pieSeries2.calloutColors = ['black'];
             pieSeries2.lineWidth = 3;
             pieSeries2.calloutWidth = 1;
         }, 12000);
@@ -298,8 +298,8 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('innerRadiusOffset', [-120, 0], v => {
         pieSeries2.innerRadiusOffset = v;
     });
-    createSlider('calloutColor', [null, 'red', 'green', 'blue', 'rgba(0,0,0,0)'], v => {
-        pieSeries2.calloutColor = v;
+    createSlider('calloutColor', ['red', 'green', 'blue', 'rgba(0,0,0,0)'], v => {
+        pieSeries2.calloutColors = [v];
     });
     createSlider('calloutWidth', [2, 3, 4, 5, 6], v => {
         pieSeries2.calloutWidth = v;
