@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.xField = 'category';
     barSeries.yFields = ['q1Actual'];
     barSeries.data = data;
-    barSeries.fills = material;
+    barSeries.fills = material.fills;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -341,19 +341,19 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.removeAllSeries();
     });
     createButton('Borneo colors', () => {
-        barSeries.fills = borneo;
+        barSeries.fills = borneo.fills;
     });
     createButton('Material colors', () => {
-        barSeries.fills = material;
+        barSeries.fills = material.fills;
     });
     createButton('Pastel colors', () => {
-        barSeries.fills = pastel;
+        barSeries.fills = pastel.fills;
     });
     createButton('Bright colors', () => {
-        barSeries.fills = bright;
+        barSeries.fills = bright.fills;
     });
     createButton('Flat colors', () => {
-        barSeries.fills = flat;
+        barSeries.fills = flat.fills;
     });
     createButton('Light theme', () => {
         chart.xAxis.labelColor = 'black';

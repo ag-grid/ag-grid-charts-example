@@ -303,11 +303,11 @@ class MiniStackedBar extends MiniChart {
     }
 }
 
-const miniPie = new MiniPie(document.body, palettes[0]);
-const miniDonut = new MiniDonut(document.body, palettes[0]);
-const miniLine = new MiniLine(document.body, palettes[0]);
-const miniBar = new MiniBar(document.body, palettes[0]);
-const miniStackedBar = new MiniStackedBar(document.body, palettes[0]);
+const miniPie = new MiniPie(document.body, palettes[0].fills);
+const miniDonut = new MiniDonut(document.body, palettes[0].fills);
+const miniLine = new MiniLine(document.body, palettes[0].fills);
+const miniBar = new MiniBar(document.body, palettes[0].fills);
+const miniStackedBar = new MiniStackedBar(document.body, palettes[0].fills);
 
 document.body.appendChild(document.createElement('br'));
 
@@ -316,16 +316,17 @@ createButton('Next', () => {
     if (i < palettes.length - 2) {
         i++;
     }
-    miniPie.updateColors(palettes[i]);
-    miniDonut.updateColors(palettes[i]);
-    miniLine.updateColors(palettes[i]);
-    miniBar.updateColors(palettes[i]);
-    miniStackedBar.updateColors(palettes[i]);
+    const fills = palettes[i].fills;
+    miniPie.updateColors(fills);
+    miniDonut.updateColors(fills);
+    miniLine.updateColors(fills);
+    miniBar.updateColors(fills);
+    miniStackedBar.updateColors(fills);
 });
 
 function createSwatches() {
     return palettes.map(palette => {
-        let divs = palette.slice(0, 6).map(color => {
+        let divs = palette.fills.slice(0, 6).map(color => {
             return `<div style="width: 24px; height: 24px; background: ${color}; margin: 2px;"></div>`;
         }).join('');
         return `<div class="swatch" style="padding: 5px; border: 1px solid gray; border-radius: 4px; margin: 5px; display: inline-flex;">${divs}</div>`;
