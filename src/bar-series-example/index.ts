@@ -1,7 +1,12 @@
 import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
-import { material, nord } from "ag-grid-enterprise/src/charts/chart/palettes";
+import borneo, {
+    bright,
+    flat,
+    material,
+    pastel,
+} from "ag-grid-enterprise/src/charts/chart/palettes";
 
 import './app.css';
 
@@ -335,11 +340,20 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Remove all series', () => {
         chart.removeAllSeries();
     });
+    createButton('Borneo colors', () => {
+        barSeries.fills = borneo;
+    });
     createButton('Material colors', () => {
         barSeries.fills = material;
     });
-    createButton('Nord colors', () => {
-        barSeries.fills = nord;
+    createButton('Pastel colors', () => {
+        barSeries.fills = pastel;
+    });
+    createButton('Bright colors', () => {
+        barSeries.fills = bright;
+    });
+    createButton('Flat colors', () => {
+        barSeries.fills = flat;
     });
     createButton('Light theme', () => {
         chart.xAxis.labelColor = 'black';
