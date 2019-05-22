@@ -217,8 +217,8 @@ function makeChartResizeable(chart: Chart) {
 document.addEventListener('DOMContentLoaded', () => {
     const chart = ChartBuilder.createCartesianChart({
         parent: document.body,
-        width: document.body.clientWidth,
-        height: document.body.clientHeight,
+        width: 800,
+        height: 500,
         xAxis: {
             type: 'category',
             labelRotation: 0

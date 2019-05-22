@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             innerRadiusOffset: -40,
             angleField: 'value',
             labelField: 'label',
-            label: true,
+            labelEnabled: true,
             title: 'Mobile OSes',
             lineWidth: 1,
             calloutWidth: 1,
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Users',
             angleField: 'value',
             labelField: 'label',
-            label: true
+            labelEnabled: true
         }]
     });
 
@@ -212,12 +212,12 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.tooltipRenderer = undefined;
     });
     createButton('Show labels', () => {
-        pieSeries.label = true;
-        pieSeries2.label = true;
+        pieSeries.labelEnabled = true;
+        pieSeries2.labelEnabled = true;
     });
     createButton('Hide labels', () => {
-        pieSeries.label = false;
-        pieSeries2.label = false;
+        pieSeries.labelEnabled = false;
+        pieSeries2.labelEnabled = false;
     });
     createButton('Set series name', () => {
         pieSeries.title = 'Super series';
