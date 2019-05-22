@@ -190,12 +190,12 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.scene.download({fileName: 'pie-chart', background: backgroundColor});
     });
     createButton('Show tooltips', () => {
-        pieSeries.tooltip = true;
-        pieSeries2.tooltip = true;
+        pieSeries.tooltipEnabled = true;
+        pieSeries2.tooltipEnabled = true;
     });
     createButton('Hide tooltips', () => {
-        pieSeries.tooltip = false;
-        pieSeries2.tooltip = false;
+        pieSeries.tooltipEnabled = false;
+        pieSeries2.tooltipEnabled = false;
     });
     createButton('Use tooltip renderer', () => {
         pieSeries.tooltipRenderer = params => {

@@ -89,7 +89,7 @@ function createCategoryLineChart() {
 
     const lineSeries = new LineSeries();
     chart.addSeries(lineSeries);
-    lineSeries.tooltip = true;
+    lineSeries.tooltipEnabled = true;
     lineSeries.tooltipRenderer = params => {
         if (params.datum[params.xField] === 'Rick') {
             return ''; // don't show tooltip for this guy

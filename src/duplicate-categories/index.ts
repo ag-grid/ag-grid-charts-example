@@ -34,7 +34,7 @@ function createCategoryLineChart() {
     lineSeries.data = data;
     lineSeries.xField = 'country';
     lineSeries.yField = 'value';
-    lineSeries.tooltip = true;
+    lineSeries.tooltipEnabled = true;
     lineSeries.title = 'Countries';
 
     chart.series = [lineSeries];
@@ -55,7 +55,7 @@ function createBarChart() {
     lineSeries.xField = 'country';
     lineSeries.yFields = ['value', 'other'];
     lineSeries.yFieldNames = ['Countries', 'Whatever'];
-    lineSeries.tooltip = true;
+    lineSeries.tooltipEnabled = true;
 
     chart.series = [lineSeries];
 }

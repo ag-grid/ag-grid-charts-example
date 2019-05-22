@@ -184,7 +184,7 @@ function createCategoryLineChart() {
     lineSeries.marker = true;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
-    lineSeries.tooltip = true;
+    lineSeries.tooltipEnabled = true;
     lineSeries.tooltipRenderer = params => {
         if (params.datum[params.xField] === 'Rick') {
             return ''; // don't show tooltip for this guy

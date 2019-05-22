@@ -322,10 +322,10 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFieldNames = [];
     });
     createButton('Show tooltips', () => {
-        barSeries.tooltip = true;
+        barSeries.tooltipEnabled = true;
     });
     createButton('Hide tooltips', () => {
-        barSeries.tooltip = false;
+        barSeries.tooltipEnabled = false;
     });
     createButton('Use tooltip renderer', () => {
         barSeries.tooltipRenderer = params => {
