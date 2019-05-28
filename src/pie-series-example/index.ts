@@ -2,6 +2,7 @@ import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartB
 import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
+import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
 
 import './app.css';
 
@@ -151,6 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }]
     });
 
+    chart.title = Caption.create('Market Share of Mobile Operating Systems', 'bold 16px Verdana, sans-serif');
+    chart.subtitle = Caption.create('Source: www.statista.com', 'italic 12px Verdana, sans-serif');
+
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
 
     makeChartResizeable(chart);
@@ -278,19 +282,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.appendChild(document.createElement('br'));
 
-    createButton('Light theme', () => {
-        const labelColor = 'black';
+    function changeTheme(labelColor: string, bgColor: string) {
         chart.legend.labelColor = labelColor;
         pieSeries.labelColor = labelColor;
         pieSeries2.labelColor = labelColor;
-        document.body.style.backgroundColor = backgroundColor = 'white';
+        if (chart.title) {
+            chart.title.color = labelColor;
+        }
+        if (chart.subtitle) {
+            chart.subtitle.color = labelColor;
+        }
+        document.body.style.backgroundColor = backgroundColor = bgColor;
+    }
+
+    createButton('Light theme', () => {
+        changeTheme('black', 'white');
     });
     createButton('Dark theme', () => {
-        const labelColor = 'rgb(221, 221, 221)';
-        chart.legend.labelColor = labelColor;
-        pieSeries.labelColor = labelColor;
-        pieSeries2.labelColor = labelColor;
-        document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
+        changeTheme('rgb(221, 221, 221)', '#1e1e1e');
     });
 
     document.body.appendChild(document.createElement('br'));
@@ -359,6 +368,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createSlider('legendLabelColor', ['black', 'red', 'gold', 'green'], v => {
         chart.legend.labelColor = v;
+    });
+    createSlider('title color', ['black', 'red', 'gold', 'green'], v => {
+        if (chart.title) {
+            chart.title.color = v;
+        }
+    });
+    createSlider('title font', [
+        'bold 10px Verdana, sans-serif',
+        'bold 13px Verdana, sans-serif',
+        'bold 16px Verdana, sans-serif',
+        'bold 19px Verdana, sans-serif',
+        'bold 22px Verdana, sans-serif',
+        'bold 25px Verdana, sans-serif'
+    ], v => {
+        if (chart.title) {
+            chart.title.font = v;
+        }
+    });
+    createSlider('subtitle font', [
+        'italic 10px Verdana, sans-serif',
+        'italic 12px Verdana, sans-serif',
+        'italic 14px Verdana, sans-serif',
+        'italic 16px Verdana, sans-serif',
+        'italic 18px Verdana, sans-serif',
+        'italic 20px Verdana, sans-serif'
+    ], v => {
+        if (chart.subtitle) {
+            chart.subtitle.font = v;
+        }
+    });
+    createSlider('title/subtitle enabled', [[true, true], [true, false], [false, true], [false, false]], v => {
+        const [titleEnabled, subtitleEnabled] = v;
+        if (chart.title) {
+            chart.title.enabled = titleEnabled;
+        }
+        if (chart.subtitle) {
+            chart.subtitle.enabled = subtitleEnabled;
+        }
     });
     createSlider('legendMarkerPadding', [8, 12, 16, 20, 24], v => {
         chart.legend.markerPadding = v;

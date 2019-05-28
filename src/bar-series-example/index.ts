@@ -1,6 +1,7 @@
 import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
+import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
 import borneo, {
     bright,
     flat,
@@ -219,6 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
         parent: document.body,
         width: 800,
         height: 500,
+        title: {
+            text: 'Beverage Expenses'
+        },
+        subtitle: {
+            text: 'per quarter'
+        },
         xAxis: {
             type: 'category',
             labelRotation: 0
@@ -227,6 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'number'
         }
     });
+    // chart.title = Caption.create('Beverage Expenses', 'bold 16px Verdana, sans-serif');
+    // chart.subtitle = Caption.create('per quarter', '12px Verdana, sans-serif');
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
 
     function addSeriesIf() {
@@ -371,24 +380,42 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.yAxis.update();
 
         chart.legend.labelColor = 'black';
+
+        if (chart.title) {
+            chart.title.color = 'black';
+        }
+        if (chart.subtitle) {
+            chart.subtitle.color = 'black';
+        }
+
         document.body.style.backgroundColor = backgroundColor = 'white';
     });
     createButton('Dark theme', () => {
-        chart.xAxis.labelColor = 'rgb(221, 221, 221)';
+        const labelColor = 'rgb(221, 221, 221)';
+
+        chart.xAxis.labelColor = labelColor;
         chart.xAxis.gridStyle = [{
             strokeStyle: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
         chart.xAxis.update();
 
-        chart.yAxis.labelColor = 'rgb(221, 221, 221)';
+        chart.yAxis.labelColor = labelColor;
         chart.yAxis.gridStyle = [{
             strokeStyle: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
         chart.yAxis.update();
 
-        chart.legend.labelColor = 'rgb(221, 221, 221)';
+        chart.legend.labelColor = labelColor;
+
+        if (chart.title) {
+            chart.title.color = labelColor;
+        }
+        if (chart.subtitle) {
+            chart.subtitle.color = labelColor;
+        }
+
         document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
     });
     createButton('No y-fields', () => {
