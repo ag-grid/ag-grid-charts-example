@@ -15,15 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     arcGroup.scalingX = 1.2;
 
     const arc = Arc.create(250, 150, 100, 50, toRadians(90), toRadians(350));
-    arc.strokeStyle = 'red';
+    arc.stroke = 'red';
     arc.type = ArcType.Chord;
 
     const arc2 = Arc.create(500, 200, 80, 150, 0, toRadians(120));
-    arc2.strokeStyle = 'red';
+    arc2.stroke = 'red';
     arc2.type = ArcType.Chord;
 
     const arc3 = Arc.create(300, 50, 30);
-    arc3.strokeStyle = 'red';
+    arc3.stroke = 'red';
     arc3.type = ArcType.Chord;
 
     rootGroup.append([pimpGroup, arc2]);

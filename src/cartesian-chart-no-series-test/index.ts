@@ -28,7 +28,7 @@ function createCategoryLineChart() {
 
     setTimeout(() => {
         const lineSeries = new LineSeries();
-        lineSeries.lineWidth = 4;
+        lineSeries.strokeWidth = 4;
         chart.xAxis.labelRotation = 45;
         chart.addSeries(lineSeries);
         lineSeries.data = categoryData;

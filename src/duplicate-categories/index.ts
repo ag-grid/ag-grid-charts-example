@@ -30,7 +30,7 @@ function createCategoryLineChart() {
     chart.height = 500;
 
     const lineSeries = new LineSeries();
-    lineSeries.lineWidth = 4;
+    lineSeries.strokeWidth = 4;
     lineSeries.data = data;
     lineSeries.xField = 'country';
     lineSeries.yField = 'value';
@@ -50,7 +50,7 @@ function createBarChart() {
     chart.height = 500;
 
     const lineSeries = new BarSeries();
-    lineSeries.lineWidth = 4;
+    lineSeries.strokeWidth = 4;
     lineSeries.data = data;
     lineSeries.xField = 'country';
     lineSeries.yFields = ['value', 'other'];

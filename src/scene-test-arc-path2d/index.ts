@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         arc.y = Math.random() * height;
         arc.radius = 7;
         arc.endAngle = 3 * Math.PI / 2;
-        arc.fillStyle = 'red';
-        arc.strokeStyle = 'black';
-        arc.lineWidth = 3;
+        arc.fill = 'red';
+        arc.stroke = 'black';
+        arc.strokeWidth = 3;
         arcs.push(arc);
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);

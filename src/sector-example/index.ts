@@ -13,9 +13,9 @@ function testSector() {
     const rootGroup = new Group();
 
     const sector1 = new Sector();
-    sector1.fillStyle = borneo.fills[0];
-    sector1.strokeStyle = borneo.strokes[0];
-    sector1.lineWidth = 2;
+    sector1.fill = borneo.fills[0];
+    sector1.stroke = borneo.strokes[0];
+    sector1.strokeWidth = 2;
     sector1.centerX = 200;
     sector1.centerY = 200;
     sector1.innerRadius = 50;
@@ -23,14 +23,14 @@ function testSector() {
     sector1.endAngle = Math.PI * 3 / 4;
 
     const sector2 = Sector.create(200, 200, 50, 100, Math.PI * 3 / 4, Math.PI * 4 / 3);
-    sector2.fillStyle = borneo.fills[1];
-    sector2.strokeStyle = borneo.strokes[1];
-    sector2.lineWidth = 2;
+    sector2.fill = borneo.fills[1];
+    sector2.stroke = borneo.strokes[1];
+    sector2.strokeWidth = 2;
 
     const sector3 = new Sector();
-    sector3.fillStyle = borneo.fills[2];
-    sector3.strokeStyle = borneo.strokes[2];
-    sector3.lineWidth = 2;
+    sector3.fill = borneo.fills[2];
+    sector3.stroke = borneo.strokes[2];
+    sector3.strokeWidth = 2;
     sector3.centerX = 200;
     sector3.centerY = 200;
     sector3.innerRadius = 50;

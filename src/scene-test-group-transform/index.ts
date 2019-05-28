@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
     arc.centerY = 100;
     arc.radiusX = 30;
     arc.radiusY = 20;
-    arc.fillStyle = 'red';
-    arc.strokeStyle = 'black';
+    arc.fill = 'red';
+    arc.stroke = 'black';
     arc.type = ArcType.Chord;
 
     const rect = Rect.create(200, 100, 50, 50);
-    rect.fillStyle = 'red';
-    rect.strokeStyle = 'black';
+    rect.fill = 'red';
+    rect.stroke = 'black';
 
     group.append([arc, rect]);
     // The order of transformation doesn't matter here.

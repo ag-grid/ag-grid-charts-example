@@ -43,10 +43,10 @@ function testClipRect() {
 
     const arc1 = Arc.create(50, 50, 50);
     arc1.type = ArcType.Chord;
-    arc1.fillStyle = 'red';
+    arc1.fill = 'red';
 
     const arc2 = Arc.create(200, 100, 100);
-    arc2.fillStyle = 'lime';
+    arc2.fill = 'lime';
     arc2.type = ArcType.Chord;
     arc2.opacity = 0.7;
 
@@ -104,7 +104,7 @@ function testClipRectSelection() {
             arc.radiusY = 100;
             arc.startAngle = 0;
             arc.endAngle = Math.PI * 2;
-            arc.fillStyle = 'lime';
+            arc.fill = 'lime';
             arc.opacity = 0.7;
             arc.type = ArcType.Chord;
         });

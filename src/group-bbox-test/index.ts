@@ -23,13 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const parentGroup = new Group();
 
     const rect = Rect.create(100, 50, 150, 150);
-    rect.fillStyle = 'blue';
+    rect.fill = 'blue';
     rect.rotation = Math.PI / 9;
     rect.translationX = 100;
     group.append(rect);
 
     const arc = Arc.create(300, 200, 130, 100);
-    arc.fillStyle = 'orange';
+    arc.fill = 'orange';
     arc.type = ArcType.Chord;
 
     const text = new Text();

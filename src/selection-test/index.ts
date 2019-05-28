@@ -31,12 +31,12 @@ function test_append_setDatum_attr_each() {
         .attr('y', 20)
         .attr('width', 30)
         .attr('height', 30)
-        .attr('fillStyle', 'red')
-        .attr('strokeStyle', 'blue')
-        .attrFn('lineWidth', (_, datum) => Math.sqrt(datum));
+        .attr('fill', 'red')
+        .attr('stroke', 'blue')
+        .attrFn('strokeWidth', (_, datum) => Math.sqrt(datum));
 
     console.assert(rootGroup.countChildren() === 1);
-    console.assert((rootGroup.children[0] as Rect).fillStyle === 'red');
+    console.assert((rootGroup.children[0] as Rect).fill === 'red');
 
 
     rootSelection.append(Rect).setDatum(16)
@@ -45,13 +45,13 @@ function test_append_setDatum_attr_each() {
             rect.y = 40;
             rect.width = 30;
             rect.height = 30;
-            rect.fillStyle = 'magenta';
-            rect.strokeStyle = 'black';
-            rect.lineWidth = Math.sqrt(datum);
+            rect.fill = 'magenta';
+            rect.stroke = 'black';
+            rect.strokeWidth = Math.sqrt(datum);
         });
 
     console.assert(rootGroup.countChildren() === 2);
-    console.assert((rootGroup.children[1] as Rect).fillStyle === 'magenta');
+    console.assert((rootGroup.children[1] as Rect).fill === 'magenta');
 
     scene.parent = null;
 }
@@ -72,15 +72,15 @@ function test_selectAll_setData_enter() {
             rect.y = 50;
             rect.width = 50;
             rect.height = 50;
-            rect.fillStyle = 'lime';
-            rect.strokeStyle = 'orange';
-            rect.lineWidth = datum;
+            rect.fill = 'lime';
+            rect.stroke = 'orange';
+            rect.strokeWidth = datum;
         });
 
     console.assert(rootGroup.countChildren() === 4);
 
     rootGroup.children.forEach((value, index) => {
-        console.assert((value as Rect).lineWidth === index + 1);
+        console.assert((value as Rect).strokeWidth === index + 1);
         console.assert((value as Rect).x === index * 80);
     });
 
@@ -107,9 +107,9 @@ function test_call_merge() {
             rect.y = 100;
             rect.width = 50;
             rect.height = 50;
-            rect.fillStyle = 'cyan';
-            rect.strokeStyle = 'blue';
-            rect.lineWidth = datum;
+            rect.fill = 'cyan';
+            rect.stroke = 'blue';
+            rect.strokeWidth = datum;
         });
     }
 
@@ -119,9 +119,9 @@ function test_call_merge() {
             rect.y = 150;
             rect.width = 50;
             rect.height = 50;
-            rect.fillStyle = 'gold';
-            rect.strokeStyle = 'orange';
-            rect.lineWidth = datum * 2;
+            rect.fill = 'gold';
+            rect.stroke = 'orange';
+            rect.strokeWidth = datum * 2;
         });
     }
 
@@ -131,8 +131,8 @@ function test_call_merge() {
 
     rootGroup.children.forEach((value, index) => {
         console.assert((value as Rect).x === index * 80);
-        console.assert((value as Rect).fillStyle === 'cyan');
-        console.assert((value as Rect).lineWidth === index + 1);
+        console.assert((value as Rect).fill === 'cyan');
+        console.assert((value as Rect).strokeWidth === index + 1);
     });
 
     {
@@ -148,7 +148,7 @@ function test_call_merge() {
 
     rootGroup.children.forEach((value, index) => {
         console.assert((value as Rect).x === index * 70);
-        console.assert((value as Rect).lineWidth === (index + 1) * 2);
+        console.assert((value as Rect).strokeWidth === (index + 1) * 2);
     });
 
     console.assert(rootGroup.countChildren() === 6);
@@ -165,7 +165,7 @@ function test_call_merge() {
 
         rootGroup.children.forEach((value, index) => {
             console.assert((value as Rect).x === index * 80);
-            console.assert((value as Rect).lineWidth === (value as Rect).datum as number);
+            console.assert((value as Rect).strokeWidth === (value as Rect).datum as number);
         });
     }
 

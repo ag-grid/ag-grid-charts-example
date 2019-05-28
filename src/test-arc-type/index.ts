@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 100, 80, 80, toRadians(0), toRadians(270));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'red';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'red';
+        arc.strokeWidth = 5;
         // arc.type = ArcType.Open; // default
         rootGroup.append(arc);
 
@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 100, 80, 80, toRadians(0), toRadians(270));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'green';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'green';
+        arc.strokeWidth = 5;
         arc.translationX = 200;
         arc.type = ArcType.Chord;
         rootGroup.append(arc);
@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 100, 80, 80, toRadians(0), toRadians(270));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'blue';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'blue';
+        arc.strokeWidth = 5;
         arc.translationX = 400;
         arc.type = ArcType.Round;
         rootGroup.append(arc);
@@ -65,18 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 300, 80, 80, toRadians(0), toRadians(230));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'red';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'red';
+        arc.strokeWidth = 5;
         // arc.type = ArcType.Open; // default
         rootGroup.append(arc);
     }
 
     {
         const arc = Arc.create(100, 300, 80, 80, toRadians(0), toRadians(230));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'green';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'green';
+        arc.strokeWidth = 5;
         arc.translationX = 200;
         arc.type = ArcType.Chord;
         rootGroup.append(arc);
@@ -84,9 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 300, 80, 80, toRadians(0), toRadians(230));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'blue';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'blue';
+        arc.strokeWidth = 5;
         arc.translationX = 400;
         arc.type = ArcType.Round;
         rootGroup.append(arc);
@@ -96,18 +96,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 500, 80, 80, toRadians(-70), toRadians(20));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'red';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'red';
+        arc.strokeWidth = 5;
         // arc.type = ArcType.Open; // default
         rootGroup.append(arc);
     }
 
     {
         const arc = Arc.create(100, 500, 80, 80, toRadians(-70), toRadians(20));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'green';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'green';
+        arc.strokeWidth = 5;
         arc.translationX = 200;
         arc.type = ArcType.Chord;
         rootGroup.append(arc);
@@ -115,9 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 500, 80, 80, toRadians(-70), toRadians(20));
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'blue';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'blue';
+        arc.strokeWidth = 5;
         arc.translationX = 400;
         arc.type = ArcType.Round;
         rootGroup.append(arc);
@@ -127,18 +127,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 700, 80, 80, 0, Math.PI * 2);
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'red';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'red';
+        arc.strokeWidth = 5;
         // arc.type = ArcType.Open; // default
         rootGroup.append(arc);
     }
 
     {
         const arc = Arc.create(100, 700, 80, 80, 0, Math.PI * 2);
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'green';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'green';
+        arc.strokeWidth = 5;
         arc.translationX = 200;
         arc.type = ArcType.Chord;
         rootGroup.append(arc);
@@ -146,9 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     {
         const arc = Arc.create(100, 700, 80, 80, 0, Math.PI * 2);
-        arc.fillStyle = 'gold';
-        arc.strokeStyle = 'blue';
-        arc.lineWidth = 5;
+        arc.fill = 'gold';
+        arc.stroke = 'blue';
+        arc.strokeWidth = 5;
         arc.translationX = 400;
         arc.type = ArcType.Round;
         rootGroup.append(arc);

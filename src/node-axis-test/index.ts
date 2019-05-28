@@ -73,13 +73,13 @@ function testAutoFlippingParallelMirroredLabels() {
     root.append(title);
 
     const arc = Arc.create(450, 450, 400);
-    arc.fillStyle = null;
-    arc.strokeStyle = 'black';
+    arc.fill = undefined;
+    arc.stroke = 'black';
     root.append(arc);
 
     const centerDot = Arc.create(450, 450, 5);
     centerDot.type = ArcType.Chord;
-    centerDot.fillStyle = 'black';
+    centerDot.fill = 'black';
     root.append(centerDot);
 
     const scale = new BandScale<string>();
@@ -123,13 +123,13 @@ function testAutoFlippingPerpendicularMirroredLabels() {
     root.append(title);
 
     const arc = Arc.create(450, 450, 400);
-    arc.fillStyle = null;
-    arc.strokeStyle = 'black';
+    arc.fill = undefined;
+    arc.stroke = 'black';
     root.append(arc);
 
     const centerDot = Arc.create(450, 450, 5);
     centerDot.type = ArcType.Chord;
-    centerDot.fillStyle = 'black';
+    centerDot.fill = 'black';
     root.append(centerDot);
 
     const scale = new BandScale<string>();
@@ -172,13 +172,13 @@ function testRotationFixedPerpendicularMirroredLabels() {
     root.append(title);
 
     const arc = Arc.create(450, 450, 400);
-    arc.fillStyle = null;
-    arc.strokeStyle = 'black';
+    arc.fill = undefined;
+    arc.stroke = 'black';
     root.append(arc);
 
     const centerDot = Arc.create(450, 450, 5);
     centerDot.type = ArcType.Chord;
-    centerDot.fillStyle = 'black';
+    centerDot.fill = 'black';
     root.append(centerDot);
 
     const scale = new BandScale<string>();
@@ -222,13 +222,13 @@ function testRotationFixedParallelMirroredLabels() {
     root.append(title);
 
     const arc = Arc.create(450, 450, 400);
-    arc.fillStyle = null;
-    arc.strokeStyle = 'black';
+    arc.fill = undefined;
+    arc.stroke = 'black';
     root.append(arc);
 
     const centerDot = Arc.create(450, 450, 5);
     centerDot.type = ArcType.Chord;
-    centerDot.fillStyle = 'black';
+    centerDot.fill = 'black';
     root.append(centerDot);
 
     const scale = new BandScale<string>();
@@ -279,13 +279,13 @@ function testRadialGrid() {
     root.append(title);
 
     const arc = Arc.create(centerX, centerY, radius);
-    arc.fillStyle = null;
-    arc.strokeStyle = 'black';
+    arc.fill = undefined;
+    arc.stroke = 'black';
     root.append(arc);
 
     const centerDot = Arc.create(centerX, centerY, 5);
     centerDot.type = ArcType.Chord;
-    centerDot.fillStyle = 'black';
+    centerDot.fill = 'black';
     root.append(centerDot);
 
     const scale = new BandScale<string>();
@@ -306,35 +306,35 @@ function testRadialGrid() {
     shortDelay().then(() => {
         axis.gridLength = 360;
         axis.radialGrid = true;
-        axis.tickColor = null;
+        axis.tickColor = undefined;
         axis.update();
     }).then(shortDelay).then(() => {
         axis.gridStyle = [{
-            strokeStyle: 'rgba(0, 0, 0, 0.3)',
-            lineDash: null
+            stroke: 'rgba(0, 0, 0, 0.3)',
+            lineDash: undefined
         }, {
-            strokeStyle: null,
-            lineDash: null
+            stroke: undefined,
+            lineDash: undefined
         }];
         axis.update();
     }).then(shortDelay).then(() => {
         axis.gridStyle = [{
-            strokeStyle: 'rgba(0, 0, 0, 0.3)',
-            lineDash: null
+            stroke: 'rgba(0, 0, 0, 0.3)',
+            lineDash: undefined
         }, {
-            strokeStyle: 'rgba(0, 0, 0, 0.3)',
+            stroke: 'rgba(0, 0, 0, 0.3)',
             lineDash: [10, 10]
         }];
         axis.update();
     }).then(shortDelay).then(() => {
         axis.gridStyle = [{
-            strokeStyle: 'red',
+            stroke: 'red',
             lineDash: [5, 5]
         }, {
-            strokeStyle: 'green',
+            stroke: 'green',
             lineDash: [10, 10]
         }, {
-            strokeStyle: 'blue',
+            stroke: 'blue',
             lineDash: [20, 5, 5, 5]
         }];
         axis.update();

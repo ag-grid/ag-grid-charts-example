@@ -20,27 +20,27 @@ document.addEventListener('DOMContentLoaded', () => {
     applePath.svgPath = applePathString;
     applePath.scalingX = 0.2;
     applePath.scalingY = 0.2;
-    applePath.fillStyle = '#8b888d';
-    applePath.strokeStyle = 'black';
-    applePath.lineWidth = 3;
+    applePath.fill = '#8b888d';
+    applePath.stroke = 'black';
+    applePath.strokeWidth = 3;
 
     const applePath2 = new Path();
     applePath2.svgPath = applePathString;
     applePath2.scalingX = 0.2;
     applePath2.scalingY = 0.2;
     applePath2.translationX = 50;
-    applePath2.fillStyle = '#61afef';
-    applePath2.strokeStyle = 'black';
-    applePath2.lineWidth = 3;
+    applePath2.fill = '#61afef';
+    applePath2.stroke = 'black';
+    applePath2.strokeWidth = 3;
 
     const mobilePath = new Path();
     mobilePath.svgPath = mobilePathString;
     mobilePath.translationX = 400;
     mobilePath.scalingX = 0.25;
     mobilePath.scalingY = 0.25;
-    mobilePath.fillStyle = '#3ead3f';
-    mobilePath.strokeStyle = 'black';
-    mobilePath.lineWidth = 3;
+    mobilePath.fill = '#3ead3f';
+    mobilePath.stroke = 'black';
+    mobilePath.strokeWidth = 3;
 
     rootGroup.append([applePath, mobilePath, pimpGroup]);
     pimpGroup.append([innerGroup]);

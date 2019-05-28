@@ -59,8 +59,8 @@ class NodeAxis<D> {
                 tick.y1 = r + pxShift;
                 tick.x2 = 0;
                 tick.y2 = r + pxShift;
-                tick.lineWidth = this.tickWidth;
-                tick.strokeStyle = this.tickColor;
+                tick.strokeWidth = this.tickWidth;
+                tick.stroke = this.tickColor;
                 nodes.push(tick);
 
                 let label: Text;
@@ -84,7 +84,7 @@ class NodeAxis<D> {
                     label.textAlign = sideFlag === -1 ? 'end' : 'start';
                 }
                 label.font = this.labelFont;
-                label.fillStyle = this.labelColor;
+                label.fill = this.labelColor;
                 label.textBaseline = 'middle';
                 nodes.push(label);
             }
@@ -98,8 +98,8 @@ class NodeAxis<D> {
             line.y1 = scale.range[0];
             line.x2 = delta;
             line.y2 = scale.range[scale.range.length - 1];
-            line.lineWidth = this.lineWidth;
-            line.strokeStyle = this.lineColor;
+            line.strokeWidth = this.lineWidth;
+            line.stroke = this.lineColor;
             nodes.push(line);
         }
 
@@ -221,15 +221,15 @@ function renderChart() {
             rect.y = yScale.convert(datum);
             rect.width = barWidth;
             rect.height = seriesHeight - rect.y;
-            rect.fillStyle = colors[i % colors.length];
-            rect.strokeStyle = 'black';
+            rect.fill = colors[i % colors.length];
+            rect.stroke = 'black';
             rect.shadow = shadow;
         })).call(enter => enter.append(Text).each((label, datum, i) => {
             label.text = yFieldNames[i];
             label.textAlign = 'center';
             label.x = xBarScale.convert(yFields[i]) + barWidth / 2;
             label.y = yScale.convert(datum) + 20;
-            label.fillStyle = 'black';
+            label.fill = 'black';
             label.font = '14px Verdana';
         }));
 

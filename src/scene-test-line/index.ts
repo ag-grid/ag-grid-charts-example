@@ -23,12 +23,12 @@ function sceneGraphTest() {
     const movingLine1 = Line.create(x1, 200, x1, 300);
     const movingLine2 = Line.create(x2, 200, x2, 300);
 
-    diagonalLine.lineWidth = 1;
-    verticalLine.lineWidth = 1;
-    horizontalLine.lineWidth = 1;
+    diagonalLine.strokeWidth = 1;
+    verticalLine.strokeWidth = 1;
+    horizontalLine.strokeWidth = 1;
 
-    movingLine1.lineWidth = 1;
-    movingLine2.lineWidth = 1;
+    movingLine1.strokeWidth = 1;
+    movingLine2.strokeWidth = 1;
 
     group.append([
         diagonalLine,
@@ -156,24 +156,24 @@ function lineDashTest() {
     const rootGroup = new Group();
 
     const line1 = Line.create(50, 30, 750, 30);
-    line1.lineWidth = 10;
+    line1.strokeWidth = 10;
     line1.lineDash = [20, 10, 5];
 
     const line2 = Line.create(50, 60, 750, 60);
-    line2.lineWidth = 10;
+    line2.strokeWidth = 10;
     line2.lineDash = [20, 5, 5, 5];
 
     const line3 = Line.create(50, 90, 750, 90);
-    line3.lineWidth = 10;
+    line3.strokeWidth = 10;
     line3.lineDash = [30, 15];
 
     const line4 = Line.create(50, 120, 750, 120);
-    line4.lineWidth = 10;
+    line4.strokeWidth = 10;
     line4.lineDash = [30, 15];
     line4.lineCap = 'round';
 
     const line5 = Line.create(50, 150, 750, 150);
-    line5.lineWidth = 10;
+    line5.strokeWidth = 10;
     line5.lineDash = [30, 15];
     line5.lineCap = 'square';
 

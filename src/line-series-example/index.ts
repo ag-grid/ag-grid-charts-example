@@ -244,7 +244,7 @@ function createNumericLineChart() {
 
     const lineSeries = new LineSeries();
     lineSeries.marker = true;
-    lineSeries.lineWidth = 2;
+    lineSeries.strokeWidth = 2;
     lineSeries.showInLegend = false;
     chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
@@ -347,8 +347,8 @@ function createNumericLineChart() {
         chart.layoutPending = true;
     });
 
-    createSlider('lineWidth', [0, 2, 4, 6, 8], value => lineSeries.lineWidth = value);
-    createSlider('markerLineWidth', [0, 2, 4, 6, 8], value => lineSeries.markerLineWidth = value);
+    createSlider('lineWidth', [0, 2, 4, 6, 8], value => lineSeries.strokeWidth = value);
+    createSlider('markerLineWidth', [0, 2, 4, 6, 8], value => lineSeries.markerStrokeWidth = value);
     createSlider('markerRadius', [0, 2, 4, 6, 8], value => lineSeries.markerRadius = value);
 }
 
@@ -365,19 +365,19 @@ function createMultiLineChart() {
     const data = generateMultiValueData(10);
 
     const lineSeries1 = new LineSeries();
-    lineSeries1.lineWidth = 4;
+    lineSeries1.strokeWidth = 4;
     lineSeries1.fill = '#f3622d';
     lineSeries1.xField = 'category';
     lineSeries1.yField = 'value1';
 
     const lineSeries2 = new LineSeries();
-    lineSeries2.lineWidth = 4;
+    lineSeries2.strokeWidth = 4;
     lineSeries2.fill = '#fba71b';
     lineSeries2.xField = 'category';
     lineSeries2.yField = 'value2';
 
     const lineSeries3 = new LineSeries();
-    lineSeries3.lineWidth = 4;
+    lineSeries3.strokeWidth = 4;
     lineSeries3.fill = '#57b757';
     lineSeries3.xField = 'category';
     lineSeries3.yField = 'value3';

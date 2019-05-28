@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
     strokeText.x = 400;
     strokeText.y = 100;
     strokeText.font = 'italic bold 44px Verdana';
-    strokeText.strokeStyle = 'red';
-    strokeText.lineWidth = 3;
+    strokeText.stroke = 'red';
+    strokeText.strokeWidth = 3;
     // strokeText.translationX = 50;
     // strokeText.rotation = Math.PI / 8;
 

@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const root = new Group();
 
     const rect = Rect.create(0, 0, 500, 500);
-    rect.fillStyle = 'blue';
+    rect.fill = 'blue';
     rect.rotation = Math.PI / 9;
     rect.translationX = 50;
     root.append(rect);
 
     const arc = Arc.create(300, 200, 150);
-    arc.fillStyle = 'orange';
+    arc.fill = 'orange';
     arc.type = ArcType.Chord;
     root.append(arc);
 

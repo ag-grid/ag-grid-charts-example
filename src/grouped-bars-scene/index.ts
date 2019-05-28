@@ -121,8 +121,8 @@ function renderChart() {
 
             const color = colors[j % colors.length];
             const rect = Rect.create(x, y, barWidth, seriesHeight - y);
-            rect.fillStyle = color[0];
-            rect.strokeStyle = 'black';
+            rect.fill = color[0];
+            rect.stroke = 'black';
             rect.shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
             rect.opacity = 0.9;
 
@@ -132,7 +132,7 @@ function renderChart() {
             label.textAlign = 'center';
             label.x = x + barWidth / 2;
             label.y = y + 20;
-            label.fillStyle = 'black';
+            label.fill = 'black';
             label.font = '14px Verdana';
             barGroup.append([rect, label]);
         });
@@ -144,10 +144,10 @@ function renderChart() {
     yAxis.translationY = padding.top;
     yAxis.gridLength = seriesWidth;
     yAxis.gridStyle = [{
-        strokeStyle: null,
-        lineDash: null
+        stroke: undefined,
+        lineDash: undefined
     }, {
-        strokeStyle: 'rgba(0, 0, 0, 0.3)',
+        stroke: 'rgba(0, 0, 0, 0.3)',
         lineDash: [5, 5]
     }];
     yAxis.update();

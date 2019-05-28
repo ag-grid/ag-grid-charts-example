@@ -36,35 +36,35 @@ document.addEventListener('DOMContentLoaded', () => {
     redRect.y = 0;
     redRect.width = 20;
     redRect.height = 20;
-    redRect.fillStyle = 'red';
+    redRect.fill = 'red';
 
     const orangeRect = new Rect();
     orangeRect.x = 30;
     orangeRect.y = 10;
     orangeRect.width = 20;
     orangeRect.height = 20;
-    orangeRect.fillStyle = 'orange';
+    orangeRect.fill = 'orange';
 
     const magentaRect = new Rect();
     magentaRect.x = 40;
     magentaRect.y = 20;
     magentaRect.width = 20;
     magentaRect.height = 20;
-    magentaRect.fillStyle = 'magenta';
+    magentaRect.fill = 'magenta';
 
     const cyanRect = new Rect();
     cyanRect.x = 50;
     cyanRect.y = 30;
     cyanRect.width = 20;
     cyanRect.height = 20;
-    cyanRect.fillStyle = 'cyan';
+    cyanRect.fill = 'cyan';
 
     const blueRect = new Rect();
     blueRect.x = 50;
     blueRect.y = 50;
     blueRect.width = 100;
     blueRect.height = 100;
-    blueRect.fillStyle = 'blue';
+    blueRect.fill = 'blue';
 
     // All newly created nodes shouldn't have a parent.
     console.assert(redRect.parent === null);

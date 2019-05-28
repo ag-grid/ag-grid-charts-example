@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         arc.endAngle = Math.PI;
         arc.translationX = Math.random() * width;
         arc.translationY = Math.random() * height;
-        arc.fillStyle = 'red';
-        arc.strokeStyle = 'black';
-        arc.lineWidth = 3;
+        arc.fill = 'red';
+        arc.stroke = 'black';
+        arc.strokeWidth = 3;
         arc.type = ArcType.Round;
         arcs.push(arc);
 

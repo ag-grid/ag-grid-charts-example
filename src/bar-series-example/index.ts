@@ -367,14 +367,14 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Light theme', () => {
         chart.xAxis.labelColor = 'black';
         chart.xAxis.gridStyle = [{
-            strokeStyle: 'rgb(219, 219, 219)',
+            stroke: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
         }];
         chart.xAxis.update();
 
         chart.yAxis.labelColor = 'black';
         chart.yAxis.gridStyle = [{
-            strokeStyle: 'rgb(219, 219, 219)',
+            stroke: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
         }];
         chart.yAxis.update();
@@ -395,14 +395,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         chart.xAxis.labelColor = labelColor;
         chart.xAxis.gridStyle = [{
-            strokeStyle: 'rgb(100, 100, 100)',
+            stroke: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
         chart.xAxis.update();
 
         chart.yAxis.labelColor = labelColor;
         chart.yAxis.gridStyle = [{
-            strokeStyle: 'rgb(100, 100, 100)',
+            stroke: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
         chart.yAxis.update();
@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6], v => {
-        barSeries.lineWidth = v;
+        barSeries.strokeWidth = v;
     });
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;
