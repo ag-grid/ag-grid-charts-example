@@ -349,7 +349,7 @@ function createNumericLineChart() {
 
     createSlider('lineWidth', [0, 2, 4, 6, 8], value => lineSeries.strokeWidth = value);
     createSlider('markerLineWidth', [0, 2, 4, 6, 8], value => lineSeries.markerStrokeWidth = value);
-    createSlider('markerRadius', [0, 2, 4, 6, 8], value => lineSeries.markerRadius = value);
+    createSlider('markerSize', [0, 2, 4, 6, 8], value => lineSeries.markerSize = value);
 }
 
 function createMultiLineChart() {

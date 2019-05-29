@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
             labelField: 'label',
             labelEnabled: true,
             title: 'Mobile OSes',
-            lineWidth: 1,
-            calloutWidth: 1,
+            strokeWidth: 1,
+            calloutStrokeWidth: 1,
             shadow: {
                 color: 'rgba(0,0,0,0.2)',
                 blur: 15
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // pieSeries.title = 'Mobile OSes';
     // pieSeries.shadow = shadow;
     // pieSeries.lineWidth = 1;
-    // pieSeries.calloutWidth = 1;
+    // pieSeries.calloutStrokeWidth = 1;
     //
     // const pieSeries2 = new PieSeries();
     // pieSeries2.outerRadiusOffset = -80;
@@ -275,8 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pieSeries2.radiusField = 'other';
             pieSeries2.strokes = ['white'];
             pieSeries2.calloutColors = ['black'];
-            pieSeries2.lineWidth = 3;
-            pieSeries2.calloutWidth = 1;
+            pieSeries2.strokeWidth = 3;
+            pieSeries2.calloutStrokeWidth = 1;
         }, 12000);
     });
 
@@ -310,8 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('calloutColor', ['red', 'green', 'blue', 'rgba(0,0,0,0)'], v => {
         pieSeries2.calloutColors = [v];
     });
-    createSlider('calloutWidth', [2, 3, 4, 5, 6], v => {
-        pieSeries2.calloutWidth = v;
+    createSlider('calloutStrokeWidth', [2, 3, 4, 5, 6], v => {
+        pieSeries2.calloutStrokeWidth = v;
     });
 
     let rotationIncrement = 0;
