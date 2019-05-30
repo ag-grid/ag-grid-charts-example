@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.legendPosition = v;
     });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
-        chart.legend.markerLineWidth = v;
+        chart.legend.markerStrokeWidth = v;
     });
     createSlider('legendMarkerSize', [4, 6, 10, 14, 18, 22, 26, 30], v => {
         chart.legend.markerSize = v;
