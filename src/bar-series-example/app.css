@@ -11,3 +11,12 @@
     background: rgba(244, 244, 244, 0.9);
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
+
+.ag-chart-tooltip .title {
+    font-weight: bold;
+}
+
+.my-tooltip {
+    border: 5px solid gray;
+    font: 16px Verdana, sans-serif;
+}

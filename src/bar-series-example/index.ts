@@ -336,6 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Hide tooltips', () => {
         barSeries.tooltipEnabled = false;
     });
+    createButton('Custom tooltip class', () => {
+        chart.tooltipClass = 'my-tooltip';
+    });
     createButton('Use tooltip renderer', () => {
         barSeries.tooltipRenderer = params => {
             return `<div style="background-color: #d4d1d6; padding: 5px;">
