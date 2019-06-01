@@ -177,6 +177,7 @@ function createCategoryLineChart() {
         new CategoryAxis(),
         new NumberAxis()
     );
+    chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
 
