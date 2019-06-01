@@ -223,7 +223,7 @@ function renderChart() {
             rect.height = seriesHeight - rect.y;
             rect.fill = colors[i % colors.length];
             rect.stroke = 'black';
-            rect.shadow = shadow;
+            rect.fillShadow = shadow;
         })).call(enter => enter.append(Text).each((label, datum, i) => {
             label.text = yFieldNames[i];
             label.textAlign = 'center';

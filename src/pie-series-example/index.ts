@@ -152,8 +152,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }]
     });
 
-    chart.title = Caption.create('Market Share of Mobile Operating Systems', 'bold 16px Verdana, sans-serif');
-    chart.subtitle = Caption.create('Source: www.statista.com', 'italic 12px Verdana, sans-serif');
+    chart.title = Caption.create({
+        text: 'Market Share of Mobile Operating Systems',
+        font: 'bold 16px Verdana, sans-serif'
+    });
+    chart.subtitle = Caption.create({
+        text: 'Source: www.statista.com',
+        font: 'italic 12px Verdana, sans-serif'
+    });
 
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
 
@@ -350,6 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;
+    });
+    createSlider('legendPadding', [50, 100, 200, 300], v => {
+        chart.legendPadding = v;
     });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
         chart.legend.markerStrokeWidth = v;

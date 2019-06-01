@@ -26,7 +26,9 @@ function createNumericLineChart(data: Datum[]) {
     chart.width = 800;
     chart.height = 600;
     // chart.padding = new Padding(20, 80, 20, 20);
-    chart.title = Caption.create('S&P 500 weekly data (1950 to present)');
+    chart.title = Caption.create({
+        text: 'S&P 500 weekly data (1950 to present)'
+    });
 
     const lineSeries = new LineSeries();
     lineSeries.title = 'Price Data';

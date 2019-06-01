@@ -123,7 +123,7 @@ function renderChart() {
             const rect = Rect.create(x, y, barWidth, seriesHeight - y);
             rect.fill = color[0];
             rect.stroke = 'black';
-            rect.shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+            rect.fillShadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
             rect.opacity = 0.9;
 
             const labelText = yFieldNames[j];
