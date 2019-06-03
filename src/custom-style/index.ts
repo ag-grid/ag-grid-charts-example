@@ -2,6 +2,7 @@ import { PolarChart } from "ag-grid-enterprise/src/charts/chart/polarChart";
 import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
 import { createButton } from "../../lib/ui";
+import { toDegrees } from "ag-grid-enterprise/src/charts/util/angle";
 
 const data = [
     {
@@ -59,6 +60,38 @@ function renderChart() {
 
     createButton('Save Chart', () => {
         chart.scene.download();
+    });
+
+    let isDragging = false;
+    let startSeriesAngle = 0;
+    let startCursorAngle = 0;
+    chart.element.addEventListener('mousedown', (e) => {
+        const x = e.offsetX;
+        const y = e.offsetY;
+
+        const dx = x - chart.centerX;
+        const dy = y - chart.centerY;
+
+        startSeriesAngle = series.rotation;
+        startCursorAngle = Math.atan2(dy, dx);
+
+        isDragging = true;
+    });
+    chart.element.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const x = e.offsetX;
+            const y = e.offsetY;
+
+            const dx = x - chart.centerX;
+            const dy = y - chart.centerY;
+
+            const deltaCursorAngle = toDegrees(Math.atan2(dy, dx) - startCursorAngle);
+
+            series.rotation = startSeriesAngle + deltaCursorAngle;
+        }
+    });
+    chart.element.addEventListener('mouseup', (e) => {
+        isDragging = false;
     });
 }
 
