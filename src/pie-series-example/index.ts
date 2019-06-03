@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;
     });
-    createSlider('legendPadding', [50, 100, 200, 300], v => {
+    createSlider('legendPadding', [20, 80, 160, 240], v => {
         chart.legendPadding = v;
     });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
