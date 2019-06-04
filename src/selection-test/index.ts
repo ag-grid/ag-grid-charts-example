@@ -14,7 +14,7 @@ function test_SelectionSelect() {
     const rootSelection: Selection<Group, Node | EnterNode, any, any> = Selection.select(rootGroup);
     console.assert(rootSelection.node() instanceof Group === true);
 
-    scene.parent = null;
+    scene.parent = undefined;
 }
 
 function test_append_setDatum_attr_each() {
@@ -53,7 +53,7 @@ function test_append_setDatum_attr_each() {
     console.assert(rootGroup.countChildren() === 2);
     console.assert((rootGroup.children[1] as Rect).fill === 'magenta');
 
-    scene.parent = null;
+    scene.parent = undefined;
 }
 
 function test_selectAll_setData_enter() {
@@ -86,7 +86,7 @@ function test_selectAll_setData_enter() {
 
     console.assert(_.isEqual(selection.data, data) === true);
 
-    scene.parent = null;
+    scene.parent = undefined;
 }
 
 function test_call_merge() {
@@ -169,7 +169,7 @@ function test_call_merge() {
         });
     }
 
-    scene.parent = null;
+    scene.parent = undefined;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

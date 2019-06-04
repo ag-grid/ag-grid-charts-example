@@ -1,8 +1,9 @@
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
-import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
-import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
-import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
-import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
+import { ChartBuilder } from 'ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder';
+import { PieSeries } from 'ag-grid-enterprise/src/charts/chart/series/pieSeries';
+import { Chart, LegendPosition } from 'ag-grid-enterprise/src/charts/chart/chart';
+import { Padding } from 'ag-grid-enterprise/src/charts/util/padding';
+import { Caption } from 'ag-grid-enterprise/src/charts/chart/caption';
+import { Color } from 'ag-grid-enterprise/src/charts/util/color';
 
 import './app.css';
 
@@ -134,18 +135,24 @@ document.addEventListener('DOMContentLoaded', () => {
             angleField: 'value',
             labelField: 'label',
             labelEnabled: true,
-            title: 'Mobile OSes',
-            strokeWidth: 1,
+            title: {
+                text: 'Mobile OSes'
+            },
+            strokeWidth: 2,
             calloutStrokeWidth: 1,
             shadow: {
                 color: 'rgba(0,0,0,0.2)',
                 blur: 15
-            }
+            },
+            fills: ['#5e64b2', '#b594dc', '#fec444', '#f07372', '#35c2bd'],
+            strokes: ['#42467d', '#7f689a', '#b28930', '#a85150', '#258884']
         }, {
             data: data2,
             outerRadiusOffset: -80,
             innerRadiusOffset: -120,
-            title: 'Users',
+            title: {
+                text: 'Users'
+            },
             angleField: 'value',
             labelField: 'label',
             labelEnabled: true
@@ -209,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Use tooltip renderer', () => {
         pieSeries.tooltipRenderer = params => {
-            return `<em>Value</em>: <span style="color: red;">${params.datum[params.angleField]}</span>`;
+            return `<em>Value</em>: <span style='color: red;'>${params.datum[params.angleField]}</span>`;
         };
 
         pieSeries2.tooltipRenderer = params => {
@@ -230,12 +237,16 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.labelEnabled = false;
     });
     createButton('Set series name', () => {
-        pieSeries.title = 'Super series';
-        pieSeries2.title = 'Duper series';
+        pieSeries.title = Caption.create({
+            text: 'Super series'
+        });
+        pieSeries2.title = Caption.create({
+            text: 'Duper series'
+        });
     });
     createButton('Remove series name', () => {
-        pieSeries.title = '';
-        pieSeries2.title = '';
+        pieSeries.title = undefined;
+        pieSeries2.title = undefined;
     });
     createButton('Remove inner series', () => {
         chart.removeSeries(pieSeries2);
@@ -342,8 +353,22 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries.labelFont = v;
     });
 
-    createSlider('titleFont', ['bold 12px sans-serif', 'italic 14px sans-serif', '20px Papyrus'], v => {
-        pieSeries.titleFont = v;
+    createSlider('series.title.font', ['bold 12px sans-serif', 'italic 14px sans-serif', '20px Papyrus'], v => {
+        if (pieSeries.title) {
+            pieSeries.title.font = v;
+        }
+    });
+
+    createSlider('series.title.color', ['black', 'red', 'green', 'blue'], v => {
+        if (pieSeries.title) {
+            pieSeries.title.color = v;
+        }
+    });
+
+    createSlider('series.title.enabled', [true, false], v => {
+        if (pieSeries.title) {
+            pieSeries.title.enabled = v;
+        }
     });
 
     createSlider('labelColor', ['black', 'red', 'gold', 'rgb(221, 221, 221)'], v => {
@@ -357,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;
     });
-    createSlider('legendPadding', [50, 100, 200, 300], v => {
+    createSlider('legendPadding', [20, 80, 160, 240], v => {
         chart.legendPadding = v;
     });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
