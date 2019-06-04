@@ -1,0 +1,51 @@
+{
+  "name": "ag-grid-charts-example",
+  "version": "21.0.0",
+  "description": "ag-Grid Charts Examples",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir dist/lib --extensions \".ts,.tsx\" --source-maps inline",
+    "bundle": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ag-grid/ag-grid-charts-example.git"
+  },
+  "keywords": [
+    "grid",
+    "charts"
+  ],
+  "author": "Vitaly Kravchenko <vitaly.kravchenko@ag-grid.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ag-grid/ag-grid-charts-example/issues"
+  },
+  "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
+  "dependencies": {
+    "ag-grid-community": "^21.0.0",
+    "ag-grid-enterprise": "^21.0.0",
+    "d3": "^5.7.0",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/d3": "^5.7.0",
+    "@types/lodash": "^4.14.120",
+    "babel-loader": "^8.0.4",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.22.0",
+    "typescript": "~3.4.1",
+    "webpack-cli": "^3.1.2",
+    "css-loader": "^1.0.1",
+    "style-loader": "^0.23.1",
+    "sass-loader": "^7.1.0"
+  }
+}
