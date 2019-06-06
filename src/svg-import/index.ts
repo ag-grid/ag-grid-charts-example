@@ -4,6 +4,8 @@ import { Path } from "ag-grid-enterprise/src/charts/scene/shape/path";
 import { Group } from "ag-grid-enterprise/src/charts/scene/group";
 import { Node } from "ag-grid-enterprise/src/charts/scene/node";
 import { createButton } from "../../lib/ui";
+import { Shape } from "ag-grid-enterprise/src/charts/scene/shape/shape";
+import { color } from "d3";
 
 function importSvg(scene: Scene, svg: string) {
     const parser = new DOMParser();
@@ -85,13 +87,35 @@ document.addEventListener('DOMContentLoaded', () => {
             slide(child, deltaX, deltaY);
         });
     }
-    function animate() {
+
+    let i = 0;
+    const colors1 = ['#619fd5', '#65bbb8', '#b5c43d', '#f4d146', '#eaa93a', '#eaa93a', '#e16e2a', '#c7493a', '#db6e7a', '#9a5fd5'];
+    const colors2 = ['#e6380d', '#ec8921', '#feff43', '#7bfe40', '#4d9cc5', '#1500f8', '#7600cd'];
+    const colors = colors2;
+    function colorize(node: Node) {
+        if (node instanceof Shape) {
+            i += 1;
+            if (i % 20 === 0) {
+                node.fill = colors[Math.floor(Math.random() * colors.length)];
+            }
+        }
+        node.children.forEach(child => colorize(child));
+    }
+
+    function animate1() {
         slide(root, 0, 0);
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animate1);
+    }
+    function animate2() {
+        colorize(root);
+        requestAnimationFrame(animate2);
     }
 
     document.body.appendChild(document.createElement('br'));
-    createButton('Animate', () => {
-        requestAnimationFrame(animate);
+    createButton('Slide', () => {
+        requestAnimationFrame(animate1);
+    });
+    createButton('Colorize', () => {
+        requestAnimationFrame(animate2);
     });
 });
