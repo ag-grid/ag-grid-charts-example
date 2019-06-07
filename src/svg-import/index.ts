@@ -53,6 +53,7 @@ function importSvg(scene: Scene, svg: string) {
                     const path = new Path();
                     path.fill = fill;
                     path.stroke = stroke;
+                    // @ts-ignore
                     path.strokeWidth = strokeWidth;
                     path.svgPath = pathString;
                     parent.append(path);
