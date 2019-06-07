@@ -4,6 +4,7 @@ import { Selection } from "ag-grid-enterprise/src/charts/scene/selection";
 import * as d3 from "d3";
 import { data } from "./data";
 import { FinvizMapData } from "./finviz_data";
+import { HdpiCanvas } from "ag-grid-enterprise/src/charts/canvas/hdpiCanvas";
 import { Rect } from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import { Text } from "ag-grid-enterprise/src/charts/scene/shape/text";
 import { createButton } from "../../lib/ui";
@@ -23,65 +24,114 @@ function processFinVizData() {
     console.log(JSON.stringify(process(FinvizMapData), null, 4));
 }
 
+const fontName = '12px Verdana, sans-serif';
+
 document.addEventListener('DOMContentLoaded', () => {
-    const width = 1200;
-    const height = 800;
-    const scene = new Scene(width, height);
+    const scene = new Scene(1200, 800);
     scene.parent = document.body;
 
     const rootGroup = new Group();
 
     scene.root = rootGroup;
 
-    const dataRoot = d3.hierarchy(data).sum(datum => datum.children ? 1 : datum.size);
-    const treemapLayout = d3.treemap().size([width, height]).round(true).padding(4);
-    const descendants = treemapLayout(dataRoot).descendants();
-
-    // console.log(dataRoot);
-    // console.log(descendants);
-
     let groupSelection: Selection<Group, Group, any, any> = Selection.select(rootGroup).selectAll<Group>();
 
-    const updateGroups = groupSelection.setData(descendants);
-    updateGroups.exit.remove();
+    const colorMap = new Map<Rect, string>();
 
-    const enterGroups = updateGroups.enter.append(Group);
-    enterGroups.append(Rect);
-    enterGroups.append(Text);
+    function update() {
+        const [width, height] = scene.size;
+        const dataRoot = d3.hierarchy(data).sum(datum => datum.children ? 1 : datum.size);
+        const treemapLayout = d3.treemap().size([width, height]).round(true)
+            .paddingRight(2).paddingBottom(2).paddingLeft(2).paddingTop(node => {
+                const name = (node.data as any).name;
+                const nameSize = HdpiCanvas.getTextSize(name, fontName);
+                const width = node.x1 - node.x0;
+                const hasTitlePadding = node.depth > 0 && node.children && nameSize.width - 4 < width;
+                (node as any).hasTitle = hasTitlePadding;
+                return hasTitlePadding ? 15 : 2;
+            });
+        const descendants = treemapLayout(dataRoot).descendants();
 
-    groupSelection = updateGroups.merge(enterGroups);
+        // console.log(dataRoot);
+        // console.log(descendants);
 
-    const colorScale = d3.scaleLinear().domain([-5,5]).range([0, 1]);
-    const colorInterpolator = d3.interpolate('#cb4b3f', '#6acb64');
+        const updateGroups = groupSelection.setData(descendants);
+        updateGroups.exit.remove();
 
-    groupSelection.selectByClass(Rect).each((rect, datum, index) => {
-        // console.log(datum);
+        const enterGroups = updateGroups.enter.append(Group);
+        enterGroups.append(Rect);
+        enterGroups.append(Text);
 
-        rect.fill = datum.children ? 'white' : colorInterpolator(colorScale(-5 + Math.random() * 10));
-        rect.stroke = 'black';
-        rect.strokeWidth = 1;
-        rect.crisp = true;
+        groupSelection = updateGroups.merge(enterGroups);
 
-        rect.x = datum.x0;
-        rect.y = datum.y0;
-        rect.width = datum.x1 - datum.x0;
-        rect.height = datum.y1 - datum.y0;
-    });
+        const colorScale = d3.scaleLinear().domain([-5,5]).range([0, 1]);
+        const colorInterpolator = d3.interpolate('#cb4b3f', '#6acb64');
 
-    groupSelection.selectByClass(Text).each((text, datum, index) => {
-        // console.log(datum);
+        groupSelection.selectByClass(Rect).each((rect, datum, index) => {
+            const isParent = !!datum.children;
 
-        // text.fill = 'black';
-        text.font = '12px Verdana, sans-serif';
+            let fill = colorMap.get(rect);
+            if (!fill) {
+                fill = isParent ? 'white' : colorInterpolator(colorScale(-5 + Math.random() * 10));
+                colorMap.set(rect, fill);
+            }
+            rect.fill = fill;
+            rect.stroke = 'black';
+            rect.strokeWidth = 1;
+            rect.crisp = true;
 
-        text.text = datum.data.name;
-        const bbox = text.getBBox();
-        text.visible = !datum.children && (datum.x1 - datum.x0) - 4 * 2 > bbox.width && (datum.y1 - datum.y0) - 4 * 2 > bbox.height;
-        text.x = datum.x0 + 5;
-        text.y = datum.y0 + 13;
-    });
+            rect.x = datum.x0;
+            rect.y = datum.y0;
+            rect.width = datum.x1 - datum.x0;
+            rect.height = datum.y1 - datum.y0;
+        });
 
+        groupSelection.selectByClass(Text).each((text, datum, index) => {
+            text.font = fontName;
+            text.textBaseline = 'top';
+
+            const isRoot = !datum.depth;
+            const isParent = !!datum.children;
+
+            text.text = datum.data.name;
+            const bbox = text.getBBox();
+            text.visible = !isRoot && (datum.x1 - datum.x0) - 2 * 2 > bbox.width && (datum.y1 - datum.y0) - 2 * 2 > bbox.height || datum.hasTitle;
+            text.x = datum.x0 + 3;
+            text.y = datum.y0 + 4;
+        });
+    }
+
+    update();
+
+    document.body.appendChild(document.createElement('br'));
     createButton('Save', () => {
         scene.download();
     });
+
+    function makeResizeable(scene: Scene) {
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+        let size: [number, number];
+
+        scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+            startX = e.offsetX;
+            startY = e.offsetY;
+            size = scene.size;
+            isDragging = true;
+        });
+        scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+            if (isDragging) {
+                const dx = e.offsetX - startX;
+                const dy = e.offsetY - startY;
+                scene.size = [size[0] + dx, size[1] + dy];
+                update();
+            }
+        });
+        scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+    }
+
+    makeResizeable(scene);
 });
