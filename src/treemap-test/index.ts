@@ -52,6 +52,11 @@ function makeResizeable(scene: Scene, update: () => void) {
     });
 }
 
+enum TextNodeTag {
+    Name,
+    Change
+}
+
 function createStockTreeMap() {
     const fonts = {
         title: {
@@ -86,6 +91,7 @@ function createStockTreeMap() {
 
     const colorMap = new Map<Rect, string>();
     const nodePadding = 2;
+    const tickerMap = new Map<string, Text | undefined>();
 
     const labelShadow = new DropShadow('rgba(0,0,0,0.4)', new Offset(1.5,1.5), 0);
 
@@ -120,7 +126,8 @@ function createStockTreeMap() {
 
         const enterGroups = updateGroups.enter.append(Group);
         enterGroups.append(Rect);
-        enterGroups.append(Text);
+        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Name);
+        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Change);
 
         groupSelection = updateGroups.merge(enterGroups);
 
@@ -146,19 +153,19 @@ function createStockTreeMap() {
             rect.height = datum.y1 - datum.y0;
         });
 
-        groupSelection.selectByClass(Text).each((text, datum, index) => {
+        groupSelection.selectByTag<Text>(TextNodeTag.Name).each((text, datum, index) => {
             const isLeaf = !datum.children;
             const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
             const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
             const hasTitle = datum.hasTitle;
             const font = isLeaf
-                ? innerNodeHeight > 40 ? fonts.label.big : innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
+                ? innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
                 : (datum.depth > 1 ? fonts.subtitle : fonts.title);
             const isParent = !!datum.children;
             const name = datum.data.name;
 
             text.font = font.name;
-            text.textBaseline = hasTitle ? 'top' : 'middle';
+            text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');
             text.textAlign = hasTitle ? 'left' : 'center';
             text.text = isParent ? name.toUpperCase() : name;
 
@@ -166,9 +173,10 @@ function createStockTreeMap() {
 
             const hasLabel = isLeaf
                 && textBBox.width <= innerNodeWidth
-                && textBBox.height <= innerNodeHeight;
+                && textBBox.height * 2 + 4 <= innerNodeHeight;
 
-            // text.fill = isParent ? 'white' : 'black';
+            tickerMap.set(name, hasLabel ? text : undefined);
+
             text.fill = 'white';
             text.fillShadow = hasLabel ? labelShadow : undefined;
             text.visible = hasTitle || hasLabel;
@@ -180,10 +188,45 @@ function createStockTreeMap() {
                 text.y = (datum.y0 + datum.y1) / 2;
             }
         });
+
+        groupSelection.selectByTag<Text>(TextNodeTag.Change).each((text, datum, index) => {
+            const isLeaf = !datum.children;
+            const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
+            // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
+            // const font = innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
+
+            text.font = '12px Verdana, sans-serif';
+            text.textBaseline = 'top';
+            text.textAlign = 'center';
+            text.text = '+1.43%';
+
+            const textBBox = text.getBBox();
+            const tickerNode = tickerMap.get(datum.data.name);
+
+            const hasLabel = !!tickerNode || false;
+
+            text.fill = 'white';
+            text.fillShadow = labelShadow;
+            const isVisible = hasLabel && textBBox.width < innerNodeWidth;
+            text.visible = isVisible;
+            if (isVisible) {
+                text.x = (datum.x0 + datum.x1) / 2;
+                text.y = (datum.y0 + datum.y1) / 2;
+            } else {
+                if (tickerNode) {
+                    tickerNode.textBaseline = 'middle';
+                    tickerNode.y = (datum.y0 + datum.y1) / 2;
+                }
+            }
+        });
     }
 
     update();
     makeResizeable(scene, update);
+    document.body.appendChild(document.createElement('br'));
+    createButton('Save', () => {
+        scene.download();
+    });
 }
 
 function createOrgTreeMap() {
