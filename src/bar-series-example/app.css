@@ -35,6 +35,9 @@
 }
 
 .my-tooltip {
-    border: 5px solid gray;
     font: 16px Verdana, sans-serif;
+}
+
+.my-tooltip .title {
+    background-color: #af20ef;
 }

@@ -190,7 +190,7 @@ function createCategoryLineChart() {
         if (params.datum[params.xField] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }
-        return '<strong>Value: </strong>' + params.datum[params.yField].toString();
+        return '<div class="content"><strong>Value: </strong>' + params.datum[params.yField].toString() + '</div>';
     };
     lineSeries.data = categoryData;
     lineSeries.xField = 'category';
