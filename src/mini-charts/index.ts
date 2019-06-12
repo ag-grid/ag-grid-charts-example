@@ -10,6 +10,7 @@ import { BandScale } from "ag-grid-enterprise/src/charts/scale/bandScale";
 import { Rect } from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import { ClipRect } from "ag-grid-enterprise/src/charts/scene/clipRect";
 import { Arc } from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import { Shape } from "ag-grid-enterprise/src/charts/scene/shape/shape";
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
     const button = document.createElement('button');
@@ -164,7 +165,7 @@ class MiniLine extends MiniChart {
 }
 
 class MiniScatter extends MiniChart {
-    private readonly points: Arc[];
+    private readonly points: Shape[];
 
     constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
         super();
@@ -173,29 +174,19 @@ class MiniScatter extends MiniChart {
 
         const size = this.size;
         const padding = this.padding;
-        const n = 5;
 
-        // [value, radius] pairs
+        // [x, y] pairs
         const data = [
-            [[7, 3], [5, 2], [9, 6], [9, 2], [2, 6]],
-            [[2, 4], [2, 3], [5, 5], [7, 5], [6, 3]],
-            [[9, 3], [4, 4], [5, 6], [3, 4], [8, 2]]
+            [[0.3, 3], [1.1, 0.9], [2, 0.4], [3.4, 2.4]],
+            [[0, 0.3], [1, 2], [2.4, 1.4], [3, 0]]
         ];
 
-        // const data: number[][][] = [[], [], []];
-        // for (let i = 0; i < data.length; i++) {
-        //     const series = data[i];
-        //     for (let j = 0; j < n; j++) {
-        //         series.push([Math.round(1 + Math.random() * 8), Math.round(2 + Math.random() * 4)]);
-        //     }
-        // }
-
         const xScale = linearScale();
-        xScale.domain = [0, n];
+        xScale.domain = [-0.5, 4];
         xScale.range = [padding * 2, size - padding];
 
         const yScale = linearScale();
-        yScale.domain = [0, 10];
+        yScale.domain = [-0.5, 3.5];
         yScale.range = [size - padding, padding];
 
         const axisOvershoot = 3;
@@ -208,15 +199,15 @@ class MiniScatter extends MiniChart {
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
 
-        const points: Arc[] = [];
-        data.forEach((series) => {
+        const points: Shape[] = [];
+        data.forEach((series, i) => {
             series.forEach((datum, j) => {
                 const arc = new Arc();
                 arc.strokeWidth = 1;
-                arc.centerX = xScale.convert(j);
-                arc.centerY = yScale.convert(datum[0]);
-                arc.radiusX = datum[1];
-                arc.radiusY = datum[1];
+                arc.centerX = xScale.convert(datum[0]);
+                arc.centerY = yScale.convert(datum[1]);
+                arc.radiusX = 3;
+                arc.radiusY = 3;
                 points.push(arc);
             });
         });
