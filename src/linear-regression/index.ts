@@ -7,13 +7,14 @@ import { linearRegression } from "ag-grid-enterprise/src/charts/util/stat";
 
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from 'd3';
+import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
 
 type Datum = {
     x: number,
     y: number
 };
 
-function createNumericLineChart(data: Datum[]) {
+function createChart(data: Datum[]) {
     const chart = new CartesianChart(
         new NumberAxis(),
         new NumberAxis()
@@ -30,18 +31,18 @@ function createNumericLineChart(data: Datum[]) {
         text: 'S&P 500 weekly data (1950 to present)'
     });
 
-    const lineSeries = new LineSeries();
-    lineSeries.title = 'Price Data';
-    lineSeries.marker = true;
-    lineSeries.strokeWidth = 0;
-    // lineSeries.showInLegend = false;
-    lineSeries.markerSize = 2;
-    lineSeries.markerStrokeWidth = 0;
-    lineSeries.data = data;
-    lineSeries.xField = 'x';
-    lineSeries.yField = 'y';
+    const scatterSeries = new ScatterSeries();
+    scatterSeries.title = 'Price Data';
+    // scatterSeries.marker = true;
+    scatterSeries.strokeWidth = 0;
+    // scatterSeries.showInLegend = false;
+    scatterSeries.markerSize = 2;
+    scatterSeries.markerStrokeWidth = 0;
+    scatterSeries.data = data;
+    scatterSeries.xField = 'x';
+    scatterSeries.yField = 'y';
 
-    chart.addSeries(lineSeries);
+    chart.addSeries(scatterSeries);
 
     document.body.appendChild(document.createElement('br'));
 
@@ -56,7 +57,7 @@ function createNumericLineChart(data: Datum[]) {
                 y: +(datum['Adj Close'] || 0)
             } as Datum));
 
-            lineSeries.data = data;
+            scatterSeries.data = data;
         });
 
         chart.series = chart.series.slice(0, 1);
@@ -70,7 +71,7 @@ function createNumericLineChart(data: Datum[]) {
                 y: +(datum['Adj Close'] || 0)
             } as Datum));
 
-            lineSeries.data = data;
+            scatterSeries.data = data;
         });
 
         chart.series = chart.series.slice(0, 1);
@@ -78,7 +79,7 @@ function createNumericLineChart(data: Datum[]) {
     });
 
     createButton('Linear Regression', () => {
-        const data = lineSeries.data;
+        const data = scatterSeries.data;
         const X: number[] = [];
         const Y: number[] = [];
         data.forEach(datum => {
@@ -118,6 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
             y: +(datum['Adj Close'] || 0)
         } as Datum));
 
-        createNumericLineChart(data);
+        createChart(data);
     });
 });
