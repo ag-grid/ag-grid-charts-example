@@ -34,10 +34,9 @@ function createChart(data: Datum[]) {
     const scatterSeries = new ScatterSeries();
     scatterSeries.title = 'Price Data';
     // scatterSeries.marker = true;
-    scatterSeries.strokeWidth = 0;
+    scatterSeries.markerStrokeWidth = 0;
     // scatterSeries.showInLegend = false;
     scatterSeries.markerSize = 2;
-    scatterSeries.markerStrokeWidth = 0;
     scatterSeries.data = data;
     scatterSeries.xField = 'x';
     scatterSeries.yField = 'y';
