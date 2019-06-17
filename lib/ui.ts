@@ -1,7 +1,7 @@
-export function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
+export function createButton(text: string, action: EventListenerOrEventListenerObject, parent = document.body): HTMLButtonElement {
     const button = document.createElement('button');
     button.textContent = text;
-    document.body.appendChild(button);
+    parent.appendChild(button);
     button.addEventListener('click', action);
     return button;
 }
