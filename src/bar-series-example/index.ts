@@ -188,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.yFields = ['q1Actual'];
     barSeries.data = data;
     barSeries.fills = material.fills;
-    barSeries.normalizedTo = 100;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -371,6 +370,10 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.legend.labelFont = v;
     });
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
+        if (v && chart.title) {
+            chart.title.text = 'Normalize to WTFYW';
+            chart.subtitle = undefined;
+        }
         barSeries.normalizedTo = v;
     });
 
