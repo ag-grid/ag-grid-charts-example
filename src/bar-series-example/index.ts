@@ -188,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.yFields = ['q1Actual'];
     barSeries.data = data;
     barSeries.fills = material.fills;
+    barSeries.tooltipEnabled = true;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -358,6 +359,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('No y-fields', () => {
         barSeries.yFields = [];
+    });
+    createButton('Enable labels', () => {
+        barSeries.labelEnabled = true;
+    });
+    createButton('Disable labels', () => {
+        barSeries.labelEnabled = false;
     });
 
     createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6], v => {
