@@ -52,7 +52,19 @@ const moduleExports = examples.map(example => {
                 exclude: /node_modules/
             }, {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: ['style-loader', 'css-loader'],
+                exclude: /node_modules/
+            }, {
+                test: /\.(png|jpg|gif)$/i,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192,
+                        },
+                    },
+                ],
+                exclude: /node_modules/
             }]
         },
         plugins: [

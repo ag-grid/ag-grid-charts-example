@@ -1,6 +1,6 @@
 {
   "name": "ag-grid-charts-example",
-  "version": "20.0.0",
+  "version": "21.0.0",
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
@@ -46,6 +46,7 @@
     "webpack-cli": "^3.1.2",
     "css-loader": "^1.0.1",
     "style-loader": "^0.23.1",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^7.1.0",
+    "url-loader": "^2.0.0"
   }
 }
