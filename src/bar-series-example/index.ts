@@ -366,6 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Disable labels', () => {
         barSeries.labelEnabled = false;
     });
+    createButton('Show Legend', () => chart.legend.enabled = true);
+    createButton('Hide Legend', () => chart.legend.enabled = false);
 
     createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6], v => {
         barSeries.strokeWidth = v;
