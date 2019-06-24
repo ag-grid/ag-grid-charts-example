@@ -253,9 +253,11 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('No data', () => {
         barSeries.data = [];
     });
-    // createButton('Data set #3', () => {
-    //     barSeries.setDataAndFields(data3, 'xField', ['yField1', 'yField2', 'yField3']);
-    // });
+    createButton('Data set #3', () => {
+        barSeries.data = data3;
+        barSeries.xField = 'xField';
+        barSeries.yFields = ['yField1', 'yField2', 'yField3'];
+    });
 
     createButton('Show labels (for non-generated data)', () => {
         barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
@@ -384,6 +386,9 @@ document.addEventListener('DOMContentLoaded', () => {
             chart.subtitle = undefined;
         }
         barSeries.normalizedTo = v;
+    });
+    createSlider('labelOffset', [-60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60], v => {
+        barSeries.labelOffset = v;
     });
 
     makeChartResizeable(chart);
