@@ -7,15 +7,29 @@ class AnglePicker {
 
     private isDragging = false;
 
-    onChange?: (degrees: number) => void;
+    onChange?: (angle: number, radius: number, offsetX: number, offsetY: number) => void;
+
+    private readonly colors = {
+        dark: {
+            parent: '#656565',
+            child: '#e8e8e8'
+        },
+        light: {
+            parent: '#ffffff',
+            child: '#4c4c4c'
+        }
+    };
 
     constructor(parent: HTMLElement) {
+        const colors = this.colors.dark;
+
         const parentCircle = this.parentCircle;
         parentCircle.style.width = '24px';
         parentCircle.style.height = '24px';
         parentCircle.style.borderRadius = '12px';
         parentCircle.style.display = 'inline-block';
-        parentCircle.style.backgroundColor = '#656565';
+        parentCircle.style.boxShadow = '0 0 2px rgba(0, 0, 0, 0.9)';
+        parentCircle.style.backgroundColor = colors.parent;
 
         const childCircle = this.childCircle;
         childCircle.style.width = '6px';
@@ -24,7 +38,7 @@ class AnglePicker {
         childCircle.style.marginTop = '-3px';
         childCircle.style.position = 'relative';
         childCircle.style.borderRadius = '3px';
-        childCircle.style.backgroundColor = '#e8e8e8';
+        childCircle.style.backgroundColor = colors.child;
 
         this.element.style.display = 'inline-block';
 
@@ -69,8 +83,10 @@ class AnglePicker {
             const radians = Math.atan2(dy, dx);
             const degrees = this._degrees = this.toDegrees(radians);
 
+            this.calculateCartesian();
+
             if (this.onChange) {
-                this.onChange(degrees);
+                this.onChange(degrees, this.radius, this.offsetX, this.offsetY);
             }
 
             this.positionChildCircle(radians);
@@ -109,21 +125,79 @@ class AnglePicker {
         this.childCircle.style.top = `${centerY + Math.sin(radians) * 8}px`;
     }
 
+    private calculatePolar() {
+        const x = this.offsetX;
+        const y = this.offsetY;
+
+        const radians = Math.atan2(y, x);
+        this._degrees = this.toDegrees(radians);
+        this._radius = Math.sqrt(x*x + y*y);
+
+        this.positionChildCircle(radians);
+    }
+
+    private calculateCartesian() {
+        const radians = this.toRadians(this.angle);
+        const radius = this.radius;
+
+        this._offsetX = Math.cos(radians) * radius;
+        this._offsetY = Math.sin(radians) * radius;
+    }
+
     private _degrees: number = 0;
     set angle(degrees: number) {
         const radians = this.normalizeAngle180(this.toRadians(degrees));
         degrees = this.toDegrees(radians);
         if (this._degrees !== degrees) {
             this._degrees = degrees;
+            this.calculateCartesian();
             this.positionChildCircle(radians);
         }
     }
     get angle(): number {
         return this._degrees;
     }
+
+    private _radius: number = 0;
+    set radius(value: number) {
+        if (this._radius !== value) {
+            this._radius = value;
+            this.calculateCartesian();
+        }
+    }
+    get radius(): number {
+        return this._radius;
+    }
+
+    private _offsetX: number = 0;
+    set offsetX(value: number) {
+        if (this._offsetX !== value) {
+            this._offsetX = value;
+            this.calculatePolar();
+        }
+    }
+    get offsetX(): number {
+        return this._offsetX;
+    }
+
+    private _offsetY: number = 0;
+    set offsetY(value: number) {
+        if (this._offsetY !== value) {
+            this._offsetY = value;
+            this.calculatePolar();
+        }
+    }
+    get offsetY(): number {
+        return this._offsetY;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.style.backgroundColor = '#323232';
-    new AnglePicker(document.body);
+    document.body.style.backgroundColor = '#323232';  // dark
+    // document.body.style.backgroundColor = '#ececec';  // light
+    const picker = new AnglePicker(document.body);
+
+    picker.onChange = (angle, radius, offsetX, offsetY) => {
+        console.log(angle, radius, offsetX, offsetY);
+    };
 });
