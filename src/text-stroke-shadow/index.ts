@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const text = new Text();
     text.text = 'Hello';
-    text.font = 'bold 80px Verdana, sans-serif';
+    text.fontWeight = 'bold';
+    text.fontSize = 80;
+    text.fontFamily = 'Verdana, sans-serif';
     text.fill = 'red';
     text.stroke = 'black';
     text.strokeWidth = 3;

@@ -133,7 +133,8 @@ function renderChart() {
             label.x = x + barWidth / 2;
             label.y = y + 20;
             label.fill = 'black';
-            label.font = '14px Verdana';
+            label.fontSize = 14;
+            label.fontFamily = 'Verdana';
             barGroup.append([rect, label]);
         });
     }

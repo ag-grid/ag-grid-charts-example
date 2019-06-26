@@ -36,7 +36,8 @@ function testClipRect() {
 
     const label = new Text();
     label.text = 'Spectacular';
-    label.font = '20px Verdana';
+    label.fontSize = 20;
+    label.fontFamily = 'Verdana';
     label.textAlign = 'right';
     label.x = 140;
     label.y = 200;
@@ -90,7 +91,8 @@ function testClipRectSelection() {
     clipSelection.append(Text)
         .each(label => {
             label.text = 'Spectacular';
-            label.font = '20px Verdana';
+            label.fontSize = 20;
+            label.fontFamily = 'Verdana';
             label.textAlign = 'right';
             label.x = 140;
             label.y = 200

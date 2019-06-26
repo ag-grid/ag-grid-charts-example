@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     text.x = 100;
     text.y = 100;
     text.text = 'Vitaly Kravchenko';
-    text.font = '24px Verdana';
+    text.fontSize = 24;
+    text.fontFamily = 'Verdana';
     text.rotation = Math.PI / 6;
 
     scene.root = group;

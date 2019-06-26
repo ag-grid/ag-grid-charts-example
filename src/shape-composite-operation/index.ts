@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const rootGroup = new Group();
 
     const label = new Text();
-    label.font = '20px Verdana';
+    label.fontSize = 20;
+    label.fontFamily = 'Verdana';
     label.textAlign = 'center';
     label.x = 150;
     label.y = 20;

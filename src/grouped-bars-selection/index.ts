@@ -31,7 +31,8 @@ class NodeAxis<D> {
     tickPadding: number = 5;
     lineColor: string = 'black';
     tickColor: string = 'black';
-    labelFont: string = '14px Verdana';
+    labelFontSize: number = 14;
+    labelFontFamily: string = 'Verdana';
     labelColor: string = 'black';
     flippedLabels: boolean = false;
     mirroredLabels: boolean = false;
@@ -83,7 +84,8 @@ class NodeAxis<D> {
                     label.y = r;
                     label.textAlign = sideFlag === -1 ? 'end' : 'start';
                 }
-                label.font = this.labelFont;
+                label.fontSize = this.labelFontSize;
+                label.fontFamily = this.labelFontFamily;
                 label.fill = this.labelColor;
                 label.textBaseline = 'middle';
                 nodes.push(label);
@@ -230,7 +232,8 @@ function renderChart() {
             label.x = xBarScale.convert(yFields[i]) + barWidth / 2;
             label.y = yScale.convert(datum) + 20;
             label.fill = 'black';
-            label.font = '14px Verdana';
+            label.fontSize = 14;
+            label.fontFamily = 'Verdana';
         }));
 
     // y-axis

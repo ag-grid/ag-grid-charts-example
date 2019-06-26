@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.grouped = false;
     });
 
-    createButton('Generate 50 points', () => {
+    createButton('Generate 50 points (stacked bars)', () => {
         addSeriesIf();
         const config = generateData();
         barSeries.yFieldNames = []; // don't show bar labels
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFields = config.yFields;
         barSeries.data = config.data;
     });
-    createButton('Generate 10 points', () => {
+    createButton('Generate 10 points (grouped bars)', () => {
         addSeriesIf();
         const config = generateData(10, 16);
         barSeries.yFieldNames = []; // don't show bar labels
@@ -371,14 +371,14 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Show Legend', () => chart.legend.enabled = true);
     createButton('Hide Legend', () => chart.legend.enabled = false);
 
-    createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6], v => {
+    createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], v => {
         barSeries.strokeWidth = v;
     });
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;
     });
-    createSlider('legend font', ['12px sans-serif', '12px serif', '12px Snell Roundhand'], v => {
-        chart.legend.labelFont = v;
+    createSlider('legend font', ['sans-serif', 'serif', 'Snell Roundhand'], v => {
+        chart.legend.labelFontFamily = v;
     });
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {

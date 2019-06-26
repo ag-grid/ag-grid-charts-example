@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     centerText.textAlign = 'center';
 
     // `textBaseline` tests
-    const font = '18px Papyrus';
+    const fontSize = 18;
+    const fontFamily = 'Papyrus';
     const baselines = [ // all possible baselines excluding 'alphabetic'
         'top',
         'hanging',
@@ -48,7 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     alphabeticText.x = x;
     alphabeticText.y = alphabeticTextY;
     alphabeticText.textAlign = 'center';
-    alphabeticText.font = font;
+    alphabeticText.fontSize = fontSize;
+    alphabeticText.fontFamily = fontFamily;
     // assuming `textBaseline = 'alphabetic'` default
     const alphabeticTextLine = Line.create(50, alphabeticTextY, 350, alphabeticTextY);
 
@@ -59,7 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
         text.text = baseline + ' ' + testText;
         text.x = x;
         text.y = y;
-        text.font = font;
+        text.fontSize = fontSize;
+        text.fontFamily = fontFamily;
         text.textAlign = 'center';
         text.textBaseline = baseline;
         const textLine = Line.create(50, y, 350, y);
@@ -71,7 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
     strokeText.text = 'Lorem Ipsum';
     strokeText.x = 400;
     strokeText.y = 100;
-    strokeText.font = 'italic bold 44px Verdana';
+    strokeText.fontStyle = 'italic';
+    strokeText.fontWeight = 'bold';
+    strokeText.fontSize = 44;
+    strokeText.fontFamily = 'Verdana';
     strokeText.stroke = 'red';
     strokeText.strokeWidth = 3;
     // strokeText.translationX = 50;

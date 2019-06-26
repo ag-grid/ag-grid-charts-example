@@ -4,7 +4,7 @@ import { Rect, RectSizing } from "ag-grid-enterprise/src/charts/scene/shape/rect
 import { createSlider } from "../../lib/ui";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(800, 400);
+    const scene = new Scene(800, 800);
     scene.parent = document.body;
     const group = new Group();
 
@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     rect5.sizing = RectSizing.Border;
 
     const rect6 = new Rect();
-    rect6.x = 13.744290865384613;
-    rect6.y = 122.66658101934716;
+    rect6.x = 213.744290865384613;
+    rect6.y = 622.66658101934716;
     rect6.width = 36.65144230769231;
     rect6.height = 4.439123395946794;
     rect6.fill = '#9c27b0';
@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
     rect6.strokeWidth = 6;
 
     const rect7 = new Rect();
-    rect7.x = 13.744290865384613;
-    rect7.y = 135;
+    rect7.x = 213.744290865384613;
+    rect7.y = 635;
     rect7.width = 36.65144230769231;
     rect7.height = 4.439123395946794;
     rect7.fill = '#9c27b0';
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scene.root = group;
 
     document.body.appendChild(document.createElement('br'));
-    createSlider('Stroke width', [0, 2, 4, 6, 8, 10, 12, 16, 20, 25, 30], v => {
+    createSlider('Stroke width', [0, 2, 4, 6, 8, 10, 12, 16, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 500, 1000], v => {
         rect1.strokeWidth = v;
         rect2.strokeWidth = v;
         rect3.strokeWidth = v;

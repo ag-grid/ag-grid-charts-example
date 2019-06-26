@@ -60,22 +60,32 @@ enum TextNodeTag {
 function createStockTreeMap() {
     const fonts = {
         title: {
-            name: 'bold 12px Verdana, sans-serif',
+            fontWeight: 'bold',
+            fontSize: 12,
+            fontFamily: 'Verdana, sans-serif',
             padding: 15
         },
         subtitle: {
-            name: '9px Verdana, sans-serif',
+            fontWeight: '',
+            fontSize: 9,
+            fontFamily: 'Verdana, sans-serif',
             padding: 13
         },
         label: {
             big: {
-                name: 'bold 18px Verdana, sans-serif'
+                fontWeight: 'bold',
+                fontSize: 18,
+                fontFamily: 'Verdana, sans-serif'
             },
             medium: {
-                name: 'bold 14px Verdana, sans-serif'
+                fontWeight: 'bold',
+                fontSize: 14,
+                fontFamily: 'Verdana, sans-serif'
             },
             small: {
-                name: 'bold 10px Verdana, sans-serif'
+                fontWeight: 'bold',
+                fontSize: 10,
+                fontFamily: 'Verdana, sans-serif'
             }
         }
     };
@@ -105,7 +115,9 @@ function createStockTreeMap() {
                     name = name.toUpperCase();
                 }
                 const font = node.depth > 1 ? fonts.subtitle : fonts.title;
-                const textSize = HdpiCanvas.getTextSize(name, font.name);
+                const textSize = HdpiCanvas.getTextSize(
+                    name, [font.fontWeight, font.fontSize + 'px', font.fontFamily].join(' ').trim()
+                );
                 const innerNodeWidth = node.x1 - node.x0 - nodePadding * 2;
                 const hasTitle = node.depth > 0 && node.children && textSize.width <= innerNodeWidth;
                 (node as any).hasTitle = hasTitle;
@@ -164,7 +176,9 @@ function createStockTreeMap() {
             const isParent = !!datum.children;
             const name = datum.data.name;
 
-            text.font = font.name;
+            text.fontWeight = font.fontWeight;
+            text.fontSize = font.fontSize;
+            text.fontFamily = font.fontFamily;
             text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');
             text.textAlign = hasTitle ? 'left' : 'center';
             text.text = isParent ? name.toUpperCase() : name;
@@ -195,7 +209,8 @@ function createStockTreeMap() {
             // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
             // const font = innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
 
-            text.font = '12px Verdana, sans-serif';
+            text.fontSize = 12;
+            text.fontFamily = 'Verdana, sans-serif';
             text.textBaseline = 'top';
             text.textAlign = 'center';
             text.text = '+1.43%';
@@ -231,6 +246,8 @@ function createStockTreeMap() {
 
 function createOrgTreeMap() {
     const fontName = '12px Verdana, sans-serif';
+    const fontSize = 12;
+    const fontFamily = 'Verdana, sans-serif';
 
     const data = convertGridTreeData(rowData);
 
@@ -287,7 +304,8 @@ function createOrgTreeMap() {
         });
 
         groupSelection.selectByClass(Text).each((text, datum, index) => {
-            text.font = fontName;
+            text.fontSize = fontSize;
+            text.fontFamily = fontFamily;
             text.textBaseline = 'top';
 
             const isRoot = !datum.depth;

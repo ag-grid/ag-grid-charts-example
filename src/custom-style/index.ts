@@ -29,7 +29,8 @@ function renderChart() {
     chart.height = 350;
     chart.parent = document.body;
     chart.legendPosition = 'bottom';
-    chart.legend.labelFont = '15px Source Sans Pro';
+    chart.legend.labelFontSize = 15;
+    chart.legend.labelFontFamily = 'Source Sans Pro';
     chart.legend.labelColor = 'rgb(124, 124, 124)';
     chart.legend.markerPadding = 6;
 
@@ -42,19 +43,23 @@ function renderChart() {
     series.calloutColors = ['rgb(118, 117, 117)'];
     series.calloutLength = 13;
     series.showInLegend = true;
-    series.labelFont = '14px Source Sans Pro';
+    series.labelFontSize = 14;
+    series.labelFontFamily = 'Source Sans Pro';
     series.labelColor = 'rgb(102, 102, 102)';
 
     chart.addSeries(series);
 
     chart.title = Caption.create({
         text: 'Split of revenue by product categories',
-        font: 'bold 18px Source Sans Pro',
+        fontWeight: 'bold',
+        fontSize: 18,
+        fontFamily: 'Source Sans Pro',
         color: 'rgb(90, 90, 90)'
     });
     chart.subtitle = Caption.create({
         text: 'Last year',
-        font: '13px Source Sans Pro',
+        fontSize: 13,
+        fontFamily: 'Source Sans Pro',
         color: 'rgb(153, 153, 153)'
     });
 

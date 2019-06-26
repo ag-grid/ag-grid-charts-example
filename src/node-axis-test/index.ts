@@ -67,7 +67,8 @@ function testAutoFlippingParallelMirroredLabels() {
     const title = new Text();
     title.text = 'Parallel labels option is used. Labels should auto flip to avoid upside-down text.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
@@ -117,7 +118,8 @@ function testAutoFlippingPerpendicularMirroredLabels() {
     const title = new Text();
     title.text = 'Regular labels. Labels should auto flip to avoid upside-down text.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
@@ -166,7 +168,8 @@ function testRotationFixedPerpendicularMirroredLabels() {
     const title = new Text();
     title.text = 'Perpendicular labels with custom rotation that should be preserved at all times. No auto flipping.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
@@ -216,7 +219,8 @@ function testRotationFixedParallelMirroredLabels() {
     const title = new Text();
     title.text = 'Parallel labels with custom rotation that should be preserved at all times. No auto flipping.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
@@ -273,7 +277,8 @@ function testRadialGrid() {
     const title = new Text();
     title.text = '';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = centerX;
     title.y = 20;
     root.append(title);

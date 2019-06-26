@@ -3,7 +3,7 @@ import { PieSeries } from 'ag-grid-enterprise/src/charts/chart/series/pieSeries'
 import { Chart, LegendPosition } from 'ag-grid-enterprise/src/charts/chart/chart';
 import { Padding } from 'ag-grid-enterprise/src/charts/util/padding';
 import { Caption } from 'ag-grid-enterprise/src/charts/chart/caption';
-import { Color } from 'ag-grid-enterprise/src/charts/util/color';
+import { Color } from 'ag-grid-community';
 
 import './app.css';
 
@@ -161,11 +161,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     chart.title = Caption.create({
         text: 'Market Share of Mobile Operating Systems',
-        font: 'bold 16px Verdana, sans-serif'
+        fontWeight: 'bold',
+        fontSize: 16,
+        fontFamily: 'Verdana, sans-serif'
     });
     chart.subtitle = Caption.create({
         text: 'Source: www.statista.com',
-        font: 'italic 12px Verdana, sans-serif'
+        fontStyle: 'italic',
+        fontSize: 12,
+        fontFamily: 'Verdana, sans-serif'
     });
 
     chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
@@ -346,16 +350,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('calloutPadding', [3, 6, 9, 12], v => {
-        pieSeries2.calloutPadding = v;
+        pieSeries2.labelOffset = v;
     });
 
-    createSlider('labelFont', ['12px sans-serif', 'bold 14px sans-serif', '16px Papyrus'], v => {
-        pieSeries.labelFont = v;
+    createSlider('labelFont', [
+        {weight: '', size: 12, family: 'sans-serif'},
+        {weight: 'bold', size: 14, family: 'sans-serif'},
+        {weight: '', size: 16, family: 'Papyrus'}
+    ], v => {
+        const font = v;
+        pieSeries.labelFontWeight = font.weight;
+        pieSeries.labelFontSize = font.size;
+        pieSeries.labelFontFamily = font.family;
     });
 
-    createSlider('series.title.font', ['bold 12px sans-serif', 'italic 14px sans-serif', '20px Papyrus'], v => {
+    createSlider('series.title.font', [
+        {style: '', weight: 'bold', size: 12, family: 'sans-serif'},
+        {style: 'italic', weight: '', size: 14, family: 'sans-serif'},
+        {style: '', weight: '', size: 20, family: 'Papyrus'}
+    ], v => {
         if (pieSeries.title) {
-            pieSeries.title.font = v;
+            const font = v;
+            pieSeries.title.fontStyle = font.style;
+            pieSeries.title.fontWeight = font.weight;
+            pieSeries.title.fontSize = font.size;
+            pieSeries.title.fontFamily = font.family;
         }
     });
 
@@ -397,8 +416,9 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('legendItemPaddingY', [4, 6, 8, 10, 12, 16], v => {
         chart.legend.itemPaddingY = v;
     });
-    createSlider('legendLabelFont', ['12px sans-serif', '18px sans-serif', '24px sans-serif', '30px sans-serif', '36px sans-serif'], v => {
-        chart.legend.labelFont = v;
+    createSlider('legendLabelFont', [12, 18, 24, 30, 36], v => {
+        chart.legend.labelFontSize = v;
+        chart.legend.labelFontFamily = 'sans-serif';
     });
     createSlider('legendLabelColor', ['black', 'red', 'gold', 'green'], v => {
         chart.legend.labelColor = v;
@@ -408,28 +428,20 @@ document.addEventListener('DOMContentLoaded', () => {
             chart.title.color = v;
         }
     });
-    createSlider('title font', [
-        'bold 10px Verdana, sans-serif',
-        'bold 13px Verdana, sans-serif',
-        'bold 16px Verdana, sans-serif',
-        'bold 19px Verdana, sans-serif',
-        'bold 22px Verdana, sans-serif',
-        'bold 25px Verdana, sans-serif'
-    ], v => {
-        if (chart.title) {
-            chart.title.font = v;
+    createSlider('title font', [10, 13, 16, 19, 22, 25], v => {
+        const title = chart.title;
+        if (title) {
+            title.fontWeight = 'bold';
+            title.fontFamily = 'Verdana, sans-serif';
+            title.fontSize = v;
         }
     });
-    createSlider('subtitle font', [
-        'italic 10px Verdana, sans-serif',
-        'italic 12px Verdana, sans-serif',
-        'italic 14px Verdana, sans-serif',
-        'italic 16px Verdana, sans-serif',
-        'italic 18px Verdana, sans-serif',
-        'italic 20px Verdana, sans-serif'
-    ], v => {
-        if (chart.subtitle) {
-            chart.subtitle.font = v;
+    createSlider('subtitle font', [10, 12, 14, 16, 18, 20], v => {
+        const subtitle = chart.subtitle;
+        if (subtitle) {
+            subtitle.fontStyle = 'italic';
+            subtitle.fontFamily = 'Verdana, sans-serif';
+            subtitle.fontSize = v;
         }
     });
     createSlider('title/subtitle enabled', [[true, true], [true, false], [false, true], [false, false]], v => {
