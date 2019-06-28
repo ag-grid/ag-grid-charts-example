@@ -89,7 +89,7 @@ function testAutoFlippingParallelMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = 0;
     axis.translationX = 450;
     axis.translationY = 450;
@@ -140,7 +140,7 @@ function testAutoFlippingPerpendicularMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = 0;
     axis.translationX = 450;
     axis.translationY = 450;
@@ -190,7 +190,7 @@ function testRotationFixedPerpendicularMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = 0;
     axis.translationX = 450;
     axis.translationY = 450;
@@ -241,7 +241,7 @@ function testRotationFixedParallelMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.4;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 450;
     axis.translationY = 450;
@@ -300,7 +300,7 @@ function testRadialGrid() {
     scale.paddingOuter = 0.3;
 
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = 0;
     axis.translationX = centerX;
     axis.translationY = centerY;
@@ -398,7 +398,7 @@ function leftAxisBottomUp(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.translationX = 50;
     axis.translationY = 50;
     axis.update();
@@ -411,7 +411,7 @@ function leftAxisTopDown(root: Group) {
     scale.domain = [0, 700];
     scale.range = [0, 400];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.translationX = 100;
     axis.translationY = 50;
     axis.update();
@@ -424,7 +424,7 @@ function rightAxisBottomUp(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.mirrorLabels = true;
     axis.translationX = 120;
     axis.translationY = 50;
@@ -438,7 +438,7 @@ function rightAxisTopDown(root: Group) {
     scale.domain = [0, 700];
     scale.range = [0, 400];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.mirrorLabels = true;
     axis.translationX = 170;
     axis.translationY = 50;
@@ -452,7 +452,7 @@ function leftAxisRotatedLabels45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.translationX = 300;
     axis.translationY = 50;
     axis.labelRotation = 45;
@@ -474,7 +474,7 @@ function leftAxisRotatedLabelsMinus45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.translationX = 400;
     axis.translationY = 50;
     axis.labelRotation = -45;
@@ -496,7 +496,7 @@ function rightAxisRotatedLabels45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.translationX = 500;
     axis.translationY = 50;
     axis.mirrorLabels = true;
@@ -519,7 +519,7 @@ function rightAxisRotatedLabelsMinus45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
+    const axis = new Axis(scale);
     axis.translationX = 600;
     axis.translationY = 50;
     axis.mirrorLabels = true;
@@ -544,7 +544,7 @@ function bottomCategoryAxis(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 50;
@@ -561,7 +561,7 @@ function bottomCategoryAxisRotatedLabels45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 120;
@@ -579,7 +579,7 @@ function bottomCategoryAxisRotatedLabelsMinus45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 190;
@@ -597,7 +597,7 @@ function bottomCategoryAxisRotatedLabels90(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 260;
@@ -615,7 +615,7 @@ function topCategoryAxis(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 450;
     axis.translationY = 50;
@@ -633,7 +633,7 @@ function topCategoryAxisRotatedLabels45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 450;
     axis.translationY = 120;
@@ -652,7 +652,7 @@ function topCategoryAxisRotatedLabelsMinus45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 450;
     axis.translationY = 190;
@@ -671,7 +671,7 @@ function topCategoryAxisRotatedLabels90(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
     axis.translationX = 450;
     axis.translationY = 260;

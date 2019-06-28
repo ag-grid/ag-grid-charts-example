@@ -49,13 +49,13 @@ function renderAxes() {
     const rootGroup = new Group();
 
     // y-axis
-    const yAxis = new Axis<number>(yScale);
+    const yAxis = new Axis(yScale);
     yAxis.translationX = padding.left;
     yAxis.translationY = padding.top;
     yAxis.update();
 
     // x-axis
-    const xAxis = new Axis<string>(xScale);
+    const xAxis = new Axis(xScale);
     xAxis.rotation = -90;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight;

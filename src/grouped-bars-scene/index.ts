@@ -140,7 +140,7 @@ function renderChart() {
     }
 
     // y-axis
-    const yAxis = new Axis<number>(yScale);
+    const yAxis = new Axis(yScale);
     yAxis.translationX = padding.left;
     yAxis.translationY = padding.top;
     yAxis.gridLength = seriesWidth;
@@ -154,7 +154,7 @@ function renderChart() {
     yAxis.update();
 
     // x-axis
-    const xAxis = new Axis<string>(xGroupScale);
+    const xAxis = new Axis(xGroupScale);
     xAxis.rotation = -90;
     xAxis.translationX = padding.left;
     xAxis.translationY = padding.top + seriesHeight + 1;

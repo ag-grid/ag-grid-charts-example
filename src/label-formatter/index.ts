@@ -153,11 +153,11 @@ function createCategoryLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Label formatters #1', () => {
-        chart.xAxis.labelFormatter = value => {
+        chart.xAxis.labelFormatter = (value: any) => {
             return `-${value}-`;
         };
-        chart.yAxis.labelFormatter = (value, decimalDigits) => {
-            return (decimalDigits != null ? value.toFixed(decimalDigits + 2) : value.toString()) + 'g';
+        chart.yAxis.labelFormatter = (value: any, fractionDigits?: number) => {
+            return (fractionDigits != null ? value.toFixed(fractionDigits + 2) : value.toString()) + 'g';
         };
         chart.layoutPending = true;
         // Note: we can simply call `axis.update` to update the scene graph
@@ -170,11 +170,11 @@ function createCategoryLineChart() {
     });
 
     createButton('Label formatters #2', () => {
-        chart.xAxis.labelFormatter = value => {
+        chart.xAxis.labelFormatter = (value: any) => {
             return `[${value}]`;
         };
-        chart.yAxis.labelFormatter = (value, decimalDigits) => {
-            return '$' + toReadableNumber(value, decimalDigits);
+        chart.yAxis.labelFormatter = (value: any, fractionDigits?: number) => {
+            return '$' + toReadableNumber(value, fractionDigits);
         };
         chart.layoutPending = true;
     });
