@@ -21,7 +21,7 @@ function createChart(data: Datum[]) {
     );
 
     chart.xAxis.labelRotation = 45;
-    chart.xAxis.labelFormatter = (value: number) => new Date(value).toDateString();
+    chart.xAxis.labelFormatter = params => new Date(params.value).toDateString();
 
     chart.parent = document.body;
     chart.width = 800;
