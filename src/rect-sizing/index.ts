@@ -73,6 +73,36 @@ document.addEventListener('DOMContentLoaded', () => {
     rect7.sizing = RectSizing.Border;
     rect7.strokeWidth = 0;
 
+    const barRect1 = new Rect();
+    barRect1.x = 290.4833409926471;
+    barRect1.y = 370;
+    barRect1.width = 101.03768382352942;
+    barRect1.height = 30;
+    barRect1.sizing = RectSizing.Border;
+    barRect1.strokeWidth = 15;
+    barRect1.fill = 'red';
+    barRect1.stroke = 'maroon';
+
+    const barRect2 = new Rect();
+    barRect2.x = 290.4833409926471;
+    barRect2.y = 341.6666666666667;
+    barRect2.width = 101.03768382352942;
+    barRect2.height = 28.333333333333314;
+    barRect2.sizing = RectSizing.Border;
+    barRect2.strokeWidth = 15;
+    barRect2.fill = 'cyan';
+    barRect2.stroke = 'lime';
+
+    const barRect3 = new Rect();
+    barRect3.x = 290.4833409926471;
+    barRect3.y = 310;
+    barRect3.width = 101.03768382352942;
+    barRect3.height = 31.666666666666686;
+    barRect3.sizing = RectSizing.Border;
+    barRect3.strokeWidth = 15;
+    barRect3.fill = 'red';
+    barRect3.stroke = 'maroon';
+
     group.append(rect1);
     group.append(rect2);
     group.append(rect3);
@@ -80,6 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
     group.append(rect5);
     group.append(rect6);
     group.append(rect7);
+
+    group.append(barRect1);
+    group.append(barRect2);
+    group.append(barRect3);
 
     scene.root = group;
 
@@ -91,5 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
         rect4.strokeWidth = v;
         rect5.strokeWidth = v;
         rect6.strokeWidth = v;
+        rect7.strokeWidth = v;
+
+        barRect1.strokeWidth = v;
+        barRect2.strokeWidth = v;
+        barRect3.strokeWidth = v;
     });
 });

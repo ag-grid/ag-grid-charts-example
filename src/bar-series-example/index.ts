@@ -268,6 +268,12 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Hide labels', () => {
         barSeries.yFieldNames = [];
     });
+    createButton('Use label formatter', () => {
+        barSeries.labelFormatter = params => `$${params.value.toFixed(1)} USD`;
+    });
+    createButton('Remove label formatter', () => {
+        barSeries.labelFormatter = undefined;
+    });
     createButton('Show tooltips', () => {
         barSeries.tooltipEnabled = true;
     });
