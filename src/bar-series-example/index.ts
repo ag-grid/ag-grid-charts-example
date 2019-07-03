@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.data = data;
     barSeries.fills = material.fills;
     barSeries.tooltipEnabled = true;
+    barSeries.labelEnabled = false;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -259,15 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFields = ['yField1', 'yField2', 'yField3'];
     });
 
-    createButton('Show labels (for non-generated data)', () => {
-        barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
-    });
-    createButton('Show labels (for generated data)', () => {
-        barSeries.yFieldNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
-    });
-    createButton('Hide labels', () => {
-        barSeries.yFieldNames = [];
-    });
     createButton('Use label formatter', () => {
         barSeries.labelFormatter = params => `$${params.value.toFixed(1)} USD`;
     });
@@ -377,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Show Legend', () => chart.legend.enabled = true);
     createButton('Hide Legend', () => chart.legend.enabled = false);
 
-    createSlider('lineWidth', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], v => {
+    createSlider('stroke width', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], v => {
         barSeries.strokeWidth = v;
     });
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
