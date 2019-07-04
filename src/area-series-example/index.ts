@@ -219,7 +219,7 @@ function makeNuclearChart() {
     usaArea.yFields = ['usa'];
     usaArea.data = data;
     usaArea.fills = ['rgba(255, 0, 0, 0.7)'];
-    usaArea.stroke = 'maroon';
+    usaArea.strokes = ['maroon'];
     usaArea.tooltipEnabled = true;
 
     const ussrArea = new AreaSeries();
@@ -228,7 +228,7 @@ function makeNuclearChart() {
     ussrArea.yFields = ['ussr'];
     ussrArea.data = data;
     ussrArea.fills = ['rgba(0, 0, 255, 0.7)'];
-    ussrArea.stroke = 'darkblue';
+    ussrArea.strokes = ['darkblue'];
     ussrArea.tooltipEnabled = true;
 
     chart.addSeries(usaArea);
@@ -303,7 +303,7 @@ function makeNuclearChartWithNumericX() {
     usaArea.yFields = ['usa'];
     usaArea.data = data;
     usaArea.fills = ['rgba(255, 0, 0, 0.7)'];
-    usaArea.stroke = 'maroon';
+    usaArea.strokes = ['maroon'];
     usaArea.tooltipEnabled = true;
 
     const ussrArea = new AreaSeries();
@@ -312,7 +312,7 @@ function makeNuclearChartWithNumericX() {
     ussrArea.yFields = ['ussr'];
     ussrArea.data = data;
     ussrArea.fills = ['rgba(0, 0, 255, 0.7)'];
-    ussrArea.stroke = 'darkblue';
+    ussrArea.strokes = ['darkblue'];
     ussrArea.tooltipEnabled = true;
 
     chart.addSeries(usaArea);
@@ -574,7 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
         areaSeries.strokeWidth = v;
     });
     createSlider('line color', ['white', 'yellow', '#1e1e1e'], v => {
-        areaSeries.stroke = v;
+        areaSeries.strokes = [v];
     });
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legendPosition = v;

@@ -252,8 +252,8 @@ class MiniBar extends MiniChart {
         const xScale = new BandScale<number>();
         xScale.domain = [0, 1, 2];
         xScale.range = [padding, size - padding];
-        xScale.paddingInner = 0.4;
-        xScale.paddingOuter = 0.4;
+        xScale.paddingInner = 0.3;
+        xScale.paddingOuter = 0.3;
 
         const yScale = linearScale();
         yScale.domain = [0, 4];
@@ -323,8 +323,8 @@ class MiniStackedBar extends MiniChart {
         const xScale = new BandScale<number>();
         xScale.domain = [0, 1, 2];
         xScale.range = [padding, size - padding];
-        xScale.paddingInner = 0.4;
-        xScale.paddingOuter = 0.4;
+        xScale.paddingInner = 0.3;
+        xScale.paddingOuter = 0.3;
 
         const yScale = linearScale();
         yScale.domain = [0, 16];
@@ -397,8 +397,8 @@ class MiniNormalizedBar extends MiniChart {
         const xScale = new BandScale<number>();
         xScale.domain = [0, 1, 2];
         xScale.range = [padding, size - padding];
-        xScale.paddingInner = 0.4;
-        xScale.paddingOuter = 0.4;
+        xScale.paddingInner = 0.3;
+        xScale.paddingOuter = 0.3;
 
         const yScale = linearScale();
         yScale.domain = [0, 10];
@@ -454,19 +454,19 @@ class MiniNormalizedBar extends MiniChart {
 class MiniArea extends MiniChart {
     private readonly areas: Path[];
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    static readonly data = [
+        [2, 3, 2],
+        [3, 6, 5],
+        [6, 2, 2]
+    ];
+
+    constructor(parent: HTMLElement, fills: string[], strokes: string[], data: number[][] = MiniArea.data) {
         super();
 
         this.scene.parent = parent;
 
         const size = this.size;
         const padding = this.padding;
-
-        const data = [
-            [2, 3, 2],
-            [3, 6, 5],
-            [6, 2, 2]
-        ];
 
         const xScale = new BandScale<number>();
         xScale.paddingInner = 1;
@@ -550,6 +550,17 @@ class MiniArea extends MiniChart {
     }
 }
 
+class MiniNormalizedArea extends MiniArea {
+    static readonly data = MiniArea.data.map(stack => {
+        const sum = stack.reduce((p, c) => p + c, 0);
+        return stack.map(v => v / sum * 16);
+    });
+
+    constructor(parent: HTMLElement, fills: string[], strokes: string[], data: number[][] = MiniNormalizedArea.data) {
+        super(parent, fills, strokes, data);
+    }
+}
+
 const miniPie = new MiniPie(document.body, palettes[0].fills, palettes[0].strokes);
 const miniDonut = new MiniDonut(document.body, palettes[0].fills, palettes[0].strokes);
 const miniLine = new MiniLine(document.body, palettes[0].fills, palettes[0].strokes);
@@ -557,6 +568,7 @@ const miniBar = new MiniBar(document.body, palettes[0].fills, palettes[0].stroke
 const miniStackedBar = new MiniStackedBar(document.body, palettes[0].fills, palettes[0].strokes);
 const miniNormalizedBar = new MiniNormalizedBar(document.body, palettes[0].fills, palettes[0].strokes);
 const miniArea = new MiniArea(document.body, palettes[0].fills, palettes[0].strokes);
+const miniNormalizedArea = new MiniNormalizedArea(document.body, palettes[0].fills, palettes[0].strokes);
 const miniScatter = new MiniScatter(document.body, palettes[0].fills, palettes[0].strokes);
 
 document.body.appendChild(document.createElement('br'));
@@ -575,6 +587,7 @@ createButton('Next', () => {
     miniStackedBar.updateColors(fills, strokes);
     miniNormalizedBar.updateColors(fills, strokes);
     miniArea.updateColors(fills, strokes);
+    miniNormalizedArea.updateColors(fills, strokes);
     miniScatter.updateColors(fills, strokes);
 });
 
