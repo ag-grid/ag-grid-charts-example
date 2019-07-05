@@ -46,7 +46,7 @@ function createChart(data: Datum[]) {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({fileName: 'chart'});
+        chart.scene.download('chart');
     });
 
     createButton('Load MSFT data', () => {

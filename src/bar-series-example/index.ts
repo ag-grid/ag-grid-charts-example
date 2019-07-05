@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({ fileName: 'bar-chart', background: backgroundColor });
+        chart.scene.download('bar-chart');
     });
 
     createButton('1 y-field', () => {

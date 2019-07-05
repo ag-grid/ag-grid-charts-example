@@ -125,7 +125,7 @@ function createHeightWeightGenderChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({fileName: 'chart'});
+        chart.scene.download('chart');
     });
 }
 
@@ -192,7 +192,7 @@ function createAgeWeightGenderChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({fileName: 'chart'});
+        chart.scene.download('chart');
     });
 }
 

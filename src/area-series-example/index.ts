@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({ fileName: 'area-chart', background: backgroundColor });
+        chart.scene.download('area-chart');
     });
 
     createButton('1 y-field', () => {

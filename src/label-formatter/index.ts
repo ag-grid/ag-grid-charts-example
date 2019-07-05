@@ -105,7 +105,7 @@ function createCategoryLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Download', () => {
-        chart.scene.download({ fileName: 'chart' });
+        chart.scene.download('chart');
     });
 
     document.body.appendChild(document.createElement('br'));

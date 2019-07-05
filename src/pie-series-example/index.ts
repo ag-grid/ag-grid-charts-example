@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({fileName: 'pie-chart', background: backgroundColor});
+        chart.scene.download('pie-chart');
     });
     createButton('Show tooltips', () => {
         pieSeries.tooltipEnabled = true;
