@@ -1,7 +1,7 @@
 import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
+import { Caption } from "ag-grid-enterprise/src/charts/caption";
 import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
 import { linearRegression } from "ag-grid-enterprise/src/charts/util/stat";
 

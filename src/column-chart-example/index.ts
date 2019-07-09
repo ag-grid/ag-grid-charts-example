@@ -1,7 +1,7 @@
 import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
-import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
+import { Caption } from "ag-grid-enterprise/src/charts/caption";
 import borneo, {
     bright,
     flat,

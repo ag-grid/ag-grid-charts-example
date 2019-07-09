@@ -3,7 +3,7 @@ import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryA
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { AreaSeries } from "ag-grid-enterprise/src/charts/chart/series/areaSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
-import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
+import { Caption } from "ag-grid-enterprise/src/charts/caption";
 import { Path } from "ag-grid-enterprise/src/charts/scene/shape/path";
 import { Group } from "ag-grid-enterprise/src/charts/scene/group";
 import { DropShadow, Offset } from "ag-grid-enterprise/src/charts/scene/dropShadow";
