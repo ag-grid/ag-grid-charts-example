@@ -66,6 +66,25 @@ const data: Datum[] = [
     },
 ];
 
+type NegativeDatum = {
+    xField: string,
+    yField1: number,
+    yField2: number,
+    yField3: number
+};
+
+const negativeData: NegativeDatum[] = [{
+    xField: 'Jan',
+    yField1: 5,
+    yField2: 7,
+    yField3: -9,
+}, {
+    xField: 'Feb',
+    yField1: 10,
+    yField2: -15,
+    yField3: 20
+}];
+
 function makeChartResizeable(chart: Chart) {
     let startX = 0;
     let startY = 0;
@@ -134,6 +153,37 @@ function createColumnChart() {
         chart.scene.download('bar-chart');
     });
 
+    createButton('Negative Data', () => {
+        barSeries.data = negativeData;
+        barSeries.xField = 'xField';
+        barSeries.yFields = ['yField1', 'yField2', 'yField3'];
+    });
+
+    createButton('Grouped', () => {
+        barSeries.grouped = true;
+    });
+    createButton('Stacked', () => {
+        barSeries.grouped = false;
+    });
+
+    createButton('Enable labels', () => {
+        barSeries.labelEnabled = true;
+    });
+    createButton('Disable labels', () => {
+        barSeries.labelEnabled = false;
+    });
+    createSlider('labelOffset', [-60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60], v => {
+        barSeries.labelOffset = v;
+    });
+
+    createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
+        if (v && chart.title) {
+            chart.title.text = 'Normalize to WTFYW';
+            chart.subtitle = undefined;
+        }
+        barSeries.normalizedTo = v;
+    });
+
     return chart;
 }
 
@@ -168,6 +218,12 @@ function createBarChart() {
         chart.scene.download('bar-chart');
     });
 
+    createButton('Negative Data', () => {
+        barSeries.data = negativeData;
+        barSeries.xField = 'xField';
+        barSeries.yFields = ['yField1', 'yField2', 'yField3'];
+    });
+
     createButton('Grouped', () => {
         barSeries.grouped = true;
     });
@@ -197,8 +253,8 @@ function createBarChart() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // const columnChart = createColumnChart();
-    // makeChartResizeable(columnChart);
+    const columnChart = createColumnChart();
+    makeChartResizeable(columnChart);
 
     document.body.appendChild(document.createElement('br'));
 
