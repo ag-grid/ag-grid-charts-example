@@ -385,9 +385,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         barSeries.normalizedTo = v;
     });
-    createSlider('labelOffset', [-60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60], v => {
-        barSeries.labelOffset = v;
-    });
 
     makeChartResizeable(chart);
 });
