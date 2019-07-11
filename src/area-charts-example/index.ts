@@ -456,4 +456,11 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('legendMarkerPadding', [8, 12, 16, 20, 24], v => {
         chart.legend.markerPadding = v;
     });
+
+    createSlider('stroke opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
+        pieSeries.strokeOpacity = v;
+    });
+    createSlider('fill opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
+        pieSeries.fillOpacity = v;
+    });
 });
