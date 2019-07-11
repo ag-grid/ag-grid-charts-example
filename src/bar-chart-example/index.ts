@@ -243,6 +243,17 @@ function createBarChart() {
         barSeries.normalizedTo = v;
     });
 
+    createSlider('stroke width', [1, 2, 4, 6, 8, 10], v => {
+        barSeries.strokeWidth = v;
+    });
+
+    createSlider('stroke opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
+        barSeries.strokeOpacity = v;
+    });
+    createSlider('fill opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
+        barSeries.fillOpacity = v;
+    });
+
     return chart;
 }
 
