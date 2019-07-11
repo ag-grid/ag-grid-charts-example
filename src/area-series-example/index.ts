@@ -218,7 +218,7 @@ function makeNuclearChart() {
     usaArea.xField = 'year';
     usaArea.yFields = ['usa'];
     usaArea.data = data;
-    usaArea.fills = ['rgba(255, 0, 0, 0.7)'];
+    usaArea.fills = ['red'];
     usaArea.strokes = ['maroon'];
     usaArea.tooltipEnabled = true;
 
@@ -227,18 +227,33 @@ function makeNuclearChart() {
     ussrArea.xField = 'year';
     ussrArea.yFields = ['ussr'];
     ussrArea.data = data;
-    ussrArea.fills = ['rgba(0, 0, 255, 0.7)'];
+    ussrArea.fills = ['blue'];
     ussrArea.strokes = ['darkblue'];
     ussrArea.tooltipEnabled = true;
 
     chart.addSeries(usaArea);
     chart.addSeries(ussrArea);
 
+    document.body.appendChild(document.createElement('br'));
     createSlider('skip labels', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], v => {
         chart.xAxis.labelFormatter = params => {
             return params.index % v === 0 ? params.value : '';
         };
         chart.performLayout();
+    });
+
+    createSlider('stroke width', [1, 2, 4, 6, 8, 10], v => {
+        usaArea.strokeWidth = v;
+        ussrArea.strokeWidth = v;
+    });
+
+    createSlider('stroke opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
+        usaArea.strokeOpacity = v;
+        ussrArea.strokeOpacity = v;
+    });
+    createSlider('fill opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
+        usaArea.fillOpacity = v;
+        ussrArea.fillOpacity = v;
     });
 }
 
