@@ -3,7 +3,6 @@ import { PieSeries } from 'ag-grid-enterprise/src/charts/chart/series/pieSeries'
 import { Chart, LegendPosition } from 'ag-grid-enterprise/src/charts/chart/chart';
 import { Padding } from 'ag-grid-enterprise/src/charts/util/padding';
 import { Caption } from 'ag-grid-enterprise/src/charts/caption';
-import { Color } from 'ag-grid-community';
 
 import './app.css';
 
