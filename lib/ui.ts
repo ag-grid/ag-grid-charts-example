@@ -6,6 +6,15 @@ export function createButton(text: string, action: EventListenerOrEventListenerO
     return button;
 }
 
+export function createSliderValues(start: number, range: number, steps: number): number[] {
+    const step = range / steps;
+    const values: number[] = [];
+    for (let i = 0; i <= steps; i++) {
+        values.push(start + step * i);
+    }
+    return values;
+}
+
 export function createSlider<D>(text: string, values: D[], action: (value: D) => void): HTMLInputElement {
     const n = values.length;
     const id = String(Date.now());
