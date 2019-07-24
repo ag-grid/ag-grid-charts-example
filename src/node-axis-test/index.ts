@@ -736,12 +736,12 @@ function topCategoryAxisRotatedLabels90(root: Group) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // renderVerticalAxesNormalLabels();
+    renderVerticalAxesNormalLabels();
     renderVerticalAxesRotatedLabels();
-    // renderHorizontalAxes();
-    // testAutoFlippingPerpendicularMirroredLabels();
-    // testAutoFlippingParallelMirroredLabels();
-    // testRotationFixedPerpendicularMirroredLabels();
-    // testRotationFixedParallelMirroredLabels();
-    // testRadialGrid();
+    renderHorizontalAxes();
+    testAutoFlippingPerpendicularMirroredLabels();
+    testAutoFlippingParallelMirroredLabels();
+    testRotationFixedPerpendicularMirroredLabels();
+    testRotationFixedParallelMirroredLabels();
+    testRadialGrid();
 });
