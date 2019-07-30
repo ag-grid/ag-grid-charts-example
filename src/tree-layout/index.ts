@@ -3,6 +3,7 @@ import { Group } from "ag-grid-enterprise/src/charts/scene/group";
 import { Selection } from "ag-grid-enterprise/src/charts/scene/selection";
 import { Text } from "ag-grid-enterprise/src/charts/scene/shape/text";
 import { Line } from "ag-grid-enterprise/src/charts/scene/shape/line";
+import { createSlider } from "../../lib/ui";
 
 interface Tick {
     labels: string[];
@@ -135,7 +136,7 @@ function ticksToTree(ticks: Tick[]): TreeNode {
 }
 
 function insertTick(root: TreeNode, tick: Tick) {
-    const pathParts = tick.labels.reverse(); // path elements from root to leaf label
+    const pathParts = tick.labels.slice().reverse(); // path elements from root to leaf label
     const lastPartIndex = pathParts.length - 1;
 
     pathParts.forEach((pathPart, partIndex) => {
@@ -326,7 +327,7 @@ function treeLayout(root: TreeNode, size: TreeSize) {
     const desiredSpacingY = size.height / spaceCount;
     const scalingY = desiredSpacingY / existingSpacingY;
     thirdWalk(root, scalingX, scalingY);
-    console.log(info);
+    // console.log(info);
 }
 
 function logTree(root: TreeNode, msg?: (node: TreeNode) => string) {
@@ -339,15 +340,23 @@ function logTree(root: TreeNode, msg?: (node: TreeNode) => string) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    let width = 400;
+    let height = 400;
+    const sizes = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+    createSlider('width', sizes, v => {
+        fitTree(width = v, height);
+    });
+    createSlider('height', sizes, v => {
+        fitTree(width, height = v);
+    });
+
     const scene = new Scene(1500, 1200);
     scene.parent = document.body;
     const rootGroup = new Group();
     rootGroup.translationX = 600;
-
     scene.root = rootGroup;
 
     function renderTree(root: TreeNode) {
-        const sf = 1; // scaling factor
         const nodes = [] as TreeNode[];
         function postTraverse(root: TreeNode) {
             root.children.forEach(child => postTraverse(child));
@@ -361,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 children.forEach(child => createEdges(child, root));
             }
             if (parent) {
-                const line = Line.create(root.x * sf, root.y * sf, parent.x * sf, parent.y * sf);
+                const line = Line.create(root.x, root.y, parent.x, parent.y);
                 line.stroke = 'black';
                 line.strokeWidth = 3;
                 line.strokeOpacity = 0.3;
@@ -380,16 +389,24 @@ document.addEventListener('DOMContentLoaded', () => {
             node.textAlign = 'center';
             node.fontSize = 16;
             node.fill = 'black';
-            node.x = datum.x * sf;
-            node.y = datum.y * sf;
+            node.x = datum.x;
+            node.y = datum.y;
         });
     }
 
-    const root = ticksToTree(tickData);
+    function fitTree(width: number, height: number) {
+        while (rootGroup.children.length > 0) {
+            rootGroup.removeChild(rootGroup.children[0]);
+        }
 
-    treeLayout(root, {width: 400, height: 400});
-    logTree(root);
-    // logTree(root, n => `label: ${n.label}, number: ${n.number}, depth: ${n.depth}, prelim: ${n.prelim}`);
+        const root = ticksToTree(tickData);
 
-    renderTree(root);
+        treeLayout(root, {width, height});
+        // logTree(root);
+        // logTree(root, n => `label: ${n.label}, number: ${n.number}, depth: ${n.depth}, prelim: ${n.prelim}`);
+
+        renderTree(root);
+    }
+
+    fitTree(width, height);
 });
