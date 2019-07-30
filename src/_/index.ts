@@ -9,7 +9,7 @@ interface Tick {
 }
 
 // Every tree path has the same depth.
-const chartData = [
+const tickData = [
     {
         "labels": [
             "A",
@@ -73,397 +73,6 @@ const chartData = [
             "N",
             "O"
         ]
-    }
-];
-
-const tempData = [
-    {
-        "x": -23.65625,
-        "y": 5
-    },
-    {
-        "x": -22.65625,
-        "y": 5
-    },
-    {
-        "x": -21.65625,
-        "y": 5
-    },
-    {
-        "x": -22.65625,
-        "y": 4
-    },
-    {
-        "x": -20.65625,
-        "y": 5
-    },
-    {
-        "x": -19.65625,
-        "y": 5
-    },
-    {
-        "x": -20.15625,
-        "y": 4
-    },
-    {
-        "x": -18.65625,
-        "y": 5
-    },
-    {
-        "x": -17.65625,
-        "y": 5
-    },
-    {
-        "x": -16.65625,
-        "y": 5
-    },
-    {
-        "x": -17.65625,
-        "y": 4
-    },
-    {
-        "x": -20.15625,
-        "y": 3
-    },
-    {
-        "x": -15.65625,
-        "y": 5
-    },
-    {
-        "x": -14.65625,
-        "y": 5
-    },
-    {
-        "x": -15.15625,
-        "y": 4
-    },
-    {
-        "x": -15.15625,
-        "y": 3
-    },
-    {
-        "x": -13.65625,
-        "y": 5
-    },
-    {
-        "x": -13.65625,
-        "y": 4
-    },
-    {
-        "x": -13.65625,
-        "y": 3
-    },
-    {
-        "x": -16.90625,
-        "y": 2
-    },
-    {
-        "x": -12.65625,
-        "y": 5
-    },
-    {
-        "x": -12.65625,
-        "y": 4
-    },
-    {
-        "x": -11.65625,
-        "y": 5
-    },
-    {
-        "x": -10.65625,
-        "y": 5
-    },
-    {
-        "x": -11.15625,
-        "y": 4
-    },
-    {
-        "x": -9.65625,
-        "y": 5
-    },
-    {
-        "x": -8.65625,
-        "y": 5
-    },
-    {
-        "x": -7.65625,
-        "y": 5
-    },
-    {
-        "x": -8.65625,
-        "y": 4
-    },
-    {
-        "x": -10.65625,
-        "y": 3
-    },
-    {
-        "x": -10.65625,
-        "y": 2
-    },
-    {
-        "x": -6.65625,
-        "y": 5
-    },
-    {
-        "x": -6.65625,
-        "y": 4
-    },
-    {
-        "x": -5.65625,
-        "y": 5
-    },
-    {
-        "x": -4.65625,
-        "y": 5
-    },
-    {
-        "x": -5.15625,
-        "y": 4
-    },
-    {
-        "x": -5.90625,
-        "y": 3
-    },
-    {
-        "x": -3.65625,
-        "y": 5
-    },
-    {
-        "x": -3.65625,
-        "y": 4
-    },
-    {
-        "x": -2.65625,
-        "y": 5
-    },
-    {
-        "x": -2.65625,
-        "y": 4
-    },
-    {
-        "x": -3.15625,
-        "y": 3
-    },
-    {
-        "x": -4.53125,
-        "y": 2
-    },
-    {
-        "x": -10.71875,
-        "y": 1
-    },
-    {
-        "x": -1.65625,
-        "y": 5
-    },
-    {
-        "x": -0.65625,
-        "y": 5
-    },
-    {
-        "x": -1.15625,
-        "y": 4
-    },
-    {
-        "x": 0.34375,
-        "y": 5
-    },
-    {
-        "x": 1.34375,
-        "y": 5
-    },
-    {
-        "x": 0.84375,
-        "y": 4
-    },
-    {
-        "x": 2.34375,
-        "y": 5
-    },
-    {
-        "x": 3.34375,
-        "y": 5
-    },
-    {
-        "x": 2.84375,
-        "y": 4
-    },
-    {
-        "x": 0.84375,
-        "y": 3
-    },
-    {
-        "x": 0.84375,
-        "y": 2
-    },
-    {
-        "x": 4.34375,
-        "y": 5
-    },
-    {
-        "x": 5.34375,
-        "y": 5
-    },
-    {
-        "x": 4.84375,
-        "y": 4
-    },
-    {
-        "x": 6.34375,
-        "y": 5
-    },
-    {
-        "x": 7.34375,
-        "y": 5
-    },
-    {
-        "x": 6.84375,
-        "y": 4
-    },
-    {
-        "x": 8.34375,
-        "y": 5
-    },
-    {
-        "x": 9.34375,
-        "y": 5
-    },
-    {
-        "x": 10.34375,
-        "y": 5
-    },
-    {
-        "x": 9.34375,
-        "y": 4
-    },
-    {
-        "x": 7.09375,
-        "y": 3
-    },
-    {
-        "x": 11.34375,
-        "y": 5
-    },
-    {
-        "x": 12.34375,
-        "y": 5
-    },
-    {
-        "x": 13.34375,
-        "y": 5
-    },
-    {
-        "x": 12.34375,
-        "y": 4
-    },
-    {
-        "x": 12.34375,
-        "y": 3
-    },
-    {
-        "x": 9.71875,
-        "y": 2
-    },
-    {
-        "x": 14.34375,
-        "y": 5
-    },
-    {
-        "x": 15.34375,
-        "y": 5
-    },
-    {
-        "x": 16.34375,
-        "y": 5
-    },
-    {
-        "x": 15.34375,
-        "y": 4
-    },
-    {
-        "x": 17.34375,
-        "y": 5
-    },
-    {
-        "x": 17.34375,
-        "y": 4
-    },
-    {
-        "x": 18.34375,
-        "y": 5
-    },
-    {
-        "x": 19.34375,
-        "y": 5
-    },
-    {
-        "x": 18.84375,
-        "y": 4
-    },
-    {
-        "x": 17.09375,
-        "y": 3
-    },
-    {
-        "x": 20.34375,
-        "y": 5
-    },
-    {
-        "x": 21.34375,
-        "y": 5
-    },
-    {
-        "x": 22.34375,
-        "y": 5
-    },
-    {
-        "x": 21.34375,
-        "y": 4
-    },
-    {
-        "x": 23.34375,
-        "y": 5
-    },
-    {
-        "x": 24.34375,
-        "y": 5
-    },
-    {
-        "x": 25.34375,
-        "y": 5
-    },
-    {
-        "x": 24.34375,
-        "y": 4
-    },
-    {
-        "x": 26.34375,
-        "y": 5
-    },
-    {
-        "x": 27.34375,
-        "y": 5
-    },
-    {
-        "x": 26.84375,
-        "y": 4
-    },
-    {
-        "x": 24.09375,
-        "y": 3
-    },
-    {
-        "x": 20.59375,
-        "y": 2
-    },
-    {
-        "x": 10.71875,
-        "y": 1
-    },
-    {
-        "x": 0,
-        "y": 0
     }
 ];
 
@@ -652,15 +261,72 @@ function firstWalk(node: TreeNode, distance: number) {
     }
 }
 
-function secondWalk(v: TreeNode, m: number) {
-    v.x = v.prelim + m;
-    v.y = v.depth;
-    v.children.forEach(w => secondWalk(w, m + v.mod));
+class Dimensions {
+    top: number = Infinity;
+    right: number = -Infinity;
+    bottom: number = -Infinity;
+    left: number = Infinity;
+
+    update(v: TreeNode) {
+        if (v.x > this.right) {
+            this.right = v.x;
+        }
+        if (v.x < this.left) {
+            this.left = v.x;
+        }
+        if (v.y > this.bottom) {
+            this.bottom = v.y;
+        }
+        if (v.y < this.top) {
+            this.top = v.y;
+        }
+    }
 }
 
-function treeLayout(root: TreeNode) {
+class TreeInfo {
+    dimensions = new Dimensions;
+    leafCount = 0;
+
+    update(v: TreeNode) {
+        this.dimensions.update(v);
+        if (!v.children.length) {
+            this.leafCount++;
+        }
+    }
+}
+
+interface TreeSize {
+    width: number;
+    height: number;
+}
+
+function secondWalk(v: TreeNode, m: number, info: TreeInfo) {
+    v.x = v.prelim + m;
+    v.y = v.depth;
+    info.update(v);
+    v.children.forEach(w => secondWalk(w, m + v.mod, info));
+}
+
+function thirdWalk(node: TreeNode, scalingX: number, scalingY: number) {
+    node.children.forEach(child => thirdWalk(child, scalingX, scalingY));
+    node.x *= scalingX;
+    node.y *= scalingY;
+}
+
+function treeLayout(root: TreeNode, size: TreeSize) {
     firstWalk(root, 1);
-    secondWalk(root, -root.prelim);
+    const info = new TreeInfo;
+    secondWalk(root, -root.prelim, info);
+
+    const spaceCount = info.leafCount - 1;
+    const existingSpacingX = (info.dimensions.right - info.dimensions.left) / spaceCount;
+    const desiredSpacingX = size.width / spaceCount;
+    const scalingX = desiredSpacingX / existingSpacingX;
+    const existingSpacingY = (info.dimensions.bottom - info.dimensions.top) / spaceCount;
+    const desiredSpacingY = size.height / spaceCount;
+    const scalingY = desiredSpacingY / existingSpacingY;
+    thirdWalk(root, scalingX, scalingY);
+    console.log(info);
 }
 
 function logTree(root: TreeNode, msg?: (node: TreeNode) => string) {
@@ -681,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scene.root = rootGroup;
 
     function renderTree(root: TreeNode) {
-        const sf = 50; // scaling factor
+        const sf = 1; // scaling factor
         const nodes = [] as TreeNode[];
         function postTraverse(root: TreeNode) {
             root.children.forEach(child => postTraverse(child));
@@ -719,9 +385,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const root = ticksToTree(chartData);
+    const root = ticksToTree(tickData);
 
-    treeLayout(root);
+    treeLayout(root, {width: 400, height: 400});
     logTree(root);
     // logTree(root, n => `label: ${n.label}, number: ${n.number}, depth: ${n.depth}, prelim: ${n.prelim}`);
 
