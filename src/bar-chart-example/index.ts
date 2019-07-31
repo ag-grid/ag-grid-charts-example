@@ -8,6 +8,7 @@ import { createButton, createSlider } from "../../lib/ui";
 import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import { Caption } from "ag-grid-enterprise/src/charts/caption";
 
 type Datum = {
@@ -146,6 +147,10 @@ function createColumnChart() {
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
     barSeries.labelEnabled = false;
+    barSeries.shadow = new DropShadow({
+        color: 'rgba(0,0,0,0.5)',
+        blur: 10
+    });
 
     document.body.appendChild(document.createElement('br'));
 
@@ -179,6 +184,12 @@ function createColumnChart() {
             chart.subtitle = undefined;
         }
         barSeries.normalizedTo = v;
+    });
+
+    createSlider('shadow color', ['red', 'green', 'blue'], v => {
+        if (barSeries.shadow) {
+            barSeries.shadow.color = v;
+        }
     });
 
     return chart;

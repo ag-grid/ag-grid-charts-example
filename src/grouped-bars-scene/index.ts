@@ -4,7 +4,7 @@ import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 import {Group} from "ag-grid-enterprise/src/charts/scene/group";
 import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {DropShadow, Offset} from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import {Axis} from "ag-grid-enterprise/src/charts/axis";
 
 const gradientTheme = [
@@ -123,7 +123,10 @@ function renderChart() {
             const rect = Rect.create(x, y, barWidth, seriesHeight - y);
             rect.fill = color[0];
             rect.stroke = 'black';
-            rect.fillShadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+            rect.fillShadow = new DropShadow({
+                color: 'rgba(0,0,0,0.2)',
+                blur: 15
+            });
             rect.opacity = 0.9;
 
             const labelText = yFieldNames[j];

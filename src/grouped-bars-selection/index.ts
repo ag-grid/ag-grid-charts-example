@@ -9,7 +9,7 @@ import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {normalizeAngle360} from "ag-grid-enterprise/src/charts/util/angle";
 import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
 import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {DropShadow, Offset} from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
 
 document.addEventListener('DOMContentLoaded', () => {
     renderChart();
@@ -211,7 +211,10 @@ function renderChart() {
     barGroup.translationX = padding.left;
     barGroup.translationY = padding.top;
 
-    const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+    const shadow = new DropShadow({
+        color: 'rgba(0,0,0,0.2)',
+        blur: 15
+    });
 
     Selection.select(barGroup).selectAll().setData(data, (node, datum) => datum.category)
         .enter.append(Group).each((group, datum) => {

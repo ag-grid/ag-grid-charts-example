@@ -1,7 +1,6 @@
 import {PolarChart} from "ag-grid-enterprise/src/charts/chart/polarChart";
 import {PieSeries} from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
 import {DropShadow} from "ag-grid-enterprise/src/charts/scene/dropShadow";
-import {Offset} from "ag-grid-enterprise/src/charts/scene/offset";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 
 const data = [
@@ -59,7 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.width = 700;
     chart.height = 700;
 
-    const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+    const shadow = new DropShadow({
+        color: 'rgba(0,0,0,0.2)',
+        blur: 15
+    });
 
     const pieSeries1 = new PieSeries();
     chart.addSeries(pieSeries1);

@@ -6,7 +6,7 @@ import { FinvizMapData } from "./finviz_data";
 import { HdpiCanvas } from "ag-grid-enterprise/src/charts/canvas/hdpiCanvas";
 import { Rect } from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import { Text } from "ag-grid-enterprise/src/charts/scene/shape/text";
-import { DropShadow, Offset } from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import { convertGridTreeData, rowData } from "./convert";
 import { createButton } from "../../lib/ui";
 
@@ -103,7 +103,11 @@ function createStockTreeMap() {
     const nodePadding = 2;
     const tickerMap = new Map<string, Text | undefined>();
 
-    const labelShadow = new DropShadow('rgba(0,0,0,0.4)', new Offset(1.5,1.5), 0);
+    const labelShadow = new DropShadow({
+        color: 'rgba(0,0,0,0.4)',
+        xOffset: 1.5,
+        yOffset: 1.5
+    });
 
     function update() {
         const [width, height] = scene.size;
