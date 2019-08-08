@@ -104,18 +104,22 @@ function createHeightWeightGenderChart() {
         maleSeries.data = maleData;
         maleSeries.xField = 'height';
         maleSeries.yField = 'weight';
+        maleSeries.radiusField = 'age';
+        maleSeries.markerSize = 30;
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
-        maleSeries.fill = 'rgba(227,111,106,0.71)';
+        maleSeries.fill = 'rgba(227,111,106,0.61)';
         maleSeries.markerStrokeWidth = 0.5;
 
         const femaleSeries = new ScatterSeries();
         femaleSeries.data = femaleData;
         femaleSeries.xField = 'height';
         femaleSeries.yField = 'weight';
+        femaleSeries.radiusField = 'age';
+        femaleSeries.markerSize = 30;
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
-        femaleSeries.fill = 'rgba(123,145,222,0.71)';
+        femaleSeries.fill = 'rgba(123,145,222,0.61)';
         femaleSeries.markerStrokeWidth = 0.5;
 
         chart.addSeries(maleSeries);
