@@ -5,7 +5,7 @@ import { Caption } from "ag-grid-enterprise/src/charts/caption";
 import { NumberAxis } from 'ag-grid-enterprise/src/charts/chart/axis/numberAxis';
 import { BarSeries } from 'ag-grid-enterprise/src/charts/chart/series/barSeries';
 import { LineSeries } from 'ag-grid-enterprise/src/charts/chart/series/lineSeries';
-import { createButton } from '../../lib/ui';
+import { createButton, createSlider } from '../../lib/ui';
 
 type CategoryDatum = {
     category: {labels: string[]},
@@ -152,6 +152,11 @@ function createCategoryColumnChart() {
         chart.xAxis.update();
     });
 
+    createSlider('label rotation', [0, -45, 45, 90, -90], v => {
+        chart.xAxis.labelRotation = v;
+        chart.xAxis.update();
+    });
+
     makeChartResizeable(chart);
 }
 
@@ -202,12 +207,17 @@ function createCategoryBarChart() {
     });
 
     createButton('label grid ON', () => {
-        (chart.xAxis as GroupedCategoryAxis).labelGrid = true;
-        chart.xAxis.update();
+        (chart.yAxis as GroupedCategoryAxis).labelGrid = true;
+        chart.yAxis.update();
     });
     createButton('label grid OFF', () => {
-        (chart.xAxis as GroupedCategoryAxis).labelGrid = false;
-        chart.xAxis.update();
+        (chart.yAxis as GroupedCategoryAxis).labelGrid = false;
+        chart.yAxis.update();
+    });
+
+    createSlider('label rotation', [0, -45, 45, 90, -90], v => {
+        chart.yAxis.labelRotation = v;
+        chart.yAxis.update();
     });
 
     makeChartResizeable(chart);
