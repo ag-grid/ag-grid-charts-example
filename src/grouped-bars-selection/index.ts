@@ -202,7 +202,10 @@ function renderChart() {
     xBarScale.round = true;
     const barWidth = xBarScale.bandwidth;
 
-    const scene = new Scene(chartWidth, chartHeight);
+    const scene = new Scene({
+        width: chartWidth,
+        height: chartHeight
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
 

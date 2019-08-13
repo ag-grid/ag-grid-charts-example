@@ -7,7 +7,7 @@ import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 document.addEventListener('DOMContentLoaded', () => {
     const width = 800;
     const height = 400;
-    const scene = new Scene(width, height);
+    const scene = new Scene({width, height});
     scene.parent = document.body;
     const group = new Group();
 

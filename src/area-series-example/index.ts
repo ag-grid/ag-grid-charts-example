@@ -137,20 +137,20 @@ function makeChartResizeable(chart: Chart) {
     let chartSize: [number, number];
     const scene = chart.scene;
 
-    scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
         startX = e.offsetX;
         startY = e.offsetY;
         chartSize = chart.size;
         isDragging = true;
     });
-    scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
         if (isDragging) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
             chart.size = [chartSize[0] + dx, chartSize[1] + dy];
         }
     });
-    scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
+    scene.canvas.element.addEventListener('mouseup', () => {
         isDragging = false;
     });
 }
@@ -195,7 +195,7 @@ function makeNuclearChart() {
     xAxis.labelRotation = 45;
     xAxis.labelFontSize = 10;
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart(xAxis, yAxis);
+    const chart = new CartesianChart({xAxis, yAxis});
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
@@ -211,7 +211,7 @@ function makeNuclearChart() {
         fontFamily: 'Verdana, sans-serif',
         color: 'rgba(0, 0, 0, 0.6)'
     });
-    chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
+    chart.scene.canvas.element.style.border = '1px solid black';
 
     const usaArea = new AreaSeries();
     usaArea.yFieldNames = ['USA'];
@@ -294,7 +294,7 @@ function makeNuclearChartWithNumericX() {
     const xAxis = new NumberAxis();
     xAxis.nice = false;
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart(xAxis, yAxis);
+    const chart = new CartesianChart({xAxis, yAxis});
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
@@ -310,7 +310,7 @@ function makeNuclearChartWithNumericX() {
         fontFamily: 'Verdana, sans-serif',
         color: 'rgba(0, 0, 0, 0.6)'
     });
-    chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
+    chart.scene.canvas.element.style.border = '1px solid black';
 
     const usaArea = new AreaSeries();
     usaArea.yFieldNames = ['USA'];
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
     xAxis.scale.paddingInner = 1;
     xAxis.scale.paddingOuter = 0;
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart(xAxis, yAxis);
+    const chart = new CartesianChart({xAxis, yAxis});
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fontFamily: 'Verdana, sans-serif',
         color: 'rgba(0, 0, 0, 0.6)'
     });
-    chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
+    chart.scene.canvas.element.style.border = '1px solid black';
 
     const saucer = new Path();
     saucer.fillShadow = new DropShadow({
@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saucer.svgPath = 'M90,31.5c0,-8.7 -12.4,-16 -29.8,-18.8c-1.3,-7.2 -7.6,-12.7 -15.2,-12.7c-7.6,0 -13.9,5.5 -15.2,12.7c-17.4,2.8 -29.8,10.1 -29.8,18.8c0,6.2 6.3,11.7 16.3,15.4l-4,6.6c-0.3,0.8 0.1,1.6 1.1,1.9c1,0.3 2,-0.1 2.3,-0.9l4,-6.5c6.8,2.1 14.8,3.3 23.6,3.5l0,9.5c0,0.8 0.7,1.5 1.5,1.5l0.6,0c0.8,0 1.5,-0.7 1.5,-1.5l0,-9.5c8.7,-0.2 16.8,-1.4 23.6,-3.5l4,6.5c0.3,0.8 1.4,1.2 2.3,0.9c0.9,-0.3 1.4,-1.2 1.1,-1.9l-4.1,-6.6c9.9,-3.7 16.2,-9.2 16.2,-15.4Zm-65,5c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm20,0c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm0,-15.3c-7.2,0 -14.5,-2 -14.5,-5.7c0,-8 6.5,-14.5 14.5,-14.5c8,0 14.5,6.5 14.5,14.5c0,3.8 -7.3,5.7 -14.5,5.7Zm15,10.3c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5c-2.8,0 -5,-2.2 -5,-5Z';
 
     let flying = true;
-    chart.scene.hdpiCanvas.canvas.addEventListener('click', (e: MouseEvent) => {
+    chart.scene.canvas.element.addEventListener('click', (e: MouseEvent) => {
         const node = chart.scene.root!.pickNode(e.offsetX, e.offsetY);
         if (node === saucer) {
             const acceleration = 0.01;

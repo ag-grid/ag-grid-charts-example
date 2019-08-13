@@ -25,12 +25,15 @@ export abstract class MiniChart {
     protected readonly padding = 5;
     protected readonly root = new Group();
     protected readonly scene: Scene = (() => {
-        const scene = new Scene(this.size, this.size);
+        const scene = new Scene({
+            width: this.size,
+            height: this.size
+        });
         scene.root = this.root;
         return scene;
     })();
 
-    readonly element: HTMLElement = this.scene.hdpiCanvas.canvas;
+    readonly element: HTMLElement = this.scene.canvas.element;
 
     abstract updateColors(fills: string[], strokes: string[]): void;
 }

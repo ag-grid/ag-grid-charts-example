@@ -4,7 +4,10 @@ import {Path} from "ag-grid-enterprise/src/charts/scene/shape/path";
 import { createSlider } from "../../lib/ui";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(1200, 900);
+    const scene = new Scene({
+        width: 1200,
+        height: 900
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
 

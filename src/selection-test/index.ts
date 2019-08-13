@@ -6,7 +6,10 @@ import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
 import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
 
 function test_SelectionSelect() {
-    const scene = new Scene(100, 100);
+    const scene = new Scene({
+        width: 100,
+        height: 100
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
@@ -18,7 +21,10 @@ function test_SelectionSelect() {
 }
 
 function test_append_setDatum_attr_each() {
-    const scene = new Scene(100, 100);
+    const scene = new Scene({
+        width: 100,
+        height: 100
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
@@ -57,7 +63,10 @@ function test_append_setDatum_attr_each() {
 }
 
 function test_selectAll_setData_enter() {
-    const scene = new Scene(300, 150);
+    const scene = new Scene({
+        width: 300,
+        height: 150
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
@@ -90,7 +99,10 @@ function test_selectAll_setData_enter() {
 }
 
 function test_call_merge() {
-    const scene = new Scene(500, 250);
+    const scene = new Scene({
+        width: 500,
+        height: 250
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;

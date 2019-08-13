@@ -15,10 +15,10 @@ type Datum = {
 };
 
 function createChart(data: Datum[]) {
-    const chart = new CartesianChart(
-        new NumberAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        xAxis: new NumberAxis(),
+        yAxis: new NumberAxis()
+    });
 
     chart.xAxis.labelRotation = 45;
     chart.xAxis.labelFormatter = params => new Date(params.value).toDateString();

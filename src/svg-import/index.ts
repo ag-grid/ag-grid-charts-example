@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const root = new Group();
     root.translationX = 200;
     root.translationY = 200;
-    const scene = new Scene(width, height);
+    const scene = new Scene({width, height});
     scene.root = root;
     scene.parent = document.body;
 

@@ -350,7 +350,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fitTree(width, height = v);
     });
 
-    const scene = new Scene(1500, 1200);
+    const scene = new Scene({
+        width: 1500,
+        height: 1200
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
     rootGroup.translationX = 600;

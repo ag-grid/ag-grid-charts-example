@@ -79,10 +79,10 @@ function createCategoryLineChart() {
     dataDiv.style.width = '200px';
     parentDiv.appendChild(dataDiv);
 
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        xAxis: new CategoryAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.parent = parentDiv;
     chart.width = 800;
     chart.height = 500;

@@ -9,7 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Canvas scene graph API
 
-    const scene = new Scene(800, 400);
+    const scene = new Scene({
+        width: 800,
+        height: 400
+    });
     scene.parent = document.body;
     const group = new Group();
 

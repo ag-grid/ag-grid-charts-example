@@ -33,13 +33,13 @@ function makeResizeable(scene: Scene, update: () => void) {
     let isDragging = false;
     let size: [number, number];
 
-    scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
         startX = e.offsetX;
         startY = e.offsetY;
         size = scene.size;
         isDragging = true;
     });
-    scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
         if (isDragging) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
@@ -47,7 +47,7 @@ function makeResizeable(scene: Scene, update: () => void) {
             update();
         }
     });
-    scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
+    scene.canvas.element.addEventListener('mouseup', () => {
         isDragging = false;
     });
 }
@@ -90,7 +90,10 @@ function createStockTreeMap() {
         }
     };
 
-    const scene = new Scene(1200, 800);
+    const scene = new Scene({
+        width: 1200,
+        height: 800
+    });
     scene.parent = document.body;
 
     const rootGroup = new Group();
@@ -119,7 +122,7 @@ function createStockTreeMap() {
                     name = name.toUpperCase();
                 }
                 const font = node.depth > 1 ? fonts.subtitle : fonts.title;
-                const textSize = HdpiCanvas.getTextSize(
+                const textSize = scene.canvas.getTextSize(
                     name, [font.fontWeight, font.fontSize + 'px', font.fontFamily].join(' ').trim()
                 );
                 const innerNodeWidth = node.x1 - node.x0 - nodePadding * 2;
@@ -189,7 +192,7 @@ function createStockTreeMap() {
 
             const textBBox = text.getBBox();
 
-            const hasLabel = isLeaf
+            const hasLabel = isLeaf && textBBox
                 && textBBox.width <= innerNodeWidth
                 && textBBox.height * 2 + 4 <= innerNodeHeight;
 
@@ -226,7 +229,7 @@ function createStockTreeMap() {
 
             text.fill = 'white';
             text.fillShadow = labelShadow;
-            const isVisible = hasLabel && textBBox.width < innerNodeWidth;
+            const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
             text.visible = isVisible;
             if (isVisible) {
                 text.x = (datum.x0 + datum.x1) / 2;
@@ -255,7 +258,10 @@ function createOrgTreeMap() {
 
     const data = convertGridTreeData(rowData);
 
-    const scene = new Scene(1200, 800);
+    const scene = new Scene({
+        width: 1200,
+        height: 800
+    });
     scene.parent = document.body;
 
     const rootGroup = new Group();
@@ -272,7 +278,7 @@ function createOrgTreeMap() {
         const treemapLayout = d3.treemap().size([width, height]).round(true)
             .paddingRight(4).paddingBottom(4).paddingLeft(4).paddingTop(node => {
                 const name = (node.data as any).orgHierarchy;
-                const nameSize = HdpiCanvas.getTextSize(name, fontName);
+                const nameSize = scene.canvas.getTextSize(name, fontName);
                 const width = node.x1 - node.x0;
                 const hasTitlePadding = node.depth > 0 && node.children && nameSize.width - 4 < width;
                 (node as any).hasTitle = hasTitlePadding;
@@ -317,7 +323,9 @@ function createOrgTreeMap() {
 
             text.text = datum.data.orgHierarchy;
             const bbox = text.getBBox();
-            text.visible = !isRoot && (datum.x1 - datum.x0) - 2 * 2 > bbox.width && (datum.y1 - datum.y0) - 2 * 2 > bbox.height || datum.hasTitle;
+            if (bbox) {
+                text.visible = !isRoot && (datum.x1 - datum.x0) - 2 * 2 > bbox.width && (datum.y1 - datum.y0) - 2 * 2 > bbox.height || datum.hasTitle;
+            }
             text.x = datum.x0 + 3;
             text.y = datum.y0 + 4;
         });

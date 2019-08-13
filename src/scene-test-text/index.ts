@@ -5,7 +5,10 @@ import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
 import {Node} from "ag-grid-enterprise/src/charts/scene/node";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(800, 600);
+    const scene = new Scene({
+        width: 800,
+        height: 600
+    });
     scene.parent = document.body;
     scene.renderFrameIndex = false;
     const group = new Group();

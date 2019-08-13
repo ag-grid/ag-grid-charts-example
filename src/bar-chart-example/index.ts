@@ -93,20 +93,20 @@ function makeChartResizeable(chart: Chart) {
     let chartSize: [number, number];
     const scene = chart.scene;
 
-    scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
         startX = e.offsetX;
         startY = e.offsetY;
         chartSize = chart.size;
         isDragging = true;
     });
-    scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
         if (isDragging) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
             chart.size = [chartSize[0] + dx, chartSize[1] + dy];
         }
     });
-    scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
+    scene.canvas.element.addEventListener('mouseup', () => {
         isDragging = false;
     });
 }
@@ -130,7 +130,7 @@ function createColumnChart() {
             type: 'number'
         }
     });
-    chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
+    chart.scene.canvas.element.style.border = '1px solid black';
 
     function addSeriesIf() {
         if (!chart.series.length) {
@@ -196,13 +196,16 @@ function createColumnChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart(new NumberAxis(), new CategoryAxis());
+    const chart = new CartesianChart({
+        xAxis: new NumberAxis(),
+        yAxis: new CategoryAxis()
+    });
 
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
     chart.layout = 'horizontal';
-    chart.scene.hdpiCanvas.canvas.style.border = '1px solid black';
+    chart.scene.canvas.element.style.border = '1px solid black';
 
     function addSeriesIf() {
         if (!chart.series.length) {

@@ -58,29 +58,29 @@ function makeChartResizeable(chart: Chart) {
     let chartSize: [number, number];
     const scene = chart.scene;
 
-    scene.hdpiCanvas.canvas.addEventListener('mousedown', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
         startX = e.offsetX;
         startY = e.offsetY;
         chartSize = chart.size;
         isDragging = true;
     });
-    scene.hdpiCanvas.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
         if (isDragging) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
             chart.size = [chartSize[0] + dx, chartSize[1] + dy];
         }
     });
-    scene.hdpiCanvas.canvas.addEventListener('mouseup', () => {
+    scene.canvas.element.addEventListener('mouseup', () => {
         isDragging = false;
     });
 }
 
 function createCategoryColumnChart() {
-    const chart = new GroupedCategoryChart(
-        new GroupedCategoryAxis(),
-        new NumberAxis()
-    );
+    const chart = new GroupedCategoryChart({
+        xAxis: new GroupedCategoryAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
@@ -161,10 +161,10 @@ function createCategoryColumnChart() {
 }
 
 function createCategoryBarChart() {
-    const chart = new GroupedCategoryChart(
-        new NumberAxis(),
-        new GroupedCategoryAxis()
-    );
+    const chart = new GroupedCategoryChart({
+        xAxis: new NumberAxis(),
+        yAxis: new GroupedCategoryAxis()
+    });
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;

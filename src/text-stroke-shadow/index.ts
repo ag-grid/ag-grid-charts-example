@@ -4,7 +4,10 @@ import { Text } from "ag-grid-enterprise/src/charts/scene/shape/text";
 import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(800, 400);
+    const scene = new Scene({
+        width: 800,
+        height: 400
+    });
     scene.parent = document.body;
 
     const text = new Text();

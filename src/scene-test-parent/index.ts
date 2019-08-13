@@ -9,8 +9,14 @@ function nextFrame() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene1 = new Scene(200, 200);
-    const scene2 = new Scene(200, 200);
+    const scene1 = new Scene({
+        width: 200,
+        height: 200
+    });
+    const scene2 = new Scene({
+        width: 200,
+        height: 200
+    });
     scene1.parent = document.body;
     scene2.parent = document.body;
 

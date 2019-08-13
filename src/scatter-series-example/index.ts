@@ -65,10 +65,10 @@ type Datum = {
 function createHeightWeightGenderChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart(
-        new NumberAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        xAxis: new NumberAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;
@@ -136,10 +136,10 @@ function createHeightWeightGenderChart() {
 function createAgeWeightGenderChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart(
-        new NumberAxis(),
-        new NumberAxis()
-    );
+    const chart = new CartesianChart({
+        xAxis: new NumberAxis(),
+        yAxis: new NumberAxis()
+    });
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;

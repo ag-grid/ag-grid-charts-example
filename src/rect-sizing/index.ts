@@ -4,7 +4,10 @@ import { Rect, RectSizing } from "ag-grid-enterprise/src/charts/scene/shape/rect
 import { createSlider } from "../../lib/ui";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(800, 800);
+    const scene = new Scene({
+        width: 800,
+        height: 800
+    });
     scene.parent = document.body;
     const group = new Group();
 

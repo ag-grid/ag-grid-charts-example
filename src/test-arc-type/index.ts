@@ -5,7 +5,10 @@ import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
 import {toRadians} from "ag-grid-enterprise/src/charts/util/angle";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(700, 900);
+    const scene = new Scene({
+        width: 700,
+        height: 900
+    });
     scene.parent = document.body;
     const rootGroup = new Group();
 
