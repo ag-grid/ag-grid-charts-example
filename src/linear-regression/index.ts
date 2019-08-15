@@ -4,6 +4,7 @@ import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSerie
 import { Caption } from "ag-grid-enterprise/src/charts/caption";
 import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
 import { linearRegression } from "ag-grid-enterprise/src/charts/util/stat";
+import { data as timeData } from './data';
 
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from 'd3';
@@ -111,6 +112,29 @@ function createChart(data: Datum[]) {
     });
 }
 
+function createTimeChart() {
+    const chart = new CartesianChart({
+        xAxis: new NumberAxis(),
+        yAxis: new NumberAxis()
+    });
+
+    chart.xAxis.labelRotation = 45;
+    chart.xAxis.labelFormatter = params => new Date(params.value).toDateString();
+
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 600;
+
+    const scatterSeries = new ScatterSeries();
+    scatterSeries.markerStrokeWidth = 0;
+    scatterSeries.markerSize = 2;
+    scatterSeries.data = timeData.map(v => ({x: v[0], y: v[1]}));
+    scatterSeries.xField = 'x';
+    scatterSeries.yField = 'y';
+
+    chart.addSeries(scatterSeries);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     d3.csv("../../data/sp500w.csv").then(rawData => {
         const data = rawData.map(datum => ({
@@ -120,4 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createChart(data);
     });
+
+    createTimeChart();
 });
