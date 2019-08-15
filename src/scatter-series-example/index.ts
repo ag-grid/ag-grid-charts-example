@@ -105,6 +105,9 @@ function createHeightWeightGenderChart() {
         maleSeries.xField = 'height';
         maleSeries.yField = 'weight';
         maleSeries.radiusField = 'age';
+        maleSeries.xFieldName = 'Height';
+        maleSeries.yFieldName = 'Weight';
+        maleSeries.radiusFieldName = 'Age';
         maleSeries.markerSize = 30;
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;

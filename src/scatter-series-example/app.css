@@ -33,6 +33,7 @@
 
 .ag-chart-tooltip .content {
     padding: 7px;
+    line-height: 1.7em;
 }
 
 .my-tooltip {
