@@ -37,6 +37,7 @@ const moduleExports = examples.map(example => {
     return {
         entry: join(example.path, example.name, 'index'),
         mode: 'development',
+        target: 'web',
         devtool: 'inline-source-map',
         output: {
             path: join(distPath, example.name),
