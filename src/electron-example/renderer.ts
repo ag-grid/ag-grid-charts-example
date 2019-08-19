@@ -2,12 +2,7 @@ import { remote } from 'electron';
 const { BrowserWindow } = remote;
 import * as path from 'path';
 
-const newWindowBtn = document.createElement('button');
-newWindowBtn.innerText = 'New Window';
-document.body.appendChild(newWindowBtn);
-document.body.appendChild(document.createElement('br'));
-
-newWindowBtn.addEventListener('click', (event) => {
+createButton('New Window', () => {
     let win = new BrowserWindow({
         width: 400,
         height: 320,
@@ -21,6 +16,21 @@ newWindowBtn.addEventListener('click', (event) => {
     win.show();
 });
 
+function createIFrame() {
+    const iFrame = document.createElement('iframe');
+    iFrame.style.width = '900px';
+    iFrame.style.height = '600px';
+    document.body.appendChild(iFrame);
+
+    if (iFrame.contentWindow) {
+        const iFrameDoc = iFrame.contentWindow.document;
+        createBarChart(iFrameDoc);
+    }
+}
+
+createButton('Create iFrame', () => {
+    createIFrame();
+});
 
 import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
 import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
@@ -31,6 +41,7 @@ import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryA
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 
 import './app.css';
+import { createButton } from "../../lib/ui";
 
 type Datum = {
     category: string,
@@ -159,10 +170,11 @@ function createColumnChart() {
     return chart;
 }
 
-function createBarChart() {
+function createBarChart(document: Document = window.document) {
     const chart = new CartesianChart({
         xAxis: new NumberAxis(),
-        yAxis: new CategoryAxis()
+        yAxis: new CategoryAxis(),
+        document
     });
 
     chart.parent = document.body;
