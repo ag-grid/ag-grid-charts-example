@@ -1,6 +1,16 @@
 import { remote } from 'electron';
+import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
+import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
+import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
+import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
+import { CartesianChart, CartesianChartLayout } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+
+import './app.css';
+import { createButton } from "../../lib/ui";
+
 const { BrowserWindow } = remote;
-import * as path from 'path';
 
 createButton('New Window', () => {
     let win = new BrowserWindow({
@@ -31,17 +41,6 @@ function createIFrame() {
 createButton('Create iFrame', () => {
     createIFrame();
 });
-
-import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
-import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
-import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-
-import './app.css';
-import { createButton } from "../../lib/ui";
 
 type Datum = {
     category: string,
@@ -180,7 +179,7 @@ function createBarChart(document: Document = window.document) {
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
-    chart.layout = 'horizontal';
+    chart.layout = CartesianChartLayout.Horizontal;
     chart.scene.canvas.element.style.border = '1px solid black';
 
     function addSeriesIf() {

@@ -5,10 +5,9 @@ import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { CartesianChart, CartesianChartLayout } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { Caption } from "ag-grid-enterprise/src/charts/caption";
 
 type Datum = {
     category: string,
@@ -205,7 +204,7 @@ function createBarChart() {
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
-    chart.layout = 'horizontal';
+    chart.layout = CartesianChartLayout.Horizontal;
     chart.scene.canvas.element.style.border = '1px solid black';
 
     function addSeriesIf() {

@@ -6,6 +6,7 @@ import { NumberAxis } from 'ag-grid-enterprise/src/charts/chart/axis/numberAxis'
 import { BarSeries } from 'ag-grid-enterprise/src/charts/chart/series/barSeries';
 import { LineSeries } from 'ag-grid-enterprise/src/charts/chart/series/lineSeries';
 import { createButton, createSlider } from '../../lib/ui';
+import { CartesianChartLayout } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 
 type CategoryDatum = {
     category: {labels: string[]},
@@ -168,7 +169,7 @@ function createCategoryBarChart() {
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.layout = 'horizontal';
+    chart.layout = CartesianChartLayout.Horizontal;
     chart.xAxis.tickSize = 20;
     chart.xAxis.title = Caption.create({
         text: 'Cities'
