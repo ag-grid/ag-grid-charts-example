@@ -1,5 +1,6 @@
 import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { TimeAxis } from "ag-grid-enterprise/src/charts/chart/axis/timeAxis";
 import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import { Caption } from "ag-grid-enterprise/src/charts/caption";
 import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
@@ -9,6 +10,8 @@ import { data as timeData } from './data';
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from 'd3';
 import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
+import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
+import { TimeScale } from "ag-grid-enterprise/src/charts/scale/timeScale";
 
 type Datum = {
     x: number,
@@ -112,7 +115,7 @@ function createChart(data: Datum[]) {
     });
 }
 
-function createTimeChart() {
+function createNumberAxisTimeChart() {
     const chart = new CartesianChart({
         xAxis: new NumberAxis(),
         yAxis: new NumberAxis()
@@ -135,6 +138,56 @@ function createTimeChart() {
     chart.addSeries(scatterSeries);
 }
 
+function makeChartResizeable(chart: Chart) {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    let chartSize: [number, number];
+    const scene = chart.scene;
+
+    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
+        startX = e.offsetX;
+        startY = e.offsetY;
+        chartSize = chart.size;
+        isDragging = true;
+    });
+    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
+        if (isDragging) {
+            const dx = e.offsetX - startX;
+            const dy = e.offsetY - startY;
+            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
+        }
+    });
+    scene.canvas.element.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+}
+
+function createTimeChart() {
+    const chart = new CartesianChart({
+        xAxis: new TimeAxis(),
+        yAxis: new NumberAxis()
+    });
+
+    chart.xAxis.labelRotation = 45;
+    chart.xAxis.tickFormat = '%Y-%m-%d';
+
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 600;
+
+    const scatterSeries = new ScatterSeries();
+    scatterSeries.markerStrokeWidth = 0;
+    scatterSeries.markerSize = 2;
+    scatterSeries.data = timeData.map(v => ({x: v[0], y: v[1]}));
+    scatterSeries.xField = 'x';
+    scatterSeries.yField = 'y';
+
+    chart.addSeries(scatterSeries);
+
+    makeChartResizeable(chart);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     d3.csv("../../data/sp500w.csv").then(rawData => {
         const data = rawData.map(datum => ({
@@ -145,5 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
         createChart(data);
     });
 
+    createNumberAxisTimeChart();
     createTimeChart();
 });
