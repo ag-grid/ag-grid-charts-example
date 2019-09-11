@@ -12,6 +12,7 @@ import month from "ag-grid-enterprise/src/charts/util/time/month";
 import minute from "ag-grid-enterprise/src/charts/util/time/minute";
 import second from "ag-grid-enterprise/src/charts/util/time/second";
 import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
+import setDefaultLocale from "ag-grid-enterprise/src/charts/util/time/format/defaultLocale";
 
 function makeChartResizeable(chart: Chart) {
     let startX = 0;
@@ -152,9 +153,47 @@ function createComboTimeChart() {
     makeChartResizeable(chart);
 }
 
+function createCustomLocaleTimeChart() {
+    setDefaultLocale({
+        dateTime: '%x %X',
+        date: '%d.%m.%Y',
+        time: '%-H:%M:%S',
+        periods: ['', ''],
+        days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+        shortDays: ['Вск', 'Пнд', 'Втр', 'Срд', 'Чтв', 'Птн', 'Сбт'],
+        months: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
+        shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
+    });
+
+    const chart = new CartesianChart({
+        xAxis: new TimeAxis(),
+        yAxis: new NumberAxis()
+    });
+
+    chart.xAxis.labelRotation = -90;
+    chart.xAxis.tickCount = second.every(30);
+    chart.xAxis.tickFormat = '%A, %d %B, %Y';
+
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 600;
+
+    const scatterSeries = new ScatterSeries();
+    scatterSeries.markerStrokeWidth = 0;
+    scatterSeries.markerSize = 8;
+    scatterSeries.data = minuteData1;
+    scatterSeries.xField = 'x';
+    scatterSeries.yField = 'y';
+
+    chart.addSeries(scatterSeries);
+
+    makeChartResizeable(chart);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createTimeChart();
     createTimeChart2();
     createTimeChart3();
     createComboTimeChart();
+    createCustomLocaleTimeChart();
 });

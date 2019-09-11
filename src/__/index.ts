@@ -30,4 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //     console.log(val);
     //     console.log(agTime.ticks());
     // }
+
+    const date = new Date(Date.UTC(2019, 8, 3, 14, 50, 17, 300));
+    const timeFormatter = d3.timeFormat('%c');
+    console.log(timeFormatter(date));
 });
