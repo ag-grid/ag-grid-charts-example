@@ -5,14 +5,16 @@ import { data as timestampData } from './timestampData';
 import { data as minuteData1 } from './minuteData1';
 import { data as minuteData2 } from './minuteData2';
 
-import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 import year from "ag-grid-enterprise/src/charts/util/time/year";
 import month from "ag-grid-enterprise/src/charts/util/time/month";
 import minute from "ag-grid-enterprise/src/charts/util/time/minute";
 import second from "ag-grid-enterprise/src/charts/util/time/second";
 import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
+import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
 import setDefaultLocale from "ag-grid-enterprise/src/charts/util/time/format/defaultLocale";
+import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
+import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
 
 function makeChartResizeable(chart: Chart) {
     let startX = 0;
@@ -99,7 +101,7 @@ function createTimeChart3() {
 
     chart.xAxis.labelRotation = 45;
     chart.xAxis.tickCount = second.every(30);
-    chart.xAxis.tickFormat = '%H:%M:%S';
+    chart.xAxis.tickFormat = 'Rob %H:%M:%S';
 
     chart.parent = document.body;
     chart.width = 800;
@@ -171,7 +173,7 @@ function createCustomLocaleTimeChart() {
     });
 
     chart.xAxis.labelRotation = -90;
-    chart.xAxis.tickCount = second.every(30);
+    chart.xAxis.tickCount = year;
     chart.xAxis.tickFormat = '%A, %d %B, %Y';
 
     chart.parent = document.body;
@@ -180,12 +182,58 @@ function createCustomLocaleTimeChart() {
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.markerStrokeWidth = 0;
-    scatterSeries.markerSize = 8;
-    scatterSeries.data = minuteData1;
+    scatterSeries.markerSize = 2;
+    scatterSeries.data = timestampData.map(v => ({x: v[0], y: v[1]}));
     scatterSeries.xField = 'x';
     scatterSeries.yField = 'y';
 
     chart.addSeries(scatterSeries);
+
+    makeChartResizeable(chart);
+}
+
+function createRealTimeChart() {
+    let seedX = Date.UTC(2019, 7, 11, 12, 32, 11);
+    let seedY = 50.0;
+
+    function generateNextX(): number {
+        return (seedX += 1000);
+    }
+    function generateNextY(): number {
+        return (seedY += (-2.5 + Math.random() * 5));
+    }
+
+    const data = Array.from( {length: 15}, () => ({x: generateNextX(), y: generateNextY()}) );
+
+    const chart = new CartesianChart({
+        xAxis: new TimeAxis(),
+        yAxis: new NumberAxis()
+    });
+
+    chart.padding = new Padding(20, 60, 20, 20);
+    chart.xAxis.labelRotation = 45;
+    chart.xAxis.tickCount = second;
+    chart.xAxis.tickFormat = '%H:%M:%S';
+
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 600;
+
+    const lineSeries = new LineSeries();
+    lineSeries.showInLegend = false;
+    lineSeries.markerStrokeWidth = 0;
+    lineSeries.markerSize = 8;
+    lineSeries.data = data;
+    lineSeries.xField = 'x';
+    lineSeries.yField = 'y';
+
+    chart.addSeries(lineSeries);
+
+    setInterval(function () {
+        data.shift();
+        data.push({x: generateNextX(), y: generateNextY()});
+        lineSeries.data = data;
+    }, 200);
 
     makeChartResizeable(chart);
 }
@@ -196,4 +244,5 @@ document.addEventListener('DOMContentLoaded', () => {
     createTimeChart3();
     createComboTimeChart();
     createCustomLocaleTimeChart();
+    createRealTimeChart();
 });
