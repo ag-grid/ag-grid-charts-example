@@ -1,4 +1,3 @@
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
@@ -9,6 +8,7 @@ import { CartesianChart, CartesianChartLayout } from "ag-grid-enterprise/src/cha
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import { Caption } from "ag-grid-enterprise/src/charts/caption";
 
 type Datum = {
     category: string,
@@ -111,23 +111,23 @@ function makeChartResizeable(chart: Chart) {
 }
 
 function createColumnChart() {
-    const chart = ChartBuilder.createCartesianChart({
-        parent: document.body,
-        width: 800,
-        height: 500,
-        title: {
-            text: 'Beverage Expenses'
-        },
-        subtitle: {
-            text: 'per quarter'
-        },
-        xAxis: {
-            type: 'category',
-            labelRotation: 0
-        },
-        yAxis: {
-            type: 'number'
-        }
+    const xAxis = new CategoryAxis();
+    xAxis.labelRotation = 0;
+    const yAxis = new NumberAxis();
+    const chart = new CartesianChart({
+        xAxis,
+        yAxis
+    });
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 500;
+    chart.title = Caption.create({
+        text: 'Beverage Expenses',
+        fontSize: 14
+    });
+    chart.subtitle = Caption.create({
+        text: 'per quarter',
+        fontSize: 12
     });
     chart.scene.canvas.element.style.border = '1px solid black';
 
@@ -145,7 +145,7 @@ function createColumnChart() {
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
-    barSeries.labelEnabled = false;
+    barSeries.label.enabled = false;
     barSeries.shadow = new DropShadow({
         color: 'rgba(0,0,0,0.5)',
         blur: 10
@@ -171,10 +171,14 @@ function createColumnChart() {
     });
 
     createButton('Enable labels', () => {
-        barSeries.labelEnabled = true;
+        barSeries.label.enabled = true;
     });
     createButton('Disable labels', () => {
-        barSeries.labelEnabled = false;
+        barSeries.label.enabled = false;
+    });
+
+    createSlider('label font size', [10, 12, 14, 16, 18, 20], v => {
+        barSeries.label.fontSize = v;
     });
 
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
@@ -220,7 +224,7 @@ function createBarChart() {
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
-    barSeries.labelEnabled = false;
+    barSeries.label.enabled = false;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -242,10 +246,10 @@ function createBarChart() {
     });
 
     createButton('Enable labels', () => {
-        barSeries.labelEnabled = true;
+        barSeries.label.enabled = true;
     });
     createButton('Disable labels', () => {
-        barSeries.labelEnabled = false;
+        barSeries.label.enabled = false;
     });
 
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
