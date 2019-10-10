@@ -28,7 +28,7 @@ function renderChart() {
     chart.width = 550;
     chart.height = 350;
     chart.parent = document.body;
-    chart.legendPosition = 'bottom';
+    chart.legend.position = 'bottom';
     chart.legend.labelFontSize = 15;
     chart.legend.labelFontFamily = 'Source Sans Pro';
     chart.legend.labelColor = 'rgb(124, 124, 124)';
@@ -49,19 +49,16 @@ function renderChart() {
 
     chart.addSeries(series);
 
-    chart.title = Caption.create({
-        text: 'Split of revenue by product categories',
-        fontWeight: 'bold',
-        fontSize: 18,
-        fontFamily: 'Source Sans Pro',
-        color: 'rgb(90, 90, 90)'
-    });
-    chart.subtitle = Caption.create({
-        text: 'Last year',
-        fontSize: 13,
-        fontFamily: 'Source Sans Pro',
-        color: 'rgb(153, 153, 153)'
-    });
+    chart.title.text = 'Split of revenue by product categories';
+    chart.title.fontWeight = 'bold';
+    chart.title.fontSize = 18;
+    chart.title.fontFamily = 'Source Sans Pro';
+    chart.title.color = 'rgb(90, 90, 90)';
+
+    chart.subtitle.text = 'Last year';
+    chart.subtitle.fontSize = 13;
+    chart.subtitle.fontFamily = 'Source Sans Pro';
+    chart.subtitle.color = 'rgb(153, 153, 153)';
 
     createButton('Save Chart', () => {
         chart.scene.download();

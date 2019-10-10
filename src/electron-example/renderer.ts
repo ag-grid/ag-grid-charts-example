@@ -1,6 +1,5 @@
 import { remote } from 'electron';
 import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 import { CartesianChart, CartesianChartLayout } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
@@ -9,6 +8,7 @@ import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis"
 
 import './app.css';
 import { createButton } from "../../lib/ui";
+import { Caption } from 'ag-grid-enterprise/src/charts/caption';
 
 const { BrowserWindow } = remote;
 
@@ -124,30 +124,22 @@ function makeChartResizeable(chart: Chart) {
 }
 
 function createColumnChart() {
-    const chart = ChartBuilder.createCartesianChart({
-        parent: document.body,
-        width: 800,
-        height: 500,
-        title: {
-            text: 'Beverage Expenses'
-        },
-        subtitle: {
-            text: 'per quarter'
-        },
-        xAxis: {
-            type: 'category',
-            labelRotation: 0,
-            title: {
-                text: 'Beverage'
-            }
-        },
-        yAxis: {
-            type: 'number',
-            title: {
-                text: 'Expenses'
-            }
-        }
+    const xAxis = new CategoryAxis();
+    xAxis.label.rotation = 0;
+    xAxis.title = new Caption();
+    xAxis.title.text = 'Beverage';
+    const yAxis = new NumberAxis();
+    yAxis.title = new Caption();
+    yAxis.title.text = 'Expenses';
+    const chart = new CartesianChart({
+        xAxis,
+        yAxis
     });
+    chart.width = 800;
+    chart.height = 500;
+    chart.parent = document.body;
+    chart.title.text = 'Beverage Expenses';
+    chart.subtitle.text = 'per quarter';
     chart.scene.canvas.element.style.border = '1px solid black';
 
     function addSeriesIf() {

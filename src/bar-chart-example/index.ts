@@ -121,14 +121,10 @@ function createColumnChart() {
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
-    chart.title = Caption.create({
-        text: 'Beverage Expenses',
-        fontSize: 14
-    });
-    chart.subtitle = Caption.create({
-        text: 'per quarter',
-        fontSize: 12
-    });
+    chart.title.text = 'Beverage Expenses';
+    chart.title.fontSize = 14;
+    chart.subtitle.text = 'per quarter';
+    chart.subtitle.fontSize = 12;
     chart.scene.canvas.element.style.border = '1px solid black';
 
     function addSeriesIf() {
@@ -146,10 +142,9 @@ function createColumnChart() {
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
     barSeries.label.enabled = false;
-    barSeries.shadow = new DropShadow({
-        color: 'rgba(0,0,0,0.5)',
-        blur: 10
-    });
+    barSeries.shadow = new DropShadow();
+    barSeries.shadow.color = 'rgba(0,0,0,0.5)';
+    barSeries.shadow.blur = 10;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -184,7 +179,7 @@ function createColumnChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle = undefined;
+            chart.subtitle.enabled = false;
         }
         barSeries.normalizedTo = v;
     });
@@ -255,7 +250,7 @@ function createBarChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle = undefined;
+            chart.subtitle.enabled = false;
         }
         barSeries.normalizedTo = v;
     });

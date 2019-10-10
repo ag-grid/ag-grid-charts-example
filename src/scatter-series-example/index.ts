@@ -74,13 +74,9 @@ function createHeightWeightGenderChart() {
     chart.height = 600;
     chart.xAxis.labelFormatter = params => params.value + ' cm';
     chart.yAxis.labelFormatter = params => params.value + ' Kg';
-    chart.title = Caption.create({text: 'Height vs Weight of 507 Individuals'});
-    chart.subtitle = Caption.create({
-        text: 'by gender',
-        fontSize: 14,
-        fontFamily: 'Verdana, sans-serif',
-        color: 'gray'
-    });
+    chart.title.text = 'Height vs Weight of 507 Individuals';
+    chart.subtitle.text = 'by gender';
+    chart.subtitle.color = 'gray';
 
     d3.csv("../../data/body-data.csv").then(rawData => {
         const maleData: any[] = [];
@@ -148,13 +144,10 @@ function createAgeWeightGenderChart() {
     chart.height = 600;
     chart.xAxis.labelFormatter = params => params.value + ' yr';
     chart.yAxis.labelFormatter = params => params.value + ' Kg';
-    chart.title = Caption.create({text: 'Age vs Weight of 507 Individuals'});
-    chart.subtitle = Caption.create({
-        text: 'by gender',
-        fontSize: 14,
-        fontFamily: 'Verdana, sans-serif',
-        color: 'gray'
-    });
+    chart.title.text = 'Age vs Weight of 507 Individuals';
+    chart.subtitle.text = 'by gender';
+    chart.subtitle.fontSize = 14;
+    chart.subtitle.color = 'gray';
 
     d3.csv("../../data/body-data.csv").then(rawData => {
         const maleData: any[] = [];

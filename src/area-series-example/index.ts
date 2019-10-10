@@ -195,22 +195,22 @@ function makeNuclearChart() {
     xAxis.labelRotation = 45;
     xAxis.labelFontSize = 10;
     const yAxis = new NumberAxis();
+
     const chart = new CartesianChart({xAxis, yAxis});
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
-    chart.title = Caption.create({
-        text: 'US and USSR nuclear stockpiles',
-        fontWeight: 'bold',
-        fontSize: 20,
-        fontFamily: 'Verdana, sans-serif'
-    });
-    chart.subtitle = Caption.create({
-        text: 'Sources: thebulletin.org & armscontrol.org',
-        fontSize: 12,
-        fontFamily: 'Verdana, sans-serif',
-        color: 'rgba(0, 0, 0, 0.6)'
-    });
+
+    chart.title.text = 'US and USSR nuclear stockpiles';
+    chart.title.fontWeight = 'bold';
+    chart.title.fontSize = 20;
+    chart.title.fontFamily = 'Verdana, sans-serif';
+
+    chart.subtitle.text = 'Sources: thebulletin.org & armscontrol.org';
+    chart.subtitle.fontSize = 12;
+    chart.subtitle.fontFamily = 'Verdana, sans-serif';
+    chart.subtitle.color = 'rgba(0, 0, 0, 0.6)';
+
     chart.scene.canvas.element.style.border = '1px solid black';
 
     const usaArea = new AreaSeries();
@@ -294,22 +294,22 @@ function makeNuclearChartWithNumericX() {
     const xAxis = new NumberAxis();
     xAxis.nice = false;
     const yAxis = new NumberAxis();
+
     const chart = new CartesianChart({xAxis, yAxis});
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
-    chart.title = Caption.create({
-        text: 'US and USSR nuclear stockpiles',
-        fontWeight: 'bold',
-        fontSize: 20,
-        fontFamily: 'Verdana, sans-serif'
-    });
-    chart.subtitle = Caption.create({
-        text: 'Sources: thebulletin.org & armscontrol.org',
-        fontSize: 12,
-        fontFamily: 'Verdana, sans-serif',
-        color: 'rgba(0, 0, 0, 0.6)'
-    });
+
+    chart.title.text = 'US and USSR nuclear stockpiles';
+    chart.title.fontWeight = 'bold';
+    chart.title.fontSize = 20;
+    chart.title.fontFamily = 'Verdana, sans-serif';
+
+    chart.subtitle.text = 'Sources: thebulletin.org & armscontrol.org';
+    chart.subtitle.fontSize = 12;
+    chart.subtitle.fontFamily = 'Verdana, sans-serif';
+    chart.subtitle.color = 'rgba(0, 0, 0, 0.6)';
+
     chart.scene.canvas.element.style.border = '1px solid black';
 
     const usaArea = new AreaSeries();
@@ -339,31 +339,31 @@ document.addEventListener('DOMContentLoaded', () => {
     xAxis.scale.paddingInner = 1;
     xAxis.scale.paddingOuter = 0;
     const yAxis = new NumberAxis();
+
     const chart = new CartesianChart({xAxis, yAxis});
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
-    chart.title = Caption.create({
-        text: 'Area 51 Charts',
-        fontWeight: 'bold',
-        fontSize: 16,
-        fontFamily: 'Verdana, sans-serif'
-    });
-    chart.subtitle = Caption.create({
-        text: 'and flying saucers',
-        fontSize: 12,
-        fontFamily: 'Verdana, sans-serif',
-        color: 'rgba(0, 0, 0, 0.6)'
-    });
+
+    chart.title.text = 'Area 51 Charts';
+    chart.title.fontWeight = 'bold';
+    chart.title.fontSize = 16;
+    chart.title.fontFamily = 'Verdana, sans-serif';
+
+    chart.subtitle.text = 'and flying saucers';
+    chart.subtitle.fontSize = 12;
+    chart.subtitle.fontFamily = 'Verdana, sans-serif';
+    chart.subtitle.color = 'rgba(0, 0, 0, 0.6)';
+
     chart.scene.canvas.element.style.border = '1px solid black';
 
     const saucer = new Path();
-    saucer.fillShadow = new DropShadow({
-        color: 'rgba(0,0,0,0.5)',
-        xOffset: 5,
-        yOffset: 5,
-        blur: 10
-    });
+    const fillShadow = new DropShadow();
+    fillShadow.color = 'rgba(0,0,0,0.5)';
+    fillShadow.xOffset = 5;
+    fillShadow.yOffset = 5;
+    fillShadow.blur = 10;
+    saucer.fillShadow = fillShadow;
     saucer.svgPath = 'M90,31.5c0,-8.7 -12.4,-16 -29.8,-18.8c-1.3,-7.2 -7.6,-12.7 -15.2,-12.7c-7.6,0 -13.9,5.5 -15.2,12.7c-17.4,2.8 -29.8,10.1 -29.8,18.8c0,6.2 6.3,11.7 16.3,15.4l-4,6.6c-0.3,0.8 0.1,1.6 1.1,1.9c1,0.3 2,-0.1 2.3,-0.9l4,-6.5c6.8,2.1 14.8,3.3 23.6,3.5l0,9.5c0,0.8 0.7,1.5 1.5,1.5l0.6,0c0.8,0 1.5,-0.7 1.5,-1.5l0,-9.5c8.7,-0.2 16.8,-1.4 23.6,-3.5l4,6.5c0.3,0.8 1.4,1.2 2.3,0.9c0.9,-0.3 1.4,-1.2 1.1,-1.9l-4.1,-6.6c9.9,-3.7 16.2,-9.2 16.2,-15.4Zm-65,5c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm20,0c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm0,-15.3c-7.2,0 -14.5,-2 -14.5,-5.7c0,-8 6.5,-14.5 14.5,-14.5c8,0 14.5,6.5 14.5,14.5c0,3.8 -7.3,5.7 -14.5,5.7Zm15,10.3c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5c-2.8,0 -5,-2.2 -5,-5Z';
 
     let flying = true;
@@ -597,7 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
         areaSeries.strokes = [v];
     });
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
-        chart.legendPosition = v;
+        chart.legend.position = v;
     });
     createSlider('legend font family', ['sans-serif', 'serif', 'Snell Roundhand'], v => {
         chart.legend.labelFontFamily = v;
@@ -605,7 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle = undefined;
+            chart.subtitle.enabled = false;
         }
         areaSeries.normalizedTo = v;
     });

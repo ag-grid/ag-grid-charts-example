@@ -1,4 +1,3 @@
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
 import { Caption } from "ag-grid-enterprise/src/charts/caption";
@@ -11,6 +10,9 @@ import borneo, {
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
+import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 
 type Datum = {
     category: string,
@@ -151,24 +153,19 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = ChartBuilder.createCartesianChart({
-        parent: document.body,
-        width: 800,
-        height: 500,
-        title: {
-            text: 'Beverage Expenses'
-        },
-        subtitle: {
-            text: 'per quarter'
-        },
-        xAxis: {
-            type: 'category',
-            labelRotation: 0
-        },
-        yAxis: {
-            type: 'number'
-        }
+    const xAxis = new CategoryAxis();
+    xAxis.label.rotation = 0;
+    const yAxis = new NumberAxis();
+    const chart = new CartesianChart({
+        xAxis,
+        yAxis
     });
+    chart.width = 800;
+    chart.height = 500;
+    chart.parent = document.body;
+
+    chart.title.text = 'Beverage Expenses';
+    chart.subtitle.text = 'per quarter';
     // chart.title = Caption.create('Beverage Expenses', 'bold 16px Verdana, sans-serif');
     // chart.subtitle = Caption.create('per quarter', '12px Verdana, sans-serif');
     chart.scene.canvas.element.style.border = '1px solid black';
@@ -373,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.strokeWidth = v;
     });
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
-        chart.legendPosition = v;
+        chart.legend.position = v;
     });
     createSlider('legend font', ['sans-serif', 'serif', 'Snell Roundhand'], v => {
         chart.legend.labelFontFamily = v;
@@ -381,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle = undefined;
+            chart.subtitle.enabled = false;
         }
         barSeries.normalizedTo = v;
     });

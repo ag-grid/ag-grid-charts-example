@@ -13,7 +13,6 @@ import second from "ag-grid-enterprise/src/charts/util/time/second";
 import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
 import setDefaultLocale from "ag-grid-enterprise/src/charts/util/time/format/defaultLocale";
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
 
 function makeChartResizeable(chart: Chart) {

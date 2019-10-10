@@ -58,10 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.width = 700;
     chart.height = 700;
 
-    const shadow = new DropShadow({
-        color: 'rgba(0,0,0,0.2)',
-        blur: 15
-    });
+    const shadow = new DropShadow();
+    shadow.color = 'rgba(0,0,0,0.2)';
+    shadow.blur = 15;
 
     const pieSeries1 = new PieSeries();
     chart.addSeries(pieSeries1);

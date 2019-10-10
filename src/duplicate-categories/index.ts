@@ -37,7 +37,7 @@ function createCategoryLineChart() {
     lineSeries.tooltipEnabled = true;
     lineSeries.title = 'Countries';
 
-    chart.series = [lineSeries];
+    chart.series = [lineSeries as any];
 }
 
 function createBarChart() {
@@ -57,7 +57,7 @@ function createBarChart() {
     lineSeries.yFieldNames = ['Countries', 'Whatever'];
     lineSeries.tooltipEnabled = true;
 
-    chart.series = [lineSeries];
+    chart.series = [lineSeries as any];
 }
 
 document.addEventListener('DOMContentLoaded', () => {

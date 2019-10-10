@@ -1,4 +1,3 @@
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
@@ -8,6 +7,7 @@ import { createButton, createSlider } from "../../lib/ui";
 import { CartesianChart, CartesianChartLayout } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { Caption } from "ag-grid-enterprise/src/charts/caption";
 
 type Datum = {
     category: string,
@@ -110,36 +110,23 @@ function makeChartResizeable(chart: Chart) {
 }
 
 function createColumnChart() {
-    const chart = ChartBuilder.createCartesianChart({
-        parent: document.body,
-        width: 800,
-        height: 500,
-        title: {
-            text: 'Beverage Expenses'
-        },
-        subtitle: {
-            text: 'per quarter'
-        },
-        xAxis: {
-            type: 'category',
-            labelRotation: 0,
-            title: {
-                text: 'Beverage'
-            }
-        },
-        yAxis: {
-            type: 'number',
-            title: {
-                text: 'Expenses'
-            }
-        }
+    const xAxis = new CategoryAxis();
+    xAxis.label.rotation = 0;
+    xAxis.title = new Caption();
+    xAxis.title.text = 'Beverage';
+
+    const yAxis = new NumberAxis();
+    yAxis.title = new Caption();
+    yAxis.title.text = 'Expenses';
+
+    const chart = new CartesianChart({
+        xAxis,
+        yAxis
     });
-    // chart.xAxis.title = Caption.create({
-    //     text: 'Beverage'
-    // });
-    // chart.yAxis.title = Caption.create({
-    //     text: 'Expenses'
-    // });
+
+    chart.width = 800;
+    chart.height = 500;
+    chart.parent = document.body;
     chart.scene.canvas.element.style.border = '1px solid black';
 
     function addSeriesIf() {
@@ -187,7 +174,7 @@ function createColumnChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle = undefined;
+            chart.subtitle.enabled = false;
         }
         barSeries.normalizedTo = v;
     });
@@ -252,7 +239,7 @@ function createBarChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle = undefined;
+            chart.subtitle.enabled = false;
         }
         barSeries.normalizedTo = v;
     });

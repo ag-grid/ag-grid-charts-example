@@ -19,18 +19,19 @@ document.addEventListener('DOMContentLoaded', () => {
     text.stroke = 'black';
     text.strokeWidth = 3;
     text.lineDash = [6, 3];
-    text.fillShadow = new DropShadow({
-        color: 'red',
-        xOffset: 5,
-        yOffset: 5,
-        blur: 10
-    });
-    text.strokeShadow = new DropShadow({
-        color: 'green',
-        xOffset: 15,
-        yOffset: 20,
-        blur: 3
-    });
+
+    text.fillShadow = new DropShadow();
+    text.fillShadow.color = 'red';
+    text.fillShadow.xOffset = 5;
+    text.fillShadow.yOffset = 5;
+    text.fillShadow.blur = 10;
+
+    text.strokeShadow = new DropShadow();
+    text.strokeShadow.color = 'green';
+    text.strokeShadow.xOffset = 15;
+    text.strokeShadow.yOffset = 20;
+    text.strokeShadow.blur = 3;
+
     text.x = 100;
     text.y = 100;
 

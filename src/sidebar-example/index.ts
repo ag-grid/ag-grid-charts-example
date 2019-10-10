@@ -1,4 +1,3 @@
-import { ChartBuilder } from "ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder";
 import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 import { Caption } from "ag-grid-enterprise/src/charts/caption";
@@ -12,6 +11,9 @@ import borneo, {
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
+import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 
 function generateData(n = 50, yFieldCount = 10) {
     const data: any[] = [];
@@ -42,24 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
     dialogDiv.appendChild(chartContainer);
     dialogDiv.appendChild(panelDiv);
     document.body.appendChild(dialogDiv);
-    const chart = ChartBuilder.createCartesianChart({
-        parent: chartContainer,
-        width: 800,
-        height: 500,
-        title: {
-            text: 'This is a sliding panel test'
-        },
-        subtitle: {
-            text: 'nothing else to see here'
-        },
-        xAxis: {
-            type: 'category',
-            labelRotation: 0
-        },
-        yAxis: {
-            type: 'number'
-        }
+
+    const xAxis = new CategoryAxis();
+    xAxis.label.rotation = 0;
+    const yAxis = new NumberAxis();
+    const chart = new CartesianChart({
+        xAxis,
+        yAxis
     });
+    chart.width = 800;
+    chart.height = 500;
+    chart.parent = chartContainer;
+    chart.title.text = 'This is a sliding panel test';
+    chart.subtitle.text = 'Nothing else to see here';
+
     panelDiv.style.flexGrow = '1';
     panelDiv.style.display = 'flex';
     panelDiv.style.flexDirection = 'column';

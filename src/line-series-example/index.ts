@@ -399,7 +399,7 @@ function createMultiLineChart() {
         lineSeries1,
         lineSeries2,
         lineSeries3
-    ];
+    ] as any[]; // TODO
 
     chart.data = data;
 

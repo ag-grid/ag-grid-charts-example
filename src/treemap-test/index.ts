@@ -3,9 +3,8 @@ import { Scene } from "ag-grid-enterprise/src/charts/scene/scene";
 import { Selection } from "ag-grid-enterprise/src/charts/scene/selection";
 import { data } from "./data";
 import { FinvizMapData } from "./finviz_data";
-import { HdpiCanvas } from "ag-grid-enterprise/src/charts/canvas/hdpiCanvas";
 import { Rect } from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import { Text } from "ag-grid-enterprise/src/charts/scene/shape/text";
+import { Text, FontWeight } from "ag-grid-enterprise/src/charts/scene/shape/text";
 import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
 import { convertGridTreeData, rowData } from "./convert";
 import { createButton } from "../../lib/ui";
@@ -66,7 +65,7 @@ function createStockTreeMap() {
             padding: 15
         },
         subtitle: {
-            fontWeight: '',
+            fontWeight: undefined,
             fontSize: 9,
             fontFamily: 'Verdana, sans-serif',
             padding: 13
@@ -106,11 +105,10 @@ function createStockTreeMap() {
     const nodePadding = 2;
     const tickerMap = new Map<string, Text | undefined>();
 
-    const labelShadow = new DropShadow({
-        color: 'rgba(0,0,0,0.4)',
-        xOffset: 1.5,
-        yOffset: 1.5
-    });
+    const labelShadow = new DropShadow();
+    labelShadow.color = 'rgba(0,0,0,0.4)';
+    labelShadow.xOffset = 1.5;
+    labelShadow.yOffset = 1.5;
 
     function update() {
         const [width, height] = scene.size;
@@ -183,7 +181,7 @@ function createStockTreeMap() {
             const isParent = !!datum.children;
             const name = datum.data.name;
 
-            text.fontWeight = font.fontWeight;
+            text.fontWeight = font.fontWeight as FontWeight;
             text.fontSize = font.fontSize;
             text.fontFamily = font.fontFamily;
             text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');

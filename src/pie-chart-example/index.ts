@@ -1,4 +1,3 @@
-import { ChartBuilder } from 'ag-grid-enterprise/src/chartAdaptor/builder/chartBuilder';
 import { PieSeries } from 'ag-grid-enterprise/src/charts/chart/series/pieSeries';
 import { Chart, LegendPosition } from 'ag-grid-enterprise/src/charts/chart/chart';
 import { Padding } from 'ag-grid-enterprise/src/charts/util/padding';
@@ -6,6 +5,10 @@ import { Caption } from 'ag-grid-enterprise/src/charts/caption';
 import { Color } from "ag-grid-community/dist/lib/utils/color";
 
 import './app.css';
+import { FontStyle, FontWeight } from 'ag-grid-enterprise/src/charts/scene/shape/text';
+import { PolarChart } from 'ag-grid-enterprise/src/charts/chart/polarChart';
+import { DropShadow } from 'ag-grid-enterprise/src/charts/scene/dropShadow';
+import { pie } from 'd3';
 
 type Datum = {
     label: string,
@@ -125,60 +128,47 @@ function makeChartResizeable(chart: Chart) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chart = ChartBuilder.createPieChart({
-        parent: document.body,
-        width: 800,
-        height: 400,
-        series: [{
-            data,
-            innerRadiusOffset: -40,
-            angleField: 'value',
-            labelField: 'label',
-            labelEnabled: true,
-            title: {
-                text: 'Mobile OSes'
-            },
-            strokeWidth: 2,
-            calloutStrokeWidth: 1,
-            shadow: {
-                color: 'rgba(0,0,0,0.2)',
-                blur: 15
-            },
-            fills: ['#5e64b2', '#b594dc', '#fec444', '#f07372', '#35c2bd'],
-            strokes: ['#42467d', '#7f689a', '#b28930', '#a85150', '#258884']
-        }, {
-            data: data2,
-            outerRadiusOffset: -80,
-            innerRadiusOffset: -120,
-            title: {
-                text: 'Users'
-            },
-            angleField: 'value',
-            labelField: 'label',
-            labelEnabled: true
-        }]
-    });
+    const chart = new PolarChart();
+    chart.parent = document.body;
+    chart.width = 800;
+    chart.height = 400;
 
-    chart.title = Caption.create({
-        text: 'Market Share of Mobile Operating Systems',
-        fontWeight: 'bold',
-        fontSize: 16,
-        fontFamily: 'Verdana, sans-serif'
-    });
-    chart.subtitle = Caption.create({
-        text: 'Source: www.statista.com',
-        fontStyle: 'italic',
-        fontSize: 12,
-        fontFamily: 'Verdana, sans-serif'
-    });
+    const pieSeries = new PieSeries();
+    pieSeries.data = data;
+    pieSeries.innerRadiusOffset = -40;
+    pieSeries.angleField = 'value';
+    pieSeries.labelField = 'label';
+    pieSeries.label.enabled = true;
+    pieSeries.title = new Caption();
+    pieSeries.title.text = 'Mobile OSes';
+    pieSeries.strokeWidth = 2;
+    pieSeries.calloutStrokeWidth = 1;
+    pieSeries.shadow = new DropShadow();
+    pieSeries.shadow.color = 'rgba(0,0,0,0.2)';
+    pieSeries.shadow.blur = 15;
+
+    const pieSeries2 = new PieSeries();
+    pieSeries2.data = data2;
+    pieSeries2.outerRadiusOffset = -80;
+    pieSeries2.innerRadiusOffset = -120;
+    pieSeries2.title = new Caption();
+    pieSeries2.title.text = 'Users';
+    pieSeries2.angleField = 'value';
+    pieSeries2.labelField = 'label';
+    pieSeries2.label.enabled = true;
+
+    chart.series = [pieSeries, pieSeries2];
+
+
+    chart.title.text = 'Market Share of Mobile Operating Systems';
+    chart.title.fontSize = 16;
+    chart.subtitle.text = 'Source: www.statista.com';
+    chart.subtitle.fontStyle = 'italic';
+    chart.subtitle.fontSize = 12;
 
     chart.scene.canvas.element.style.border = '1px solid black';
 
     makeChartResizeable(chart);
-
-    const allSeries = chart.series as PieSeries[];
-    const pieSeries = allSeries[0];
-    const pieSeries2 = allSeries[1];
 
     let backgroundColor = 'white';
     // const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
@@ -241,12 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.labelEnabled = false;
     });
     createButton('Set series name', () => {
-        pieSeries.title = Caption.create({
-            text: 'Super series'
-        });
-        pieSeries2.title = Caption.create({
-            text: 'Duper series'
-        });
+        pieSeries.title = new Caption();
+        pieSeries.title.text = 'Super series';
+
+        pieSeries2.title = new Caption();
+        pieSeries2.title.text = 'Duper series';
     });
     createButton('Remove series name', () => {
         pieSeries.title = undefined;
@@ -354,25 +343,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('labelFont', [
-        {weight: '', size: 12, family: 'sans-serif'},
+        {weight: undefined, size: 12, family: 'sans-serif'},
         {weight: 'bold', size: 14, family: 'sans-serif'},
-        {weight: '', size: 16, family: 'Papyrus'}
+        {weight: undefined, size: 16, family: 'Papyrus'}
     ], v => {
         const font = v;
-        pieSeries.labelFontWeight = font.weight;
-        pieSeries.labelFontSize = font.size;
-        pieSeries.labelFontFamily = font.family;
+        pieSeries.label.fontWeight = font.weight as FontWeight;
+        pieSeries.label.fontSize = font.size;
+        pieSeries.label.fontFamily = font.family;
     });
 
     createSlider('series.title.font', [
-        {style: '', weight: 'bold', size: 12, family: 'sans-serif'},
-        {style: 'italic', weight: '', size: 14, family: 'sans-serif'},
-        {style: '', weight: '', size: 20, family: 'Papyrus'}
+        {style: undefined, weight: 'bold', size: 12, family: 'sans-serif'},
+        {style: 'italic', weight: undefined, size: 14, family: 'sans-serif'},
+        {style: undefined, weight: undefined, size: 20, family: 'Papyrus'}
     ], v => {
         if (pieSeries.title) {
             const font = v;
-            pieSeries.title.fontStyle = font.style;
-            pieSeries.title.fontWeight = font.weight;
+            pieSeries.title.fontStyle = font.style as FontStyle;
+            pieSeries.title.fontWeight = font.weight as FontWeight;
             pieSeries.title.fontSize = font.size;
             pieSeries.title.fontFamily = font.family;
         }
@@ -399,10 +388,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
-        chart.legendPosition = v;
+        chart.legend.position = v;
     });
     createSlider('legendPadding', [20, 80, 160, 240], v => {
-        chart.legendPadding = v;
+        chart.legend.padding = v;
     });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
         chart.legend.markerStrokeWidth = v;

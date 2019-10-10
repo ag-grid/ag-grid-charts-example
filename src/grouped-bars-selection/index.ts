@@ -47,7 +47,7 @@ class NodeAxis<D> {
 
         // Render ticks and labels.
         {
-            const ticks = scale.ticks!(10);
+            const ticks = scale.ticks!(10) as any[];
             const bandwidth = (scale.bandwidth || 0) / 2;
             const tickCount = ticks.length;
             const pxShift = Math.floor(this.tickWidth) % 2 / 2;
@@ -214,10 +214,9 @@ function renderChart() {
     barGroup.translationX = padding.left;
     barGroup.translationY = padding.top;
 
-    const shadow = new DropShadow({
-        color: 'rgba(0,0,0,0.2)',
-        blur: 15
-    });
+    const shadow = new DropShadow();
+    shadow.color = 'rgba(0,0,0,0.2)';
+    shadow.blur = 15;
 
     Selection.select(barGroup).selectAll().setData(data, (node, datum) => datum.category)
         .enter.append(Group).each((group, datum) => {

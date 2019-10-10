@@ -166,9 +166,8 @@ function testAutoFlippingPerpendicularMirroredLabels() {
     scale.paddingOuter = 0.3;
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = 0;
     axis.translationX = 450;
     axis.translationY = 450;
@@ -335,9 +334,8 @@ function testRadialGrid() {
 
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Planets'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Planets';
     axis.rotation = 0;
     axis.translationX = centerX;
     axis.translationY = centerY;
@@ -436,9 +434,8 @@ function leftAxisBottomUp(root: Group) {
     scale.range = [400, 0];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.translationX = 100;
     axis.translationY = 50;
     axis.update();
@@ -452,9 +449,8 @@ function leftAxisTopDown(root: Group) {
     scale.range = [0, 400];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.translationX = 250;
     axis.translationY = 50;
     axis.update();
@@ -468,9 +464,8 @@ function rightAxisBottomUp(root: Group) {
     scale.range = [400, 0];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.mirrorLabels = true;
     axis.translationX = 400;
     axis.translationY = 50;
@@ -485,9 +480,8 @@ function rightAxisTopDown(root: Group) {
     scale.range = [0, 400];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.mirrorLabels = true;
     axis.translationX = 550;
     axis.translationY = 50;
@@ -502,9 +496,8 @@ function leftAxisRotatedLabels45(root: Group) {
     scale.range = [400, 0];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.translationX = 100;
     axis.translationY = 50;
     axis.labelRotation = 45;
@@ -527,9 +520,8 @@ function leftAxisRotatedLabelsMinus45(root: Group) {
     scale.range = [400, 0];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.translationX = 250;
     axis.translationY = 50;
     axis.labelRotation = -45;
@@ -552,9 +544,8 @@ function rightAxisRotatedLabels45(root: Group) {
     scale.range = [400, 0];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.translationX = 400;
     axis.translationY = 50;
     axis.mirrorLabels = true;
@@ -578,9 +569,8 @@ function rightAxisRotatedLabelsMinus45(root: Group) {
     scale.range = [400, 0];
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.translationX = 550;
     axis.translationY = 50;
     axis.mirrorLabels = true;
@@ -606,9 +596,8 @@ function bottomCategoryAxis(root: Group) {
     scale.paddingOuter = 0.3;
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 50;
@@ -626,9 +615,8 @@ function bottomCategoryAxisRotatedLabels45(root: Group) {
     scale.paddingOuter = 0.3;
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 120;
@@ -647,9 +635,8 @@ function bottomCategoryAxisRotatedLabelsMinus45(root: Group) {
     scale.paddingOuter = 0.3;
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 190;
@@ -668,9 +655,8 @@ function bottomCategoryAxisRotatedLabels90(root: Group) {
     scale.paddingOuter = 0.3;
 
     const axis = new Axis(scale);
-    axis.title = Caption.create({
-        text: 'Axis Title'
-    });
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
     axis.translationX = 10;
     axis.translationY = 260;

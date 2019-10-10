@@ -86,9 +86,8 @@ function createCategoryColumnChart() {
     chart.width = document.body.clientWidth;
     chart.height = 600;
     chart.xAxis.tickSize = 20;
-    chart.xAxis.title = Caption.create({
-        text: 'Cities'
-    });
+    chart.xAxis.title = new Caption();
+    chart.xAxis.title.text = 'Cities';
     chart.legend.enabled = true;
 
     const barSeries = new BarSeries();
@@ -171,9 +170,8 @@ function createCategoryBarChart() {
     chart.height = 600;
     chart.layout = CartesianChartLayout.Horizontal;
     chart.xAxis.tickSize = 20;
-    chart.xAxis.title = Caption.create({
-        text: 'Cities'
-    });
+    chart.xAxis.title = new Caption();
+    chart.xAxis.title.text = 'Cities';
     chart.legend.enabled = true;
 
     const barSeries = new BarSeries();
