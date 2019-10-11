@@ -85,7 +85,7 @@ function createCategoryColumnChart() {
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.xAxis.tickSize = 20;
+    chart.xAxis.tick.size = 20;
     chart.xAxis.title = new Caption();
     chart.xAxis.title.text = 'Cities';
     chart.legend.enabled = true;
@@ -153,7 +153,7 @@ function createCategoryColumnChart() {
     });
 
     createSlider('label rotation', [0, -45, 45, 90, -90], v => {
-        chart.xAxis.labelRotation = v;
+        chart.xAxis.label.rotation = v;
         chart.xAxis.update();
     });
 
@@ -169,7 +169,7 @@ function createCategoryBarChart() {
     chart.width = document.body.clientWidth;
     chart.height = 600;
     chart.layout = CartesianChartLayout.Horizontal;
-    chart.xAxis.tickSize = 20;
+    chart.xAxis.tick.size = 20;
     chart.xAxis.title = new Caption();
     chart.xAxis.title.text = 'Cities';
     chart.legend.enabled = true;
@@ -215,7 +215,7 @@ function createCategoryBarChart() {
     });
 
     createSlider('label rotation', [0, -45, 45, 90, -90], v => {
-        chart.yAxis.labelRotation = v;
+        chart.yAxis.label.rotation = v;
         chart.yAxis.update();
     });
 

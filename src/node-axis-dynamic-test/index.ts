@@ -53,16 +53,16 @@ function renderAxes() {
 
     // y-axis
     const yAxis = new Axis(yScale);
-    yAxis.translationX = padding.left;
-    yAxis.translationY = padding.top;
+    yAxis.translation.x = padding.left;
+    yAxis.translation.y = padding.top;
     yAxis.update();
 
     // x-axis
     const xAxis = new Axis(xScale);
     xAxis.rotation = -90;
-    xAxis.translationX = padding.left;
-    xAxis.translationY = padding.top + seriesHeight;
-    xAxis.parallelLabels = true;
+    xAxis.translation.x = padding.left;
+    xAxis.translation.y = padding.top + seriesHeight;
+    xAxis.label.parallel = true;
     xAxis.update();
 
     rootGroup.append([xAxis.group, yAxis.group]);
@@ -85,7 +85,7 @@ function renderAxes() {
     }).then(delay).then(() => {
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 300];
-        xAxis.mirrorLabels = true;
+        xAxis.label.mirrored = true;
         xAxis.update();
 
         yScale.domain = [1, 2];

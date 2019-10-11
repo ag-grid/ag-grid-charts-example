@@ -146,8 +146,8 @@ function renderChart() {
 
     // y-axis
     const yAxis = new Axis(yScale);
-    yAxis.translationX = padding.left;
-    yAxis.translationY = padding.top;
+    yAxis.translation.x = padding.left;
+    yAxis.translation.y = padding.top;
     yAxis.gridLength = seriesWidth;
     yAxis.gridStyle = [{
         stroke: undefined,
@@ -161,9 +161,9 @@ function renderChart() {
     // x-axis
     const xAxis = new Axis(xGroupScale);
     xAxis.rotation = -90;
-    xAxis.translationX = padding.left;
-    xAxis.translationY = padding.top + seriesHeight + 1;
-    xAxis.parallelLabels = true;
+    xAxis.translation.x = padding.left;
+    xAxis.translation.y = padding.top + seriesHeight + 1;
+    xAxis.label.parallel = true;
     xAxis.update();
 
     rootGroup.append([xAxis.group, yAxis.group, barGroup]);

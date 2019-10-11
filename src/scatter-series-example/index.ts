@@ -72,8 +72,8 @@ function createHeightWeightGenderChart() {
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;
-    chart.xAxis.labelFormatter = params => params.value + ' cm';
-    chart.yAxis.labelFormatter = params => params.value + ' Kg';
+    chart.xAxis.label.formatter = params => params.value + ' cm';
+    chart.yAxis.label.formatter = params => params.value + ' Kg';
     chart.title.text = 'Height vs Weight of 507 Individuals';
     chart.subtitle.text = 'by gender';
     chart.subtitle.color = 'gray';
@@ -142,8 +142,8 @@ function createAgeWeightGenderChart() {
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;
-    chart.xAxis.labelFormatter = params => params.value + ' yr';
-    chart.yAxis.labelFormatter = params => params.value + ' Kg';
+    chart.xAxis.label.formatter = params => params.value + ' yr';
+    chart.yAxis.label.formatter = params => params.value + ' Kg';
     chart.title.text = 'Age vs Weight of 507 Individuals';
     chart.subtitle.text = 'by gender';
     chart.subtitle.fontSize = 14;

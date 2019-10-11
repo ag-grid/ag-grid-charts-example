@@ -192,8 +192,8 @@ function makeNuclearChart() {
     const xAxis = new CategoryAxis();
     xAxis.scale.paddingInner = 1;
     xAxis.scale.paddingOuter = 0;
-    xAxis.labelRotation = 45;
-    xAxis.labelFontSize = 10;
+    xAxis.label.rotation = 45;
+    xAxis.label.fontSize = 10;
     const yAxis = new NumberAxis();
 
     const chart = new CartesianChart({xAxis, yAxis});
@@ -236,7 +236,7 @@ function makeNuclearChart() {
 
     document.body.appendChild(document.createElement('br'));
     createSlider('skip labels', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], v => {
-        chart.xAxis.labelFormatter = params => {
+        chart.xAxis.label.formatter = params => {
             return params.index % v === 0 ? params.value : '';
         };
         chart.performLayout();

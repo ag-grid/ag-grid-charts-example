@@ -77,8 +77,8 @@ function testAxis(root: Group) {
     scale.range = [1000, 0];
     const axis = new Axis(scale);
 
-    axis.translationX = 150;
-    axis.translationY = 50;
+    axis.translation.x = 150;
+    axis.translation.y = 50;
     // axis.tickCount = 3;
     axis.update();
 
