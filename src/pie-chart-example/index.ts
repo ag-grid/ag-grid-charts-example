@@ -170,31 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     makeChartResizeable(chart);
 
-    let backgroundColor = 'white';
-    // const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
-    //
-    // const pieSeries = new PieSeries();
-    // pieSeries.innerRadiusOffset = -40;
-    // chart.addSeries(pieSeries);
-    // pieSeries.data = data;
-    // pieSeries.angleField = 'value';
-    // pieSeries.labelField = 'label';
-    // pieSeries.label = true;
-    // pieSeries.title = 'Mobile OSes';
-    // pieSeries.shadow = shadow;
-    // pieSeries.lineWidth = 1;
-    // pieSeries.calloutStrokeWidth = 1;
-    //
-    // const pieSeries2 = new PieSeries();
-    // pieSeries2.outerRadiusOffset = -80;
-    // pieSeries2.innerRadiusOffset = -120;
-    // chart.addSeries(pieSeries2);
-    // pieSeries2.data = data2;
-    // pieSeries2.title = 'Users';
-    // pieSeries2.angleField = 'value';
-    // pieSeries2.labelField = 'label';
-    // pieSeries2.label = true;
-
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
@@ -223,12 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
         pieSeries2.tooltipRenderer = undefined;
     });
     createButton('Show labels', () => {
-        pieSeries.labelEnabled = true;
-        pieSeries2.labelEnabled = true;
+        pieSeries.label.enabled = true;
+        pieSeries2.label.enabled = true;
     });
     createButton('Hide labels', () => {
-        pieSeries.labelEnabled = false;
-        pieSeries2.labelEnabled = false;
+        pieSeries.label.enabled = false;
+        pieSeries2.label.enabled = false;
     });
     createButton('Set series name', () => {
         pieSeries.title = new Caption();
@@ -294,15 +269,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function changeTheme(labelColor: string, bgColor: string) {
         chart.legend.labelColor = labelColor;
-        pieSeries.labelColor = labelColor;
-        pieSeries2.labelColor = labelColor;
+        chart.background.fill = bgColor;
+        pieSeries.label.color = labelColor;
+        pieSeries2.label.color = labelColor;
+        if (pieSeries.title) {
+            pieSeries.title.color = labelColor;
+        }
+        if (pieSeries2.title) {
+            pieSeries2.title.color = labelColor;
+        }
         if (chart.title) {
             chart.title.color = labelColor;
         }
         if (chart.subtitle) {
             chart.subtitle.color = labelColor;
         }
-        document.body.style.backgroundColor = backgroundColor = bgColor;
+        document.body.style.backgroundColor = bgColor;
     }
 
     createButton('Light theme', () => {
@@ -339,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('calloutPadding', [3, 6, 9, 12], v => {
-        pieSeries2.labelOffset = v;
+        pieSeries2.label.offset = v;
     });
 
     createSlider('labelFont', [
@@ -380,11 +362,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('labelColor', ['black', 'red', 'gold', 'rgb(221, 221, 221)'], v => {
-        pieSeries.labelColor = v;
+        pieSeries.label.color = v;
     });
 
     createSlider('labelMinAngle', [20, 40, 60], v => {
-        pieSeries2.labelMinAngle = v;
+        pieSeries2.label.minAngle = v;
     });
 
     createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
