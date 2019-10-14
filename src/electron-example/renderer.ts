@@ -158,7 +158,7 @@ function createColumnChart() {
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
-    barSeries.labelEnabled = false;
+    barSeries.label.enabled = false;
 
     return chart;
 }
@@ -190,7 +190,7 @@ function createBarChart(document: Document = window.document) {
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
-    barSeries.labelEnabled = false;
+    barSeries.label.enabled = false;
 
     return chart;
 }

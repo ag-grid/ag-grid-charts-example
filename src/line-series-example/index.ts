@@ -24,14 +24,14 @@ type MultiValue = {
 };
 
 const categoryData: CategoryDatum[] = [
-    {category: 'John', value: 3},
-    {category: 'Nige', value: 7},
-    {category: 'Vicky', value: 6},
-    {category: 'Rick', value: 4},
-    {category: 'Lucy', value: 8},
-    {category: 'Ben', value: 5},
-    {category: 'Barbara', value: 6},
-    {category: 'Maria', value: 3}
+    { category: 'John', value: 3 },
+    { category: 'Nige', value: 7 },
+    { category: 'Vicky', value: 6 },
+    { category: 'Rick', value: 4 },
+    { category: 'Lucy', value: 8 },
+    { category: 'Ben', value: 5 },
+    { category: 'Barbara', value: 6 },
+    { category: 'Maria', value: 3 }
 ];
 
 function generateCategoryData(n = 50): CategoryDatum[] {
@@ -183,14 +183,14 @@ function createCategoryLineChart() {
 
     const lineSeries = new LineSeries();
     lineSeries.marker = true;
-    chart.xAxis.labelRotation = 45;
+    chart.xAxis.label.rotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.tooltipEnabled = true;
     lineSeries.tooltipRenderer = params => {
-        if (params.datum[params.xField] === 'Rick') {
+        if (params.datum[params.xKey] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }
-        return '<div class="content"><strong>Value: </strong>' + params.datum[params.yField].toString() + '</div>';
+        return '<div class="content"><strong>Value: </strong>' + params.datum[params.yKey].toString() + '</div>';
     };
     lineSeries.data = categoryData;
     lineSeries.xField = 'category';
@@ -247,7 +247,7 @@ function createNumericLineChart() {
     lineSeries.marker = true;
     lineSeries.strokeWidth = 2;
     lineSeries.showInLegend = false;
-    chart.xAxis.labelRotation = 45;
+    chart.xAxis.label.rotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.data = generateSinData();
     lineSeries.xField = 'xValue';
@@ -361,7 +361,7 @@ function createMultiLineChart() {
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.xAxis.labelRotation = 90;
+    chart.xAxis.label.rotation = 90;
 
     const data = generateMultiValueData(10);
 

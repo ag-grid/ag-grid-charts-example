@@ -9,14 +9,14 @@ type CategoryDatum = {
 };
 
 const categoryData: CategoryDatum[] = [
-    {category: 'John', value: 3},
-    {category: 'Nige', value: 7},
-    {category: 'Vicky', value: 6},
-    {category: 'Rick', value: 4},
-    {category: 'Lucy', value: 8},
-    {category: 'Ben', value: 5},
-    {category: 'Barbara', value: 6},
-    {category: 'Maria', value: 3}
+    { category: 'John', value: 3 },
+    { category: 'Nige', value: 7 },
+    { category: 'Vicky', value: 6 },
+    { category: 'Rick', value: 4 },
+    { category: 'Lucy', value: 8 },
+    { category: 'Ben', value: 5 },
+    { category: 'Barbara', value: 6 },
+    { category: 'Maria', value: 3 }
 ];
 
 function createCategoryLineChart() {
@@ -33,7 +33,7 @@ function createCategoryLineChart() {
     setTimeout(() => {
         const lineSeries = new LineSeries();
         lineSeries.strokeWidth = 4;
-        chart.xAxis.labelRotation = 45;
+        chart.xAxis.label.rotation = 45;
         chart.addSeries(lineSeries);
         lineSeries.data = categoryData;
         lineSeries.xField = 'category';

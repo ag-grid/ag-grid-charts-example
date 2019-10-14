@@ -9,47 +9,47 @@ import { createButton, createSlider } from '../../lib/ui';
 import { CartesianChartLayout } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
 
 type CategoryDatum = {
-    category: {labels: string[]},
+    category: { labels: string[] },
     value: number,
     value2: number
 };
 
 const categoryData: CategoryDatum[] = [
-    {category: {labels: ['London', 'England', 'UK', 'Europe']}, value: 3, value2: 2},
-    {category: {labels: ['Bristol', 'England', 'UK', 'Europe']}, value: 7, value2: 5},
-    {category: {labels: ['Glasgow', 'Scotland', 'UK', 'Europe']}, value: 6, value2: 3},
-    {category: {labels: ['Austin', 'Texas', 'USA', 'North America']}, value: 4, value2: 7},
-    {category: {labels: ['Austin', 'Texas', 'USA', 'North America']}, value: 4, value2: 7},
-    {category: {labels: ['Seattle', 'Washington', 'USA', 'North America']}, value: 8, value2: 5},
-    {category: {labels: ['San Jose', 'California', 'USA', 'North America']}, value: 5, value2: 2},
-    {category: {labels: ['San Diego', 'California', 'USA', 'North America']}, value: 6, value2: 3},
-    {category: {labels: ['San Francisco', 'California', 'USA', 'North America']}, value: 3, value2: 4},
-    {category: {labels: ['Seattle']}, value: 3, value2: 4},
-    {category: {labels: ['Seattle', 'Washington']}, value: 3, value2: 4}
+    { category: { labels: ['London', 'England', 'UK', 'Europe'] }, value: 3, value2: 2 },
+    { category: { labels: ['Bristol', 'England', 'UK', 'Europe'] }, value: 7, value2: 5 },
+    { category: { labels: ['Glasgow', 'Scotland', 'UK', 'Europe'] }, value: 6, value2: 3 },
+    { category: { labels: ['Austin', 'Texas', 'USA', 'North America'] }, value: 4, value2: 7 },
+    { category: { labels: ['Austin', 'Texas', 'USA', 'North America'] }, value: 4, value2: 7 },
+    { category: { labels: ['Seattle', 'Washington', 'USA', 'North America'] }, value: 8, value2: 5 },
+    { category: { labels: ['San Jose', 'California', 'USA', 'North America'] }, value: 5, value2: 2 },
+    { category: { labels: ['San Diego', 'California', 'USA', 'North America'] }, value: 6, value2: 3 },
+    { category: { labels: ['San Francisco', 'California', 'USA', 'North America'] }, value: 3, value2: 4 },
+    { category: { labels: ['Seattle'] }, value: 3, value2: 4 },
+    { category: { labels: ['Seattle', 'Washington'] }, value: 3, value2: 4 }
 ];
 
 const reducedCategoryData: CategoryDatum[] = [
-    {category: {labels: ['London', 'England']}, value: 3, value2: 2},
-    {category: {labels: ['Bristol', 'England']}, value: 7, value2: 5},
-    {category: {labels: ['Glasgow', 'Scotland']}, value: 6, value2: 3},
-    {category: {labels: ['Austin', 'Texas']}, value: 4, value2: 7},
-    {category: {labels: ['Austin', 'Texas']}, value: 4, value2: 7},
-    {category: {labels: ['Seattle', 'Washington']}, value: 8, value2: 5},
-    {category: {labels: ['San Jose', 'California']}, value: 5, value2: 2},
-    {category: {labels: ['San Diego', 'California']}, value: 6, value2: 3},
-    {category: {labels: ['San Francisco', 'California']}, value: 3, value2: 4}
+    { category: { labels: ['London', 'England'] }, value: 3, value2: 2 },
+    { category: { labels: ['Bristol', 'England'] }, value: 7, value2: 5 },
+    { category: { labels: ['Glasgow', 'Scotland'] }, value: 6, value2: 3 },
+    { category: { labels: ['Austin', 'Texas'] }, value: 4, value2: 7 },
+    { category: { labels: ['Austin', 'Texas'] }, value: 4, value2: 7 },
+    { category: { labels: ['Seattle', 'Washington'] }, value: 8, value2: 5 },
+    { category: { labels: ['San Jose', 'California'] }, value: 5, value2: 2 },
+    { category: { labels: ['San Diego', 'California'] }, value: 6, value2: 3 },
+    { category: { labels: ['San Francisco', 'California'] }, value: 3, value2: 4 }
 ];
 
 const noGroupData: CategoryDatum[] = [
-    {category: {labels: ['London']}, value: 3, value2: 2},
-    {category: {labels: ['Bristol']}, value: 7, value2: 5},
-    {category: {labels: ['Glasgow']}, value: 6, value2: 3},
-    {category: {labels: ['Austin']}, value: 4, value2: 7},
-    {category: {labels: ['Austin']}, value: 4, value2: 7},
-    {category: {labels: ['Seattle']}, value: 8, value2: 5},
-    {category: {labels: ['San Jose']}, value: 5, value2: 2},
-    {category: {labels: ['San Diego']}, value: 6, value2: 3},
-    {category: {labels: ['San Francisco']}, value: 3, value2: 4}
+    { category: { labels: ['London'] }, value: 3, value2: 2 },
+    { category: { labels: ['Bristol'] }, value: 7, value2: 5 },
+    { category: { labels: ['Glasgow'] }, value: 6, value2: 3 },
+    { category: { labels: ['Austin'] }, value: 4, value2: 7 },
+    { category: { labels: ['Austin'] }, value: 4, value2: 7 },
+    { category: { labels: ['Seattle'] }, value: 8, value2: 5 },
+    { category: { labels: ['San Jose'] }, value: 5, value2: 2 },
+    { category: { labels: ['San Diego'] }, value: 6, value2: 3 },
+    { category: { labels: ['San Francisco'] }, value: 3, value2: 4 }
 ];
 
 function makeChartResizeable(chart: Chart) {
@@ -144,11 +144,11 @@ function createCategoryColumnChart() {
     });
 
     createButton('label grid ON', () => {
-        (chart.xAxis as GroupedCategoryAxis).labelGrid = true;
+        (chart.xAxis as GroupedCategoryAxis).label.grid = true;
         chart.xAxis.update();
     });
     createButton('label grid OFF', () => {
-        (chart.xAxis as GroupedCategoryAxis).labelGrid = false;
+        (chart.xAxis as GroupedCategoryAxis).label.grid = false;
         chart.xAxis.update();
     });
 
@@ -206,11 +206,11 @@ function createCategoryBarChart() {
     });
 
     createButton('label grid ON', () => {
-        (chart.yAxis as GroupedCategoryAxis).labelGrid = true;
+        (chart.yAxis as GroupedCategoryAxis).label.grid = true;
         chart.yAxis.update();
     });
     createButton('label grid OFF', () => {
-        (chart.yAxis as GroupedCategoryAxis).labelGrid = false;
+        (chart.yAxis as GroupedCategoryAxis).label.grid = false;
         chart.yAxis.update();
     });
 

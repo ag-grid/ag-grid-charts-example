@@ -2,13 +2,11 @@ import { PieSeries } from 'ag-grid-enterprise/src/charts/chart/series/pieSeries'
 import { Chart, LegendPosition } from 'ag-grid-enterprise/src/charts/chart/chart';
 import { Padding } from 'ag-grid-enterprise/src/charts/util/padding';
 import { Caption } from 'ag-grid-enterprise/src/charts/caption';
-import { Color } from "ag-grid-community/dist/lib/utils/color";
 
 import './app.css';
 import { FontStyle, FontWeight } from 'ag-grid-enterprise/src/charts/scene/shape/text';
 import { PolarChart } from 'ag-grid-enterprise/src/charts/chart/polarChart';
 import { DropShadow } from 'ag-grid-enterprise/src/charts/scene/dropShadow';
-import { pie } from 'd3';
 
 type Datum = {
     label: string,
@@ -17,23 +15,23 @@ type Datum = {
 };
 
 const data: Datum[] = [
-    {label: 'Android', value: 56.9, other: 7},
-    {label: 'iOS', value: 22.5, other: 8},
-    {label: 'BlackBerry', value: 6.8, other: 9},
-    {label: 'Symbian', value: 8.5, other: 10},
-    {label: 'Bada', value: 2.6, other: 11},
-    {label: 'Windows', value: 1.9, other: 12}
+    { label: 'Android', value: 56.9, other: 7 },
+    { label: 'iOS', value: 22.5, other: 8 },
+    { label: 'BlackBerry', value: 6.8, other: 9 },
+    { label: 'Symbian', value: 8.5, other: 10 },
+    { label: 'Bada', value: 2.6, other: 11 },
+    { label: 'Windows', value: 1.9, other: 12 }
 ];
 
 const data2: Datum[] = [
-    {label: 'Nigel', value: 7, other: 8},
-    {label: 'Lucy', value: 6, other: 9},
-    {label: 'Rick', value: 4, other: 10},
-    {label: 'Barbara', value: 3, other: 8},
-    {label: 'John', value: 3, other: 7},
-    {label: 'Ben', value: 5, other: 12},
-    {label: 'Maria', value: 3, other: 10},
-    {label: 'Vicky', value: 8, other: 11}
+    { label: 'Nigel', value: 7, other: 8 },
+    { label: 'Lucy', value: 6, other: 9 },
+    { label: 'Rick', value: 4, other: 10 },
+    { label: 'Barbara', value: 3, other: 8 },
+    { label: 'John', value: 3, other: 7 },
+    { label: 'Ben', value: 5, other: 12 },
+    { label: 'Maria', value: 3, other: 10 },
+    { label: 'Vicky', value: 8, other: 11 }
 ];
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
@@ -127,7 +125,7 @@ function makeChartResizeable(chart: Chart) {
     });
 }
 
-function classDecorator<T extends {new(...args:any[]):{}}>(constructor:T) {
+function classDecorator<T extends { new(...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
         newProperty = "new property";
         hello = "override";
@@ -212,12 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Use tooltip renderer', () => {
         pieSeries.tooltipRenderer = params => {
-            return `<em>Value</em>: <span style='color: red;'>${params.datum[params.angleField]}</span>`;
+            return `<em>Value</em>: <span style='color: red;'>${params.datum[params.angleKey]}</span>`;
         };
 
         pieSeries2.tooltipRenderer = params => {
-            const radiusValue = params.radiusField ? `<br>Radius: ${params.datum[params.radiusField]}` : '';
-            return `Angle: ${params.datum[params.angleField]}${radiusValue}`;
+            const radiusValue = params.radiusKey ? `<br>Radius: ${params.datum[params.radiusKey]}` : '';
+            return `Angle: ${params.datum[params.angleKey]}${radiusValue}`;
         };
     });
     createButton('Remove tooltip renderer', () => {
@@ -352,9 +350,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('labelFont', [
-        {weight: undefined, size: 12, family: 'sans-serif'},
-        {weight: 'bold', size: 14, family: 'sans-serif'},
-        {weight: undefined, size: 16, family: 'Papyrus'}
+        { weight: undefined, size: 12, family: 'sans-serif' },
+        { weight: 'bold', size: 14, family: 'sans-serif' },
+        { weight: undefined, size: 16, family: 'Papyrus' }
     ], v => {
         const font = v;
         pieSeries.label.fontWeight = font.weight as FontWeight;
@@ -363,9 +361,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createSlider('series.title.font', [
-        {style: undefined, weight: 'bold', size: 12, family: 'sans-serif'},
-        {style: 'italic', weight: undefined, size: 14, family: 'sans-serif'},
-        {style: undefined, weight: undefined, size: 20, family: 'Papyrus'}
+        { style: undefined, weight: 'bold', size: 12, family: 'sans-serif' },
+        { style: 'italic', weight: undefined, size: 14, family: 'sans-serif' },
+        { style: undefined, weight: undefined, size: 20, family: 'Papyrus' }
     ], v => {
         if (pieSeries.title) {
             const font = v;

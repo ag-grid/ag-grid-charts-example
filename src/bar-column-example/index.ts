@@ -143,7 +143,7 @@ function createColumnChart() {
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
-    barSeries.labelEnabled = false;
+    barSeries.label.enabled = false;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -165,10 +165,10 @@ function createColumnChart() {
     });
 
     createButton('Enable labels', () => {
-        barSeries.labelEnabled = true;
+        barSeries.label.enabled = true;
     });
     createButton('Disable labels', () => {
-        barSeries.labelEnabled = false;
+        barSeries.label.enabled = false;
     });
 
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
@@ -210,7 +210,7 @@ function createBarChart() {
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
-    barSeries.labelEnabled = false;
+    barSeries.label.enabled = false;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -232,10 +232,10 @@ function createBarChart() {
     });
 
     createButton('Enable labels', () => {
-        barSeries.labelEnabled = true;
+        barSeries.label.enabled = true;
     });
     createButton('Disable labels', () => {
-        barSeries.labelEnabled = false;
+        barSeries.label.enabled = false;
     });
 
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {

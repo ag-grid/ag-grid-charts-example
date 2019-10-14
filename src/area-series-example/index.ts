@@ -179,7 +179,7 @@ function makeNuclearChart() {
     ];
     const startX = 1940;
 
-    const data: {year: string, usa: number, ussr: number}[] = [];
+    const data: { year: string, usa: number, ussr: number }[] = [];
     const n = Math.min(usaData.length, ussrData.length);
     for (let i = 0; i < n; i++) {
         data.push({
@@ -196,7 +196,7 @@ function makeNuclearChart() {
     xAxis.label.fontSize = 10;
     const yAxis = new NumberAxis();
 
-    const chart = new CartesianChart({xAxis, yAxis});
+    const chart = new CartesianChart({ xAxis, yAxis });
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
@@ -283,7 +283,7 @@ function makeNuclearChartWithNumericX() {
     ];
     const startX = 1940;
 
-    const data: {year: number, usa: number, ussr: number}[] = [];
+    const data: { year: number, usa: number, ussr: number }[] = [];
     const n = Math.min(usaData.length, ussrData.length);
     for (let i = 0; i < n; i++) {
         data.push({
@@ -297,7 +297,7 @@ function makeNuclearChartWithNumericX() {
     xAxis.nice = false;
     const yAxis = new NumberAxis();
 
-    const chart = new CartesianChart({xAxis, yAxis});
+    const chart = new CartesianChart({ xAxis, yAxis });
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     xAxis.scale.paddingOuter = 0;
     const yAxis = new NumberAxis();
 
-    const chart = new CartesianChart({xAxis, yAxis});
+    const chart = new CartesianChart({ xAxis, yAxis });
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
         areaSeries.xField = config.xField;
         areaSeries.yFields = config.yFields;
         areaSeries.data = config.data;
-        chart.xAxis.labelRotation = 0;
+        chart.xAxis.label.rotation = 0;
         chart.xAxis.update();
     });
 
@@ -508,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Use tooltip renderer', () => {
         areaSeries.tooltipRenderer = params => {
             return `<div style="background-color: #d4d1d6; padding: 5px;">
-                X: ${params.datum[params.xField]}<br>Y: ${params.datum[params.yField]}
+                X: ${params.datum[params.xKey]}<br>Y: ${params.datum[params.yKey]}
             </div>`;
         };
     });
@@ -536,14 +536,14 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Light theme', () => {
         const labelColor = 'black';
 
-        chart.xAxis.labelColor = labelColor;
+        chart.xAxis.label.color = labelColor;
         chart.xAxis.gridStyle = [{
             stroke: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
         }];
         chart.xAxis.update();
 
-        chart.yAxis.labelColor = labelColor;
+        chart.yAxis.label.color = labelColor;
         chart.yAxis.gridStyle = [{
             stroke: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
@@ -565,14 +565,14 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Dark theme', () => {
         const labelColor = 'rgb(221, 221, 221)';
 
-        chart.xAxis.labelColor = labelColor;
+        chart.xAxis.label.color = labelColor;
         chart.xAxis.gridStyle = [{
             stroke: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
         chart.xAxis.update();
 
-        chart.yAxis.labelColor = labelColor;
+        chart.yAxis.label.color = labelColor;
         chart.yAxis.gridStyle = [{
             stroke: 'rgb(100, 100, 100)',
             lineDash: [4, 2]

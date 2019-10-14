@@ -21,8 +21,8 @@ function createChart(data: Datum[]) {
         yAxis: new NumberAxis()
     });
 
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.labelFormatter = params => new Date(params.value).toDateString();
+    chart.xAxis.label.rotation = 45;
+    chart.xAxis.label.formatter = params => new Date(params.value).toDateString();
 
     chart.parent = document.body;
     chart.width = 800;
@@ -88,7 +88,7 @@ function createChart(data: Datum[]) {
 
         const fit = linearRegression(X, Y);
         if (fit) {
-            const {slope, intercept} = fit;
+            const { slope, intercept } = fit;
 
             const firstX = data[0].x;
             const lastX = data[data.length - 1].x;
@@ -102,7 +102,7 @@ function createChart(data: Datum[]) {
             slopeSeries.marker = false;
             slopeSeries.strokeWidth = 2;
             // slopeSeries.showInLegend = false;
-            slopeSeries.data = [{x: firstX, y: firstY}, {x: lastX, y: lastY}];
+            slopeSeries.data = [{ x: firstX, y: firstY }, { x: lastX, y: lastY }];
             slopeSeries.xField = 'x';
             slopeSeries.yField = 'y';
 
@@ -119,8 +119,8 @@ function createTimeChart() {
 
     chart.title = new Caption();
     chart.title.text = 'Number axis time chart';
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.labelFormatter = params => new Date(params.value).toDateString();
+    chart.xAxis.label.rotation = 45;
+    chart.xAxis.label.formatter = params => new Date(params.value).toDateString();
 
     chart.parent = document.body;
     chart.width = 800;
@@ -129,7 +129,7 @@ function createTimeChart() {
     const scatterSeries = new ScatterSeries();
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
-    scatterSeries.data = timeData.map(v => ({x: v[0], y: v[1]}));
+    scatterSeries.data = timeData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xField = 'x';
     scatterSeries.yField = 'y';
 

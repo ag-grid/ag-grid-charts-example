@@ -112,7 +112,7 @@ function makeChartResizeable(chart: Chart) {
 
 function createColumnChart() {
     const xAxis = new CategoryAxis();
-    xAxis.labelRotation = 0;
+    xAxis.label.rotation = 0;
     const yAxis = new NumberAxis();
     const chart = new CartesianChart({
         xAxis,

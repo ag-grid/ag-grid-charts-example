@@ -8,7 +8,6 @@ import { data as minuteData2 } from './minuteData2';
 import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
 import year from "ag-grid-enterprise/src/charts/util/time/year";
 import month from "ag-grid-enterprise/src/charts/util/time/month";
-import minute from "ag-grid-enterprise/src/charts/util/time/minute";
 import second from "ag-grid-enterprise/src/charts/util/time/second";
 import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
@@ -46,9 +45,9 @@ function createTimeChart() {
         yAxis: new NumberAxis()
     });
 
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.tickCount = month.every(6);
-    chart.xAxis.tickFormat = '%b %Y';
+    chart.xAxis.label.rotation = 45;
+    chart.xAxis.tick.count = month.every(6);
+    chart.xAxis.tick.format = '%b %Y';
 
     chart.parent = document.body;
     chart.width = 800;
@@ -57,7 +56,7 @@ function createTimeChart() {
     const scatterSeries = new ScatterSeries();
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
-    scatterSeries.data = timestampData.map(v => ({x: v[0], y: v[1]}));
+    scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xField = 'x';
     scatterSeries.yField = 'y';
 
@@ -72,9 +71,9 @@ function createTimeChart2() {
         yAxis: new NumberAxis()
     });
 
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.tickCount = year.every(2);
-    chart.xAxis.tickFormat = '%Y';
+    chart.xAxis.label.rotation = 45;
+    chart.xAxis.tick.count = year.every(2);
+    chart.xAxis.tick.format = '%Y';
 
     chart.parent = document.body;
     chart.width = 800;
@@ -83,7 +82,7 @@ function createTimeChart2() {
     const scatterSeries = new ScatterSeries();
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
-    scatterSeries.data = timestampData.map(v => ({x: v[0], y: v[1]}));
+    scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xField = 'x';
     scatterSeries.yField = 'y';
 
@@ -98,9 +97,9 @@ function createTimeChart3() {
         yAxis: new NumberAxis()
     });
 
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.tickCount = second.every(30);
-    chart.xAxis.tickFormat = 'Rob %H:%M:%S';
+    chart.xAxis.label.rotation = 45;
+    chart.xAxis.tick.count = second.every(30);
+    chart.xAxis.tick.format = 'Rob %H:%M:%S';
 
     chart.parent = document.body;
     chart.width = 800;
@@ -124,9 +123,9 @@ function createComboTimeChart() {
         yAxis: new NumberAxis()
     });
 
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.tickCount = second.every(30);
-    chart.xAxis.tickFormat = '%H:%M:%S';
+    chart.xAxis.label.rotation = 45;
+    chart.xAxis.tick.count = second.every(30);
+    chart.xAxis.tick.format = '%H:%M:%S';
 
     chart.parent = document.body;
     chart.width = 800;
@@ -171,9 +170,9 @@ function createCustomLocaleTimeChart() {
         yAxis: new NumberAxis()
     });
 
-    chart.xAxis.labelRotation = -90;
-    chart.xAxis.tickCount = year;
-    chart.xAxis.tickFormat = '%A, %d %B, %Y';
+    chart.xAxis.label.rotation = -90;
+    chart.xAxis.tick.count = year;
+    chart.xAxis.tick.format = '%A, %d %B, %Y';
 
     chart.parent = document.body;
     chart.width = 800;
@@ -182,7 +181,7 @@ function createCustomLocaleTimeChart() {
     const scatterSeries = new ScatterSeries();
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
-    scatterSeries.data = timestampData.map(v => ({x: v[0], y: v[1]}));
+    scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xField = 'x';
     scatterSeries.yField = 'y';
 
@@ -202,7 +201,7 @@ function createRealTimeChart() {
         return (seedY += (-2.5 + Math.random() * 5));
     }
 
-    const data = Array.from( {length: 15}, () => ({x: generateNextX(), y: generateNextY()}) );
+    const data = Array.from({ length: 15 }, () => ({ x: generateNextX(), y: generateNextY() }));
 
     const chart = new CartesianChart({
         xAxis: new TimeAxis(),
@@ -210,9 +209,9 @@ function createRealTimeChart() {
     });
 
     chart.padding = new Padding(20, 60, 20, 20);
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.tickCount = second;
-    chart.xAxis.tickFormat = '%H:%M:%S';
+    chart.xAxis.label.rotation = 45;
+    chart.xAxis.tick.count = second;
+    chart.xAxis.tick.format = '%H:%M:%S';
 
     chart.parent = document.body;
     chart.width = 800;
@@ -230,7 +229,7 @@ function createRealTimeChart() {
 
     setInterval(function () {
         data.shift();
-        data.push({x: generateNextX(), y: generateNextY()});
+        data.push({ x: generateNextX(), y: generateNextY() });
         lineSeries.data = data;
     }, 200);
 

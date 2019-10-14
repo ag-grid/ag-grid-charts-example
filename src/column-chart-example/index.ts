@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.data = data;
     barSeries.fills = material.fills;
     barSeries.tooltipEnabled = true;
-    barSeries.labelEnabled = false;
+    barSeries.label.enabled = false;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const config = generateData();
         barSeries.yFieldNames = []; // don't show bar labels
         barSeries.grouped = false;
-        chart.xAxis.labelRotation = 45;
+        chart.xAxis.label.rotation = 45;
         barSeries.xField = config.xField;
         barSeries.yFields = config.yFields;
         barSeries.data = config.data;
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFields = config.yFields;
         barSeries.data = config.data;
         barSeries.grouped = true;
-        chart.xAxis.labelRotation = 0;
+        chart.xAxis.label.rotation = 0;
         chart.xAxis.update();
     });
 
@@ -260,10 +260,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createButton('Use label formatter', () => {
-        barSeries.labelFormatter = params => `$${params.value.toFixed(1)} USD`;
+        barSeries.label.formatter = params => `$${params.value.toFixed(1)} USD`;
     });
     createButton('Remove label formatter', () => {
-        barSeries.labelFormatter = undefined;
+        barSeries.label.formatter = undefined;
     });
     createButton('Show tooltips', () => {
         barSeries.tooltipEnabled = true;
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Use tooltip renderer', () => {
         barSeries.tooltipRenderer = params => {
             return `<div style="background-color: #d4d1d6; padding: 5px;">
-                X: ${params.datum[params.xField]}<br>Y: ${params.datum[params.yField]}
+                X: ${params.datum[params.xKey]}<br>Y: ${params.datum[params.yKey]}
             </div>`;
         };
     });
@@ -303,14 +303,14 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.fills = flat.fills;
     });
     createButton('Light theme', () => {
-        chart.xAxis.labelColor = 'black';
+        chart.xAxis.label.color = 'black';
         chart.xAxis.gridStyle = [{
             stroke: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
         }];
         chart.xAxis.update();
 
-        chart.yAxis.labelColor = 'black';
+        chart.yAxis.label.color = 'black';
         chart.yAxis.gridStyle = [{
             stroke: 'rgb(219, 219, 219)',
             lineDash: [4, 2]
@@ -331,14 +331,14 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Dark theme', () => {
         const labelColor = 'rgb(221, 221, 221)';
 
-        chart.xAxis.labelColor = labelColor;
+        chart.xAxis.label.color = labelColor;
         chart.xAxis.gridStyle = [{
             stroke: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
         }];
         chart.xAxis.update();
 
-        chart.yAxis.labelColor = labelColor;
+        chart.yAxis.label.color = labelColor;
         chart.yAxis.gridStyle = [{
             stroke: 'rgb(100, 100, 100)',
             lineDash: [4, 2]
@@ -360,10 +360,10 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yFields = [];
     });
     createButton('Enable labels', () => {
-        barSeries.labelEnabled = true;
+        barSeries.label.enabled = true;
     });
     createButton('Disable labels', () => {
-        barSeries.labelEnabled = false;
+        barSeries.label.enabled = false;
     });
     createButton('Show Legend', () => chart.legend.enabled = true);
     createButton('Hide Legend', () => chart.legend.enabled = false);
