@@ -164,7 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.height = 500;
     chart.parent = document.body;
 
+    chart.title = new Caption();
     chart.title.text = 'Beverage Expenses';
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'per quarter';
     // chart.title = Caption.create('Beverage Expenses', 'bold 16px Verdana, sans-serif');
     // chart.subtitle = Caption.create('per quarter', '12px Verdana, sans-serif');
@@ -378,7 +380,9 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle.enabled = false;
+            if (chart.subtitle) {
+                chart.subtitle.enabled = false;
+            }
         }
         barSeries.normalizedTo = v;
     });

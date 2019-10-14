@@ -49,12 +49,14 @@ function renderChart() {
 
     chart.addSeries(series);
 
+    chart.title = new Caption();
     chart.title.text = 'Split of revenue by product categories';
     chart.title.fontWeight = 'bold';
     chart.title.fontSize = 18;
     chart.title.fontFamily = 'Source Sans Pro';
     chart.title.color = 'rgb(90, 90, 90)';
 
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'Last year';
     chart.subtitle.fontSize = 13;
     chart.subtitle.fontFamily = 'Source Sans Pro';

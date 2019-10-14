@@ -6,6 +6,7 @@ module.exports = function (api) {
         "@babel/typescript"
     ];
     const plugins = [
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
         "@babel/proposal-class-properties",
         "@babel/proposal-object-rest-spread"
     ];

@@ -121,8 +121,10 @@ function createColumnChart() {
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
+    chart.title = new Caption();
     chart.title.text = 'Beverage Expenses';
     chart.title.fontSize = 14;
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'per quarter';
     chart.subtitle.fontSize = 12;
     chart.scene.canvas.element.style.border = '1px solid black';
@@ -179,7 +181,9 @@ function createColumnChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle.enabled = false;
+            if (chart.subtitle) {
+                chart.subtitle.enabled = false;
+            }
         }
         barSeries.normalizedTo = v;
     });
@@ -250,7 +254,9 @@ function createBarChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle.enabled = false;
+            if (chart.subtitle) {
+                chart.subtitle.enabled = false;
+            }
         }
         barSeries.normalizedTo = v;
     });

@@ -127,7 +127,33 @@ function makeChartResizeable(chart: Chart) {
     });
 }
 
+function classDecorator<T extends {new(...args:any[]):{}}>(constructor:T) {
+    return class extends constructor {
+        newProperty = "new property";
+        hello = "override";
+
+        callMe() {
+
+        }
+    };
+}
+
+@classDecorator
+class Greeter {
+    property = "property";
+    hello: string;
+    constructor(m: string) {
+        this.hello = m;
+    }
+
+    // foo() {
+    //     this.callMe();
+    // }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    console.log(new Greeter("world"));
+
     const chart = new PolarChart();
     chart.parent = document.body;
     chart.width = 800;
@@ -159,9 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     chart.series = [pieSeries, pieSeries2];
 
-
+    chart.title = new Caption();
     chart.title.text = 'Market Share of Mobile Operating Systems';
     chart.title.fontSize = 16;
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'Source: www.statista.com';
     chart.subtitle.fontStyle = 'italic';
     chart.subtitle.fontSize = 12;

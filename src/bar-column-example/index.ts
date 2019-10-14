@@ -174,7 +174,9 @@ function createColumnChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle.enabled = false;
+            if (chart.subtitle) {
+                chart.subtitle.enabled = false;
+            }
         }
         barSeries.normalizedTo = v;
     });
@@ -239,7 +241,9 @@ function createBarChart() {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle.enabled = false;
+            if (chart.subtitle) {
+                chart.subtitle.enabled = false;
+            }
         }
         barSeries.normalizedTo = v;
     });

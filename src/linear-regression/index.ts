@@ -28,6 +28,7 @@ function createChart(data: Datum[]) {
     chart.width = 800;
     chart.height = 600;
     // chart.padding = new Padding(20, 80, 20, 20);
+    chart.title = new Caption();
     chart.title.text = 'S&P 500 weekly data (1950 to present)';
 
     const scatterSeries = new ScatterSeries();
@@ -116,6 +117,7 @@ function createTimeChart() {
         yAxis: new NumberAxis()
     });
 
+    chart.title = new Caption();
     chart.title.text = 'Number axis time chart';
     chart.xAxis.labelRotation = 45;
     chart.xAxis.labelFormatter = params => new Date(params.value).toDateString();

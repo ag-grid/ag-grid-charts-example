@@ -138,7 +138,9 @@ function createColumnChart() {
     chart.width = 800;
     chart.height = 500;
     chart.parent = document.body;
+    chart.title = new Caption();
     chart.title.text = 'Beverage Expenses';
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'per quarter';
     chart.scene.canvas.element.style.border = '1px solid black';
 

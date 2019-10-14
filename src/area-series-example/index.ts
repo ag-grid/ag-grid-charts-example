@@ -201,11 +201,13 @@ function makeNuclearChart() {
     chart.width = 1200;
     chart.height = 400;
 
+    chart.title = new Caption();
     chart.title.text = 'US and USSR nuclear stockpiles';
     chart.title.fontWeight = 'bold';
     chart.title.fontSize = 20;
     chart.title.fontFamily = 'Verdana, sans-serif';
 
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'Sources: thebulletin.org & armscontrol.org';
     chart.subtitle.fontSize = 12;
     chart.subtitle.fontFamily = 'Verdana, sans-serif';
@@ -300,11 +302,13 @@ function makeNuclearChartWithNumericX() {
     chart.width = 1200;
     chart.height = 400;
 
+    chart.title = new Caption();
     chart.title.text = 'US and USSR nuclear stockpiles';
     chart.title.fontWeight = 'bold';
     chart.title.fontSize = 20;
     chart.title.fontFamily = 'Verdana, sans-serif';
 
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'Sources: thebulletin.org & armscontrol.org';
     chart.subtitle.fontSize = 12;
     chart.subtitle.fontFamily = 'Verdana, sans-serif';
@@ -345,11 +349,13 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.width = 800;
     chart.height = 500;
 
+    chart.title = new Caption();
     chart.title.text = 'Area 51 Charts';
     chart.title.fontWeight = 'bold';
     chart.title.fontSize = 16;
     chart.title.fontFamily = 'Verdana, sans-serif';
 
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'and flying saucers';
     chart.subtitle.fontSize = 12;
     chart.subtitle.fontFamily = 'Verdana, sans-serif';
@@ -423,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     areaSeries.data = data;
     areaSeries.fills = material.fills;
     areaSeries.tooltipEnabled = true;
+    areaSeries.marker = true;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -605,7 +612,9 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {
             chart.title.text = 'Normalize to WTFYW';
-            chart.subtitle.enabled = false;
+            if (chart.subtitle) {
+                chart.subtitle.enabled = false;
+            }
         }
         areaSeries.normalizedTo = v;
     });

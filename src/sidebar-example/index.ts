@@ -55,7 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.width = 800;
     chart.height = 500;
     chart.parent = chartContainer;
+    chart.title = new Caption();
     chart.title.text = 'This is a sliding panel test';
+    chart.subtitle = new Caption();
     chart.subtitle.text = 'Nothing else to see here';
 
     panelDiv.style.flexGrow = '1';
