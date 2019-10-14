@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
     arc.stroke = 'black';
     arc.type = ArcType.Chord;
 
-    const rect = Rect.create(200, 100, 50, 50);
+    const rect = new Rect();
+    rect.x = 200;
+    rect.y = 100;
+    rect.width = 50;
+    rect.height = 50;
     rect.fill = 'red';
     rect.stroke = 'black';
 

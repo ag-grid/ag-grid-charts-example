@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const group = new Group();
 
     const x = 200;
-    const verticalLine = Line.create(x, 0, x, 600);
+    const verticalLine = new Line();
+    verticalLine.x1 = x;
+    verticalLine.y1 = 0;
+    verticalLine.x2 = x;
+    verticalLine.y2 = 600;
 
     const testText = 'Groggy Frog';
 
@@ -55,7 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     alphabeticText.fontSize = fontSize;
     alphabeticText.fontFamily = fontFamily;
     // assuming `textBaseline = 'alphabetic'` default
-    const alphabeticTextLine = Line.create(50, alphabeticTextY, 350, alphabeticTextY);
+    const alphabeticTextLine = new Line();
+    alphabeticTextLine.x1 = 50;
+    alphabeticTextLine.y1 = alphabeticTextY;
+    alphabeticTextLine.x2 = 350;
+    alphabeticTextLine.y2 = alphabeticTextY;
 
     const baselineNodes: Node[] = [];
     baselines.forEach((baseline, i) => {
@@ -68,7 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
         text.fontFamily = fontFamily;
         text.textAlign = 'center';
         text.textBaseline = baseline;
-        const textLine = Line.create(50, y, 350, y);
+        const textLine = new Line();
+        textLine.x1 = 50;
+        textLine.y1 = y;
+        textLine.x2 = 350;
+        textLine.y2 = y;
         baselineNodes.push(text, textLine);
     });
 

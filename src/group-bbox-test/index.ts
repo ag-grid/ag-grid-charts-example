@@ -25,13 +25,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const group = new Group();
     const parentGroup = new Group();
 
-    const rect = Rect.create(100, 50, 150, 150);
+    const rect = new Rect();
+    rect.x = 100;
+    rect.y = 50;
+    rect.width = 150;
+    rect.height = 150;
     rect.fill = 'blue';
     rect.rotation = Math.PI / 9;
     rect.translationX = 100;
     group.append(rect);
 
-    const arc = Arc.create(300, 200, 130, 100);
+    const arc = new Arc();
+    arc.centerX = 300;
+    arc.centerY = 200;
+    arc.radiusX = 130;
+    arc.radiusY = 100;
     arc.fill = 'orange';
     arc.type = ArcType.Chord;
 

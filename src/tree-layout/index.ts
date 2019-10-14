@@ -373,7 +373,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 children.forEach(child => createEdges(child, root));
             }
             if (parent) {
-                const line = Line.create(root.x, root.y, parent.x, parent.y);
+                const line = new Line();
+                line.x1 = root.x;
+                line.y1 = root.y;
+                line.x2 = parent.x;
+                line.y2 = parent.y;
                 line.stroke = 'black';
                 line.strokeWidth = 3;
                 line.strokeOpacity = 0.3;

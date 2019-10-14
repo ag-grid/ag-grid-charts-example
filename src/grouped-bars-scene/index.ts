@@ -123,7 +123,11 @@ function renderChart() {
             const y = yScale.convert(value);
 
             const color = colors[j % colors.length];
-            const rect = Rect.create(x, y, barWidth, seriesHeight - y);
+            const rect = new Rect();
+            rect.x = x;
+            rect.y = y;
+            rect.width = barWidth;
+            rect.height = seriesHeight - y;
             rect.fill = color[0];
             rect.stroke = 'black';
             rect.fillShadow = new DropShadow();

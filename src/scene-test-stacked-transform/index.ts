@@ -22,7 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     arc.radiusX = 30;
     arc.radiusY = 20;
 
-    const rect = Rect.create(100, 100, 50, 50);
+    const rect = new Rect();
+    rect.x = 100;
+    rect.y = 100;
+    rect.width = 50;
+    rect.height = 50;
 
     rect.scalingX = 2;
     rect.rotationDeg = 10;

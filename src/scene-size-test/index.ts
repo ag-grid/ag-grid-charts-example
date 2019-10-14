@@ -23,13 +23,21 @@ document.addEventListener('DOMContentLoaded', () => {
     scene.parent = document.body;
     const root = new Group();
 
-    const rect = Rect.create(0, 0, 500, 500);
+    const rect = new Rect();
+    rect.x = 0;
+    rect.y = 0;
+    rect.width = 500;
+    rect.height = 500;
     rect.fill = 'blue';
     rect.rotation = Math.PI / 9;
     rect.translationX = 50;
     root.append(rect);
 
-    const arc = Arc.create(300, 200, 150);
+    const arc = new Arc();
+    arc.centerX = 300;
+    arc.centerY = 200;
+    arc.radiusX = 150;
+    arc.radiusY = 150;
     arc.fill = 'orange';
     arc.type = ArcType.Chord;
     root.append(arc);

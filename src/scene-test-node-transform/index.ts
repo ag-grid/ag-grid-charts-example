@@ -28,7 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     arc.translationX = 100;
     arc.translationY = -100;
 
-    const rect = Rect.create(200, 100, 50, 50);
+    const rect = new Rect();
+    rect.x = 200;
+    rect.y = 100;
+    rect.width = 50;
+    rect.height = 50;
 
     rect.scalingX = 1.5;
     rect.scalingY = 2;

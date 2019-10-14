@@ -95,12 +95,20 @@ function testAutoFlippingParallelMirroredLabels() {
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -149,12 +157,20 @@ function testAutoFlippingPerpendicularMirroredLabels() {
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -204,12 +220,20 @@ function testRotationFixedPerpendicularMirroredLabels() {
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -258,12 +282,20 @@ function testRotationFixedParallelMirroredLabels() {
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -316,12 +348,20 @@ function testRadialGrid() {
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(centerX, centerY, radius);
+    const arc = new Arc();
+    arc.centerX = centerX;
+    arc.centerY = centerY;
+    arc.radiusX = radius;
+    arc.radiusY = radius;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(centerX, centerY, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = centerX;
+    centerDot.centerY = centerY;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);

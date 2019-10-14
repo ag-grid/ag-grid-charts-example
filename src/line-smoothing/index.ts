@@ -74,7 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const xt = interpolateBasis(xx);
     const yt = interpolateBasis(yy);
 
-    const point = Arc.create(0, 0, 5, 5, 0, Math.PI * 2);
+    const point = new Arc();
+    point.centerX = 0;
+    point.centerY = 0;
+    point.radiusX = 5;
+    point.radiusY = 5;
+    point.startAngle = 0;
+    point.endAngle = Math.PI * 2;
     point.fill = 'black';
     point.stroke = undefined;
 

@@ -45,17 +45,34 @@ function testClipRect() {
     label.x = 140;
     label.y = 200;
 
-    const arc1 = Arc.create(50, 50, 50);
+    const arc1 = new Arc();
+    arc1.centerX = 50;
+    arc1.centerY = 50;
+    arc1.radiusX = 50;
+    arc1.radiusY = 50;
     arc1.type = ArcType.Chord;
     arc1.fill = 'red';
 
-    const arc2 = Arc.create(200, 100, 100);
+    const arc2 = new Arc();
+    arc2.centerX = 200;
+    arc2.centerY = 100;
+    arc2.radiusX = 100;
+    arc2.radiusY = 100;
     arc2.fill = 'lime';
     arc2.type = ArcType.Chord;
     arc2.opacity = 0.7;
 
-    const hLine = Line.create(0, 150, 300, 150);
-    const vLine = Line.create(150, 0, 150, 300);
+    const hLine = new Line();
+    hLine.x1 = 0;
+    hLine.y1 = 150;
+    hLine.x2 = 300;
+    hLine.y2 = 150;
+
+    const vLine = new Line();
+    vLine.x1 = 150;
+    vLine.y1 = 0;
+    vLine.x2 = 150;
+    vLine.y2 = 300;
 
     clipRect.append([arc1, label, hLine, vLine]);
     rootGroup.append([clipRect, arc2]);

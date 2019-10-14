@@ -52,7 +52,13 @@ export class MiniPie extends MiniChart {
     private readonly center = this.radius + this.padding;
 
     private readonly sectors = MiniPie.angles.map(pair => {
-        const sector = Sector.create(this.center, this.center, 0, this.radius, pair[0], pair[1]);
+        const sector = new Sector();
+        sector.centerX = this.center;
+        sector.centerY = this.center;
+        sector.innerRadius = 0;
+        sector.outerRadius = this.radius;
+        sector.startAngle = pair[0];
+        sector.endAngle = pair[1];
         sector.stroke = undefined;
         return sector;
     });
@@ -78,7 +84,13 @@ export class MiniDonut extends MiniChart {
     private readonly center = this.radius + this.padding;
 
     private readonly sectors = MiniPie.angles.map(pair => {
-        const sector = Sector.create(this.center, this.center, this.radius * 0.6, this.radius, pair[0], pair[1]);
+        const sector = new Sector();
+        sector.centerX = this.center;
+        sector.centerY = this.center;
+        sector.innerRadius = this.radius * 0.6;
+        sector.outerRadius = this.radius;
+        sector.startAngle = pair[0];
+        sector.endAngle = pair[1];
         sector.stroke = undefined;
         return sector;
     });
@@ -126,11 +138,19 @@ class MiniLine extends MiniChart {
 
         const axisOvershoot = 3;
 
-        const leftAxis = Line.create(padding, padding, padding, size - padding + axisOvershoot);
+        const leftAxis = new Line();
+        leftAxis.x1 = padding;
+        leftAxis.y1 = padding;
+        leftAxis.x2 = padding;
+        leftAxis.y2 = size - padding + axisOvershoot;
         leftAxis.stroke = 'gray';
         leftAxis.strokeWidth = 1;
 
-        const bottomAxis = Line.create(padding - axisOvershoot, size - padding, size - padding, size - padding);
+        const bottomAxis = new Line();
+        bottomAxis.x1 = padding - axisOvershoot;
+        bottomAxis.y1 = size - padding;
+        bottomAxis.x2 = size - padding;
+        bottomAxis.y2 = size - padding;
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
 
@@ -194,11 +214,19 @@ class MiniScatter extends MiniChart {
 
         const axisOvershoot = 3;
 
-        const leftAxis = Line.create(padding, padding, padding, size - padding + axisOvershoot);
+        const leftAxis = new Line();
+        leftAxis.x1 = padding;
+        leftAxis.y1 = padding;
+        leftAxis.x2 = padding;
+        leftAxis.y2 = size - padding + axisOvershoot;
         leftAxis.stroke = 'gray';
         leftAxis.strokeWidth = 1;
 
-        const bottomAxis = Line.create(padding - axisOvershoot, size - padding, size - padding, size - padding);
+        const bottomAxis = new Line();
+        bottomAxis.x1 = padding - axisOvershoot;
+        bottomAxis.y1 = size - padding;
+        bottomAxis.x2 = size - padding;
+        bottomAxis.y2 = size - padding;
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
 
@@ -264,11 +292,19 @@ class MiniBar extends MiniChart {
 
         const axisOvershoot = 3;
 
-        const leftAxis = Line.create(padding, padding, padding, size - padding + axisOvershoot);
+        const leftAxis = new Line();
+        leftAxis.x1 = padding;
+        leftAxis.y1 = padding;
+        leftAxis.x2 = padding;
+        leftAxis.y2 = size - padding + axisOvershoot;
         leftAxis.stroke = 'gray';
         leftAxis.strokeWidth = 1;
 
-        const bottomAxis = Line.create(padding - axisOvershoot, size - padding, size - padding, size - padding);
+        const bottomAxis = new Line();
+        bottomAxis.x1 = padding - axisOvershoot;
+        bottomAxis.y1 = size - padding;
+        bottomAxis.x2 = size - padding;
+        bottomAxis.y2 = size - padding;
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
         (this as any).axes = [leftAxis, bottomAxis];
@@ -335,11 +371,19 @@ class MiniStackedBar extends MiniChart {
 
         const axisOvershoot = 3;
 
-        const leftAxis = Line.create(padding, padding, padding, size - padding + axisOvershoot);
+        const leftAxis = new Line();
+        leftAxis.x1 = padding;
+        leftAxis.y1 = padding;
+        leftAxis.x2 = padding;
+        leftAxis.y2 = size - padding + axisOvershoot;
         leftAxis.stroke = 'gray';
         leftAxis.strokeWidth = 1;
 
-        const bottomAxis = Line.create(padding - axisOvershoot, size - padding, size - padding, size - padding);
+        const bottomAxis = new Line();
+        bottomAxis.x1 = padding - axisOvershoot;
+        bottomAxis.y1 = size - padding;
+        bottomAxis.x2 = size - padding;
+        bottomAxis.y2 = size - padding;
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
 
@@ -409,11 +453,19 @@ class MiniNormalizedBar extends MiniChart {
 
         const axisOvershoot = 3;
 
-        const leftAxis = Line.create(padding, padding, padding, size - padding + axisOvershoot);
+        const leftAxis = new Line();
+        leftAxis.x1 = padding;
+        leftAxis.y1 = padding;
+        leftAxis.x2 = padding;
+        leftAxis.y2 = size - padding + axisOvershoot;
         leftAxis.stroke = 'gray';
         leftAxis.strokeWidth = 1;
 
-        const bottomAxis = Line.create(padding - axisOvershoot, size - padding, size - padding, size - padding);
+        const bottomAxis = new Line();
+        bottomAxis.x1 = padding - axisOvershoot;
+        bottomAxis.y1 = size - padding;
+        bottomAxis.x2 = size - padding;
+        bottomAxis.y2 = size - padding;
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
 
@@ -483,11 +535,19 @@ class MiniArea extends MiniChart {
 
         const axisOvershoot = 3;
 
-        const leftAxis = Line.create(padding, padding, padding, size - padding + axisOvershoot);
+        const leftAxis = new Line();
+        leftAxis.x1 = padding;
+        leftAxis.y1 = padding;
+        leftAxis.x2 = padding;
+        leftAxis.y2 = size - padding + axisOvershoot;
         leftAxis.stroke = 'gray';
         leftAxis.strokeWidth = 1;
 
-        const bottomAxis = Line.create(padding - axisOvershoot, size - padding, size - padding, size - padding);
+        const bottomAxis = new Line();
+        bottomAxis.x1 = padding - axisOvershoot;
+        bottomAxis.y1 = size - padding;
+        bottomAxis.x2 = size - padding;
+        bottomAxis.y2 = size - padding;
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
 
