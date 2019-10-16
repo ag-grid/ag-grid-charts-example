@@ -3,6 +3,9 @@ import { LogScale } from "ag-grid-enterprise/src/charts/scale/logScale";
 import { Axis } from "ag-grid-enterprise/src/charts/axis";
 import { Scene } from "ag-grid-enterprise/src/charts/scene/scene";
 import { Group } from "ag-grid-enterprise/src/charts/scene/group";
+import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
 
 document.addEventListener('DOMContentLoaded', () => {
     // testConvert();
@@ -67,9 +70,13 @@ function createScene() {
     const root = new Group();
 
     testAxis(root);
+    testNiceAxis(root);
+    createLineChart();
 
     scene.root = root;
 }
+
+const initialDelay = 3000;
 
 function testAxis(root: Group) {
     const scale = new LogScale();
@@ -83,6 +90,65 @@ function testAxis(root: Group) {
     axis.update();
 
     root.append(axis.group);
+
+    let max = 10000;
+    function step() {
+        max -= 5;
+        scale.domain = [10, max];
+        axis.update();
+        if (max > 50) {
+            requestAnimationFrame(step);
+        }
+    }
+    setTimeout(step, initialDelay);
+}
+
+function testNiceAxis(root: Group) {
+    const scale = new LogScale();
+    scale.domain = [10, 10000];
+    scale.range = [1000, 0];
+    const axis = new Axis(scale);
+
+    axis.translation.x = 250;
+    axis.translation.y = 50;
+    // axis.tickCount = 3;
+    axis.update();
+
+    root.append(axis.group);
+
+    let max = 10000;
+    function step() {
+        max -= 5;
+        scale.domain = [10, max];
+        scale.nice();
+        axis.update();
+        if (max > 50) {
+            requestAnimationFrame(step);
+        }
+    }
+    setTimeout(step, initialDelay);
+}
+
+function createLineChart() {
+    const chart = new CartesianChart({
+        xAxis: new NumberAxis(),
+        yAxis: new NumberAxis()
+    });
+    chart.width = 800;
+    chart.height = 1000;
+    const yLogScale = new LogScale();
+
+    (chart.yAxis as any).scale = yLogScale;
+    chart.parent = document.body;
+
+    const series = new LineSeries();
+    series.data = [{ x: 1, y: 5 }, { x: 3, y: 70 }, { x: 7, y: 800 }, { x: 9, y: 3300 }];
+    series.xField = 'x';
+    series.yField = 'y';
+    series.strokeWidth = 3;
+    series.stroke = 'black';
+    series.marker = true;
+    chart.series = [series as any];
 }
 
 function testD3Axis() {
@@ -95,4 +161,15 @@ function testD3Axis() {
     const logScale = d3.scaleLog().domain([10, 10000]).range([1000, 0]);
     const axis = d3.axisLeft(logScale);
     g.call(axis);
+
+    let max = 10000;
+    function step() {
+        max -= 5;
+        logScale.domain([10, max]);
+        g.call(axis);
+        if (max > 50) {
+            requestAnimationFrame(step);
+        }
+    }
+    setTimeout(step, initialDelay);
 }
