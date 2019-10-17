@@ -1,12 +1,17 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
-import { Caption } from "ag-grid-enterprise/src/charts/caption";
-import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
-
 import './app.css';
-import { createButton } from "../../lib/ui";
+import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
+import { CartesianChart } from "../../../../enterprise-modules/grid-charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "../../../../enterprise-modules/grid-charts/src/charts/chart/axis/numberAxis";
+import { Caption } from "../../../../enterprise-modules/grid-charts/src/charts/caption";
+import { ScatterSeries } from "../../../../enterprise-modules/grid-charts/src/charts/chart/series/scatterSeries";
+import { Circle } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/circle";
+import { Square } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/square";
+import { Diamond } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/diamond";
+import { Cross } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/cross";
+import { Plus } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/plus";
+import { Triangle } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/triangle";
+import { Marker } from '../../../../enterprise-modules/grid-charts/src/charts/chart/marker/marker';
 
 type Datum = {
     gender: number,
@@ -76,9 +81,15 @@ function createHeightWeightGenderChart() {
     chart.yAxis.label.formatter = params => params.value + ' Kg';
     chart.title = new Caption();
     chart.title.text = 'Height vs Weight of 507 Individuals';
+    chart.title.fontSize = 18;
+    chart.title.fontWeight = 'bold';
     chart.subtitle = new Caption();
     chart.subtitle.text = 'by gender';
     chart.subtitle.color = 'gray';
+    chart.subtitle.fontSize = 14;
+
+    const maleSeries = new ScatterSeries();
+    const femaleSeries = new ScatterSeries();
 
     d3.csv("../../data/body-data.csv").then(rawData => {
         const maleData: any[] = [];
@@ -98,7 +109,6 @@ function createHeightWeightGenderChart() {
             }
         });
 
-        const maleSeries = new ScatterSeries();
         maleSeries.data = maleData;
         maleSeries.xField = 'height';
         maleSeries.yField = 'weight';
@@ -106,22 +116,23 @@ function createHeightWeightGenderChart() {
         maleSeries.xFieldName = 'Height';
         maleSeries.yFieldName = 'Weight';
         maleSeries.sizeKeyName = 'Age';
-        maleSeries.markerSize = 30;
+        maleSeries.marker.type = Square;
+        maleSeries.marker.size = 30;
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
         maleSeries.fill = 'rgba(227,111,106,0.61)';
-        maleSeries.markerStrokeWidth = 0.5;
+        maleSeries.marker.strokeWidth = 0.5;
 
-        const femaleSeries = new ScatterSeries();
         femaleSeries.data = femaleData;
         femaleSeries.xField = 'height';
         femaleSeries.yField = 'weight';
         femaleSeries.sizeKey = 'age';
-        femaleSeries.markerSize = 30;
+        femaleSeries.marker.type = Circle;
+        femaleSeries.marker.size = 30;
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
         femaleSeries.fill = 'rgba(123,145,222,0.61)';
-        femaleSeries.markerStrokeWidth = 0.5;
+        femaleSeries.marker.strokeWidth = 0.5;
 
         chart.addSeries(maleSeries);
         chart.addSeries(femaleSeries);
@@ -131,6 +142,38 @@ function createHeightWeightGenderChart() {
 
     createButton('Save Chart Image', () => {
         chart.scene.download('chart');
+    });
+
+    createSlider('Marker type', [Circle, Square, Diamond, Cross, Plus, Triangle], v => {
+        maleSeries.marker.type = v;
+    });
+
+    createSlider('Marker fill', ['red', 'green', 'blue'], v => {
+        maleSeries.marker.fill = v;
+    });
+
+    createSlider('Marker stroke', ['black', 'red', 'blue'], v => {
+        maleSeries.marker.stroke = v;
+    });
+
+    createSlider('Marker stroke width', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], v => {
+        maleSeries.marker.strokeWidth = v;
+    });
+
+    createSlider('Marker size', [4, 8, 12, 16, 20, 30, 40], v => {
+        maleSeries.marker.size = v;
+    });
+
+    createSlider('Marker enabled', [true, false], v => {
+        maleSeries.marker.enabled = v;
+    });
+
+    createSlider('Marker fill opacity', [0, 0.2, 0.4, 0.6, 0.8, 1], v => {
+        maleSeries.marker.fillOpacity = v;
+    });
+
+    createSlider('Marker stroke opacity', [0, 0.2, 0.4, 0.6, 0.8, 1], v => {
+        maleSeries.marker.strokeOpacity = v;
     });
 }
 
@@ -148,6 +191,8 @@ function createAgeWeightGenderChart() {
     chart.yAxis.label.formatter = params => params.value + ' Kg';
     chart.title = new Caption();
     chart.title.text = 'Age vs Weight of 507 Individuals';
+    chart.title.fontSize = 18;
+    chart.title.fontWeight = 'bold';
     chart.subtitle = new Caption();
     chart.subtitle.text = 'by gender';
     chart.subtitle.fontSize = 14;
@@ -178,7 +223,8 @@ function createAgeWeightGenderChart() {
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
         maleSeries.fill = 'rgba(227,111,106,0.71)';
-        maleSeries.markerStrokeWidth = 0.5;
+        maleSeries.marker.type = Diamond;
+        maleSeries.marker.strokeWidth = 0.5;
 
         const femaleSeries = new ScatterSeries();
         femaleSeries.data = femaleData;
@@ -187,7 +233,8 @@ function createAgeWeightGenderChart() {
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
         femaleSeries.fill = 'rgba(123,145,222,0.71)';
-        femaleSeries.markerStrokeWidth = 0.5;
+        femaleSeries.marker.type = Cross;
+        femaleSeries.marker.strokeWidth = 0.5;
 
         chart.addSeries(maleSeries);
         chart.addSeries(femaleSeries);
