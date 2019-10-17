@@ -117,10 +117,10 @@ function createHeightWeightGenderChart() {
         maleSeries.yFieldName = 'Weight';
         maleSeries.sizeKeyName = 'Age';
         maleSeries.marker.type = Square;
-        maleSeries.marker.size = 30;
+        maleSeries.marker.size = 15;
+        maleSeries.marker.fill = 'rgba(227,111,106,0.61)';
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
-        maleSeries.fill = 'rgba(227,111,106,0.61)';
         maleSeries.marker.strokeWidth = 0.5;
 
         femaleSeries.data = femaleData;
@@ -128,10 +128,10 @@ function createHeightWeightGenderChart() {
         femaleSeries.yField = 'weight';
         femaleSeries.sizeKey = 'age';
         femaleSeries.marker.type = Circle;
-        femaleSeries.marker.size = 30;
+        femaleSeries.marker.size = 15;
+        femaleSeries.marker.fill = 'rgba(123,145,222,0.61)';
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
-        femaleSeries.fill = 'rgba(123,145,222,0.61)';
         femaleSeries.marker.strokeWidth = 0.5;
 
         chart.addSeries(maleSeries);
@@ -222,8 +222,8 @@ function createAgeWeightGenderChart() {
         maleSeries.yField = 'weight';
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
-        maleSeries.fill = 'rgba(227,111,106,0.71)';
         maleSeries.marker.type = Diamond;
+        maleSeries.marker.fill = 'rgba(227,111,106,0.71)';
         maleSeries.marker.strokeWidth = 0.5;
 
         const femaleSeries = new ScatterSeries();
@@ -232,8 +232,8 @@ function createAgeWeightGenderChart() {
         femaleSeries.yField = 'weight';
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
-        femaleSeries.fill = 'rgba(123,145,222,0.71)';
         femaleSeries.marker.type = Cross;
+        femaleSeries.marker.fill = 'rgba(123,145,222,0.71)';
         femaleSeries.marker.strokeWidth = 0.5;
 
         chart.addSeries(maleSeries);
