@@ -160,8 +160,8 @@ function renderChart() {
         },
     ];
 
-    const yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    const yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    const yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
 
     const padding = {
         top: 20,
@@ -174,7 +174,7 @@ function renderChart() {
     // of each bar in the group.
     const yData = data.map(datum => {
         const values: number[] = [];
-        yFields.forEach(field => values.push((datum as any)[field]));
+        yKeys.forEach(key => values.push((datum as any)[key]));
         return values;
     });
 
@@ -196,7 +196,7 @@ function renderChart() {
     const groupWidth = xGroupScale.bandwidth;
 
     const xBarScale = new BandScale<string>();
-    xBarScale.domain = yFields;
+    xBarScale.domain = yKeys;
     xBarScale.range = [0, groupWidth];
     xBarScale.padding = 0.1;
     xBarScale.round = true;
@@ -224,7 +224,7 @@ function renderChart() {
         }).selectAll().setData((parent, datum, i) => {
             return yData[i];
         }).enter.call(enter => enter.append(Rect).each((rect, datum, i) => {
-            rect.x = xBarScale.convert(yFields[i]);
+            rect.x = xBarScale.convert(yKeys[i]);
             rect.y = yScale.convert(datum);
             rect.width = barWidth;
             rect.height = seriesHeight - rect.y;
@@ -232,9 +232,9 @@ function renderChart() {
             rect.stroke = 'black';
             rect.fillShadow = shadow;
         })).call(enter => enter.append(Text).each((label, datum, i) => {
-            label.text = yFieldNames[i];
+            label.text = yNames[i];
             label.textAlign = 'center';
-            label.x = xBarScale.convert(yFields[i]) + barWidth / 2;
+            label.x = xBarScale.convert(yKeys[i]) + barWidth / 2;
             label.y = yScale.convert(datum) + 20;
             label.fill = 'black';
             label.fontSize = 14;

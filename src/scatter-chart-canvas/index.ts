@@ -52,9 +52,9 @@ const data = [
 
 type SeriesConfig = {
     name: string,
-    xField: string,
-    yField: string,
-    radiusField?: string,
+    xKey: string,
+    yKey: string,
+    radiusKey?: string,
     color?: string
 };
 
@@ -68,10 +68,10 @@ function renderChart(data: any[][], configs: SeriesConfig[], minRadius = 2, maxR
         left: 60
     };
     // `config.length` arrays of `data.length` size
-    const xData = configs.map((config, i) => data[i].map(datum => datum[config.xField] as number));
-    const yData = configs.map((config, i) => data[i].map(datum => datum[config.yField] as number));
+    const xData = configs.map((config, i) => data[i].map(datum => datum[config.xKey] as number));
+    const yData = configs.map((config, i) => data[i].map(datum => datum[config.yKey] as number));
     const defaultRadius = 6;
-    const radiusData = configs.map((config, i) => data[i].map(datum => (config.radiusField ? datum[config.radiusField] : defaultRadius) as number));
+    const radiusData = configs.map((config, i) => data[i].map(datum => (config.radiusKey ? datum[config.radiusKey] : defaultRadius) as number));
 
     const canvasWidth = document.body.getBoundingClientRect().width;
     const canvasHeight = 480;
@@ -176,7 +176,7 @@ function renderChart(data: any[][], configs: SeriesConfig[], minRadius = 2, maxR
 document.addEventListener('DOMContentLoaded', () => {
     {
         const commonConfig = {
-            xField: 'height', yField: 'weight', radiusField: 'age'
+            xKey: 'height', yKey: 'weight', radiusKey: 'age'
         };
         renderChart(data, [
             {name: 'Class A', ...commonConfig},
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
             countryCars.push(car);
         });
         const commonConfig = {
-            xField: 'horsepower', yField: 'weight', radiusField: 'cylinders'
+            xKey: 'horsepower', yKey: 'weight', radiusKey: 'cylinders'
         };
         const countries = Object.keys(carsByCountry);
         renderChart(

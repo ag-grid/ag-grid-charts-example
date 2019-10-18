@@ -36,8 +36,8 @@ function renderChart() {
 
     const series = new PieSeries();
     series.data = data;
-    series.angleField = 'value';
-    series.labelField = 'label';
+    series.angleKey = 'value';
+    series.labelKey = 'label';
     series.fills = ['#5e64b2', '#fec444', '#f07372', '#35c2bd'];
     series.strokes = [];
     series.calloutColors = ['rgb(118, 117, 117)'];

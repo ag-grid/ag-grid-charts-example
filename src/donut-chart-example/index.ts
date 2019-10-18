@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries1 = new PieSeries();
     chart.addSeries(pieSeries1);
     pieSeries1.data = data;
-    pieSeries1.angleField = 'value1';
-    pieSeries1.labelField = 'label';
+    pieSeries1.angleKey = 'value1';
+    pieSeries1.labelKey = 'label';
     pieSeries1.shadow = shadow;
     pieSeries1.strokeWidth = 1;
     pieSeries1.calloutStrokeWidth = 1;
@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries2 = new PieSeries();
     chart.addSeries(pieSeries2);
     pieSeries2.data = data;
-    pieSeries2.angleField = 'value2';
-    pieSeries2.labelField = 'label';
+    pieSeries2.angleKey = 'value2';
+    pieSeries2.labelKey = 'label';
     pieSeries2.shadow = shadow;
     pieSeries2.strokeWidth = 1;
     pieSeries2.calloutStrokeWidth = 1;
@@ -84,8 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries3 = new PieSeries();
     chart.addSeries(pieSeries3);
     pieSeries3.data = data;
-    pieSeries3.angleField = 'value3';
-    pieSeries3.labelField = 'label';
+    pieSeries3.angleKey = 'value3';
+    pieSeries3.labelKey = 'label';
     pieSeries3.shadow = shadow;
     pieSeries3.strokeWidth = 1;
     pieSeries3.calloutStrokeWidth = 1;

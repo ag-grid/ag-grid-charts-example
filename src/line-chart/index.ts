@@ -51,7 +51,7 @@ const colorTheme = [
 ];
 
 function renderChart() {
-    const yFields = ['desktops', 'laptops', 'tablets'];
+    const yKeys = ['desktops', 'laptops', 'tablets'];
     const colors = colorTheme;
 
     const padding = {
@@ -62,10 +62,10 @@ function renderChart() {
     };
 
     const n = data.length;
-    // Map field names to their values.
+    // Map key names to their values.
     const xData = data.map(datum => datum.month);
-    // `yData` - arrays of size `n` of the domain values for each of the `yFields`.
-    const yData = yFields.map(field => data.map(datum => (datum as any)[field] as number));
+    // `yData` - arrays of size `n` of the domain values for each of the `yKeys`.
+    const yData = yKeys.map(key => data.map(datum => (datum as any)[key] as number));
 
     const canvasWidth = document.body.getBoundingClientRect().width;
     const canvasHeight = 480;
@@ -92,7 +92,7 @@ function renderChart() {
     // line
     ctx.save();
     ctx.translate(padding.left, padding.top);
-    yData.forEach((fieldData, j) => {
+    yData.forEach((keyData, j) => {
         ctx.save();
         ctx.shadowColor = 'rgba(0,0,0,0.2)';
         ctx.shadowBlur = 15;
@@ -101,7 +101,7 @@ function renderChart() {
         ctx.beginPath();
         for (let i = 0; i < n; i++) {
             const category = xData[i];
-            const value = fieldData[i];
+            const value = keyData[i];
             const x = xScale.convert(category) + bandwidth / 2;
             const y = yScale.convert(value);
 
@@ -116,7 +116,7 @@ function renderChart() {
         ctx.fillStyle = colors[j % colors.length];
         for (let i = 0; i < n; i++) {
             const category = xData[i];
-            const value = fieldData[i];
+            const value = keyData[i];
             const x = xScale.convert(category) + bandwidth / 2;
             const y = yScale.convert(value);
             ctx.beginPath();
@@ -144,11 +144,11 @@ function renderChart() {
     const legendLeft = canvasWidth - padding.right;
     const legendItemHeight = 30;
     const legendMarkerPadding = 20;
-    const legendTop = padding.top + (seriesHeight - legendItemHeight * yFields.length) / 2;
+    const legendTop = padding.top + (seriesHeight - legendItemHeight * yKeys.length) / 2;
     ctx.strokeStyle = 'black';
     ctx.textBaseline = 'middle';
     ctx.lineWidth = 2;
-    yFields.forEach((field, i) => {
+    yKeys.forEach((key, i) => {
         const itemY = i * legendItemHeight + legendTop;
         ctx.fillStyle = colors[i % colors.length];
         ctx.beginPath();
@@ -156,7 +156,7 @@ function renderChart() {
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = 'black';
-        ctx.fillText(field, legendLeft + legendMarkerPadding, itemY);
+        ctx.fillText(key, legendLeft + legendMarkerPadding, itemY);
     });
 }
 

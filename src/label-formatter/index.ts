@@ -97,8 +97,8 @@ function createCategoryLineChart() {
         return '<strong>Value: </strong>' + params.datum[params.yKey].toString();
     };
     lineSeries.data = data1;
-    lineSeries.xField = 'category';
-    lineSeries.yField = 'value';
+    lineSeries.xKey = 'category';
+    lineSeries.yKey = 'value';
 
     dataDiv.innerHTML = dataToHtml(data1);
 

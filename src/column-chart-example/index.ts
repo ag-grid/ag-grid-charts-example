@@ -29,10 +29,10 @@ type Datum = {
 };
 
 type Datum2 = {
-    xField: string,
-    yField1: number,
-    yField2: number,
-    yField3: number
+    xKey: string,
+    yKey1: number,
+    yKey2: number,
+    yKey3: number
 };
 
 const data: Datum[] = [
@@ -94,36 +94,36 @@ const data2: Datum[] = [
 ];
 
 const data3: Datum2[] = [{
-    xField: 'Jan',
-    yField1: 5,
-    yField2: 7,
-    yField3: -9,
+    xKey: 'Jan',
+    yKey1: 5,
+    yKey2: 7,
+    yKey3: -9,
 }, {
-    xField: 'Feb',
-    yField1: 10,
-    yField2: -15,
-    yField3: 20
+    xKey: 'Feb',
+    yKey1: 10,
+    yKey2: -15,
+    yKey3: 20
 }];
 
-function generateData(n = 50, yFieldCount = 10) {
+function generateData(n = 50, yKeyCount = 10) {
     const data: any[] = [];
-    const yFields: string[] = [];
-    for (let i = 0; i < yFieldCount; i++) {
-        yFields[i] = 'Y' + (i + 1);
+    const yKeys: string[] = [];
+    for (let i = 0; i < yKeyCount; i++) {
+        yKeys[i] = 'Y' + (i + 1);
     }
     for (let i = 0; i < n; i++) {
         const datum: any = {
             category: 'A' + (i + 1)
         };
-        yFields.forEach(field => {
-            datum[field] = Math.random() * 10;
+        yKeys.forEach(key => {
+            datum[key] = Math.random() * 10;
         });
         data.push(datum);
     }
     return {
         data,
-        xField: 'category',
-        yFields
+        xKey: 'category',
+        yKeys: yKeys
     };
 }
 
@@ -182,9 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
-    barSeries.xField = 'category';
-    barSeries.yFields = ['q1Actual'];
+    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['q1Actual'];
     barSeries.data = data;
     barSeries.fills = material.fills;
     barSeries.tooltipEnabled = true;
@@ -196,28 +196,28 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.scene.download('bar-chart');
     });
 
-    createButton('1 y-field', () => {
+    createButton('1 y-key', () => {
         addSeriesIf();
-        barSeries.xField = 'category';
-        barSeries.yFields = ['q1Actual'];
+        barSeries.xKey = 'category';
+        barSeries.yKeys = ['q1Actual'];
         barSeries.data = data;
     });
-    createButton('2 y-fields', () => {
+    createButton('2 y-keys', () => {
         addSeriesIf();
-        barSeries.xField = 'category';
-        barSeries.yFields = ['q1Actual', 'q2Actual'];
+        barSeries.xKey = 'category';
+        barSeries.yKeys = ['q1Actual', 'q2Actual'];
         barSeries.data = data;
     });
-    createButton('3 y-fields', () => {
+    createButton('3 y-keys', () => {
         addSeriesIf();
-        barSeries.xField = 'category';
-        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
+        barSeries.xKey = 'category';
+        barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual'];
         barSeries.data = data;
     });
-    createButton('4 y-fields', () => {
+    createButton('4 y-keys', () => {
         addSeriesIf();
-        barSeries.xField = 'category';
-        barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+        barSeries.xKey = 'category';
+        barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
         barSeries.data = data;
     });
 
@@ -231,19 +231,19 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Generate 50 points (stacked bars)', () => {
         addSeriesIf();
         const config = generateData();
-        barSeries.yFieldNames = []; // don't show bar labels
+        barSeries.yNames = []; // don't show bar labels
         barSeries.grouped = false;
         chart.xAxis.label.rotation = 45;
-        barSeries.xField = config.xField;
-        barSeries.yFields = config.yFields;
+        barSeries.xKey = config.xKey;
+        barSeries.yKeys = config.yKeys;
         barSeries.data = config.data;
     });
     createButton('Generate 10 points (grouped bars)', () => {
         addSeriesIf();
         const config = generateData(10, 16);
-        barSeries.yFieldNames = []; // don't show bar labels
-        barSeries.xField = config.xField;
-        barSeries.yFields = config.yFields;
+        barSeries.yNames = []; // don't show bar labels
+        barSeries.xKey = config.xKey;
+        barSeries.yKeys = config.yKeys;
         barSeries.data = config.data;
         barSeries.grouped = true;
         chart.xAxis.label.rotation = 0;
@@ -255,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Data set #3', () => {
         barSeries.data = data3;
-        barSeries.xField = 'xField';
-        barSeries.yFields = ['yField1', 'yField2', 'yField3'];
+        barSeries.xKey = 'xKey';
+        barSeries.yKeys = ['yKey1', 'yKey2', 'yKey3'];
     });
 
     createButton('Use label formatter', () => {
@@ -356,8 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
     });
-    createButton('No y-fields', () => {
-        barSeries.yFields = [];
+    createButton('No y-keys', () => {
+        barSeries.yKeys = [];
     });
     createButton('Enable labels', () => {
         barSeries.label.enabled = true;

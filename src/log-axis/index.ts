@@ -143,8 +143,8 @@ function createLineChart() {
 
     const series = new LineSeries();
     series.data = [{ x: 1, y: 5 }, { x: 3, y: 70 }, { x: 7, y: 800 }, { x: 9, y: 3300 }];
-    series.xField = 'x';
-    series.yField = 'y';
+    series.xKey = 'x';
+    series.yKey = 'y';
     series.strokeWidth = 3;
     series.stroke = 'black';
     series.marker = true;

@@ -92,22 +92,22 @@ function createCategoryColumnChart() {
 
     const barSeries = new BarSeries();
     barSeries.data = categoryData;
-    barSeries.xField = 'category';
-    barSeries.yFields = ['value', 'value2'];
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['value', 'value2'];
     barSeries.grouped = true;
     barSeries.fillOpacity = 0.3;
 
     const lineSeries = new LineSeries();
     lineSeries.marker = true;
     lineSeries.data = categoryData;
-    lineSeries.xField = 'category';
-    lineSeries.yField = 'value';
+    lineSeries.xKey = 'category';
+    lineSeries.yKey = 'value';
 
     const lineSeries2 = new LineSeries();
     lineSeries2.marker = true;
     lineSeries2.data = categoryData;
-    lineSeries2.xField = 'category';
-    lineSeries2.yField = 'value2';
+    lineSeries2.xKey = 'category';
+    lineSeries2.yKey = 'value2';
 
     // chart.addSeries(barSeries);
     chart.addSeries(lineSeries);
@@ -123,12 +123,12 @@ function createCategoryColumnChart() {
         chart.data = [];
     });
 
-    createButton('No x-field (line)', () => {
-        lineSeries.xField = '';
+    createButton('No x-key (line)', () => {
+        lineSeries.xKey = '';
     });
 
-    createButton('No y-field (line)', () => {
-        lineSeries.yField = '';
+    createButton('No y-key (line)', () => {
+        lineSeries.yKey = '';
     });
 
     createButton('Single data point', () => {
@@ -176,8 +176,8 @@ function createCategoryBarChart() {
 
     const barSeries = new BarSeries();
     barSeries.data = categoryData;
-    barSeries.xField = 'category';
-    barSeries.yFields = ['value', 'value2'];
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['value', 'value2'];
     barSeries.grouped = true;
     barSeries.fillOpacity = 0.3;
 

@@ -38,8 +38,8 @@ function createChart(data: Datum[]) {
     // scatterSeries.showInLegend = false;
     scatterSeries.markerSize = 2;
     scatterSeries.data = data;
-    scatterSeries.xField = 'x';
-    scatterSeries.yField = 'y';
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
     chart.addSeries(scatterSeries);
 
@@ -103,8 +103,8 @@ function createChart(data: Datum[]) {
             slopeSeries.strokeWidth = 2;
             // slopeSeries.showInLegend = false;
             slopeSeries.data = [{ x: firstX, y: firstY }, { x: lastX, y: lastY }];
-            slopeSeries.xField = 'x';
-            slopeSeries.yField = 'y';
+            slopeSeries.xKey = 'x';
+            slopeSeries.yKey = 'y';
 
             chart.addSeries(slopeSeries);
         }
@@ -130,8 +130,8 @@ function createTimeChart() {
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
     scatterSeries.data = timeData.map(v => ({ x: v[0], y: v[1] }));
-    scatterSeries.xField = 'x';
-    scatterSeries.yField = 'y';
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
     chart.addSeries(scatterSeries);
 }

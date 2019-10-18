@@ -66,22 +66,22 @@ const data: Datum[] = [
 ];
 
 type NegativeDatum = {
-    xField: string,
-    yField1: number,
-    yField2: number,
-    yField3: number
+    xKey: string,
+    yKey1: number,
+    yKey2: number,
+    yKey3: number
 };
 
 const negativeData: NegativeDatum[] = [{
-    xField: 'Jan',
-    yField1: 5,
-    yField2: 7,
-    yField3: -9,
+    xKey: 'Jan',
+    yKey1: 5,
+    yKey2: 7,
+    yKey3: -9,
 }, {
-    xField: 'Feb',
-    yField1: 10,
-    yField2: -15,
-    yField3: 20
+    xKey: 'Feb',
+    yKey1: 10,
+    yKey2: -15,
+    yKey3: 20
 }];
 
 function makeChartResizeable(chart: Chart) {
@@ -137,9 +137,9 @@ function createColumnChart() {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
-    barSeries.xField = 'category';
-    barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
@@ -153,8 +153,8 @@ function createColumnChart() {
 
     createButton('Negative Data', () => {
         barSeries.data = negativeData;
-        barSeries.xField = 'xField';
-        barSeries.yFields = ['yField1', 'yField2', 'yField3'];
+        barSeries.xKey = 'xKey';
+        barSeries.yKeys = ['yKey1', 'yKey2', 'yKey3'];
     });
 
     createButton('Grouped', () => {
@@ -204,9 +204,9 @@ function createBarChart() {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
-    barSeries.xField = 'category';
-    barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
@@ -220,8 +220,8 @@ function createBarChart() {
 
     createButton('Negative Data', () => {
         barSeries.data = negativeData;
-        barSeries.xField = 'xField';
-        barSeries.yFields = ['yField1', 'yField2', 'yField3'];
+        barSeries.xKey = 'xKey';
+        barSeries.yKeys = ['yKey1', 'yKey2', 'yKey3'];
     });
 
     createButton('Grouped', () => {

@@ -32,8 +32,8 @@ function createCategoryLineChart() {
     const lineSeries = new LineSeries();
     lineSeries.strokeWidth = 4;
     lineSeries.data = data;
-    lineSeries.xField = 'country';
-    lineSeries.yField = 'value';
+    lineSeries.xKey = 'country';
+    lineSeries.yKey = 'value';
     lineSeries.tooltipEnabled = true;
     lineSeries.title = 'Countries';
 
@@ -52,9 +52,9 @@ function createBarChart() {
     const lineSeries = new BarSeries();
     lineSeries.strokeWidth = 4;
     lineSeries.data = data;
-    lineSeries.xField = 'country';
-    lineSeries.yFields = ['value', 'other'];
-    lineSeries.yFieldNames = ['Countries', 'Whatever'];
+    lineSeries.xKey = 'country';
+    lineSeries.yKeys = ['value', 'other'];
+    lineSeries.yNames = ['Countries', 'Whatever'];
     lineSeries.tooltipEnabled = true;
 
     chart.series = [lineSeries as any];

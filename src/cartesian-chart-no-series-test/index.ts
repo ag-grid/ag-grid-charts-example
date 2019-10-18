@@ -36,8 +36,8 @@ function createCategoryLineChart() {
         chart.xAxis.label.rotation = 45;
         chart.addSeries(lineSeries);
         lineSeries.data = categoryData;
-        lineSeries.xField = 'category';
-        lineSeries.yField = 'value';
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
     }, 3000);
 }
 

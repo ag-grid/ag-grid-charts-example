@@ -152,9 +152,9 @@ function createColumnChart() {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
-    barSeries.xField = 'category';
-    barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
@@ -184,9 +184,9 @@ function createBarChart(document: Document = window.document) {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
-    barSeries.xField = 'category';
-    barSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
     barSeries.data = data;
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;

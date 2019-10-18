@@ -53,13 +53,13 @@ const colorTheme = [
 // This may look similar to the line chart example, but the area series are stacked,
 // filled and show how the values of individual components relate to the whole.
 function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7, isFullStack = false, stackTotal = 100) {
-    // `isFullStack` is whether to treat each category's fields as components of the category, where the category
+    // `isFullStack` is whether to treat each category's keys as components of the category, where the category
     // value is always equal to the `stackTotal` value. Otherwise the category value is determined as the sum
-    // of the values of its fields. `isFullStack` option is useful when you want to show percentage values, rather than
+    // of the values of its keys. `isFullStack` option is useful when you want to show percentage values, rather than
     // absolute. For example, when you want to show what percentage of the market share belongs to each of the components
     // at any given time (category).
-    const xField = 'month';
-    const yFields = ['desktops', 'laptops', 'tablets'];
+    const xKey = 'month';
+    const yKeys = ['desktops', 'laptops', 'tablets'];
     const colors = colorTheme;
 
     const padding = {
@@ -70,15 +70,15 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
     };
 
     const n = data.length;
-    // Map field names to their values.
-    const xData = data.map(datum => (datum as any)[xField]);
-    // `yData` - `n` arrays of size `yFields.length` each.
+    // Map key names to their values.
+    const xData = data.map(datum => (datum as any)[xKey]);
+    // `yData` - `n` arrays of size `yKeys.length` each.
     // For each category returns an array of values representing the top
     // of each point in the stack, the last value being the height of the stack.
     const yData = data.map(datum => {
         const values: number[] = [];
         let sum = 0;
-        yFields.forEach(field => values.push(sum += (datum as any)[field]));
+        yKeys.forEach(key => values.push(sum += (datum as any)[key]));
         return values;
     });
 
@@ -122,11 +122,11 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
     ctx.shadowColor = 'rgba(0,0,0,0.2)';
     ctx.shadowBlur = 15;
     ctx.lineWidth = 3;
-    let fieldIndex = -1;
+    let keyIndex = -1;
     const topStrokes: [number, number][][] = [];
-    // Simply use reduce to fetch fields in pairs.
-    yFields.reduce((fieldA, fieldB) => {
-        ctx.fillStyle = colors[(fieldIndex + 1) % colors.length];
+    // Simply use reduce to fetch keys in pairs.
+    yKeys.reduce((keyA, keyB) => {
+        ctx.fillStyle = colors[(keyIndex + 1) % colors.length];
         ctx.strokeStyle = isBlackStroke ? 'black' : ctx.fillStyle;
 
         const topStroke: [number, number][] = [];
@@ -135,7 +135,7 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
         for (let i = 0; i < n; i++) {
             const yDatum = yData[i];
             const category = xData[i];
-            const value = fieldIndex >= 0 ? yDatum[fieldIndex] : 0;
+            const value = keyIndex >= 0 ? yDatum[keyIndex] : 0;
             const x = xScale.convert(category) + bandwidth / 2;
             const y = yScale.convert(value);
 
@@ -145,7 +145,7 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
 
             const yDatum = yData[i];
             const category = xData[i];
-            const value = yDatum[fieldIndex + 1];
+            const value = yDatum[keyIndex + 1];
             const x = xScale.convert(category) + bandwidth / 2;
             const y = yScale.convert(value);
 
@@ -164,15 +164,15 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
 
         topStrokes.push(topStroke);
 
-        fieldIndex++;
-        return fieldB;
-    }, ''); // empty field means all y's are zeros (x-axis)
+        keyIndex++;
+        return keyB;
+    }, ''); // empty key means all y's are zeros (x-axis)
 
     if (isTopStroke) {
         ctx.lineWidth = 3;
-        topStrokes.forEach((stroke, fieldIndex) => {
+        topStrokes.forEach((stroke, keyIndex) => {
             ctx.beginPath();
-            ctx.strokeStyle = isBlackStroke ? 'black' : colors[fieldIndex % colors.length];
+            ctx.strokeStyle = isBlackStroke ? 'black' : colors[keyIndex % colors.length];
             stroke.forEach((p, i) => {
                 i === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
             });
@@ -184,12 +184,12 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
     // markers
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'black';
-    yFields.forEach((_, fieldIndex) => {
-        ctx.fillStyle = colors[fieldIndex % colors.length];
+    yKeys.forEach((_, keyIndex) => {
+        ctx.fillStyle = colors[keyIndex % colors.length];
         for (let i = 0; i < n; i++) {
             const yDatum = yData[i];
             const category = xData[i];
-            const value = yDatum[fieldIndex];
+            const value = yDatum[keyIndex];
             const x = xScale.convert(category) + bandwidth / 2;
             const y = yScale.convert(value);
             ctx.beginPath();
@@ -216,11 +216,11 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
     const legendLeft = canvasWidth - padding.right;
     const legendItemHeight = 30;
     const legendMarkerPadding = 20;
-    const legendTop = padding.top + (seriesHeight - legendItemHeight * yFields.length) / 2;
+    const legendTop = padding.top + (seriesHeight - legendItemHeight * yKeys.length) / 2;
     ctx.strokeStyle = 'black';
     ctx.textBaseline = 'middle';
     ctx.lineWidth = 2;
-    yFields.forEach((field, i) => {
+    yKeys.forEach((key, i) => {
         const itemY = i * legendItemHeight + legendTop;
         ctx.fillStyle = colors[i % colors.length];
         ctx.beginPath();
@@ -228,7 +228,7 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = 'black';
-        ctx.fillText(field, legendLeft + legendMarkerPadding, itemY);
+        ctx.fillText(key, legendLeft + legendMarkerPadding, itemY);
     });
 }
 

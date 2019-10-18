@@ -58,8 +58,8 @@ function renderChart() {
         },
     ];
 
-    const yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    const yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    const yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
     const colors = gradientTheme;
 
     const padding = {
@@ -74,7 +74,7 @@ function renderChart() {
     // of each bar in the group.
     const yData = data.map(datum => {
         const values: number[] = [];
-        yFields.forEach(field => values.push((datum as any)[field]));
+        yKeys.forEach(key => values.push((datum as any)[key]));
         return values;
     });
 
@@ -96,7 +96,7 @@ function renderChart() {
     const groupWidth = xGroupScale.bandwidth;
 
     const xBarScale = new BandScale<string>();
-    xBarScale.domain = yFields;
+    xBarScale.domain = yKeys;
     xBarScale.range = [0, groupWidth];
     xBarScale.padding = 0.1;
     xBarScale.round = true;
@@ -118,7 +118,7 @@ function renderChart() {
         const values = yData[i];
         const groupX = xGroupScale.convert(category); // x-coordinate of the group
         values.forEach((value, j) => {
-            const barX = xBarScale.convert(yFields[j]); // x-coordinate of the bar within a group
+            const barX = xBarScale.convert(yKeys[j]); // x-coordinate of the bar within a group
             const x = groupX + barX;
             const y = yScale.convert(value);
 
@@ -135,7 +135,7 @@ function renderChart() {
             rect.fillShadow.blur = 15;
             rect.opacity = 0.9;
 
-            const labelText = yFieldNames[j];
+            const labelText = yNames[j];
             const label = new Text();
             label.text = labelText;
             label.textAlign = 'center';

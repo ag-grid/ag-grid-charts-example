@@ -134,8 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieSeries = new PieSeries();
     pieSeries.data = data;
     pieSeries.innerRadiusOffset = -40;
-    pieSeries.angleField = 'value';
-    pieSeries.labelField = 'label';
+    pieSeries.angleKey = 'value';
+    pieSeries.labelKey = 'label';
     pieSeries.label.enabled = true;
     pieSeries.title = new Caption();
     pieSeries.title.text = 'Mobile OSes';
@@ -151,8 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries2.innerRadiusOffset = -120;
     pieSeries2.title = new Caption();
     pieSeries2.title.text = 'Users';
-    pieSeries2.angleField = 'value';
-    pieSeries2.labelField = 'label';
+    pieSeries2.angleKey = 'value';
+    pieSeries2.labelKey = 'label';
     pieSeries2.label.enabled = true;
 
     chart.series = [pieSeries, pieSeries2];
@@ -222,14 +222,14 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.addSeries(pieSeries2);
     });
 
-    createButton('Use radius field', () => {
+    createButton('Use radius key', () => {
         pieSeries2.data = data2;
-        pieSeries2.angleField = 'value';
-        pieSeries2.labelField = 'label';
-        pieSeries2.radiusField = 'other';
+        pieSeries2.angleKey = 'value';
+        pieSeries2.labelKey = 'label';
+        pieSeries2.radiusKey = 'other';
     });
-    createButton('Remove radius field', () => {
-        pieSeries2.radiusField = '';
+    createButton('Remove radius key', () => {
+        pieSeries2.radiusKey = '';
     });
     createButton('Run other tests', () => {
         setTimeout(() => {
@@ -238,13 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
 
         setTimeout(() => {
-            pieSeries.labelField = '';
+            pieSeries.labelKey = '';
         }, 4000);
 
         setTimeout(() => {
             pieSeries.data = data2;
-            pieSeries.angleField = 'value';
-            pieSeries.labelField = 'label';
+            pieSeries.angleKey = 'value';
+            pieSeries.labelKey = 'label';
         }, 6000);
 
         setTimeout(() => {
@@ -252,11 +252,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 8000);
 
         setTimeout(() => {
-            pieSeries2.angleField = 'other';
+            pieSeries2.angleKey = 'other';
         }, 10000);
 
         setTimeout(() => {
-            pieSeries2.radiusField = 'other';
+            pieSeries2.radiusKey = 'other';
             pieSeries2.strokes = ['white'];
             pieSeries2.calloutColors = ['black'];
             pieSeries2.strokeWidth = 3;

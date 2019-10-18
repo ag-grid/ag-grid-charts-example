@@ -57,8 +57,8 @@ function createTimeChart() {
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
-    scatterSeries.xField = 'x';
-    scatterSeries.yField = 'y';
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
     chart.addSeries(scatterSeries);
 
@@ -83,8 +83,8 @@ function createTimeChart2() {
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
-    scatterSeries.xField = 'x';
-    scatterSeries.yField = 'y';
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
     chart.addSeries(scatterSeries);
 
@@ -109,8 +109,8 @@ function createTimeChart3() {
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 8;
     scatterSeries.data = minuteData1;
-    scatterSeries.xField = 'x';
-    scatterSeries.yField = 'y';
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
     chart.addSeries(scatterSeries);
 
@@ -135,8 +135,8 @@ function createComboTimeChart() {
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 8;
     scatterSeries.data = minuteData1;
-    scatterSeries.xField = 'x';
-    scatterSeries.yField = 'y';
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
     const lineSeries = new LineSeries();
     lineSeries.fill = 'orange';
@@ -144,8 +144,8 @@ function createComboTimeChart() {
     lineSeries.markerStrokeWidth = 0;
     lineSeries.markerSize = 8;
     lineSeries.data = minuteData2;
-    lineSeries.xField = 'x';
-    lineSeries.yField = 'y';
+    lineSeries.xKey = 'x';
+    lineSeries.yKey = 'y';
 
     chart.addSeries(scatterSeries);
     chart.addSeries(lineSeries);
@@ -182,8 +182,8 @@ function createCustomLocaleTimeChart() {
     scatterSeries.markerStrokeWidth = 0;
     scatterSeries.markerSize = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
-    scatterSeries.xField = 'x';
-    scatterSeries.yField = 'y';
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
     chart.addSeries(scatterSeries);
 
@@ -222,8 +222,8 @@ function createRealTimeChart() {
     lineSeries.markerStrokeWidth = 0;
     lineSeries.markerSize = 8;
     lineSeries.data = data;
-    lineSeries.xField = 'x';
-    lineSeries.yField = 'y';
+    lineSeries.xKey = 'x';
+    lineSeries.yKey = 'y';
 
     chart.addSeries(lineSeries);
 

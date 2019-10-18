@@ -32,10 +32,10 @@ type Datum = {
 };
 
 type Datum2 = {
-    xField: string,
-    yField1: number,
-    yField2: number,
-    yField3: number
+    xKey: string,
+    yKey1: number,
+    yKey2: number,
+    yKey3: number
 };
 
 const data: Datum[] = [
@@ -97,36 +97,36 @@ const data2: Datum[] = [
 ];
 
 const data3: Datum2[] = [{
-    xField: 'Jan',
-    yField1: 5,
-    yField2: 7,
-    yField3: -9,
+    xKey: 'Jan',
+    yKey1: 5,
+    yKey2: 7,
+    yKey3: -9,
 }, {
-    xField: 'Feb',
-    yField1: 10,
-    yField2: -15,
-    yField3: 20
+    xKey: 'Feb',
+    yKey1: 10,
+    yKey2: -15,
+    yKey3: 20
 }];
 
-function generateData(n = 50, yFieldCount = 10) {
+function generateData(n = 50, yKeyCount = 10) {
     const data: any[] = [];
-    const yFields: string[] = [];
-    for (let i = 0; i < yFieldCount; i++) {
-        yFields[i] = 'Y' + (i + 1);
+    const yKeys: string[] = [];
+    for (let i = 0; i < yKeyCount; i++) {
+        yKeys[i] = 'Y' + (i + 1);
     }
     for (let i = 0; i < n; i++) {
         const datum: any = {
             category: 'A' + (i + 1)
         };
-        yFields.forEach(field => {
-            datum[field] = Math.random() * 10;
+        yKeys.forEach(key => {
+            datum[key] = Math.random() * 10;
         });
         data.push(datum);
     }
     return {
         data,
-        xField: 'category',
-        yFields
+        xKey: 'category',
+        yKeys: yKeys
     };
 }
 
@@ -216,18 +216,18 @@ function makeNuclearChart() {
     chart.scene.canvas.element.style.border = '1px solid black';
 
     const usaArea = new AreaSeries();
-    usaArea.yFieldNames = ['USA'];
-    usaArea.xField = 'year';
-    usaArea.yFields = ['usa'];
+    usaArea.yNames = ['USA'];
+    usaArea.xKey = 'year';
+    usaArea.yKeys = ['usa'];
     usaArea.data = data;
     usaArea.fills = ['red'];
     usaArea.strokes = ['maroon'];
     usaArea.tooltipEnabled = true;
 
     const ussrArea = new AreaSeries();
-    ussrArea.yFieldNames = ['USSR/Russia'];
-    ussrArea.xField = 'year';
-    ussrArea.yFields = ['ussr'];
+    ussrArea.yNames = ['USSR/Russia'];
+    ussrArea.xKey = 'year';
+    ussrArea.yKeys = ['ussr'];
     ussrArea.data = data;
     ussrArea.fills = ['blue'];
     ussrArea.strokes = ['darkblue'];
@@ -317,18 +317,18 @@ function makeNuclearChartWithNumericX() {
     chart.scene.canvas.element.style.border = '1px solid black';
 
     const usaArea = new AreaSeries();
-    usaArea.yFieldNames = ['USA'];
-    usaArea.xField = 'year';
-    usaArea.yFields = ['usa'];
+    usaArea.yNames = ['USA'];
+    usaArea.xKey = 'year';
+    usaArea.yKeys = ['usa'];
     usaArea.data = data;
     usaArea.fills = ['rgba(255, 0, 0, 0.7)'];
     usaArea.strokes = ['maroon'];
     usaArea.tooltipEnabled = true;
 
     const ussrArea = new AreaSeries();
-    ussrArea.yFieldNames = ['USSR/Russia'];
-    ussrArea.xField = 'year';
-    ussrArea.yFields = ['ussr'];
+    ussrArea.yNames = ['USSR/Russia'];
+    ussrArea.xKey = 'year';
+    ussrArea.yKeys = ['ussr'];
     ussrArea.data = data;
     ussrArea.fills = ['rgba(0, 0, 255, 0.7)'];
     ussrArea.strokes = ['darkblue'];
@@ -423,9 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const areaSeries = new AreaSeries();
     addSeriesIf();
-    areaSeries.yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
-    areaSeries.xField = 'category';
-    areaSeries.yFields = ['q1Actual'];
+    areaSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    areaSeries.xKey = 'category';
+    areaSeries.yKeys = ['q1Actual'];
     areaSeries.data = data;
     areaSeries.fills = material.fills;
     areaSeries.tooltipEnabled = true;
@@ -437,35 +437,35 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.scene.download('area-chart');
     });
 
-    createButton('1 y-field', () => {
+    createButton('1 y-key', () => {
         addSeriesIf();
-        areaSeries.xField = 'category';
-        areaSeries.yFields = ['q1Actual'];
+        areaSeries.xKey = 'category';
+        areaSeries.yKeys = ['q1Actual'];
         areaSeries.data = data;
     });
-    createButton('2 y-fields', () => {
+    createButton('2 y-keys', () => {
         addSeriesIf();
-        areaSeries.xField = 'category';
-        areaSeries.yFields = ['q1Actual', 'q2Actual'];
+        areaSeries.xKey = 'category';
+        areaSeries.yKeys = ['q1Actual', 'q2Actual'];
         areaSeries.data = data;
     });
-    createButton('3 y-fields', () => {
+    createButton('3 y-keys', () => {
         addSeriesIf();
-        areaSeries.xField = 'category';
-        areaSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual'];
+        areaSeries.xKey = 'category';
+        areaSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual'];
         areaSeries.data = data;
     });
-    createButton('4 y-fields', () => {
+    createButton('4 y-keys', () => {
         addSeriesIf();
-        areaSeries.xField = 'category';
-        areaSeries.yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+        areaSeries.xKey = 'category';
+        areaSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
         areaSeries.data = data;
     });
 
     createButton('Generate 10 points', () => {
         addSeriesIf();
         const config = generateData(10, 13);
-        areaSeries.yFieldNames = [
+        areaSeries.yNames = [
             'Roswell',
             'New Mexico',
             'Mantell',
@@ -480,8 +480,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'Conspiracy',
             'Men in Black'
         ];
-        areaSeries.xField = config.xField;
-        areaSeries.yFields = config.yFields;
+        areaSeries.xKey = config.xKey;
+        areaSeries.yKeys = config.yKeys;
         areaSeries.data = config.data;
         chart.xAxis.label.rotation = 0;
         chart.xAxis.update();
@@ -492,8 +492,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Data set #3', () => {
         areaSeries.data = data3;
-        areaSeries.xField = 'xField';
-        areaSeries.yFields = ['yField1', 'yField2', 'yField3'];
+        areaSeries.xKey = 'xKey';
+        areaSeries.yKeys = ['yKey1', 'yKey2', 'yKey3'];
     });
 
     createButton('Show tooltips', () => {
@@ -591,8 +591,8 @@ document.addEventListener('DOMContentLoaded', () => {
         saucer.fill = labelColor;
         document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
     });
-    createButton('No y-fields', () => {
-        areaSeries.yFields = [];
+    createButton('No y-keys', () => {
+        areaSeries.yKeys = [];
     });
     createButton('Show Legend', () => chart.legend.enabled = true);
     createButton('Hide Legend', () => chart.legend.enabled = false);

@@ -12,7 +12,7 @@ function createPieChart() {
 
     const series = new PieSeries();
     series.data = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }];
-    series.angleField = 'value';
+    series.angleKey = 'value';
     chart.series = [series];
 }
 
@@ -25,8 +25,8 @@ function createBarChart() {
 
     const series = new BarSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];
-    series.xField = 'x';
-    series.yFields = ['y'];
+    series.xKey = 'x';
+    series.yKeys = ['y'];
     chart.series = [series];
 }
 
@@ -39,8 +39,8 @@ function createLineChart() {
 
     const series = new LineSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];
-    series.xField = 'x';
-    series.yField = 'y';
+    series.xKey = 'x';
+    series.yKey = 'y';
     chart.series = [series];
 }
 

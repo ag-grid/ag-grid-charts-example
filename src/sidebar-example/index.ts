@@ -15,25 +15,25 @@ import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianCha
 import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
 
-function generateData(n = 50, yFieldCount = 10) {
+function generateData(n = 50, yKeyCount = 10) {
     const data: any[] = [];
-    const yFields: string[] = [];
-    for (let i = 0; i < yFieldCount; i++) {
-        yFields[i] = 'Y' + (i + 1);
+    const yKeys: string[] = [];
+    for (let i = 0; i < yKeyCount; i++) {
+        yKeys[i] = 'Y' + (i + 1);
     }
     for (let i = 0; i < n; i++) {
         const datum: any = {
             category: 'A' + (i + 1)
         };
-        yFields.forEach(field => {
-            datum[field] = Math.random() * 10;
+        yKeys.forEach(key => {
+            datum[key] = Math.random() * 10;
         });
         data.push(datum);
     }
     return {
         data,
-        xField: 'category',
-        yFields
+        xKey: 'category',
+        yKeys: yKeys
     };
 }
 
@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const barSeries = new BarSeries();
     addSeriesIf();
     const config = generateData(10, 16);
-    barSeries.yFieldNames = []; // don't show bar labels
-    barSeries.xField = config.xField;
-    barSeries.yFields = config.yFields;
+    barSeries.yNames = []; // don't show bar labels
+    barSeries.xKey = config.xKey;
+    barSeries.yKeys = config.yKeys;
     barSeries.data = config.data;
     barSeries.grouped = false;
     barSeries.fills = material.fills;

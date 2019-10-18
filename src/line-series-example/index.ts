@@ -193,8 +193,8 @@ function createCategoryLineChart() {
         return '<div class="content"><strong>Value: </strong>' + params.datum[params.yKey].toString() + '</div>';
     };
     lineSeries.data = categoryData;
-    lineSeries.xField = 'category';
-    lineSeries.yField = 'value';
+    lineSeries.xKey = 'category';
+    lineSeries.yKey = 'value';
 
     document.body.appendChild(document.createElement('br'));
 
@@ -204,22 +204,22 @@ function createCategoryLineChart() {
 
     createButton('Change data', () => {
         lineSeries.data = generateCategoryData(Math.floor(Math.random() * 50));
-        lineSeries.xField = 'category';
-        lineSeries.yField = 'value';
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
     });
 
     createButton('No data', () => {
         lineSeries.data = [];
-        lineSeries.xField = 'category';
-        lineSeries.yField = 'value';
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
     });
 
-    createButton('No x-field', () => {
-        lineSeries.xField = '';
+    createButton('No x-key', () => {
+        lineSeries.xKey = '';
     });
 
-    createButton('No y-field', () => {
-        lineSeries.yField = '';
+    createButton('No y-key', () => {
+        lineSeries.yKey = '';
     });
 
     createButton('Single data point', () => {
@@ -227,8 +227,8 @@ function createCategoryLineChart() {
             category: 'One',
             value: 17
         }];
-        lineSeries.xField = 'category';
-        lineSeries.yField = 'value';
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
     });
 }
 
@@ -250,8 +250,8 @@ function createNumericLineChart() {
     chart.xAxis.label.rotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.data = generateSinData();
-    lineSeries.xField = 'xValue';
-    lineSeries.yField = 'yValue';
+    lineSeries.xKey = 'xValue';
+    lineSeries.yKey = 'yValue';
 
     document.body.appendChild(document.createElement('br'));
 
@@ -368,25 +368,25 @@ function createMultiLineChart() {
     const lineSeries1 = new LineSeries();
     lineSeries1.strokeWidth = 4;
     lineSeries1.fill = '#f3622d';
-    lineSeries1.xField = 'category';
-    lineSeries1.yField = 'value1';
+    lineSeries1.xKey = 'category';
+    lineSeries1.yKey = 'value1';
 
     const lineSeries2 = new LineSeries();
     lineSeries2.strokeWidth = 4;
     lineSeries2.fill = '#fba71b';
-    lineSeries2.xField = 'category';
-    lineSeries2.yField = 'value2';
+    lineSeries2.xKey = 'category';
+    lineSeries2.yKey = 'value2';
 
     const lineSeries3 = new LineSeries();
     lineSeries3.strokeWidth = 4;
     lineSeries3.fill = '#57b757';
-    lineSeries3.xField = 'category';
-    lineSeries3.yField = 'value3';
+    lineSeries3.xKey = 'category';
+    lineSeries3.yKey = 'value3';
 
     const barSeries = new BarSeries();
     barSeries.fills = ['#41a9c9'];
-    barSeries.xField = 'category';
-    barSeries.yFields = ['value3'];
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['value3'];
 
     // Both approaches are valid here:
     // chart.addSeries(barSeries);
