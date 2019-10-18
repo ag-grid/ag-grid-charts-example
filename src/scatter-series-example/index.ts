@@ -11,7 +11,6 @@ import { Diamond } from "../../../../enterprise-modules/grid-charts/src/charts/c
 import { Cross } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/cross";
 import { Plus } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/plus";
 import { Triangle } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/triangle";
-import { Marker } from '../../../../enterprise-modules/grid-charts/src/charts/chart/marker/marker';
 
 type Datum = {
     gender: number,
@@ -110,12 +109,12 @@ function createHeightWeightGenderChart() {
         });
 
         maleSeries.data = maleData;
-        maleSeries.xField = 'height';
-        maleSeries.yField = 'weight';
+        maleSeries.xKey = 'height';
+        maleSeries.yKey = 'weight';
         maleSeries.sizeKey = 'age';
-        maleSeries.xFieldName = 'Height';
-        maleSeries.yFieldName = 'Weight';
-        maleSeries.sizeKeyName = 'Age';
+        maleSeries.xName = 'Height';
+        maleSeries.yName = 'Weight';
+        maleSeries.sizeName = 'Age';
         maleSeries.marker.type = Square;
         maleSeries.marker.size = 15;
         maleSeries.marker.fill = 'rgba(227,111,106,0.61)';
@@ -124,8 +123,8 @@ function createHeightWeightGenderChart() {
         maleSeries.marker.strokeWidth = 0.5;
 
         femaleSeries.data = femaleData;
-        femaleSeries.xField = 'height';
-        femaleSeries.yField = 'weight';
+        femaleSeries.xKey = 'height';
+        femaleSeries.yKey = 'weight';
         femaleSeries.sizeKey = 'age';
         femaleSeries.marker.type = Circle;
         femaleSeries.marker.size = 15;
@@ -218,8 +217,8 @@ function createAgeWeightGenderChart() {
 
         const maleSeries = new ScatterSeries();
         maleSeries.data = maleData;
-        maleSeries.xField = 'age';
-        maleSeries.yField = 'weight';
+        maleSeries.xKey = 'age';
+        maleSeries.yKey = 'weight';
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
         maleSeries.marker.type = Diamond;
@@ -228,8 +227,8 @@ function createAgeWeightGenderChart() {
 
         const femaleSeries = new ScatterSeries();
         femaleSeries.data = femaleData;
-        femaleSeries.xField = 'age';
-        femaleSeries.yField = 'weight';
+        femaleSeries.xKey = 'age';
+        femaleSeries.yKey = 'weight';
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
         femaleSeries.marker.type = Cross;
