@@ -1,11 +1,11 @@
 import * as d3 from "d3";
-import { LogScale } from "ag-grid-enterprise/src/charts/scale/logScale";
-import { Axis } from "ag-grid-enterprise/src/charts/axis";
-import { Scene } from "ag-grid-enterprise/src/charts/scene/scene";
-import { Group } from "ag-grid-enterprise/src/charts/scene/group";
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
+import { LogScale } from "@ag-enterprise/grid-charts/src/charts/scale/logScale";
+import { Axis } from "@ag-enterprise/grid-charts/src/charts/axis";
+import { Scene } from "@ag-enterprise/grid-charts/src/charts/scene/scene";
+import { Group } from "@ag-enterprise/grid-charts/src/charts/scene/group";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries";
 
 document.addEventListener('DOMContentLoaded', () => {
     // testConvert();
@@ -147,7 +147,7 @@ function createLineChart() {
     series.yKey = 'y';
     series.strokeWidth = 3;
     series.stroke = 'black';
-    series.marker = true;
+    series.marker.enabled = true;
     chart.series = [series as any];
 }
 

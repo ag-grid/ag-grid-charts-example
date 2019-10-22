@@ -1,8 +1,8 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { toReadableNumber } from "ag-grid-enterprise/src/charts/util/number";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries";
+import { toReadableNumber } from "@ag-enterprise/grid-charts/src/charts/util/number";
+import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
 
 const data1 = [
     { category: '1', value: 0.0001234 },
@@ -143,11 +143,11 @@ function createCategoryLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Show markers', () => {
-        lineSeries.marker = true;
+        lineSeries.marker.enabled = true;
     });
 
     createButton('Hide markers', () => {
-        lineSeries.marker = false;
+        lineSeries.marker.enabled = false;
     });
 
     document.body.appendChild(document.createElement('br'));

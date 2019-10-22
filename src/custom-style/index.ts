@@ -1,8 +1,8 @@
-import { PolarChart } from "ag-grid-enterprise/src/charts/chart/polarChart";
-import { PieSeries } from "ag-grid-enterprise/src/charts/chart/series/pieSeries";
-import { Caption } from "ag-grid-enterprise/src/charts/caption";
+import { PolarChart } from "@ag-enterprise/grid-charts/src/charts/chart/polarChart";
+import { PieSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/pieSeries";
+import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
 import { createButton } from "../../lib/ui";
-import { toDegrees } from "ag-grid-enterprise/src/charts/util/angle";
+import { toDegrees } from "@ag-enterprise/grid-charts/src/charts/util/angle";
 
 const data = [
     {

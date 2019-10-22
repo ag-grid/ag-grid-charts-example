@@ -1,12 +1,12 @@
-import { GroupedCategoryChart } from 'ag-grid-enterprise/src/charts/chart/groupedCategoryChart';
-import { Chart } from 'ag-grid-enterprise/src/charts/chart/chart';
-import { GroupedCategoryAxis } from 'ag-grid-enterprise/src/charts/chart/axis/groupedCategoryAxis';
-import { Caption } from "ag-grid-enterprise/src/charts/caption";
-import { NumberAxis } from 'ag-grid-enterprise/src/charts/chart/axis/numberAxis';
-import { BarSeries } from 'ag-grid-enterprise/src/charts/chart/series/barSeries';
-import { LineSeries } from 'ag-grid-enterprise/src/charts/chart/series/lineSeries';
+import { GroupedCategoryChart } from '@ag-enterprise/grid-charts/src/charts/chart/groupedCategoryChart';
+import { Chart } from '@ag-enterprise/grid-charts/src/charts/chart/chart';
+import { GroupedCategoryAxis } from '@ag-enterprise/grid-charts/src/charts/chart/axis/groupedCategoryAxis';
+import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import { NumberAxis } from '@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis';
+import { BarSeries } from '@ag-enterprise/grid-charts/src/charts/chart/series/barSeries';
+import { LineSeries } from '@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries';
 import { createButton, createSlider } from '../../lib/ui';
-import { CartesianChartLayout } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
+import { CartesianChartLayout } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
 
 type CategoryDatum = {
     category: { labels: string[] },
@@ -98,13 +98,13 @@ function createCategoryColumnChart() {
     barSeries.fillOpacity = 0.3;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker = true;
+    lineSeries.marker.enabled = true;
     lineSeries.data = categoryData;
     lineSeries.xKey = 'category';
     lineSeries.yKey = 'value';
 
     const lineSeries2 = new LineSeries();
-    lineSeries2.marker = true;
+    lineSeries2.marker.enabled = true;
     lineSeries2.data = categoryData;
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'value2';

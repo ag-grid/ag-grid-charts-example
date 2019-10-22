@@ -1,18 +1,18 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { AreaSeries } from "ag-grid-enterprise/src/charts/chart/series/areaSeries";
-import { Chart, LegendPosition } from "ag-grid-enterprise/src/charts/chart/chart";
-import { Caption } from "ag-grid-enterprise/src/charts/caption";
-import { Path } from "ag-grid-enterprise/src/charts/scene/shape/path";
-import { Group } from "ag-grid-enterprise/src/charts/scene/group";
-import { DropShadow } from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { AreaSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/areaSeries";
+import { Chart, LegendPosition } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
+import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import { Path } from "@ag-enterprise/grid-charts/src/charts/scene/shape/path";
+import { Group } from "@ag-enterprise/grid-charts/src/charts/scene/group";
+import { DropShadow } from "@ag-enterprise/grid-charts/src/charts/scene/dropShadow";
 import borneo, {
     bright,
     flat,
     material,
     pastel,
-} from "ag-grid-enterprise/src/charts/chart/palettes";
+} from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
@@ -419,8 +419,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    let backgroundColor = 'white';
-
     const areaSeries = new AreaSeries();
     addSeriesIf();
     areaSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
@@ -429,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
     areaSeries.data = data;
     areaSeries.fills = material.fills;
     areaSeries.tooltipEnabled = true;
-    areaSeries.marker = true;
+    areaSeries.marker.enabled = true;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -560,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         saucer.fill = labelColor;
-        document.body.style.backgroundColor = backgroundColor = 'white';
+        document.body.style.backgroundColor = 'white';
     });
     createButton('Dark theme', () => {
         const labelColor = 'rgb(221, 221, 221)';
@@ -589,7 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         saucer.fill = labelColor;
-        document.body.style.backgroundColor = backgroundColor = '#1e1e1e';
+        document.body.style.backgroundColor = '#1e1e1e';
     });
     createButton('No y-keys', () => {
         areaSeries.yKeys = [];
@@ -619,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
         areaSeries.normalizedTo = v;
     });
     createSlider('marker size', [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26], v => {
-        areaSeries.markerSize = v;
+        areaSeries.marker.size = v;
     });
 
     makeChartResizeable(chart);

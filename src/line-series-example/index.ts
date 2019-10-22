@@ -1,8 +1,8 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries";
+import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/barSeries";
 
 import './app.css';
 
@@ -182,7 +182,7 @@ function createCategoryLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker = true;
+    lineSeries.marker.enabled = true;
     chart.xAxis.label.rotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.tooltipEnabled = true;
@@ -244,7 +244,7 @@ function createNumericLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker = true;
+    lineSeries.marker.enabled = true;
     lineSeries.strokeWidth = 2;
     lineSeries.showInLegend = false;
     chart.xAxis.label.rotation = 45;
@@ -268,11 +268,11 @@ function createNumericLineChart() {
     });
 
     createButton('Hide markers', () => {
-        lineSeries.marker = false;
+        lineSeries.marker.enabled = false;
     });
 
     createButton('Show markers', () => {
-        lineSeries.marker = true;
+        lineSeries.marker.enabled = true;
     });
 
     createButton('Animate Math.sin data', () => {
@@ -349,8 +349,8 @@ function createNumericLineChart() {
     });
 
     createSlider('lineWidth', [0, 2, 4, 6, 8], value => lineSeries.strokeWidth = value);
-    createSlider('markerLineWidth', [0, 2, 4, 6, 8], value => lineSeries.markerStrokeWidth = value);
-    createSlider('markerSize', [0, 2, 4, 6, 8], value => lineSeries.markerSize = value);
+    createSlider('markerLineWidth', [0, 2, 4, 6, 8], value => lineSeries.marker.strokeWidth = value);
+    createSlider('markerSize', [0, 2, 4, 6, 8], value => lineSeries.marker.size = value);
 }
 
 function createMultiLineChart() {

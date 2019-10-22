@@ -1,14 +1,14 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { Caption } from "ag-grid-enterprise/src/charts/caption";
-import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
-import { linearRegression } from "ag-grid-enterprise/src/charts/util/stat";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries";
+import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import borneo from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
+import { linearRegression } from "@ag-enterprise/grid-charts/src/charts/util/stat";
 import { data as timeData } from './data';
 
 import { createButton } from "../../lib/ui";
 import * as d3 from 'd3';
-import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
+import { ScatterSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/scatterSeries";
 
 type Datum = {
     x: number,
@@ -34,9 +34,9 @@ function createChart(data: Datum[]) {
     const scatterSeries = new ScatterSeries();
     scatterSeries.title = 'Price Data';
     // scatterSeries.marker = true;
-    scatterSeries.markerStrokeWidth = 0;
+    scatterSeries.marker.strokeWidth = 0;
     // scatterSeries.showInLegend = false;
-    scatterSeries.markerSize = 2;
+    scatterSeries.marker.size = 2;
     scatterSeries.data = data;
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -99,7 +99,7 @@ function createChart(data: Datum[]) {
             slopeSeries.title = 'Linear Regression';
             slopeSeries.fill = borneo.fills[2];
             slopeSeries.stroke = borneo.strokes[2];
-            slopeSeries.marker = false;
+            slopeSeries.marker.enabled = false;
             slopeSeries.strokeWidth = 2;
             // slopeSeries.showInLegend = false;
             slopeSeries.data = [{ x: firstX, y: firstY }, { x: lastX, y: lastY }];
@@ -127,8 +127,8 @@ function createTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.markerStrokeWidth = 0;
-    scatterSeries.markerSize = 2;
+    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.marker.size = 2;
     scatterSeries.data = timeData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';

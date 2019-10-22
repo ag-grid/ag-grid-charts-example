@@ -1,18 +1,18 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { TimeAxis } from "ag-grid-enterprise/src/charts/chart/axis/timeAxis";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { TimeAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/timeAxis";
 import { data as timestampData } from './timestampData';
 import { data as minuteData1 } from './minuteData1';
 import { data as minuteData2 } from './minuteData2';
 
-import { Chart } from "ag-grid-enterprise/src/charts/chart/chart";
-import year from "ag-grid-enterprise/src/charts/util/time/year";
-import month from "ag-grid-enterprise/src/charts/util/time/month";
-import second from "ag-grid-enterprise/src/charts/util/time/second";
-import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { ScatterSeries } from "ag-grid-enterprise/src/charts/chart/series/scatterSeries";
-import setDefaultLocale from "ag-grid-enterprise/src/charts/util/time/format/defaultLocale";
-import { Padding } from "ag-grid-enterprise/src/charts/util/padding";
+import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
+import year from "@ag-enterprise/grid-charts/src/charts/util/time/year";
+import month from "@ag-enterprise/grid-charts/src/charts/util/time/month";
+import second from "@ag-enterprise/grid-charts/src/charts/util/time/second";
+import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries";
+import { ScatterSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/scatterSeries";
+import setDefaultLocale from "@ag-enterprise/grid-charts/src/charts/util/time/format/defaultLocale";
+import { Padding } from "@ag-enterprise/grid-charts/src/charts/util/padding";
 
 function makeChartResizeable(chart: Chart) {
     let startX = 0;
@@ -54,8 +54,8 @@ function createTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.markerStrokeWidth = 0;
-    scatterSeries.markerSize = 2;
+    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -80,8 +80,8 @@ function createTimeChart2() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.markerStrokeWidth = 0;
-    scatterSeries.markerSize = 2;
+    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -106,8 +106,8 @@ function createTimeChart3() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.markerStrokeWidth = 0;
-    scatterSeries.markerSize = 8;
+    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -132,8 +132,8 @@ function createComboTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.markerStrokeWidth = 0;
-    scatterSeries.markerSize = 8;
+    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -141,8 +141,8 @@ function createComboTimeChart() {
     const lineSeries = new LineSeries();
     lineSeries.fill = 'orange';
     lineSeries.stroke = 'black';
-    lineSeries.markerStrokeWidth = 0;
-    lineSeries.markerSize = 8;
+    lineSeries.marker.strokeWidth = 0;
+    lineSeries.marker.size = 8;
     lineSeries.data = minuteData2;
     lineSeries.xKey = 'x';
     lineSeries.yKey = 'y';
@@ -179,8 +179,8 @@ function createCustomLocaleTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.markerStrokeWidth = 0;
-    scatterSeries.markerSize = 2;
+    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -219,15 +219,15 @@ function createRealTimeChart() {
 
     const lineSeries = new LineSeries();
     lineSeries.showInLegend = false;
-    lineSeries.markerStrokeWidth = 0;
-    lineSeries.markerSize = 8;
+    lineSeries.marker.strokeWidth = 0;
+    lineSeries.marker.size = 8;
     lineSeries.data = data;
     lineSeries.xKey = 'x';
     lineSeries.yKey = 'y';
 
     chart.addSeries(lineSeries);
 
-    setInterval(function () {
+    setInterval(function() {
         data.shift();
         data.push({ x: generateNextX(), y: generateNextY() });
         lineSeries.data = data;

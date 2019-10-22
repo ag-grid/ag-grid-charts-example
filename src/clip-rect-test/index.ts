@@ -1,10 +1,10 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
-import {ClipRect} from "ag-grid-enterprise/src/charts/scene/clipRect";
-import {Selection} from "ag-grid-enterprise/src/charts/scene/selection";
+import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
+import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
+import {Text} from "@ag-enterprise/grid-charts/src/charts/scene/shape/text";
+import {Arc, ArcType} from "@ag-enterprise/grid-charts/src/charts/scene/shape/arc";
+import {Line} from "@ag-enterprise/grid-charts/src/charts/scene/shape/line";
+import {ClipRect} from "@ag-enterprise/grid-charts/src/charts/scene/clipRect";
+import {Selection} from "@ag-enterprise/grid-charts/src/charts/scene/selection";
 
 function nextFrame() {
     return new Promise(resolve => {

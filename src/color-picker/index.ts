@@ -1,6 +1,6 @@
 import './picker.css';
 import './checker.png';
-import { Color } from "ag-grid-community/dist/lib/utils/color";
+import { Color } from "@ag-enterprise/grid-charts/src/charts/util/color";
 
 class ColorPicker {
     private readonly element: HTMLElement;
