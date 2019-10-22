@@ -110,10 +110,10 @@ function createHeightWeightGenderChart() {
 
         maleSeries.data = maleData;
         maleSeries.xKey = 'height';
-        maleSeries.yKey = 'weight';
-        maleSeries.sizeKey = 'age';
         maleSeries.xName = 'Height';
+        maleSeries.yKey = 'weight';
         maleSeries.yName = 'Weight';
+        maleSeries.sizeKey = 'age';
         maleSeries.sizeName = 'Age';
         maleSeries.marker.type = Square;
         maleSeries.marker.size = 15;

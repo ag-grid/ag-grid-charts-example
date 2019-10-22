@@ -88,6 +88,7 @@ function createCategoryColumnChart() {
     chart.xAxis.tick.size = 20;
     chart.xAxis.title = new Caption();
     chart.xAxis.title.text = 'Cities';
+    chart.xAxis.title.fontSize = 18;
     chart.legend.enabled = true;
 
     const barSeries = new BarSeries();
@@ -98,13 +99,15 @@ function createCategoryColumnChart() {
     barSeries.fillOpacity = 0.3;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker.enabled = true;
+    lineSeries.marker.type = Circle;
+    lineSeries.marker.fill = 'rgba(227,111,106,0.61)';
     lineSeries.data = categoryData;
     lineSeries.xKey = 'category';
     lineSeries.yKey = 'value';
 
     const lineSeries2 = new LineSeries();
-    lineSeries2.marker.enabled = true;
+    lineSeries2.marker.type = Square;
+    lineSeries2.marker.fill = 'rgba(123,145,222,0.61)';
     lineSeries2.data = categoryData;
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'value2';
@@ -172,6 +175,7 @@ function createCategoryBarChart() {
     chart.xAxis.tick.size = 20;
     chart.xAxis.title = new Caption();
     chart.xAxis.title.text = 'Cities';
+    chart.xAxis.title.fontSize = 18;
     chart.legend.enabled = true;
 
     const barSeries = new BarSeries();
