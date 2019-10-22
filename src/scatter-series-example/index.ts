@@ -1,16 +1,16 @@
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
-import { CartesianChart } from "../../../../enterprise-modules/grid-charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "../../../../enterprise-modules/grid-charts/src/charts/chart/axis/numberAxis";
-import { Caption } from "../../../../enterprise-modules/grid-charts/src/charts/caption";
-import { ScatterSeries } from "../../../../enterprise-modules/grid-charts/src/charts/chart/series/scatterSeries";
-import { Circle } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/circle";
-import { Square } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/square";
-import { Diamond } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/diamond";
-import { Cross } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/cross";
-import { Plus } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/plus";
-import { Triangle } from "../../../../enterprise-modules/grid-charts/src/charts/chart/marker/triangle";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import { ScatterSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/scatterSeries";
+import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
+import { Square } from "@ag-enterprise/grid-charts/src/charts/chart/marker/square";
+import { Diamond } from "@ag-enterprise/grid-charts/src/charts/chart/marker/diamond";
+import { Cross } from "@ag-enterprise/grid-charts/src/charts/chart/marker/cross";
+import { Plus } from "@ag-enterprise/grid-charts/src/charts/chart/marker/plus";
+import { Triangle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/triangle";
 
 type Datum = {
     gender: number,

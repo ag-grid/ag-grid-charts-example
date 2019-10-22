@@ -7,6 +7,8 @@ import { BarSeries } from '@ag-enterprise/grid-charts/src/charts/chart/series/ba
 import { LineSeries } from '@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries';
 import { createButton, createSlider } from '../../lib/ui';
 import { CartesianChartLayout } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
+import { Square } from "@ag-enterprise/grid-charts/src/charts/chart/marker/square";
 
 type CategoryDatum = {
     category: { labels: string[] },
