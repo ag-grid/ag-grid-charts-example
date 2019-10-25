@@ -2,6 +2,44 @@ import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
 import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
 import {Path} from "@ag-enterprise/grid-charts/src/charts/scene/shape/path";
 import { createSlider } from "../../lib/ui";
+import { Color } from "@ag-enterprise/grid-charts/src/charts/util/color";
+import { Shape } from "@ag-enterprise/grid-charts/src/charts/scene/shape/shape";
+import { Rect } from "@ag-enterprise/grid-charts/src/charts/scene/shape/rect";
+import {FpsCounter} from "@ag-enterprise/grid-charts/src/charts/scene/fpsCounter";
+
+const fpsCounter = new FpsCounter(document.body);
+
+function spirograph(steps = 1440): { x: number, y: number, color: string }[] {
+    const allCoefficients = [
+        [1, 1, 0, 100],
+        [3, 5, 5, 60],
+        [2, 2, 2, 100],
+        [3, 3, 3, 40],
+        [3, 3, 4, 40],
+        [3, 7, 2, 40]
+    ];
+
+    const coefficients = allCoefficients[1];
+    const a = coefficients[0];
+    const b = coefficients[1];
+    const k = coefficients[2];
+    const scale = coefficients[3];
+
+    const pi2 = Math.PI * 2;
+    const increment = pi2 / steps;
+    const dataset = [];
+
+    for (let theta = 0; theta < pi2; theta += increment) {
+        const r = a * scale + b * scale * Math.cos(k * theta);
+        const x = r * Math.cos(theta);
+        const y = r * Math.sin(theta);
+        const color = Color.fromHSB(theta * 180, 1, 1).toHexString();
+
+        dataset.push({ x, y, color });
+    }
+
+    return dataset;
+}
 
 function memorySizeOf(obj: any) {
     var bytes = 0;
@@ -43,10 +81,12 @@ function memorySizeOf(obj: any) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene({
-        width: 800,
-        height: 600
-    });
+    const width = 1200;
+    const height = 1200;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const scene = new Scene({ width, height });
+    scene.renderFrameIndex = true;
     scene.parent = document.body;
     const rootGroup = new Group();
 
@@ -55,14 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const star = new Path();  // heavy-weight instance
     star.fill = 'red';
-    star.stroke = 'purple';
-    star.strokeWidth = 4;
-    star.lineJoin = 'round';
+    // star.stroke = 'purple';
+    // star.strokeWidth = 4;
+    // star.lineJoin = 'round';
     star.svgPath = starPath;
-    // star.scalingX = 5;
-    // star.scalingY = 5;
-    star.translationX = 300;
-    star.translationY = 100;
+    star.scalingX = 0.5;
+    star.scalingY = 0.5;
+
+    const rect = new Rect();
+    rect.fill = 'red';
+    rect.width = 50;
+    rect.height = 50;
 
     const star2 = Object.create(star); // light-weight instance
     star2._setParent(undefined);
@@ -71,22 +114,82 @@ document.addEventListener('DOMContentLoaded', () => {
     star2.translationY = 100;
     star2.fill = 'yellow';
 
-    console.log(memorySizeOf(star));
-    console.log(memorySizeOf(star2));
+    const data = spirograph();
+    const instances = data.map((datum, index) => {
+        const instance = Shape.createInstance(star);
+        // const instance = new Path(); // heavy-weight instance
+        // instance.svgPath = starPath;
+        // instance.scalingX = 0.5;
+        // instance.scalingY = 0.5;
+        // instance.stroke = 'purple';
+        // instance.strokeWidth = 4;
+        // instance.lineJoin = 'round';
 
-    const dog = new Path();
-    dog.fill = '#faeb00';
-    dog.stroke = 'black';
-    dog.strokeWidth = 1;
-    dog.scalingX = 4;
-    dog.scalingY = 4;
-    dog.svgPath = dogPath;
-    dog.translationX = 50;
-    dog.translationY = 50;
-    dog.lineJoin = 'round';
+        instance.translationX = datum.x + centerX;
+        instance.translationY = datum.y + centerY;
+        instance.fill = datum.color;
 
-    rootGroup.append([star, star2]);
+        return instance;
+    });
+
+    console.log('prototype of the first instance:', Object.getPrototypeOf(instances[0]));
+
+    const n = instances.length;
+    function step() {
+        fpsCounter.countFrame();
+        instances.push(instances.shift()!);
+        data.forEach((datum, index) => {
+            const instance = instances[index];
+            instance.translationX = datum.x + centerX;
+            instance.translationY = datum.y + centerY;
+        });
+        // for (let i = 0; i < n; i++) {
+        //     const instance = instances[i];
+        //     const datum = data[i];
+        //     instance.translationX = datum.x + centerX;
+        //     instance.translationY = datum.y + centerY;
+        //     instance.fill = data[Math.floor(Math.random() * n)].color;
+        // }
+        requestAnimationFrame(step);
+    }
+    step();
+
+    const tpl = new Rect();
+    tpl.x = 100;
+    tpl.y = 100;
+    tpl.width = 100;
+    tpl.height = 100;
+    tpl.fill = 'red';
+    tpl.stroke = 'black';
+    tpl.strokeWidth = 4;
+
+    const tplInstance = Shape.createInstance(tpl);
+    tplInstance.width = 200;
+    tplInstance.height = 40;
+    tplInstance.fill = 'cyan';
+
+    // const dog = new Path();
+    // dog.fill = '#faeb00';
+    // dog.stroke = 'black';
+    // dog.strokeWidth = 1;
+    // dog.scalingX = 4;
+    // dog.scalingY = 4;
+    // dog.svgPath = dogPath;
+    // dog.translationX = 50;
+    // dog.translationY = 50;
+    // dog.lineJoin = 'round';
+
+    // rootGroup.append([star]);
+    rootGroup.append(instances);
+    // rootGroup.appendChild(tplInstance);
     scene.root = rootGroup;
+
+    setTimeout(() => {
+        console.log(memorySizeOf(star));
+        console.log(memorySizeOf(star2));
+        // console.log('tpl', memorySizeOf(tpl));
+        // console.log('tplInstance', memorySizeOf(tplInstance));
+    }, 1000);
 
     // document.body.appendChild(document.createElement('br'));
     // createSlider('stroke width', [1, 2, 4, 6, 8, 10], v => {
