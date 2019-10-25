@@ -13,6 +13,7 @@ import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/l
 import { ScatterSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/scatterSeries";
 import setDefaultLocale from "@ag-enterprise/grid-charts/src/charts/util/time/format/defaultLocale";
 import { Padding } from "@ag-enterprise/grid-charts/src/charts/util/padding";
+import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
 
 function makeChartResizeable(chart: Chart) {
     let startX = 0;
@@ -54,6 +55,7 @@ function createTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.marker.type = Circle;
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
@@ -80,6 +82,7 @@ function createTimeChart2() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.marker.type = Circle;
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
@@ -106,6 +109,7 @@ function createTimeChart3() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.marker.type = Circle;
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
@@ -132,6 +136,7 @@ function createComboTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.marker.type = Circle;
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
@@ -141,6 +146,7 @@ function createComboTimeChart() {
     const lineSeries = new LineSeries();
     lineSeries.fill = 'orange';
     lineSeries.stroke = 'black';
+    lineSeries.marker.type = Circle;
     lineSeries.marker.strokeWidth = 0;
     lineSeries.marker.size = 8;
     lineSeries.data = minuteData2;
@@ -179,6 +185,7 @@ function createCustomLocaleTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.marker.type = Circle;
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
@@ -219,6 +226,7 @@ function createRealTimeChart() {
 
     const lineSeries = new LineSeries();
     lineSeries.showInLegend = false;
+    lineSeries.marker.type = Circle;
     lineSeries.marker.strokeWidth = 0;
     lineSeries.marker.size = 8;
     lineSeries.data = data;
