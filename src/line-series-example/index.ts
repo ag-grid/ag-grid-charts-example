@@ -5,10 +5,11 @@ import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/l
 import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/barSeries";
 
 import './app.css';
+import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
 
 type CategoryDatum = {
     category: string,
-    value: number
+    value: any
 };
 
 type NumericDatum = {
@@ -32,6 +33,20 @@ const categoryData: CategoryDatum[] = [
     { category: 'Ben', value: 5 },
     { category: 'Barbara', value: 6 },
     { category: 'Maria', value: 3 }
+];
+
+const categoryDataWithGaps: CategoryDatum[] = [
+    { category: 'John', value: 0 },
+    { category: 'Nige', value: 7 },
+    { category: 'Vicky', value: null },
+    { category: 'Rick', value: 4 },
+    { category: 'Lucy', value: 8 },
+    { category: 'Ben', value: undefined },
+    { category: 'Barbara', value: undefined },
+    { category: 'Bob', value: 7 },
+    { category: 'Maria', value: 3 },
+    { category: 'Susie', value: NaN },
+    { category: 'Maria', value: 5 }
 ];
 
 function generateCategoryData(n = 50): CategoryDatum[] {
@@ -182,6 +197,7 @@ function createCategoryLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries();
+    lineSeries.marker.type = Circle;
     lineSeries.marker.enabled = true;
     chart.xAxis.label.rotation = 45;
     chart.addSeries(lineSeries);
@@ -201,6 +217,12 @@ function createCategoryLineChart() {
     createButton('Save Chart Image', () => {
         chart.scene.download('chart');
     });
+
+    createButton('Use data with gaps', () => {
+        lineSeries.data = categoryDataWithGaps;
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
+    })
 
     createButton('Change data', () => {
         lineSeries.data = generateCategoryData(Math.floor(Math.random() * 50));
@@ -244,6 +266,7 @@ function createNumericLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries();
+    lineSeries.marker.type = Circle;
     lineSeries.marker.enabled = true;
     lineSeries.strokeWidth = 2;
     lineSeries.showInLegend = false;
@@ -366,18 +389,21 @@ function createMultiLineChart() {
     const data = generateMultiValueData(10);
 
     const lineSeries1 = new LineSeries();
+    lineSeries1.marker.type = Circle;
     lineSeries1.strokeWidth = 4;
     lineSeries1.fill = '#f3622d';
     lineSeries1.xKey = 'category';
     lineSeries1.yKey = 'value1';
 
     const lineSeries2 = new LineSeries();
+    lineSeries2.marker.type = Circle;
     lineSeries2.strokeWidth = 4;
     lineSeries2.fill = '#fba71b';
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'value2';
 
     const lineSeries3 = new LineSeries();
+    lineSeries3.marker.type = Circle;
     lineSeries3.strokeWidth = 4;
     lineSeries3.fill = '#57b757';
     lineSeries3.xKey = 'category';
