@@ -10,7 +10,7 @@ const getExamples = path => {
     files.forEach(name => {
         if (name === 'lib') {
             throw new Error("Example folder can't be named 'lib' " +
-                "since this is the 'outDir' for both TS and Babel.");
+                "since this is the 'outDir' for TS.");
         }
         if (isDirectory(join(path, name))) {
             examples.push({path, name});
@@ -49,8 +49,8 @@ const moduleExports = examples.map(example => {
         module: {
             rules: [{
                 test: /\.(tsx?)|(js)$/,
-                use: ['babel-loader'],
-                exclude: /node_modules/
+                exclude: /node_modules/,
+                use: [{ loader: 'ts-loader' }]
             }, {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
