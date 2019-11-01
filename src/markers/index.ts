@@ -47,6 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     plus.fill = 'cyan';
 
     document.body.appendChild(document.createElement('br'));
+    const label = document.createElement('div');
+    document.body.appendChild(label);
+    function updateSizeLabel() {
+        label.innerText = String(diamond.size);
+    }
+    updateSizeLabel();
     createSlider('Size', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], v => {
         diamond.size = v;
         triangle.size = v;
@@ -54,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
         circle.size = v;
         cross.size = v;
         plus.size = v;
+
+        updateSizeLabel();
     });
 
     createSlider('Stroke color', [undefined, 'black', 'gray', 'maroon'], v => {
