@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc --emitDeclarationOnly",
-    "bundle": "npx webpack --config ./webpack.config.js",
+    "bundle": "npx --node-arg=--max-old-space-size=4096 webpack --config ./webpack.config.js",
     "electron": "npx webpack --config webpack.electron.config.js && electron ./dist/_/main.js"
   },
   "repository": {
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
-    "@types/electron": "^1.6.10",
     "@ag-enterprise/grid-charts": "~21.2.0",
+    "@types/electron": "^1.6.10",
     "d3": "^5.7.0",
     "lodash": "^4.17.11"
   },
