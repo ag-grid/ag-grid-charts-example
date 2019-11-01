@@ -11,6 +11,7 @@ import { Diamond } from "@ag-enterprise/grid-charts/src/charts/chart/marker/diam
 import { Cross } from "@ag-enterprise/grid-charts/src/charts/chart/marker/cross";
 import { Plus } from "@ag-enterprise/grid-charts/src/charts/chart/marker/plus";
 import { Triangle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/triangle";
+import { Color } from '@ag-enterprise/grid-charts/src/charts/util/color';
 
 type Datum = {
     gender: number,
@@ -86,6 +87,9 @@ function createHeightWeightGenderChart() {
     chart.subtitle.text = 'by gender';
     chart.subtitle.color = 'gray';
     chart.subtitle.fontSize = 14;
+    chart.legend.markerSize = 8;
+    chart.legend.markerStrokeWidth = 2;
+    chart.legend.itemPaddingY = 15;
 
     const maleSeries = new ScatterSeries();
     const femaleSeries = new ScatterSeries();
@@ -117,7 +121,9 @@ function createHeightWeightGenderChart() {
         maleSeries.sizeName = 'Age';
         maleSeries.marker.type = Square;
         maleSeries.marker.size = 15;
-        maleSeries.marker.fill = 'rgba(227,111,106,0.61)';
+        maleSeries.marker.fill = 'rgb(227,111,106)';
+        maleSeries.marker.fillOpacity = 0.61;
+        maleSeries.marker.stroke = Color.fromString(maleSeries.marker.fill).darker().toHexString();
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
         maleSeries.marker.strokeWidth = 0.5;
@@ -128,7 +134,9 @@ function createHeightWeightGenderChart() {
         femaleSeries.sizeKey = 'age';
         femaleSeries.marker.type = Circle;
         femaleSeries.marker.size = 15;
-        femaleSeries.marker.fill = 'rgba(123,145,222,0.61)';
+        femaleSeries.marker.fill = 'rgb(123,145,222)';
+        femaleSeries.marker.fillOpacity = 0.61;
+        femaleSeries.marker.stroke = Color.fromString(femaleSeries.marker.fill).darker().toHexString();
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
         femaleSeries.marker.strokeWidth = 0.5;
@@ -147,16 +155,20 @@ function createHeightWeightGenderChart() {
         maleSeries.marker.type = v;
     });
 
-    createSlider('Marker fill', ['red', 'green', 'blue'], v => {
+    createSlider('Marker fill', ['#57b757', '#41a9c9', '#4258c9'], v => {
         maleSeries.marker.fill = v;
     });
 
-    createSlider('Marker stroke', ['black', 'red', 'blue'], v => {
+    createSlider('Marker stroke', ['#3d803d', '#2d768d', '#2e3e8d'], v => {
         maleSeries.marker.stroke = v;
     });
 
     createSlider('Marker stroke width', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], v => {
         maleSeries.marker.strokeWidth = v;
+    });
+
+    maleSeries.marker.addListener('size', function (marker, oldValue, value) {
+        console.log(`Changed 'size' from ${oldValue} to ${value}.`);
     });
 
     createSlider('Marker size', [4, 8, 12, 16, 20, 30, 40], v => {
