@@ -1,7 +1,7 @@
-import { Scene } from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import { Group } from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import { Path } from "@ag-enterprise/grid-charts/src/charts/scene/shape/path";
-import { Arc } from "@ag-enterprise/grid-charts/src/charts/scene/shape/arc";
+import { Scene } from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
+import { Group } from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
+import { Path } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/path";
+import { Arc } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/arc";
 import { createButton, createSlider, createSliderValues } from "../../lib/ui";
 
 import * as d3 from 'd3';

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import {FpsCounter} from "@ag-enterprise/grid-charts/src/charts/scene/fpsCounter";
+import {FpsCounter} from "@ag-grid-enterprise/grid-charts/src/charts/scene/fpsCounter";
 
 document.addEventListener('DOMContentLoaded', () => {
     const width = 800;

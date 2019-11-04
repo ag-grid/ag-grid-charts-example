@@ -1,8 +1,8 @@
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Arc} from "@ag-enterprise/grid-charts/src/charts/scene/shape/arcPath2D";
-import {FpsCounter} from "@ag-enterprise/grid-charts/src/charts/scene/fpsCounter";
-import { ArcType } from "@ag-enterprise/grid-charts/src/charts/scene/shape/arc";
+import {Scene} from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
+import {Arc} from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/arcPath2D";
+import {FpsCounter} from "@ag-grid-enterprise/grid-charts/src/charts/scene/fpsCounter";
+import { ArcType } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/arc";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene({

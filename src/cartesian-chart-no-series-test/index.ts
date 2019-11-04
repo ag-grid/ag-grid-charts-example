@@ -1,7 +1,7 @@
-import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries";
-import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/lineSeries";
+import { CartesianChart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
 
 type CategoryDatum = {
     category: string,

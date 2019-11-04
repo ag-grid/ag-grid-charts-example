@@ -1,14 +1,14 @@
 import { remote } from 'electron';
-import borneo from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
-import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/barSeries";
-import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
-import { CartesianChart, CartesianChartLayout } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import borneo from "@ag-grid-enterprise/grid-charts/src/charts/chart/palettes";
+import { BarSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/barSeries";
+import { Chart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/chart";
+import { CartesianChart, CartesianChartLayout } from "@ag-grid-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
 
 import './app.css';
 import { createButton } from "../../lib/ui";
-import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import { Caption } from "@ag-grid-enterprise/grid-charts/src/charts/caption";
 
 const { BrowserWindow } = remote;
 

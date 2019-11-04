@@ -1,7 +1,7 @@
-import {PolarChart} from "@ag-enterprise/grid-charts/src/charts/chart/polarChart";
-import {PieSeries} from "@ag-enterprise/grid-charts/src/charts/chart/series/pieSeries";
-import {DropShadow} from "@ag-enterprise/grid-charts/src/charts/scene/dropShadow";
-import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
+import {PolarChart} from "@ag-grid-enterprise/grid-charts/src/charts/chart/polarChart";
+import {PieSeries} from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/pieSeries";
+import {DropShadow} from "@ag-grid-enterprise/grid-charts/src/charts/scene/dropShadow";
+import { Chart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/chart";
 
 const data = [
     { label: 'John', value1: 3, value2: 7, value3: 5 },

@@ -1,8 +1,8 @@
-import { Scene } from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import { Group } from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import { Selection } from "@ag-enterprise/grid-charts/src/charts/scene/selection";
-import { Text } from "@ag-enterprise/grid-charts/src/charts/scene/shape/text";
-import { Line } from "@ag-enterprise/grid-charts/src/charts/scene/shape/line";
+import { Scene } from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
+import { Group } from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
+import { Selection } from "@ag-grid-enterprise/grid-charts/src/charts/scene/selection";
+import { Text } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/text";
+import { Line } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/line";
 import { createSlider } from "../../lib/ui";
 
 interface Tick {

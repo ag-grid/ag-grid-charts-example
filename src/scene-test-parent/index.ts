@@ -1,6 +1,6 @@
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Rect} from "@ag-enterprise/grid-charts/src/charts/scene/shape/rect";
+import {Scene} from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
+import {Rect} from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/rect";
 
 function nextFrame() {
     return new Promise(resolve => {

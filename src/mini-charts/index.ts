@@ -1,16 +1,16 @@
-import { Scene } from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import { Group } from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import { Sector } from "@ag-enterprise/grid-charts/src/charts/scene/shape/sector";
-import { palettes } from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
-import { toRadians } from "@ag-enterprise/grid-charts/src/charts/util/angle";
-import { Path } from "@ag-enterprise/grid-charts/src/charts/scene/shape/path";
-import { Line } from "@ag-enterprise/grid-charts/src/charts/scene/shape/line";
-import linearScale from "@ag-enterprise/grid-charts/src/charts/scale/linearScale";
-import { BandScale } from "@ag-enterprise/grid-charts/src/charts/scale/bandScale";
-import { Rect } from "@ag-enterprise/grid-charts/src/charts/scene/shape/rect";
-import { ClipRect } from "@ag-enterprise/grid-charts/src/charts/scene/clipRect";
-import { Arc } from "@ag-enterprise/grid-charts/src/charts/scene/shape/arc";
-import { Shape } from "@ag-enterprise/grid-charts/src/charts/scene/shape/shape";
+import { Scene } from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
+import { Group } from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
+import { Sector } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/sector";
+import { palettes } from "@ag-grid-enterprise/grid-charts/src/charts/chart/palettes";
+import { toRadians } from "@ag-grid-enterprise/grid-charts/src/charts/util/angle";
+import { Path } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/path";
+import { Line } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/line";
+import linearScale from "@ag-grid-enterprise/grid-charts/src/charts/scale/linearScale";
+import { BandScale } from "@ag-grid-enterprise/grid-charts/src/charts/scale/bandScale";
+import { Rect } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/rect";
+import { ClipRect } from "@ag-grid-enterprise/grid-charts/src/charts/scene/clipRect";
+import { Arc } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/arc";
+import { Shape } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/shape";
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
     const button = document.createElement('button');

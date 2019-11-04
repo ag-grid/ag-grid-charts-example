@@ -1,12 +1,12 @@
-import { PieSeries } from '@ag-enterprise/grid-charts/src/charts/chart/series/pieSeries';
-import { Chart, LegendPosition } from '@ag-enterprise/grid-charts/src/charts/chart/chart';
-import { Padding } from '@ag-enterprise/grid-charts/src/charts/util/padding';
-import { Caption } from '@ag-enterprise/grid-charts/src/charts/caption';
+import { PieSeries } from '@ag-grid-enterprise/grid-charts/src/charts/chart/series/pieSeries';
+import { Chart, LegendPosition } from '@ag-grid-enterprise/grid-charts/src/charts/chart/chart';
+import { Padding } from '@ag-grid-enterprise/grid-charts/src/charts/util/padding';
+import { Caption } from '@ag-grid-enterprise/grid-charts/src/charts/caption';
 
 import './app.css';
-import { FontStyle, FontWeight } from '@ag-enterprise/grid-charts/src/charts/scene/shape/text';
-import { PolarChart } from '@ag-enterprise/grid-charts/src/charts/chart/polarChart';
-import { DropShadow } from '@ag-enterprise/grid-charts/src/charts/scene/dropShadow';
+import { FontStyle, FontWeight } from '@ag-grid-enterprise/grid-charts/src/charts/scene/shape/text';
+import { PolarChart } from '@ag-grid-enterprise/grid-charts/src/charts/chart/polarChart';
+import { DropShadow } from '@ag-grid-enterprise/grid-charts/src/charts/scene/dropShadow';
 
 type Datum = {
     label: string,

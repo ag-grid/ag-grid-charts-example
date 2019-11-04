@@ -1,18 +1,18 @@
-import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
-import { TimeAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/timeAxis";
+import { CartesianChart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { TimeAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/timeAxis";
 import { data as timestampData } from './timestampData';
 import { data as minuteData1 } from './minuteData1';
 import { data as minuteData2 } from './minuteData2';
 
-import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
-import year from "@ag-enterprise/grid-charts/src/charts/util/time/year";
-import month from "@ag-enterprise/grid-charts/src/charts/util/time/month";
-import second from "@ag-enterprise/grid-charts/src/charts/util/time/second";
-import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries";
-import { ScatterSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/scatterSeries";
-import setDefaultLocale from "@ag-enterprise/grid-charts/src/charts/util/time/format/defaultLocale";
-import { Padding } from "@ag-enterprise/grid-charts/src/charts/util/padding";
+import { Chart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/chart";
+import year from "@ag-grid-enterprise/grid-charts/src/charts/util/time/year";
+import month from "@ag-grid-enterprise/grid-charts/src/charts/util/time/month";
+import second from "@ag-grid-enterprise/grid-charts/src/charts/util/time/second";
+import { LineSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/lineSeries";
+import { ScatterSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/scatterSeries";
+import setDefaultLocale from "@ag-grid-enterprise/grid-charts/src/charts/util/time/format/defaultLocale";
+import { Padding } from "@ag-grid-enterprise/grid-charts/src/charts/util/padding";
 
 function makeChartResizeable(chart: Chart) {
     let startX = 0;
