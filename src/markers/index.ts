@@ -1,13 +1,13 @@
-import {Scene} from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
-import {Diamond} from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/diamond";
-import {Triangle} from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/triangle";
-import {Square} from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/square";
-import {Circle} from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/circle";
-import {Cross} from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/cross";
-import {Plus} from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/plus";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Diamond} from "@ag-grid-enterprise/charts/src/charts/chart/marker/diamond";
+import {Triangle} from "@ag-grid-enterprise/charts/src/charts/chart/marker/triangle";
+import {Square} from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
+import {Circle} from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
+import {Cross} from "@ag-grid-enterprise/charts/src/charts/chart/marker/cross";
+import {Plus} from "@ag-grid-enterprise/charts/src/charts/chart/marker/plus";
 import { createSlider } from "../../lib/ui";
-import { pad } from "@ag-grid-enterprise/grid-charts/src/charts/util/time/format/locale";
+import { pad } from "@ag-grid-enterprise/charts/src/charts/util/time/format/locale";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene({

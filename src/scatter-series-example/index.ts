@@ -1,16 +1,16 @@
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
-import { CartesianChart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
-import { Caption } from "@ag-grid-enterprise/grid-charts/src/charts/caption";
-import { ScatterSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/scatterSeries";
-import { Circle } from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/circle";
-import { Square } from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/square";
-import { Diamond } from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/diamond";
-import { Cross } from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/cross";
-import { Plus } from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/plus";
-import { Triangle } from "@ag-grid-enterprise/grid-charts/src/charts/chart/marker/triangle";
+import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
+import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/scatterSeries";
+import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
+import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
+import { Diamond } from "@ag-grid-enterprise/charts/src/charts/chart/marker/diamond";
+import { Cross } from "@ag-grid-enterprise/charts/src/charts/chart/marker/cross";
+import { Plus } from "@ag-grid-enterprise/charts/src/charts/chart/marker/plus";
+import { Triangle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/triangle";
 
 type Datum = {
     gender: number,

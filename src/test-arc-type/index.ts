@@ -1,8 +1,8 @@
-import {Scene} from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
-import {Text} from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/text";
-import {Arc, ArcType} from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/arc";
-import {toRadians} from "@ag-grid-enterprise/grid-charts/src/charts/util/angle";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
+import {Arc, ArcType} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
+import {toRadians} from "@ag-grid-enterprise/charts/src/charts/util/angle";
 import { areaRadial } from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {

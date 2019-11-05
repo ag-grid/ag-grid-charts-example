@@ -1,6 +1,6 @@
-import scaleLinear from "@ag-grid-enterprise/grid-charts/src/charts/scale/linearScale";
-import {createHdpiCanvas} from "@ag-grid-enterprise/grid-charts/src/charts/canvas/canvas";
-import {normalizeAngle180} from "@ag-grid-enterprise/grid-charts/src/charts/util/angle";
+import scaleLinear from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
+import {createHdpiCanvas} from "@ag-grid-enterprise/charts/src/charts/canvas/canvas";
+import {normalizeAngle180} from "@ag-grid-enterprise/charts/src/charts/util/angle";
 
 // Q1'12 data
 const data = [

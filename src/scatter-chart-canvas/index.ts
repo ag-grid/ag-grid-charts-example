@@ -1,6 +1,6 @@
-import scaleLinear from "@ag-grid-enterprise/grid-charts/src/charts/scale/linearScale";
-import {createHdpiCanvas} from "@ag-grid-enterprise/grid-charts/src/charts/canvas/canvas";
-import {CanvasAxis} from "@ag-grid-enterprise/grid-charts/src/charts/canvasAxis";
+import scaleLinear from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
+import {createHdpiCanvas} from "@ag-grid-enterprise/charts/src/charts/canvas/canvas";
+import {CanvasAxis} from "@ag-grid-enterprise/charts/src/charts/canvasAxis";
 import carData, {ICarInfo} from './auto-mpg';
 
 const colors = [

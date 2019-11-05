@@ -1,11 +1,11 @@
 import * as d3 from "d3";
-import { LogScale } from "@ag-grid-enterprise/grid-charts/src/charts/scale/logScale";
-import { Axis } from "@ag-grid-enterprise/grid-charts/src/charts/axis";
-import { Scene } from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
-import { Group } from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
-import { CartesianChart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/lineSeries";
+import { LogScale } from "@ag-grid-enterprise/charts/src/charts/scale/logScale";
+import { Axis } from "@ag-grid-enterprise/charts/src/charts/axis";
+import { Scene } from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
+import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
 
 document.addEventListener('DOMContentLoaded', () => {
     // testConvert();

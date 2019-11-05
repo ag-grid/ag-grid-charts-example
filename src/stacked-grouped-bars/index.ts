@@ -1,7 +1,7 @@
-import scaleLinear from "@ag-grid-enterprise/grid-charts/src/charts/scale/linearScale";
-import {BandScale} from "@ag-grid-enterprise/grid-charts/src/charts/scale/bandScale";
-import {createHdpiCanvas} from "@ag-grid-enterprise/grid-charts/src/charts/canvas/canvas";
-import {CanvasAxis} from "@ag-grid-enterprise/grid-charts/src/charts/canvasAxis";
+import scaleLinear from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
+import {BandScale} from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
+import {createHdpiCanvas} from "@ag-grid-enterprise/charts/src/charts/canvas/canvas";
+import {CanvasAxis} from "@ag-grid-enterprise/charts/src/charts/canvasAxis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],

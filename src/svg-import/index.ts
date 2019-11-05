@@ -1,10 +1,10 @@
 import { tiger } from "./tiger";
-import { Scene } from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
-import { Path } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/path";
-import { Group } from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
-import { Node } from "@ag-grid-enterprise/grid-charts/src/charts/scene/node";
+import { Scene } from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import { Path } from "@ag-grid-enterprise/charts/src/charts/scene/shape/path";
+import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import { Node } from "@ag-grid-enterprise/charts/src/charts/scene/node";
 import { createButton } from "../../lib/ui";
-import { Shape } from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/shape";
+import { Shape } from "@ag-grid-enterprise/charts/src/charts/scene/shape/shape";
 import { color } from "d3";
 
 function importSvg(scene: Scene, svg: string) {

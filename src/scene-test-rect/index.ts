@@ -1,7 +1,7 @@
-import {Scene} from "@ag-grid-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/grid-charts/src/charts/scene/group";
-import {Rect} from "@ag-grid-enterprise/grid-charts/src/charts/scene/shape/rect";
-import {FpsCounter} from "@ag-grid-enterprise/grid-charts/src/charts/scene/fpsCounter";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Rect} from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
+import {FpsCounter} from "@ag-grid-enterprise/charts/src/charts/scene/fpsCounter";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene({

@@ -1,8 +1,8 @@
-import { CartesianChart } from "@ag-grid-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/lineSeries";
-import { BarSeries } from "@ag-grid-enterprise/grid-charts/src/charts/chart/series/barSeries";
+import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
 
 import './app.css';
 
