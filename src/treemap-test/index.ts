@@ -65,7 +65,7 @@ function createStockTreeMap() {
             padding: 15
         },
         subtitle: {
-            fontWeight: undefined,
+            fontWeight: '',
             fontSize: 9,
             fontFamily: 'Verdana, sans-serif',
             padding: 13
