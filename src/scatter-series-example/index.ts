@@ -12,6 +12,7 @@ import { Cross } from "@ag-enterprise/grid-charts/src/charts/chart/marker/cross"
 import { Plus } from "@ag-enterprise/grid-charts/src/charts/chart/marker/plus";
 import { Triangle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/triangle";
 import { Color } from '@ag-enterprise/grid-charts/src/charts/util/color';
+import { makeChartResizeable } from "../../lib/chart";
 
 type Datum = {
     gender: number,
@@ -74,6 +75,7 @@ function createHeightWeightGenderChart() {
         xAxis: new NumberAxis(),
         yAxis: new NumberAxis()
     });
+    makeChartResizeable(chart);
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;
@@ -87,7 +89,7 @@ function createHeightWeightGenderChart() {
     chart.subtitle.text = 'by gender';
     chart.subtitle.color = 'gray';
     chart.subtitle.fontSize = 14;
-    chart.legend.markerSize = 8;
+    chart.legend.markerSize = 12;
     chart.legend.markerStrokeWidth = 2;
     chart.legend.itemPaddingY = 15;
 
@@ -120,7 +122,7 @@ function createHeightWeightGenderChart() {
         maleSeries.sizeKey = 'age';
         maleSeries.sizeName = 'Age';
         maleSeries.marker.type = Square;
-        maleSeries.marker.size = 15;
+        maleSeries.marker.size = 30;
         maleSeries.marker.fill = 'rgb(227,111,106)';
         maleSeries.marker.fillOpacity = 0.61;
         maleSeries.marker.stroke = Color.fromString(maleSeries.marker.fill).darker().toHexString();
@@ -133,7 +135,7 @@ function createHeightWeightGenderChart() {
         femaleSeries.yKey = 'weight';
         femaleSeries.sizeKey = 'age';
         femaleSeries.marker.type = Circle;
-        femaleSeries.marker.size = 15;
+        femaleSeries.marker.size = 30;
         femaleSeries.marker.fill = 'rgb(123,145,222)';
         femaleSeries.marker.fillOpacity = 0.61;
         femaleSeries.marker.stroke = Color.fromString(femaleSeries.marker.fill).darker().toHexString();
@@ -171,7 +173,7 @@ function createHeightWeightGenderChart() {
         console.log(`Changed 'size' from ${oldValue} to ${value}.`);
     });
 
-    createSlider('Marker size', [4, 8, 12, 16, 20, 30, 40], v => {
+    createSlider('Marker size', [4, 8, 12, 16, 20, 30, 40, 50, 60, 70, 80], v => {
         maleSeries.marker.size = v;
     });
 
@@ -195,6 +197,7 @@ function createAgeWeightGenderChart() {
         xAxis: new NumberAxis(),
         yAxis: new NumberAxis()
     });
+    makeChartResizeable(chart);
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;
