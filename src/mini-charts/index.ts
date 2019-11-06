@@ -1,7 +1,7 @@
 import { Scene } from "@ag-enterprise/grid-charts/src/charts/scene/scene";
 import { Group } from "@ag-enterprise/grid-charts/src/charts/scene/group";
 import { Sector } from "@ag-enterprise/grid-charts/src/charts/scene/shape/sector";
-import { palettes } from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
+import { palettes, ChartPalette } from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
 import { toRadians } from "@ag-enterprise/grid-charts/src/charts/util/angle";
 import { Path } from "@ag-enterprise/grid-charts/src/charts/scene/shape/path";
 import { Line } from "@ag-enterprise/grid-charts/src/charts/scene/shape/line";
@@ -553,7 +553,7 @@ class MiniArea extends MiniChart {
 
         const xCount = data.length;
         const last = xCount * 2 - 1;
-        const pathData: {x: number, y: number}[][] = [];
+        const pathData: { x: number, y: number }[][] = [];
 
         for (let i = 0; i < xCount; i++) {
             const yDatum = data[i];
@@ -624,25 +624,30 @@ class MiniNormalizedArea extends MiniArea {
     }
 }
 
-const miniPie = new MiniPie(document.body, palettes[0].fills, palettes[0].strokes);
-const miniDonut = new MiniDonut(document.body, palettes[0].fills, palettes[0].strokes);
-const miniLine = new MiniLine(document.body, palettes[0].fills, palettes[0].strokes);
-const miniBar = new MiniBar(document.body, palettes[0].fills, palettes[0].strokes);
-const miniStackedBar = new MiniStackedBar(document.body, palettes[0].fills, palettes[0].strokes);
-const miniNormalizedBar = new MiniNormalizedBar(document.body, palettes[0].fills, palettes[0].strokes);
-const miniArea = new MiniArea(document.body, palettes[0].fills, palettes[0].strokes);
-const miniNormalizedArea = new MiniNormalizedArea(document.body, palettes[0].fills, palettes[0].strokes);
-const miniScatter = new MiniScatter(document.body, palettes[0].fills, palettes[0].strokes);
+const palettesArray: ChartPalette[] = [];
+
+palettes.forEach(p => palettesArray.push(p));
+
+const { fills, strokes } = palettesArray[0];
+
+const miniPie = new MiniPie(document.body, fills, strokes);
+const miniDonut = new MiniDonut(document.body, fills, strokes);
+const miniLine = new MiniLine(document.body, fills, strokes);
+const miniBar = new MiniBar(document.body, fills, strokes);
+const miniStackedBar = new MiniStackedBar(document.body, fills, strokes);
+const miniNormalizedBar = new MiniNormalizedBar(document.body, fills, strokes);
+const miniArea = new MiniArea(document.body, fills, strokes);
+const miniNormalizedArea = new MiniNormalizedArea(document.body, fills, strokes);
+const miniScatter = new MiniScatter(document.body, fills, strokes);
 
 document.body.appendChild(document.createElement('br'));
 
 let i = 0;
 createButton('Next', () => {
-    if (i < palettes.length - 2) {
+    if (i < palettesArray.length - 2) {
         i++;
     }
-    const fills = palettes[i].fills;
-    const strokes = palettes[i].strokes;
+    const { fills, strokes } = palettesArray[i];
     miniPie.updateColors(fills, strokes);
     miniDonut.updateColors(fills, strokes);
     miniLine.updateColors(fills, strokes);
@@ -655,7 +660,7 @@ createButton('Next', () => {
 });
 
 function createSwatches() {
-    return palettes.map(palette => {
+    return palettesArray.map(palette => {
         let divs = palette.fills.slice(0, 6).map(color => {
             return `<div style="width: 24px; height: 24px; background: ${color}; margin: 2px;"></div>`;
         }).join('');
