@@ -644,9 +644,12 @@ document.body.appendChild(document.createElement('br'));
 
 let i = 0;
 createButton('Next', () => {
-    if (i < palettesArray.length - 2) {
+    if (i < palettesArray.length - 1) {
         i++;
+    } else {
+        i = 0;
     }
+
     const { fills, strokes } = palettesArray[i];
     miniPie.updateColors(fills, strokes);
     miniDonut.updateColors(fills, strokes);

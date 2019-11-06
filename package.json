@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc --emitDeclarationOnly",
-    "bundle": "npx --node-arg=--max-old-space-size=4096 webpack --config ./webpack.config.js",
+    "bundle": "npm run build && npm run bundleQuick",
+    "bundleQuick": "npx --node-arg=--max-old-space-size=2048 webpack --config ./webpack.config.js --progress",
     "electron": "npx webpack --config webpack.electron.config.js && electron ./dist/_/main.js"
   },
   "repository": {

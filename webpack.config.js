@@ -12,8 +12,14 @@ const getExamples = path => {
             throw new Error("Example folder can't be named 'lib' " +
                 "since this is the 'outDir' for TS.");
         }
+
+        if (name === 'electron-example') {
+            // exclude this example as it is structured in a different way
+            return;
+        }
+
         if (isDirectory(join(path, name))) {
-            examples.push({path, name});
+            examples.push({ path, name });
         }
     });
     return examples;
@@ -29,9 +35,9 @@ const distPath = path.resolve(__dirname, 'dist');
 // on a single example at a time. This example is supposed to be
 // in the `_` directory that should be given a proper name when
 // one is done working on the example.
-const examples = existsSync(join(srcPath, '_'))
-    ? [{ path: srcPath, name: '_' }]
-    : getExamples(srcPath);
+const activeExampleName = '_';
+const hasActiveExample = existsSync(join(srcPath, activeExampleName));
+const examples = hasActiveExample ? [{ path: srcPath, name: activeExampleName }] : getExamples(srcPath);
 
 const moduleExports = examples.map(example => {
     return {
@@ -43,14 +49,21 @@ const moduleExports = examples.map(example => {
             path: join(distPath, example.name),
             filename: 'app.bundle.js'
         },
+        watch: hasActiveExample,
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.json']
         },
         module: {
             rules: [{
-                test: /\.(tsx?)|(js)$/,
-                exclude: /node_modules/,
-                use: [{ loader: 'ts-loader' }]
+                test: /\.tsx?$/,
+                use: [{
+                    loader: 'ts-loader',
+                    options: {
+                        onlyCompileBundledFiles: true,
+                        transpileOnly: !hasActiveExample
+                    }
+                }],
+                exclude: /node_modules/
             }, {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
@@ -71,7 +84,7 @@ const moduleExports = examples.map(example => {
         plugins: [
             new HtmlWebpackPlugin({
                 filename: 'index.html'
-            })
+            }),
         ]
     };
 });
