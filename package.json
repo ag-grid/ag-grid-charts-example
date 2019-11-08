@@ -1,6 +1,6 @@
 {
   "name": "ag-grid-charts-example",
-  "version": "22.0.0-beta.0",
+  "version": "22.0.0",
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
-    "@ag-grid-enterprise/charts": "^22.0.0-beta.0",
+    "@ag-grid-enterprise/charts": "~22.0.0",
     "@types/electron": "^1.6.10",
     "d3": "^5.7.0",
     "lodash": "^4.17.11"
