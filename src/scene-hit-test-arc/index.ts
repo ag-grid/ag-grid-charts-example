@@ -1,7 +1,7 @@
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Arc, ArcType} from "@ag-enterprise/grid-charts/src/charts/scene/shape/arc";
-import {toRadians} from "@ag-enterprise/grid-charts/src/charts/util/angle";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Arc, ArcType} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
+import {toRadians} from "@ag-grid-enterprise/charts/src/charts/util/angle";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene({

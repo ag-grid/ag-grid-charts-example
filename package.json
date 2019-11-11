@@ -1,6 +1,6 @@
 {
   "name": "ag-grid-charts-example",
-  "version": "21.2.0",
+  "version": "22.0.0",
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
@@ -9,6 +9,7 @@
     "bundleQuick": "npx --node-arg=--max-old-space-size=2048 webpack --config ./webpack.config.js --progress",
     "electron": "npx webpack --config webpack.electron.config.js && electron ./dist/_/main.js"
   },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ag-grid/ag-grid-charts-example.git"
@@ -24,7 +25,7 @@
   },
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
-    "@ag-enterprise/grid-charts": "~21.2.0",
+    "@ag-grid-enterprise/charts": "~22.0.0",
     "@types/electron": "^1.6.10",
     "d3": "^5.7.0",
     "lodash": "^4.17.11"

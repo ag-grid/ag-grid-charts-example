@@ -1,11 +1,11 @@
-import scaleLinear from "@ag-enterprise/grid-charts/src/charts/scale/linearScale";
-import {BandScale} from "@ag-enterprise/grid-charts/src/charts/scale/bandScale";
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Axis} from "@ag-enterprise/grid-charts/src/charts/axis";
-import {Arc, ArcType} from "@ag-enterprise/grid-charts/src/charts/scene/shape/arc";
-import {Text} from "@ag-enterprise/grid-charts/src/charts/scene/shape/text";
-import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import scaleLinear from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
+import {BandScale} from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Axis} from "@ag-grid-enterprise/charts/src/charts/axis";
+import {Arc, ArcType} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
+import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
+import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 
 function nextFrame() {
     return new Promise(resolve => {

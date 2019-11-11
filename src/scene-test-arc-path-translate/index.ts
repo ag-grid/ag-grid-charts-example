@@ -1,7 +1,7 @@
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Arc, ArcType} from "@ag-enterprise/grid-charts/src/charts/scene/shape/arc";
-import {FpsCounter} from "@ag-enterprise/grid-charts/src/charts/scene/fpsCounter";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Arc, ArcType} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
+import {FpsCounter} from "@ag-grid-enterprise/charts/src/charts/scene/fpsCounter";
 
 // This example uses translationX/Y properties to position arcs,
 // so that the arc paths are not recalculated on every frame.

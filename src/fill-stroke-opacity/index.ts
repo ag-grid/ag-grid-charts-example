@@ -1,6 +1,6 @@
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Path} from "@ag-enterprise/grid-charts/src/charts/scene/shape/path";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Path} from "@ag-grid-enterprise/charts/src/charts/scene/shape/path";
 import { createSlider } from "../../lib/ui";
 
 document.addEventListener('DOMContentLoaded', () => {

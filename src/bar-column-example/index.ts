@@ -1,14 +1,14 @@
-import { } from "@ag-enterprise/grid-charts";
-import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/barSeries";
-import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
-import borneo from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
+import { } from "@ag-grid-enterprise/charts";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
+import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
+import borneo from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
-import { CartesianChart, CartesianChartLayout } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
-import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import { CartesianChart, CartesianChartLayout } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 
 type Datum = {
     category: string,

@@ -1,6 +1,6 @@
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Line} from "@ag-enterprise/grid-charts/src/charts/scene/shape/line";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Line} from "@ag-grid-enterprise/charts/src/charts/scene/shape/line";
 import * as d3 from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,8 +1,8 @@
-import {Scene} from "@ag-enterprise/grid-charts/src/charts/scene/scene";
-import {Group} from "@ag-enterprise/grid-charts/src/charts/scene/group";
-import {Line} from "@ag-enterprise/grid-charts/src/charts/scene/shape/line";
-import {Text} from "@ag-enterprise/grid-charts/src/charts/scene/shape/text";
-import {Node} from "@ag-enterprise/grid-charts/src/charts/scene/node";
+import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
+import {Line} from "@ag-grid-enterprise/charts/src/charts/scene/shape/line";
+import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
+import {Node} from "@ag-grid-enterprise/charts/src/charts/scene/node";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene({
