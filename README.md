@@ -1,5 +1,7 @@
 # ag-grid-charts-example
 
+Run `lerna bootstrap` to link required npm modules.
+
 Run `npm run bundle` to perform full TypeScript compilation and bundle all examples, which can then be accessed in the `dist` folder.
 
 Run `npm run bundleQuick` to only transpile and bundle - no type checking will be performed.
