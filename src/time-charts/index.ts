@@ -12,7 +12,7 @@ import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/l
 import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/scatterSeries";
 import setDefaultLocale from "@ag-grid-enterprise/charts/src/charts/util/time/format/defaultLocale";
 import { Padding } from "@ag-grid-enterprise/charts/src/charts/util/padding";
-import { Circle } from "@ag-enterprise/charts/src/charts/chart/marker/circle";
+import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
 
 function makeChartResizeable(chart: Chart) {
     let startX = 0;

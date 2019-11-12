@@ -1,18 +1,17 @@
 import './app.css';
 import { data } from './data';
-import { TimeAxis } from '@ag-enterprise/grid-charts/src/charts/chart/axis/timeAxis';
-import { CartesianChart } from '@ag-enterprise/grid-charts/src/charts/chart/cartesianChart';
-import month from '@ag-enterprise/grid-charts/src/charts/util/time/month';
-import { NumberAxis } from '@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis';
-import { OHLCSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/ohlc/ohlcSeries";
+import { TimeAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/timeAxis';
+import { CartesianChart } from '@ag-grid-enterprise/charts/src/charts/chart/cartesianChart';
+import month from '@ag-grid-enterprise/charts/src/charts/util/time/month';
+import { NumberAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis';
+import { OHLCSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/ohlc/ohlcSeries";
 import { makeChartResizeable } from '../../lib/chart';
-import { LineSeries } from '@ag-enterprise/grid-charts/src/charts/chart/series/lineSeries';
+import { LineSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries';
 import { createButton } from '../../lib/ui';
-import { Square } from '@ag-enterprise/grid-charts/src/charts/chart/marker/square';
-import { locale } from '@ag-enterprise/grid-charts/src/charts/util/time/format/defaultLocale';
-import { toFixed } from '@ag-enterprise/grid-charts/src/charts/util/number';
-import { CategoryAxis } from '@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis';
-import { BarSeries } from '@ag-enterprise/grid-charts/src/charts/chart/series/barSeries';
+import { Square } from '@ag-grid-enterprise/charts/src/charts/chart/marker/square';
+import { locale } from '@ag-grid-enterprise/charts/src/charts/util/time/format/defaultLocale';
+import { CategoryAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis';
+import { BarSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/barSeries';
 
 function createChart() {
     const xAxis = new TimeAxis();

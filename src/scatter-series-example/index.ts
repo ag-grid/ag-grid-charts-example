@@ -11,7 +11,7 @@ import { Diamond } from "@ag-grid-enterprise/charts/src/charts/chart/marker/diam
 import { Cross } from "@ag-grid-enterprise/charts/src/charts/chart/marker/cross";
 import { Plus } from "@ag-grid-enterprise/charts/src/charts/chart/marker/plus";
 import { Triangle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/triangle";
-import { Color } from '@ag-enterprise/charts/src/charts/util/color';
+import { Color } from '@ag-grid-enterprise/charts/src/charts/util/color';
 import { makeChartResizeable } from "../../lib/chart";
 
 type Datum = {

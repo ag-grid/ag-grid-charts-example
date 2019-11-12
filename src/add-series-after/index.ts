@@ -1,8 +1,8 @@
-import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
-import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
-import { AreaSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/areaSeries";
+import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
+import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/areaSeries";
 import { createButton } from "../../lib/ui";
 
 const data = [

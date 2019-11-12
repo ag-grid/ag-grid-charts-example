@@ -5,7 +5,7 @@ import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/l
 import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
 
 import './app.css';
-import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
+import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
 
 type CategoryDatum = {
     category: string,

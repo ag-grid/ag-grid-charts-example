@@ -1,11 +1,10 @@
 import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
 import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
 import {Path} from "@ag-grid-enterprise/charts/src/charts/scene/shape/path";
-import { createSlider } from "../../lib/ui";
-import { Color } from "@ag-enterprise/grid-charts/src/charts/util/color";
-import { Shape } from "@ag-enterprise/grid-charts/src/charts/scene/shape/shape";
-import { Rect } from "@ag-enterprise/grid-charts/src/charts/scene/shape/rect";
-import {FpsCounter} from "@ag-enterprise/grid-charts/src/charts/scene/fpsCounter";
+import { Color } from "@ag-grid-enterprise/charts/src/charts/util/color";
+import { Shape } from "@ag-grid-enterprise/charts/src/charts/scene/shape/shape";
+import { Rect } from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
+import {FpsCounter} from "@ag-grid-enterprise/charts/src/charts/scene/fpsCounter";
 
 const fpsCounter = new FpsCounter(document.body);
 
