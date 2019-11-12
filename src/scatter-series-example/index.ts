@@ -169,8 +169,8 @@ function createHeightWeightGenderChart() {
         maleSeries.marker.strokeWidth = v;
     });
 
-    maleSeries.marker.addListener('size', function (marker, oldValue, value) {
-        console.log(`Changed 'size' from ${oldValue} to ${value}.`);
+    maleSeries.marker.addPropertyListener('size', event => {
+        console.log(`Changed 'size' from ${event.oldValue} to ${event.value}.`);
     });
 
     createSlider('Marker size', [4, 8, 12, 16, 20, 30, 40, 50, 60, 70, 80], v => {
