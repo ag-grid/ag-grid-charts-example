@@ -1,11 +1,12 @@
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
+import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/cartesian/lineSeries";
+import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/cartesian/barSeries";
 
 import './app.css';
-import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
+import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
+import { ChartAxisPosition } from "@ag-enterprise/grid-charts/src/charts/chart/chartAxis";
 
 type CategoryDatum = {
     category: string,
@@ -188,10 +189,14 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
 
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart({
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
@@ -199,7 +204,6 @@ function createCategoryLineChart() {
     const lineSeries = new LineSeries();
     lineSeries.marker.type = Circle;
     lineSeries.marker.enabled = true;
-    chart.xAxis.label.rotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.tooltipEnabled = true;
     lineSeries.tooltipRenderer = params => {
@@ -257,10 +261,14 @@ function createCategoryLineChart() {
 function createNumericLineChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
     chart.parent = document.body;
     chart.width = 600;
     chart.height = 600;
@@ -270,7 +278,6 @@ function createNumericLineChart() {
     lineSeries.marker.enabled = true;
     lineSeries.strokeWidth = 2;
     lineSeries.showInLegend = false;
-    chart.xAxis.label.rotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.data = generateSinData();
     lineSeries.xKey = 'xValue';
@@ -303,7 +310,7 @@ function createNumericLineChart() {
         const step = 0.1;
         let i = -10;
 
-        chart.onLayoutDone = nextFrame;
+        chart.addEventListener('layoutDone', nextFrame);
 
         function nextFrame() {
             data.push({
@@ -315,7 +322,7 @@ function createNumericLineChart() {
             if (i < 10) {
                 i += step;
             } else {
-                chart.onLayoutDone = undefined;
+                chart.removeEventListener('layoutDone', nextFrame);
             }
         }
 
@@ -329,7 +336,7 @@ function createNumericLineChart() {
         const step = 0.1;
         let th = 1;
 
-        chart.onLayoutDone = nextFrame;
+        chart.addEventListener('layoutDone', nextFrame);
 
         function nextFrame() {
             const r = (a + b * th);
@@ -342,7 +349,7 @@ function createNumericLineChart() {
             if (th < 50) {
                 th += step;
             } else {
-                chart.onLayoutDone = undefined;
+                chart.removeEventListener('layoutDone', nextFrame);
             }
         }
 
@@ -359,8 +366,6 @@ function createNumericLineChart() {
     document.body.appendChild(niceCheckboxLabel);
     niceCheckbox.addEventListener('input', (e) => {
         const target = e.target as HTMLInputElement;
-        const xAxis = chart.xAxis;
-        const yAxis = chart.yAxis;
 
         if (xAxis instanceof NumberAxis) {
             xAxis.nice = target.checked;
@@ -377,14 +382,17 @@ function createNumericLineChart() {
 }
 
 function createMultiLineChart() {
-    const chart = new CartesianChart({
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 90;
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.xAxis.label.rotation = 90;
 
     const data = generateMultiValueData(10);
 
@@ -453,7 +461,7 @@ function createMultiLineChart() {
         let i = -10;
         let index = 0;
 
-        chart.onLayoutDone = nextFrame;
+        chart.addEventListener('layoutDone', nextFrame);
 
         function nextFrame() {
             data.push({
@@ -469,7 +477,7 @@ function createMultiLineChart() {
             if (i < 10) {
                 i += step;
             } else {
-                chart.onLayoutDone = undefined;
+                chart.removeEventListener('layoutDone', nextFrame);
             }
         }
 
