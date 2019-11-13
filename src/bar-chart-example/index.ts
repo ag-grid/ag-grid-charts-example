@@ -1,14 +1,16 @@
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
-import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
-import borneo from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
+import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/cartesian/barSeries";
+import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
+import borneo from "@ag-enterprise/grid-charts/src/charts/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
-import { CartesianChart, CartesianChartLayout } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { DropShadow } from "@ag-grid-enterprise/charts/src/charts/scene/dropShadow";
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
+import { CartesianChart, CartesianChartLayout } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
+import { DropShadow } from "@ag-enterprise/grid-charts/src/charts/scene/dropShadow";
+import { Caption } from "@ag-enterprise/grid-charts/src/charts/caption";
+import { ChartAxisPosition } from "@ag-enterprise/grid-charts/src/charts/chart/chartAxis";
+import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
 
 type Datum = {
     category: string,
@@ -112,12 +114,14 @@ function makeChartResizeable(chart: Chart) {
 
 function createColumnChart() {
     const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 0;
+
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart({
-        xAxis,
-        yAxis
-    });
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
@@ -198,16 +202,21 @@ function createColumnChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new CategoryAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+
+    const yAxis = new CategoryAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
 
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
     chart.layout = CartesianChartLayout.Horizontal;
     chart.scene.canvas.element.style.border = '1px solid black';
+    chart.legend.markerType = Circle;
 
     function addSeriesIf() {
         if (!chart.series.length) {
@@ -216,6 +225,7 @@ function createBarChart() {
     }
 
     const barSeries = new BarSeries();
+    barSeries.flipXY = true;
     addSeriesIf();
     barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.xKey = 'category';
