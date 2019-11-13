@@ -7,6 +7,7 @@ import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/ca
 import './app.css';
 import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
 import { ChartAxisPosition } from "@ag-enterprise/grid-charts/src/charts/chart/chartAxis";
+import { Square } from "@ag-enterprise/grid-charts/src/charts/chart/marker/square";
 
 type CategoryDatum = {
     category: string,
@@ -256,6 +257,67 @@ function createCategoryLineChart() {
         lineSeries.xKey = 'category';
         lineSeries.yKey = 'value';
     });
+}
+
+function createTwoVerticalAxesLineChart() {
+    const xAxisBottom = new CategoryAxis();
+    xAxisBottom.position = ChartAxisPosition.Bottom;
+
+    const xAxisTop = new CategoryAxis();
+    xAxisTop.position = ChartAxisPosition.Top;
+
+    const yAxisLeft = new NumberAxis();
+    yAxisLeft.position = ChartAxisPosition.Left;
+    yAxisLeft.gridLength = 0;
+    yAxisLeft.keys = ['y1'];
+
+    const yAxisRight = new NumberAxis();
+    yAxisRight.position = ChartAxisPosition.Right;
+    yAxisRight.keys = ['y2'];
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxisTop, yAxisLeft, yAxisRight];
+    chart.parent = document.body;
+    chart.width = document.body.clientWidth;
+    chart.height = 600;
+
+    const data = [{
+        category: 'A1',
+        y1: 5,
+        y2: 800
+    }, {
+        category: 'A2',
+        y1: 12,
+        y2: 300
+    }, {
+        category: 'A3',
+        y1: 8,
+        y2: 500
+    }, {
+        category: 'A4',
+        y1: 10,
+        y2: 450
+    }];
+
+    const lineSeries1 = new LineSeries();
+    lineSeries1.marker.type = Circle;
+    lineSeries1.marker.enabled = true;
+    lineSeries1.tooltipEnabled = true;
+    lineSeries1.data = data;
+    lineSeries1.xKey = 'category';
+    lineSeries1.yKey = 'y1';
+
+    const lineSeries2 = new LineSeries();
+    lineSeries2.fill = '#57b757';
+    lineSeries2.stroke = '#3d803d';
+    lineSeries2.marker.type = Square;
+    lineSeries2.marker.enabled = true;
+    lineSeries2.tooltipEnabled = true;
+    lineSeries2.data = data;
+    lineSeries2.xKey = 'category';
+    lineSeries2.yKey = 'y2';
+
+    chart.series = [lineSeries1, lineSeries2];
 }
 
 function createNumericLineChart() {
@@ -510,6 +572,7 @@ function createMultiLineChart() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    createTwoVerticalAxesLineChart();
     createCategoryLineChart();
     createNumericLineChart();
     createMultiLineChart();
