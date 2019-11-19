@@ -89,10 +89,9 @@ function createStockTreeMap() {
         }
     };
 
-    const scene = new Scene({
-        width: 1200,
-        height: 800
-    });
+    const scene = new Scene();
+    scene.width = 1200;
+    scene.height = 800;
     scene.parent = document.body;
 
     const rootGroup = new Group();
@@ -188,7 +187,7 @@ function createStockTreeMap() {
             text.textAlign = hasTitle ? 'left' : 'center';
             text.text = isParent ? name.toUpperCase() : name;
 
-            const textBBox = text.getBBox();
+            const textBBox = text.computeBBox();
 
             const hasLabel = isLeaf && textBBox
                 && textBBox.width <= innerNodeWidth
@@ -220,7 +219,7 @@ function createStockTreeMap() {
             text.textAlign = 'center';
             text.text = '+1.43%';
 
-            const textBBox = text.getBBox();
+            const textBBox = text.computeBBox();
             const tickerNode = tickerMap.get(datum.data.name);
 
             const hasLabel = !!tickerNode || false;
@@ -256,10 +255,9 @@ function createOrgTreeMap() {
 
     const data = convertGridTreeData(rowData);
 
-    const scene = new Scene({
-        width: 1200,
-        height: 800
-    });
+    const scene = new Scene();
+    scene.width = 1200;
+    scene.height = 800;
     scene.parent = document.body;
 
     const rootGroup = new Group();
@@ -320,7 +318,7 @@ function createOrgTreeMap() {
             const isParent = !!datum.children;
 
             text.text = datum.data.orgHierarchy;
-            const bbox = text.getBBox();
+            const bbox = text.computeBBox();
             if (bbox) {
                 text.visible = !isRoot && (datum.x1 - datum.x0) - 2 * 2 > bbox.width && (datum.y1 - datum.y0) - 2 * 2 > bbox.height || datum.hasTitle;
             }
