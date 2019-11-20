@@ -216,6 +216,7 @@ function createBarChart() {
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
     barSeries.label.enabled = false;
+    barSeries.flipXY = true;
 
     document.body.appendChild(document.createElement('br'));
 
