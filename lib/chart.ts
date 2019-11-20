@@ -1,4 +1,4 @@
-import { Chart } from "@ag-enterprise/grid-charts/src/charts/chart/chart";
+import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
 
 export function makeChartResizeable(chart: Chart) {
     let startX = 0;

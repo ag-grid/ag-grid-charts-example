@@ -3,12 +3,14 @@ import { Chart } from '@ag-grid-enterprise/charts/src/charts/chart/chart';
 import { GroupedCategoryAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/groupedCategoryAxis';
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 import { NumberAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis';
-import { BarSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/barSeries';
-import { LineSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries';
+import { BarSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries';
+import { LineSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries';
 import { createButton, createSlider } from '../../lib/ui';
 import { CartesianChartLayout } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
 import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
+import { ChartAxisPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chartAxis';
+import { find } from '@ag-grid-enterprise/charts/src/charts/util/array';
 
 type CategoryDatum = {
     category: { labels: string[] },
@@ -80,17 +82,21 @@ function makeChartResizeable(chart: Chart) {
 }
 
 function createCategoryColumnChart() {
-    const chart = new GroupedCategoryChart({
-        xAxis: new GroupedCategoryAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new GroupedCategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.tick.size = 20;
+    xAxis.title = new Caption();
+    xAxis.title.text = 'Cities';
+    xAxis.title.fontSize = 18;
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new GroupedCategoryChart();
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.xAxis.tick.size = 20;
-    chart.xAxis.title = new Caption();
-    chart.xAxis.title.text = 'Cities';
-    chart.xAxis.title.fontSize = 18;
+    chart.axes = [xAxis, yAxis];
     chart.legend.enabled = true;
 
     const barSeries = new BarSeries();
@@ -149,35 +155,39 @@ function createCategoryColumnChart() {
     });
 
     createButton('label grid ON', () => {
-        (chart.xAxis as GroupedCategoryAxis).label.grid = true;
-        chart.xAxis.update();
+        xAxis.label.grid = true;
+        xAxis.update();
     });
     createButton('label grid OFF', () => {
-        (chart.xAxis as GroupedCategoryAxis).label.grid = false;
-        chart.xAxis.update();
+        xAxis.label.grid = false;
+        xAxis.update();
     });
 
     createSlider('label rotation', [0, -45, 45, 90, -90], v => {
-        chart.xAxis.label.rotation = v;
-        chart.xAxis.update();
+        xAxis.label.rotation = v;
+        xAxis.update();
     });
 
     makeChartResizeable(chart);
 }
 
 function createCategoryBarChart() {
-    const chart = new GroupedCategoryChart({
-        xAxis: new NumberAxis(),
-        yAxis: new GroupedCategoryAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.tick.size = 20;
+    xAxis.title = new Caption();
+    xAxis.title.text = 'Cities';
+    xAxis.title.fontSize = 18;
+
+    const yAxis = new GroupedCategoryAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new GroupedCategoryChart();
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
     chart.layout = CartesianChartLayout.Horizontal;
-    chart.xAxis.tick.size = 20;
-    chart.xAxis.title = new Caption();
-    chart.xAxis.title.text = 'Cities';
-    chart.xAxis.title.fontSize = 18;
+    chart.axes = [xAxis, yAxis];
     chart.legend.enabled = true;
 
     const barSeries = new BarSeries();
@@ -212,17 +222,17 @@ function createCategoryBarChart() {
     });
 
     createButton('label grid ON', () => {
-        (chart.yAxis as GroupedCategoryAxis).label.grid = true;
-        chart.yAxis.update();
+        yAxis.label.grid = true;
+        yAxis.update();
     });
     createButton('label grid OFF', () => {
-        (chart.yAxis as GroupedCategoryAxis).label.grid = false;
-        chart.yAxis.update();
+        yAxis.label.grid = false;
+        yAxis.update();
     });
 
     createSlider('label rotation', [0, -45, 45, 90, -90], v => {
-        chart.yAxis.label.rotation = v;
-        chart.yAxis.update();
+        yAxis.label.rotation = v;
+        yAxis.update();
     });
 
     makeChartResizeable(chart);

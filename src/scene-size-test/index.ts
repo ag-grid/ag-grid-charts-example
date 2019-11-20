@@ -16,11 +16,11 @@ function delay() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene({
-        width: 400,
-        height: 400
-    });
+    const scene = new Scene();
+    scene.width = 400;
+    scene.height = 400;
     scene.parent = document.body;
+
     const root = new Group();
 
     const rect = new Rect();

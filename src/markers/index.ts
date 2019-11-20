@@ -10,11 +10,11 @@ import { createSlider } from "../../lib/ui";
 import { pad } from "@ag-grid-enterprise/charts/src/charts/util/time/format/locale";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene({
-        width: 400,
-        height: 100
-    });
+    const scene = new Scene();
+    scene.width = 400;
+    scene.height = 100;
     scene.parent = document.body;
+
     const rootGroup = new Group();
     rootGroup.translationY = 50;
     scene.root = rootGroup;

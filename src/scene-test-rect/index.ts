@@ -4,11 +4,11 @@ import {Rect} from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
 import {FpsCounter} from "@ag-grid-enterprise/charts/src/charts/scene/fpsCounter";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene({
-        width: 800,
-        height: 400
-    });
+    const scene = new Scene();
+    scene.width = 800;
+    scene.height = 400;
     scene.parent = document.body;
+
     const group = new Group();
 
     const n = 1000;

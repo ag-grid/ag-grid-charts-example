@@ -1,5 +1,5 @@
 import { PolarChart } from "@ag-grid-enterprise/charts/src/charts/chart/polarChart";
-import { PieSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/pieSeries";
+import { PieSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/polar/pieSeries";
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 import { createButton } from "../../lib/ui";
 import { toDegrees } from "@ag-grid-enterprise/charts/src/charts/util/angle";
@@ -73,8 +73,8 @@ function renderChart() {
         const x = e.offsetX;
         const y = e.offsetY;
 
-        const dx = x - chart.centerX;
-        const dy = y - chart.centerY;
+        const dx = x - series.centerX;
+        const dy = y - series.centerY;
 
         startSeriesAngle = series.rotation;
         startCursorAngle = Math.atan2(dy, dx);
@@ -86,8 +86,8 @@ function renderChart() {
             const x = e.offsetX;
             const y = e.offsetY;
 
-            const dx = x - chart.centerX;
-            const dy = y - chart.centerY;
+            const dx = x - series.centerX;
+            const dy = y - series.centerY;
 
             const deltaCursorAngle = toDegrees(Math.atan2(dy, dx) - startCursorAngle);
 

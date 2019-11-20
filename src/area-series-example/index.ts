@@ -1,7 +1,7 @@
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/areaSeries";
+import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/areaSeries";
 import { Chart, LegendPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 import { Path } from "@ag-grid-enterprise/charts/src/charts/scene/shape/path";
@@ -16,6 +16,9 @@ import borneo, {
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
+import { BandScale } from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
+import { find } from "@ag-grid-enterprise/charts/src/charts/util/array";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 
 type Datum = {
     category: string,
@@ -190,16 +193,19 @@ function makeNuclearChart() {
     }
 
     const xAxis = new CategoryAxis();
-    xAxis.scale.paddingInner = 1;
-    xAxis.scale.paddingOuter = 0;
+    xAxis.position = ChartAxisPosition.Bottom;
+    (xAxis.scale as BandScale<string>).paddingInner = 1;
+    (xAxis.scale as BandScale<string>).paddingOuter = 0;
     xAxis.label.rotation = 45;
     xAxis.label.fontSize = 10;
     const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
 
-    const chart = new CartesianChart({ xAxis, yAxis });
+    const chart = new CartesianChart();
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
+    chart.axes = [xAxis, yAxis];
 
     chart.title = new Caption();
     chart.title.text = 'US and USSR nuclear stockpiles';
@@ -238,9 +244,12 @@ function makeNuclearChart() {
 
     document.body.appendChild(document.createElement('br'));
     createSlider('skip labels', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], v => {
-        chart.xAxis.label.formatter = params => {
-            return params.index % v === 0 ? params.value : '';
-        };
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.formatter = params => {
+                return params.index % v === 0 ? params.value : '';
+            };
+        }
         chart.performLayout();
     });
 
@@ -294,13 +303,16 @@ function makeNuclearChartWithNumericX() {
     }
 
     const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.nice = false;
     const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
 
-    const chart = new CartesianChart({ xAxis, yAxis });
+    const chart = new CartesianChart();
     chart.parent = document.body;
     chart.width = 1200;
     chart.height = 400;
+    chart.axes = [xAxis, yAxis];
 
     chart.title = new Caption();
     chart.title.text = 'US and USSR nuclear stockpiles';
@@ -340,14 +352,17 @@ function makeNuclearChartWithNumericX() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const xAxis = new CategoryAxis();
-    xAxis.scale.paddingInner = 1;
-    xAxis.scale.paddingOuter = 0;
+    xAxis.position = ChartAxisPosition.Bottom;
+    (xAxis.scale as BandScale<string>).paddingInner = 1;
+    (xAxis.scale as BandScale<string>).paddingOuter = 0;
     const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
 
-    const chart = new CartesianChart({ xAxis, yAxis });
+    const chart = new CartesianChart();
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
+    chart.axes = [xAxis, yAxis];
 
     chart.title = new Caption();
     chart.title.text = 'Area 51 Charts';
@@ -481,8 +496,11 @@ document.addEventListener('DOMContentLoaded', () => {
         areaSeries.xKey = config.xKey;
         areaSeries.yKeys = config.yKeys;
         areaSeries.data = config.data;
-        chart.xAxis.label.rotation = 0;
-        chart.xAxis.update();
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.rotation = 0;
+            xAxis.update();
+        }
     });
 
     createButton('No data', () => {
@@ -534,19 +552,25 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Light theme', () => {
         const labelColor = 'black';
 
-        chart.xAxis.label.color = labelColor;
-        chart.xAxis.gridStyle = [{
-            stroke: 'rgb(219, 219, 219)',
-            lineDash: [4, 2]
-        }];
-        chart.xAxis.update();
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.color = labelColor;
+            xAxis.gridStyle = [{
+                stroke: 'rgb(219, 219, 219)',
+                lineDash: [4, 2]
+            }];
+            xAxis.update();
+        }
 
-        chart.yAxis.label.color = labelColor;
-        chart.yAxis.gridStyle = [{
-            stroke: 'rgb(219, 219, 219)',
-            lineDash: [4, 2]
-        }];
-        chart.yAxis.update();
+        const yAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Left);
+        if (yAxis) {
+            yAxis.label.color = labelColor;
+            yAxis.gridStyle = [{
+                stroke: 'rgb(219, 219, 219)',
+                lineDash: [4, 2]
+            }];
+            yAxis.update();
+        }
 
         chart.legend.labelColor = labelColor;
 
@@ -563,19 +587,25 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Dark theme', () => {
         const labelColor = 'rgb(221, 221, 221)';
 
-        chart.xAxis.label.color = labelColor;
-        chart.xAxis.gridStyle = [{
-            stroke: 'rgb(100, 100, 100)',
-            lineDash: [4, 2]
-        }];
-        chart.xAxis.update();
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.color = labelColor;
+            xAxis.gridStyle = [{
+                stroke: 'rgb(100, 100, 100)',
+                lineDash: [4, 2]
+            }];
+            xAxis.update();
+        }
 
-        chart.yAxis.label.color = labelColor;
-        chart.yAxis.gridStyle = [{
-            stroke: 'rgb(100, 100, 100)',
-            lineDash: [4, 2]
-        }];
-        chart.yAxis.update();
+        const yAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Left);
+        if (yAxis) {
+            yAxis.label.color = labelColor;
+            yAxis.gridStyle = [{
+                stroke: 'rgb(100, 100, 100)',
+                lineDash: [4, 2]
+            }];
+            yAxis.update();
+        }
 
         chart.legend.labelColor = labelColor;
 

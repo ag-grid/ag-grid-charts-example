@@ -1,13 +1,13 @@
-import { CartesianChart } from "@ag-enterprise/grid-charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-enterprise/grid-charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/cartesian/lineSeries";
-import { BarSeries } from "@ag-enterprise/grid-charts/src/charts/chart/series/cartesian/barSeries";
+import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
 
 import './app.css';
-import { Circle } from "@ag-enterprise/grid-charts/src/charts/chart/marker/circle";
-import { ChartAxisPosition } from "@ag-enterprise/grid-charts/src/charts/chart/chartAxis";
-import { Square } from "@ag-enterprise/grid-charts/src/charts/chart/marker/square";
+import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
 
 type CategoryDatum = {
     category: string,
@@ -192,6 +192,7 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
 function createCategoryLineChart() {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
+
     xAxis.label.rotation = 45;
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;

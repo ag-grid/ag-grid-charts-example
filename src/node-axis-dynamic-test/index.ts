@@ -43,10 +43,9 @@ function renderAxes() {
     xScale.paddingInner = 0.1;
     xScale.paddingOuter = 0.3;
 
-    const scene = new Scene({
-        width: chartWidth,
-        height: chartHeight
-    });
+    const scene = new Scene();
+    scene.width = chartWidth;
+    scene.height = chartHeight;
     scene.parent = document.body;
     scene.renderFrameIndex = true;
     const rootGroup = new Group();

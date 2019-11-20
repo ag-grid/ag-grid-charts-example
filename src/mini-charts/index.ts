@@ -25,10 +25,9 @@ export abstract class MiniChart {
     protected readonly padding = 5;
     protected readonly root = new Group();
     protected readonly scene: Scene = (() => {
-        const scene = new Scene({
-            width: this.size,
-            height: this.size
-        });
+        const scene = new Scene()
+        scene.width = this.size;
+        scene.height = this.size;
         scene.root = this.root;
         return scene;
     })();

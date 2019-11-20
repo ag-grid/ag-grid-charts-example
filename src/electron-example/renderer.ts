@@ -1,6 +1,6 @@
 import { remote } from 'electron';
 import borneo from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
 import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
 import { CartesianChart, CartesianChartLayout } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
@@ -9,6 +9,7 @@ import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/num
 import './app.css';
 import { createButton } from "../../lib/ui";
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
+import { ChartAxisPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chartAxis';
 
 const { BrowserWindow } = remote;
 
@@ -125,16 +126,18 @@ function makeChartResizeable(chart: Chart) {
 
 function createColumnChart() {
     const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 0;
     xAxis.title = new Caption();
     xAxis.title.text = 'Beverage';
+
     const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
     yAxis.title = new Caption();
     yAxis.title.text = 'Expenses';
-    const chart = new CartesianChart({
-        xAxis,
-        yAxis
-    });
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
     chart.width = 800;
     chart.height = 500;
     chart.parent = document.body;
@@ -164,17 +167,20 @@ function createColumnChart() {
 }
 
 function createBarChart(document: Document = window.document) {
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new CategoryAxis(),
-        document
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+
+    const yAxis = new CategoryAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart(document);
 
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
     chart.layout = CartesianChartLayout.Horizontal;
     chart.scene.canvas.element.style.border = '1px solid black';
+    chart.axes = [xAxis, yAxis];
 
     function addSeriesIf() {
         if (!chart.series.length) {

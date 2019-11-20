@@ -4,7 +4,7 @@ import * as d3 from "d3";
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/scatterSeries";
+import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/scatterSeries";
 import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
 import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
 import { Diamond } from "@ag-grid-enterprise/charts/src/charts/chart/marker/diamond";
@@ -13,6 +13,7 @@ import { Plus } from "@ag-grid-enterprise/charts/src/charts/chart/marker/plus";
 import { Triangle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/triangle";
 import { Color } from '@ag-grid-enterprise/charts/src/charts/util/color';
 import { makeChartResizeable } from "../../lib/chart";
+import { ChartAxisPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chartAxis';
 
 type Datum = {
     gender: number,
@@ -71,16 +72,19 @@ type Datum = {
 function createHeightWeightGenderChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.formatter = params => params.value + ' cm';
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+    yAxis.label.formatter = params => params.value + ' Kg';
+
+    const chart = new CartesianChart();
     makeChartResizeable(chart);
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;
-    chart.xAxis.label.formatter = params => params.value + ' cm';
-    chart.yAxis.label.formatter = params => params.value + ' Kg';
     chart.title = new Caption();
     chart.title.text = 'Height vs Weight of 507 Individuals';
     chart.title.fontSize = 18;
@@ -193,16 +197,21 @@ function createHeightWeightGenderChart() {
 function createAgeWeightGenderChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.formatter = params => params.value + ' yr';
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+    yAxis.label.formatter = params => params.value + ' Kg';
+
+    const chart = new CartesianChart();
     makeChartResizeable(chart);
     chart.parent = document.body;
     chart.width = 1000;
     chart.height = 600;
-    chart.xAxis.label.formatter = params => params.value + ' yr';
-    chart.yAxis.label.formatter = params => params.value + ' Kg';
+    chart.axes = [xAxis, yAxis];
+
     chart.title = new Caption();
     chart.title.text = 'Age vs Weight of 507 Individuals';
     chart.title.fontSize = 18;

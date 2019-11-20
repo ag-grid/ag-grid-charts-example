@@ -6,10 +6,9 @@ import {toRadians} from "@ag-grid-enterprise/charts/src/charts/util/angle";
 import { areaRadial } from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene({
-        width: 700,
-        height: 900
-    });
+    const scene = new Scene();
+    scene.width = 700;
+    scene.height = 900;
     scene.parent = document.body;
     const rootGroup = new Group();
 

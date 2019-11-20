@@ -1,7 +1,8 @@
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
+import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 
 type CategoryDatum = {
     category: string,
@@ -21,19 +22,21 @@ const categoryData: CategoryDatum[] = [
 
 function createCategoryLineChart() {
     const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart({
-        xAxis,
-        yAxis
-    });
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
     chart.width = document.body.clientWidth;
     chart.height = 600;
     chart.parent = document.body;
+    chart.axes = [xAxis, yAxis];
 
     setTimeout(() => {
         const lineSeries = new LineSeries();
         lineSeries.strokeWidth = 4;
-        chart.xAxis.label.rotation = 45;
+        xAxis.label.rotation = 45;
         chart.addSeries(lineSeries);
         lineSeries.data = categoryData;
         lineSeries.xKey = 'category';

@@ -1,6 +1,6 @@
 import {CartesianChart} from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import {LineSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
+import {LineSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
 
@@ -21,10 +21,11 @@ const data: CategoryDatum[] = [
 ];
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart({
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new CategoryAxis();
+    const yAxis = new NumberAxis();
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
@@ -41,13 +42,14 @@ function createCategoryLineChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart({
-        xAxis: new CategoryAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new CategoryAxis();
+    const yAxis = new NumberAxis();
+
+    const chart = new CartesianChart();
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
+    chart.axes = [xAxis, yAxis];
 
     const lineSeries = new BarSeries();
     lineSeries.strokeWidth = 4;

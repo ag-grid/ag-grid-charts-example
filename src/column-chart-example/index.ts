@@ -1,4 +1,4 @@
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
 import { Chart, LegendPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 import borneo, {
@@ -13,6 +13,8 @@ import { createButton, createSlider } from "../../lib/ui";
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { find } from "@ag-grid-enterprise/charts/src/charts/util/array";
 
 type Datum = {
     category: string,
@@ -154,15 +156,17 @@ function makeChartResizeable(chart: Chart) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 0;
+
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart({
-        xAxis,
-        yAxis
-    });
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
     chart.width = 800;
     chart.height = 500;
     chart.parent = document.body;
+    chart.axes = [xAxis, yAxis];
 
     chart.title = new Caption();
     chart.title.text = 'Beverage Expenses';
@@ -233,7 +237,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const config = generateData();
         barSeries.yNames = []; // don't show bar labels
         barSeries.grouped = false;
-        chart.xAxis.label.rotation = 45;
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.rotation = 45;
+        }
         barSeries.xKey = config.xKey;
         barSeries.yKeys = config.yKeys;
         barSeries.data = config.data;
@@ -246,8 +253,12 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.yKeys = config.yKeys;
         barSeries.data = config.data;
         barSeries.grouped = true;
-        chart.xAxis.label.rotation = 0;
-        chart.xAxis.update();
+
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.rotation = 0;
+            xAxis.update();
+        }
     });
 
     createButton('No data', () => {
@@ -303,19 +314,25 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.fills = flat.fills;
     });
     createButton('Light theme', () => {
-        chart.xAxis.label.color = 'black';
-        chart.xAxis.gridStyle = [{
-            stroke: 'rgb(219, 219, 219)',
-            lineDash: [4, 2]
-        }];
-        chart.xAxis.update();
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.color = 'black';
+            xAxis.gridStyle = [{
+                stroke: 'rgb(219, 219, 219)',
+                lineDash: [4, 2]
+            }];
+            xAxis.update();
+        }
 
-        chart.yAxis.label.color = 'black';
-        chart.yAxis.gridStyle = [{
-            stroke: 'rgb(219, 219, 219)',
-            lineDash: [4, 2]
-        }];
-        chart.yAxis.update();
+        const yAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (yAxis) {
+            yAxis.label.color = 'black';
+            yAxis.gridStyle = [{
+                stroke: 'rgb(219, 219, 219)',
+                lineDash: [4, 2]
+            }];
+            yAxis.update();
+        }
 
         chart.legend.labelColor = 'black';
 
@@ -331,19 +348,25 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Dark theme', () => {
         const labelColor = 'rgb(221, 221, 221)';
 
-        chart.xAxis.label.color = labelColor;
-        chart.xAxis.gridStyle = [{
-            stroke: 'rgb(100, 100, 100)',
-            lineDash: [4, 2]
-        }];
-        chart.xAxis.update();
+        const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
+        if (xAxis) {
+            xAxis.label.color = labelColor;
+            xAxis.gridStyle = [{
+                stroke: 'rgb(100, 100, 100)',
+                lineDash: [4, 2]
+            }];
+            xAxis.update();
+        }
 
-        chart.yAxis.label.color = labelColor;
-        chart.yAxis.gridStyle = [{
-            stroke: 'rgb(100, 100, 100)',
-            lineDash: [4, 2]
-        }];
-        chart.yAxis.update();
+        const yAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Left);
+        if (yAxis) {
+            yAxis.label.color = labelColor;
+            yAxis.gridStyle = [{
+                stroke: 'rgb(100, 100, 100)',
+                lineDash: [4, 2]
+            }];
+            yAxis.update();
+        }
 
         chart.legend.labelColor = labelColor;
 

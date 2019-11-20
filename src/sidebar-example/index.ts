@@ -1,12 +1,6 @@
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
-import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import borneo, {
-    bright,
-    flat,
-    material,
-    pastel,
-} from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
+import { material } from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
@@ -14,6 +8,7 @@ import * as d3 from "d3";
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 
 function generateData(n = 50, yKeyCount = 10) {
     const data: any[] = [];
@@ -46,12 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(dialogDiv);
 
     const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 0;
+
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart({
-        xAxis,
-        yAxis
-    });
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
     chart.width = 800;
     chart.height = 500;
     chart.parent = chartContainer;
@@ -59,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.title.text = 'This is a sliding panel test';
     chart.subtitle = new Caption();
     chart.subtitle.text = 'Nothing else to see here';
+    chart.axes = [xAxis, yAxis];
 
     panelDiv.style.flexGrow = '1';
     panelDiv.style.display = 'flex';

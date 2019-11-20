@@ -5,7 +5,8 @@ import { Scene } from "@ag-grid-enterprise/charts/src/charts/scene/scene";
 import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
+import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 
 document.addEventListener('DOMContentLoaded', () => {
     // testConvert();
@@ -62,10 +63,9 @@ function testNice() {
 }
 
 function createScene() {
-    const scene = new Scene({
-        width: 400,
-        height: 1200
-    });
+    const scene = new Scene();
+    scene.width = 400;
+    scene.height = 1200;
     scene.parent = document.body;
     const root = new Group();
 
@@ -130,15 +130,18 @@ function testNiceAxis(root: Group) {
 }
 
 function createLineChart() {
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+
+    const yAxis = new NumberAxis();
+    (yAxis as any).scale = new LogScale();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
     chart.width = 800;
     chart.height = 1000;
-    const yLogScale = new LogScale();
+    chart.axes = [xAxis, yAxis];
 
-    (chart.yAxis as any).scale = yLogScale;
     chart.parent = document.body;
 
     const series = new LineSeries();

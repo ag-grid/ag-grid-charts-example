@@ -24,10 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function testClipRect() {
-    const scene = new Scene({
-        width: 500,
-        height: 500
-    });
+    const scene = new Scene();
+    scene.width = 500;
+    scene.height = 500;
     scene.parent = document.body;
     const rootGroup = new Group();
 
@@ -93,10 +92,9 @@ function testClipRect() {
 }
 
 function testClipRectSelection() {
-    const scene = new Scene({
-        width: 500,
-        height: 500
-    });
+    const scene = new Scene();
+    scene.width = 500;
+    scene.height = 500;
     scene.parent = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;

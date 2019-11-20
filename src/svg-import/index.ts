@@ -5,7 +5,6 @@ import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
 import { Node } from "@ag-grid-enterprise/charts/src/charts/scene/node";
 import { createButton } from "../../lib/ui";
 import { Shape } from "@ag-grid-enterprise/charts/src/charts/scene/shape/shape";
-import { color } from "d3";
 
 function importSvg(scene: Scene, svg: string) {
     const parser = new DOMParser();
@@ -71,7 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const root = new Group();
     root.translationX = 200;
     root.translationY = 200;
-    const scene = new Scene({width, height});
+    const scene = new Scene();
+    scene.width = width;
+    scene.height = height;
     scene.root = root;
     scene.parent = document.body;
 

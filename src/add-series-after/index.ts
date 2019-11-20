@@ -2,8 +2,9 @@ import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/areaSeries";
+import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/areaSeries";
 import { createButton } from "../../lib/ui";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 
 const data = [
     { label: 'L1', v1: 1, v2: 2, v3: 5, v4: 4, v5: 5 },
@@ -13,14 +14,15 @@ const data = [
 
 document.addEventListener('DOMContentLoaded', () => {
     const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     const yAxis = new NumberAxis();
-    const chart = new CartesianChart({
-        xAxis,
-        yAxis
-    });
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
     chart.width = 800;
     chart.height = 600;
     chart.parent = document.body;
+    chart.axes = [xAxis, yAxis];
 
     const series1 = new AreaSeries();
     series1.xKey = 'label';

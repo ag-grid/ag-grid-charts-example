@@ -1,4 +1,4 @@
-import { PieSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/pieSeries';
+import { PieSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/polar/pieSeries';
 import { Chart, LegendPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chart';
 import { Padding } from '@ag-grid-enterprise/charts/src/charts/util/padding';
 import { Caption } from '@ag-grid-enterprise/charts/src/charts/caption';
@@ -311,7 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
         (function step() {
             pieSeries.rotation -= rotationIncrement;
             pieSeries2.rotation += rotationIncrement;
-            chart.onLayoutDone = rotationIncrement ? step : undefined;
+            if (rotationIncrement) {
+                chart.addEventListener('layoutDone', step);
+            }
         })();
     });
 

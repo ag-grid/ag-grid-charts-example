@@ -3,11 +3,11 @@ import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
 import {Path} from "@ag-grid-enterprise/charts/src/charts/scene/shape/path";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene({
-        width: 1000,
-        height: 400
-    });
+    const scene = new Scene();
+    scene.width = 1000;
+    scene.height = 400;
     scene.parent = document.body;
+
     const rootGroup = new Group();
     const pimpGroup = new Group();
     const innerGroup = new Group();

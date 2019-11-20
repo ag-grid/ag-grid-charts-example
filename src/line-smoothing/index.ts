@@ -28,10 +28,9 @@ export function interpolateBasis(values: number[]) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene({
-        width: 1200,
-        height: 900
-    });
+    const scene = new Scene();
+    scene.width = 1200;
+    scene.height = 900;
     scene.parent = document.body;
     const rootGroup = new Group();
 

@@ -4,26 +4,29 @@ import { TimeAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/timeA
 import { CartesianChart } from '@ag-grid-enterprise/charts/src/charts/chart/cartesianChart';
 import month from '@ag-grid-enterprise/charts/src/charts/util/time/month';
 import { NumberAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis';
-import { OHLCSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/ohlc/ohlcSeries";
+import { OHLCSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/ohlc/ohlcSeries";
 import { makeChartResizeable } from '../../lib/chart';
-import { LineSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries';
+import { LineSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries';
 import { createButton } from '../../lib/ui';
 import { Square } from '@ag-grid-enterprise/charts/src/charts/chart/marker/square';
 import { locale } from '@ag-grid-enterprise/charts/src/charts/util/time/format/defaultLocale';
 import { CategoryAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis';
-import { BarSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/barSeries';
+import { BarSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries';
+import { ChartAxisPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chartAxis';
 
 function createChart() {
     const xAxis = new TimeAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.tick.count = month;
     xAxis.tick.format = '%m-%Y';
-    // xAxis.label.rotation = 45;
-    const chart = new CartesianChart({
-        xAxis,
-        yAxis: new NumberAxis()
-    });
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
     chart.width = 1600;
     chart.height = 800;
+    chart.axes = [xAxis, yAxis];
 
     const dateFormatter = locale.format('%d %b, %Y');
     const lineSeries = new LineSeries();
@@ -74,14 +77,18 @@ function createChart() {
 
 function createVolumeChart() {
     const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = -90;
+
     const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
     // xAxis.tick.count = month;
     // xAxis.tick.format = '%m-%Y';
     // xAxis.label.rotation = 45;
-    const chart = new CartesianChart({ xAxis, yAxis });
+    const chart = new CartesianChart();
     chart.width = 1600;
     chart.height = 200;
+    chart.axes = [xAxis, yAxis];
 
     const barSeries = new BarSeries();
     barSeries.xKey = 'date';

@@ -1,5 +1,5 @@
 import {PolarChart} from "@ag-grid-enterprise/charts/src/charts/chart/polarChart";
-import {PieSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/pieSeries";
+import {PieSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/polar/pieSeries";
 import {DropShadow} from "@ag-grid-enterprise/charts/src/charts/scene/dropShadow";
 import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
 

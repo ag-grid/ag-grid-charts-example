@@ -26,10 +26,9 @@ function shortDelay() {
 }
 
 function renderVerticalAxesNormalLabels() {
-    const scene = new Scene({
-        width: 700,
-        height: 500
-    });
+    const scene = new Scene();
+    scene.width = 700;
+    scene.height = 500;
     scene.parent = document.body;
     const root = new Group();
 
@@ -42,10 +41,9 @@ function renderVerticalAxesNormalLabels() {
 }
 
 function renderVerticalAxesRotatedLabels() {
-    const scene = new Scene({
-        width: 700,
-        height: 500
-    });
+    const scene = new Scene();
+    scene.width = 700;
+    scene.height = 500;
     scene.parent = document.body;
     const root = new Group();
 
@@ -58,11 +56,11 @@ function renderVerticalAxesRotatedLabels() {
 }
 
 function renderHorizontalAxes() {
-    const scene = new Scene({
-        width: 900,
-        height: 500
-    });
+    const scene = new Scene();
+    scene.width = 900;
+    scene.height = 500;
     scene.parent = document.body;
+
     const root = new Group();
 
     bottomCategoryAxis(root);
@@ -79,11 +77,11 @@ function renderHorizontalAxes() {
 }
 
 function testAutoFlippingParallelMirroredLabels() {
-    const scene = new Scene({
-        width: 900,
-        height: 900
-    });
+    const scene = new Scene();
+    scene.width = 900;
+    scene.height = 900;
     scene.parent = document.body;
+
     const root = new Group();
 
     const title = new Text();
@@ -141,11 +139,11 @@ function testAutoFlippingParallelMirroredLabels() {
 }
 
 function testAutoFlippingPerpendicularMirroredLabels() {
-    const scene = new Scene({
-        width: 900,
-        height: 900
-    });
+    const scene = new Scene();
+    scene.width = 900;
+    scene.height = 900;
     scene.parent = document.body;
+
     const root = new Group();
 
     const title = new Text();
@@ -204,11 +202,11 @@ function testAutoFlippingPerpendicularMirroredLabels() {
 }
 
 function testRotationFixedPerpendicularMirroredLabels() {
-    const scene = new Scene({
-        width: 900,
-        height: 900
-    });
+    const scene = new Scene();
+    scene.width = 900;
+    scene.height = 900;
     scene.parent = document.body;
+
     const root = new Group();
 
     const title = new Text();
@@ -266,11 +264,11 @@ function testRotationFixedPerpendicularMirroredLabels() {
 }
 
 function testRotationFixedParallelMirroredLabels() {
-    const scene = new Scene({
-        width: 900,
-        height: 900
-    });
+    const scene = new Scene();
+    scene.width = 900;
+    scene.height = 900;
     scene.parent = document.body;
+
     const root = new Group();
 
     const title = new Text();
@@ -335,8 +333,11 @@ function testRadialGrid() {
     const centerY = height / 2;
     const radius = Math.min(width, height) / 2 - 50;
 
-    const scene = new Scene({width, height});
+    const scene = new Scene();
+    scene.width = width;
+    scene.height = height;
     scene.parent = document.body;
+
     const root = new Group();
 
     const title = new Text();

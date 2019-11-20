@@ -5,6 +5,7 @@ import {CategoryAxis} from "@ag-grid-enterprise/charts/src/charts/chart/axis/cat
 import {NumberAxis} from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
 import {BarSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
 import {LineSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 
 function createPieChart() {
     const chart = new PolarChart();
@@ -17,11 +18,15 @@ function createPieChart() {
 }
 
 function createBarChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const xAxis = new CategoryAxis();
+    xAxis.position = 'bottom';
+
+    const yAxis = new NumberAxis();
+    yAxis.position = 'left';
+
+    const chart = new CartesianChart();
     chart.parent = document.body;
+    chart.axes = [xAxis, yAxis];
 
     const series = new BarSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];
@@ -31,11 +36,15 @@ function createBarChart() {
 }
 
 function createLineChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
+    const xAxis = new CategoryAxis();
+    xAxis.position = 'bottom';
+
+    const yAxis = new NumberAxis();
+    yAxis.position = 'left';
+
+    const chart = new CartesianChart();
     chart.parent = document.body;
+    chart.axes = [xAxis, yAxis];
 
     const series = new LineSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];

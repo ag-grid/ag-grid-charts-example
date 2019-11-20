@@ -1,6 +1,6 @@
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
+import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 import borneo from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
 import { linearRegression } from "@ag-grid-enterprise/charts/src/charts/util/stat";
@@ -8,7 +8,8 @@ import { data as timeData } from './data';
 
 import { createButton } from "../../lib/ui";
 import * as d3 from 'd3';
-import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/scatterSeries";
+import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/scatterSeries";
+import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 
 type Datum = {
     x: number,
@@ -16,13 +17,17 @@ type Datum = {
 };
 
 function createChart(data: Datum[]) {
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    xAxis.label.formatter = params => new Date(params.value).toDateString();
 
-    chart.xAxis.label.rotation = 45;
-    chart.xAxis.label.formatter = params => new Date(params.value).toDateString();
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+
+    chart.axes = [xAxis, yAxis];
 
     chart.parent = document.body;
     chart.width = 800;
@@ -112,15 +117,19 @@ function createChart(data: Datum[]) {
 }
 
 function createTimeChart() {
-    const chart = new CartesianChart({
-        xAxis: new NumberAxis(),
-        yAxis: new NumberAxis()
-    });
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    xAxis.label.formatter = params => new Date(params.value).toDateString();
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
 
     chart.title = new Caption();
     chart.title.text = 'Number axis time chart';
-    chart.xAxis.label.rotation = 45;
-    chart.xAxis.label.formatter = params => new Date(params.value).toDateString();
 
     chart.parent = document.body;
     chart.width = 800;
