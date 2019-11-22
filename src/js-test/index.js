@@ -1,11 +1,10 @@
-import {PolarChart} from "@ag-grid-enterprise/charts/src/charts/chart/polarChart";
-import {PieSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/pieSeries";
-import {CartesianChart} from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import {CategoryAxis} from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import {NumberAxis} from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import {BarSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/barSeries";
-import {LineSeries} from "@ag-grid-enterprise/charts/src/charts/chart/series/lineSeries";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { PolarChart } from "@ag-grid-enterprise/charts/src/charts/chart/polarChart";
+import { PieSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/polar/pieSeries";
+import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
+import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
+import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
+import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
+import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
 
 function createPieChart() {
     const chart = new PolarChart();

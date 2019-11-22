@@ -49,6 +49,7 @@ const moduleExports = examples.map(example => {
             path: join(distPath, example.name),
             filename: 'app.bundle.js'
         },
+        stats: 'errors-only',
         watch: hasActiveExample,
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.json']
@@ -85,7 +86,7 @@ const moduleExports = examples.map(example => {
             new HtmlWebpackPlugin({
                 filename: 'index.html'
             }),
-        ]
+        ],
     };
 });
 
