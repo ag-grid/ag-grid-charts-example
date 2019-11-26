@@ -11,6 +11,7 @@ import { DropShadow } from "@ag-grid-enterprise/charts/src/charts/scene/dropShad
 import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
 import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
+import { ColumnSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/columnSeries";
 
 type Datum = {
     category: string,
@@ -139,7 +140,7 @@ function createColumnChart() {
         }
     }
 
-    const barSeries = new BarSeries();
+    const barSeries = new ColumnSeries();
     addSeriesIf();
     barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.xKey = 'category';
