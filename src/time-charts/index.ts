@@ -42,11 +42,13 @@ function makeChartResizeable(chart: Chart) {
 
 function createTimeChart() {
     const xAxis = new TimeAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
     xAxis.tick.count = month.every(6);
     xAxis.tick.format = '%b %Y';
 
     const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
     chart.parent = document.body;
@@ -56,6 +58,8 @@ function createTimeChart() {
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.marker.type = Circle;
+    scatterSeries.marker.fill = 'red';
+    scatterSeries.marker.stroke = 'black';
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
@@ -69,11 +73,13 @@ function createTimeChart() {
 
 function createTimeChart2() {
     const xAxis = new TimeAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
     xAxis.tick.count = year.every(2);
     xAxis.tick.format = '%Y';
 
     const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
     chart.parent = document.body;
@@ -83,6 +89,8 @@ function createTimeChart2() {
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.marker.type = Circle;
+    scatterSeries.marker.fill = 'red';
+    scatterSeries.marker.stroke = 'black';
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
@@ -105,13 +113,15 @@ function createTimeChart3() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 600;
+    chart.axes = [xAxis, yAxis];
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.marker.type = Circle;
+    scatterSeries.marker.fill = 'red';
+    scatterSeries.marker.stroke = 'black';
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
@@ -141,6 +151,8 @@ function createComboTimeChart() {
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.marker.type = Circle;
+    scatterSeries.marker.fill = 'red';
+    scatterSeries.marker.stroke = 'black';
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
@@ -185,13 +197,15 @@ function createCustomLocaleTimeChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 600;
+    chart.axes = [xAxis, yAxis];
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.marker.type = Circle;
+    scatterSeries.marker.fill = 'red';
+    scatterSeries.marker.stroke = 'black';
     scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
