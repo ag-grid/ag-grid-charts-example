@@ -2,7 +2,7 @@ import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cart
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
 import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
+import { ColumnSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/columnSeries";
 
 import './app.css';
 import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
@@ -455,14 +455,15 @@ function createMultiLineChart() {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 90;
+
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.axes = [xAxis, yAxis];
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
+    chart.axes = [xAxis, yAxis];
 
     const data = generateMultiValueData(10);
 
@@ -487,23 +488,23 @@ function createMultiLineChart() {
     lineSeries3.xKey = 'category';
     lineSeries3.yKey = 'value3';
 
-    const barSeries = new BarSeries();
-    barSeries.fills = ['#41a9c9'];
-    barSeries.xKey = 'category';
-    barSeries.yKeys = ['value3'];
+    const columnSeries = new ColumnSeries();
+    columnSeries.fills = ['#41a9c9'];
+    columnSeries.xKey = 'category';
+    columnSeries.yKeys = ['value3'];
 
     // Both approaches are valid here:
-    // chart.addSeries(barSeries);
+    // chart.addSeries(columnSeries);
     // chart.addSeries(lineSeries1);
     // chart.addSeries(lineSeries2);
     // chart.addSeries(lineSeries3);
 
     chart.series = [
-        barSeries,
+        columnSeries,
         lineSeries1,
         lineSeries2,
         lineSeries3
-    ] as any[]; // TODO
+    ];
 
     chart.data = data;
 
@@ -555,7 +556,7 @@ function createMultiLineChart() {
     });
 
     createButton('Remove the bar series', () => {
-        if (chart.removeSeries(barSeries)) {
+        if (chart.removeSeries(columnSeries)) {
             console.log('The bar series was removed.');
         } else {
             console.log('No series removed. The chart does not contain the given series.');
@@ -563,7 +564,7 @@ function createMultiLineChart() {
     });
 
     createButton('Add the bar series back', () => {
-        if (chart.addSeries(barSeries)) {
+        if (chart.addSeries(columnSeries)) {
             console.log('Bar series was successfully added.');
         } else {
             console.log('Could not add bar series.');
@@ -571,7 +572,7 @@ function createMultiLineChart() {
     });
 
     createButton('Insert bar series before line series', () => {
-        if (chart.addSeries(barSeries, lineSeries1)) {
+        if (chart.addSeries(columnSeries, lineSeries1)) {
             console.log('Bar series was successfully inserted.');
         } else {
             console.log('Could not insert bar series.');
