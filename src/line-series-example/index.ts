@@ -213,7 +213,7 @@ function createCategoryLineChart() {
         if (params.datum[params.xKey] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }
-        return '<div class="content"><strong>Value: </strong>' + params.datum[params.yKey].toString() + '</div>';
+        return '<div class="content"><strong>Value: </strong>' + String(params.datum[params.yKey]) + '</div>';
     };
     lineSeries.data = categoryData;
     lineSeries.xKey = 'category';
