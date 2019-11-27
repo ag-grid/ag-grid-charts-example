@@ -8,6 +8,7 @@ import './app.css';
 import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
 import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
 import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
+import { makeChartResizeable } from "../../lib/chart";
 
 type CategoryDatum = {
     category: string,
@@ -261,23 +262,27 @@ function createCategoryLineChart() {
 }
 
 function createTwoVerticalAxesLineChart() {
-    const xAxisBottom = new CategoryAxis();
-    xAxisBottom.position = ChartAxisPosition.Bottom;
-
     const xAxisTop = new CategoryAxis();
     xAxisTop.position = ChartAxisPosition.Top;
 
+    const xAxisBottom = new CategoryAxis();
+    xAxisBottom.position = ChartAxisPosition.Bottom;
+    xAxisBottom.linkedTo = xAxisTop;
+
     const yAxisLeft = new NumberAxis();
     yAxisLeft.position = ChartAxisPosition.Left;
-    yAxisLeft.gridLength = 0;
+    yAxisLeft.gridStyle = [];
     yAxisLeft.keys = ['y1'];
 
     const yAxisRight = new NumberAxis();
     yAxisRight.position = ChartAxisPosition.Right;
+    yAxisRight.gridStyle = [{
+        stroke: '#c2c3c2'
+    }];
     yAxisRight.keys = ['y2'];
 
     const chart = new CartesianChart();
-    chart.axes = [xAxisTop, yAxisLeft, yAxisRight];
+    chart.axes = [xAxisTop, xAxisBottom, yAxisLeft, yAxisRight];
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
@@ -319,6 +324,8 @@ function createTwoVerticalAxesLineChart() {
     lineSeries2.yKey = 'y2';
 
     chart.series = [lineSeries1, lineSeries2];
+
+    makeChartResizeable(chart);
 }
 
 function createNumericLineChart() {
