@@ -39,7 +39,7 @@ function createChart(data: Datum[]) {
     const scatterSeries = new ScatterSeries();
     scatterSeries.title = 'Price Data';
     // scatterSeries.marker = true;
-    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.strokeWidth = 0;
     // scatterSeries.showInLegend = false;
     scatterSeries.marker.size = 2;
     scatterSeries.data = data;
@@ -136,7 +136,7 @@ function createTimeChart() {
     chart.height = 600;
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.marker.strokeWidth = 0;
+    scatterSeries.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timeData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';

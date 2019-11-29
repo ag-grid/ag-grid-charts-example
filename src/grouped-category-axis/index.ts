@@ -108,14 +108,14 @@ function createCategoryColumnChart() {
 
     const lineSeries = new LineSeries();
     lineSeries.marker.type = Circle;
-    lineSeries.marker.fill = 'rgba(227,111,106,0.61)';
+    lineSeries.fill = 'rgba(227,111,106,0.61)';
     lineSeries.data = categoryData;
     lineSeries.xKey = 'category';
     lineSeries.yKey = 'value';
 
     const lineSeries2 = new LineSeries();
     lineSeries2.marker.type = Square;
-    lineSeries2.marker.fill = 'rgba(123,145,222,0.61)';
+    lineSeries2.fill = 'rgba(123,145,222,0.61)';
     lineSeries2.data = categoryData;
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'value2';

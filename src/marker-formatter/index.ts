@@ -7,7 +7,6 @@ import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cart
 import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
 import { Diamond } from "@ag-grid-enterprise/charts/src/charts/chart/marker/diamond";
 import { Plus } from "@ag-grid-enterprise/charts/src/charts/chart/marker/plus";
-import { createButton } from "../../lib/ui";
 import { makeChartResizeable } from "../../lib/chart";
 
 function createChart() {
@@ -86,13 +85,6 @@ function createChart() {
     chart.addSeries(scatterSeries);
 
     makeChartResizeable(chart);
-
-    createButton('remove area series marker fill', () => {
-        areaSeries.marker.fill = undefined; // should now come from series.fill(s)
-    });
-    createButton('remove area series marker stroke', () => {
-        areaSeries.marker.stroke = undefined; // should now come from series.stroke(s)
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
