@@ -44,8 +44,8 @@ function createTimeChart() {
     const xAxis = new TimeAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
+    xAxis.label.format = '%b %Y';
     xAxis.tick.count = month.every(6);
-    xAxis.tick.format = '%b %Y';
 
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
@@ -57,10 +57,10 @@ function createTimeChart() {
     chart.axes = [xAxis, yAxis];
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.fill = 'red';
+    scatterSeries.stroke = 'black';
+    scatterSeries.strokeWidth = 0;
     scatterSeries.marker.type = Circle;
-    scatterSeries.marker.fill = 'red';
-    scatterSeries.marker.stroke = 'black';
-    scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
@@ -75,8 +75,8 @@ function createTimeChart2() {
     const xAxis = new TimeAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
+    xAxis.label.format = '%Y';
     xAxis.tick.count = year.every(2);
-    xAxis.tick.format = '%Y';
 
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
@@ -88,10 +88,10 @@ function createTimeChart2() {
     chart.axes = [xAxis, yAxis];
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.fill = 'red';
+    scatterSeries.stroke = 'black';
+    scatterSeries.strokeWidth = 0;
     scatterSeries.marker.type = Circle;
-    scatterSeries.marker.fill = 'red';
-    scatterSeries.marker.stroke = 'black';
-    scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
@@ -106,8 +106,8 @@ function createTimeChart3() {
     const xAxis = new TimeAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
+    xAxis.label.format = 'Rob %H:%M:%S';
     xAxis.tick.count = second.every(30);
-    xAxis.tick.format = 'Rob %H:%M:%S';
 
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
@@ -120,10 +120,10 @@ function createTimeChart3() {
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.marker.type = Circle;
-    scatterSeries.marker.fill = 'red';
-    scatterSeries.marker.stroke = 'black';
-    scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 8;
+    scatterSeries.fill = 'red';
+    scatterSeries.stroke = 'black';
+    scatterSeries.strokeWidth = 0;
     scatterSeries.data = minuteData1;
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -137,8 +137,8 @@ function createComboTimeChart() {
     const xAxis = new TimeAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
+    xAxis.label.format = '%H:%M:%S';
     xAxis.tick.count = second.every(30);
-    xAxis.tick.format = '%H:%M:%S';
 
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
@@ -150,10 +150,10 @@ function createComboTimeChart() {
     chart.axes = [xAxis, yAxis];
 
     const scatterSeries = new ScatterSeries();
+    scatterSeries.fill = 'red';
+    scatterSeries.stroke = 'black';
+    scatterSeries.strokeWidth = 0;
     scatterSeries.marker.type = Circle;
-    scatterSeries.marker.fill = 'red';
-    scatterSeries.marker.stroke = 'black';
-    scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
     scatterSeries.xKey = 'x';
@@ -162,8 +162,8 @@ function createComboTimeChart() {
     const lineSeries = new LineSeries();
     lineSeries.fill = 'orange';
     lineSeries.stroke = 'black';
+    lineSeries.strokeWidth = 0;
     lineSeries.marker.type = Circle;
-    lineSeries.marker.strokeWidth = 0;
     lineSeries.marker.size = 8;
     lineSeries.data = minuteData2;
     lineSeries.xKey = 'x';
@@ -190,8 +190,8 @@ function createCustomLocaleTimeChart() {
     const xAxis = new TimeAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = -90;
+    xAxis.label.format = '%A, %d %B, %Y';
     xAxis.tick.count = year;
-    xAxis.tick.format = '%A, %d %B, %Y';
 
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
@@ -204,10 +204,10 @@ function createCustomLocaleTimeChart() {
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.marker.type = Circle;
-    scatterSeries.marker.fill = 'red';
-    scatterSeries.marker.stroke = 'black';
-    scatterSeries.marker.strokeWidth = 0;
     scatterSeries.marker.size = 2;
+    scatterSeries.fill = 'red';
+    scatterSeries.stroke = 'black';
+    scatterSeries.strokeWidth = 0;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -233,8 +233,8 @@ function createRealTimeChart() {
     const xAxis = new TimeAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
+    xAxis.label.format = '%H:%M:%S';
     xAxis.tick.count = second;
-    xAxis.tick.format = '%H:%M:%S';
 
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
@@ -249,8 +249,8 @@ function createRealTimeChart() {
     const lineSeries = new LineSeries();
     lineSeries.showInLegend = false;
     lineSeries.marker.type = Circle;
-    lineSeries.marker.strokeWidth = 0;
     lineSeries.marker.size = 8;
+    lineSeries.strokeWidth = 0;
     lineSeries.data = data;
     lineSeries.xKey = 'x';
     lineSeries.yKey = 'y';

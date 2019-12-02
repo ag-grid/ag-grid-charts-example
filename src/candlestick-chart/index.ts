@@ -18,7 +18,7 @@ function createChart() {
     const xAxis = new TimeAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.tick.count = month;
-    xAxis.tick.format = '%m-%Y';
+    xAxis.label.format = '%m-%Y';
 
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
@@ -83,7 +83,7 @@ function createVolumeChart() {
     const yAxis = new NumberAxis();
     yAxis.position = ChartAxisPosition.Left;
     // xAxis.tick.count = month;
-    // xAxis.tick.format = '%m-%Y';
+    // xAxis.label.format = '%m-%Y';
     // xAxis.label.rotation = 45;
     const chart = new CartesianChart();
     chart.width = 1600;
