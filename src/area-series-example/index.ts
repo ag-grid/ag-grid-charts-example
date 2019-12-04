@@ -442,7 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
     areaSeries.data = data;
     areaSeries.fills = material.fills;
     areaSeries.tooltipEnabled = true;
-    areaSeries.marker.enabled = true;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -607,6 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis.update();
         }
 
+        chart.background.fill = '#1e1e1e';
         chart.legend.labelColor = labelColor;
 
         if (chart.title) {
@@ -647,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
         areaSeries.normalizedTo = v;
     });
     createSlider('marker size', [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26], v => {
+        areaSeries.marker.enabled = true;
         areaSeries.marker.size = v;
     });
 
