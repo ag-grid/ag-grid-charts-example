@@ -185,7 +185,8 @@ function createCategoryBarChart() {
     const chart = new GroupedCategoryChart();
     chart.parent = document.body;
     chart.width = document.body.clientWidth;
-    chart.height = 600;
+    chart.height = 1000;
+    chart.padding.left = 60;
     chart.layout = CartesianChartLayout.Horizontal;
     chart.axes = [xAxis, yAxis];
     chart.legend.enabled = true;
@@ -235,10 +236,15 @@ function createCategoryBarChart() {
         yAxis.update();
     });
 
+    createSlider('label padding', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25], v => {
+        yAxis.label.padding = v;
+        yAxis.update();
+    });
+
     makeChartResizeable(chart);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    createCategoryColumnChart();
     createCategoryBarChart();
+    createCategoryColumnChart();
 });
