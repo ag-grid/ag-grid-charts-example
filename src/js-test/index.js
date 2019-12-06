@@ -3,11 +3,13 @@ import { PieSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/po
 import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
 import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
+import { ColumnSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/columnSeries";
 import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
+import {createButton} from "../../lib/ui";
 
 function createPieChart() {
     const chart = new PolarChart();
+    chart.size = [400, 300];
     chart.parent = document.body;
 
     const series = new PieSeries();
@@ -24,10 +26,11 @@ function createBarChart() {
     yAxis.position = 'left';
 
     const chart = new CartesianChart();
+    chart.size = [400, 300];
     chart.parent = document.body;
     chart.axes = [xAxis, yAxis];
 
-    const series = new BarSeries();
+    const series = new ColumnSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];
     series.xKey = 'x';
     series.yKeys = ['y'];
@@ -42,6 +45,7 @@ function createLineChart() {
     yAxis.position = 'left';
 
     const chart = new CartesianChart();
+    chart.size = [400, 300];
     chart.parent = document.body;
     chart.axes = [xAxis, yAxis];
 
@@ -52,8 +56,95 @@ function createLineChart() {
     chart.series = [series];
 }
 
+function createFirstChartExample() {
+    const peopleData = [{
+        name: 'Claire',
+        theater: 25,
+        cinema: 10
+
+    }, {
+        name: 'John',
+        theater: 11,
+        cinema: 20
+    }, {
+        name: 'Mary',
+        theater: 21,
+        cinema: 12
+    }];
+
+    function createColumnChart1() {
+        const chart = new CartesianChart();
+        chart.size = [400, 300];
+        chart.parent = document.body;
+
+        const xAxis = new CategoryAxis();
+        xAxis.position = 'bottom';
+
+        const yAxis = new NumberAxis();
+        yAxis.position = 'left';
+
+        chart.axes = [xAxis, yAxis];
+
+        const columnSeries = new ColumnSeries();
+        columnSeries.data = peopleData;
+        columnSeries.xKey = 'name';
+        columnSeries.yKeys = ['theater'];
+
+        chart.series = [columnSeries];
+    }
+
+    function createColumnChart2() {
+        const chart = new CartesianChart();
+        chart.size = [400, 300];
+        chart.parent = document.body;
+
+        const xAxis = new CategoryAxis();
+        xAxis.position = 'bottom';
+
+        const yAxis = new NumberAxis();
+        yAxis.position = 'left';
+
+        chart.axes = [xAxis, yAxis];
+
+        const columnSeries = new ColumnSeries();
+        columnSeries.data = peopleData;
+        columnSeries.xKey = 'name';
+        columnSeries.yKeys = ['theater', 'cinema'];
+
+        chart.series = [columnSeries];
+    }
+
+    function createColumnChart3() {
+        const chart = new CartesianChart();
+        chart.size = [400, 300];
+        chart.parent = document.body;
+
+        const xAxis = new CategoryAxis();
+        xAxis.position = 'bottom';
+
+        const yAxis = new NumberAxis();
+        yAxis.position = 'left';
+
+        chart.axes = [xAxis, yAxis];
+
+        const columnSeries = new ColumnSeries();
+        columnSeries.data = peopleData;
+        columnSeries.xKey = 'name';
+        columnSeries.yKeys = ['theater', 'cinema'];
+        columnSeries.grouped = true;
+
+        chart.series = [columnSeries];
+    }
+
+    createColumnChart1();
+    createColumnChart2();
+    createColumnChart3();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createPieChart();
     createBarChart();
     createLineChart();
+
+    createFirstChartExample();
 });
