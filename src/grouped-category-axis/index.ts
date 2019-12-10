@@ -6,7 +6,6 @@ import { NumberAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/num
 import { BarSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries';
 import { LineSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries';
 import { createButton, createSlider } from '../../lib/ui';
-import { CartesianChartLayout } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
 import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
 import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
 import { ChartAxisPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chartAxis';
@@ -187,7 +186,6 @@ function createCategoryBarChart() {
     chart.width = document.body.clientWidth;
     chart.height = 1000;
     chart.padding.left = 60;
-    chart.layout = CartesianChartLayout.Horizontal;
     chart.axes = [xAxis, yAxis];
     chart.legend.enabled = true;
 
