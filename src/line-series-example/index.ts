@@ -281,6 +281,16 @@ function createTwoVerticalAxesLineChart() {
     }];
     yAxisRight.keys = ['y2'];
 
+    const yAxisRight2 = new NumberAxis();
+    yAxisRight2.position = ChartAxisPosition.Right;
+    yAxisRight2.gridStyle = [];
+    yAxisRight2.linkedTo = yAxisRight;
+
+    const yAxisRight3 = new NumberAxis();
+    yAxisRight3.position = ChartAxisPosition.Right;
+    yAxisRight3.gridStyle = [];
+    yAxisRight3.linkedTo = yAxisRight;
+
     const chart = new CartesianChart();
     chart.axes = [xAxisTop, xAxisBottom, yAxisLeft, yAxisRight];
     chart.parent = document.body;
