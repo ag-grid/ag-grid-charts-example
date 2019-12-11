@@ -1,10 +1,10 @@
-import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/areaSeries";
+import { Chart } from "ag-charts-community/src/chart/chart";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
 import { createButton } from "../../lib/ui";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 const data = [
     { label: 'L1', v1: 1, v2: 2, v3: 5, v4: 4, v5: 5 },

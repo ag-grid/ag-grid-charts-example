@@ -1,19 +1,19 @@
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/scatterSeries";
-import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
-import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
-import { Diamond } from "@ag-grid-enterprise/charts/src/charts/chart/marker/diamond";
-import { Cross } from "@ag-grid-enterprise/charts/src/charts/chart/marker/cross";
-import { Plus } from "@ag-grid-enterprise/charts/src/charts/chart/marker/plus";
-import { Triangle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/triangle";
-import { Color } from '@ag-grid-enterprise/charts/src/charts/util/color';
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { Caption } from "ag-charts-community/src/caption";
+import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { Square } from "ag-charts-community/src/chart/marker/square";
+import { Diamond } from "ag-charts-community/src/chart/marker/diamond";
+import { Cross } from "ag-charts-community/src/chart/marker/cross";
+import { Plus } from "ag-charts-community/src/chart/marker/plus";
+import { Triangle } from "ag-charts-community/src/chart/marker/triangle";
+import { Color } from 'ag-charts-community/src/util/color';
 import { makeChartResizeable } from "../../lib/chart";
-import { ChartAxisPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chartAxis';
+import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
 
 type Datum = {
     gender: number,

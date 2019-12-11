@@ -1,24 +1,24 @@
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/areaSeries";
-import { Chart, LegendPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import { Path } from "@ag-grid-enterprise/charts/src/charts/scene/shape/path";
-import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import { DropShadow } from "@ag-grid-enterprise/charts/src/charts/scene/dropShadow";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
+import { Chart, LegendPosition } from "ag-charts-community/src/chart/chart";
+import { Caption } from "ag-charts-community/src/caption";
+import { Path } from "ag-charts-community/src/scene/shape/path";
+import { Group } from "ag-charts-community/src/scene/group";
+import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
 import borneo, {
     bright,
     flat,
     material,
     pastel,
-} from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
+} from "ag-charts-community/src/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
-import { BandScale } from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
-import { find } from "@ag-grid-enterprise/charts/src/charts/util/array";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { BandScale } from "ag-charts-community/src/scale/bandScale";
+import { find } from "ag-charts-community/src/util/array";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 type Datum = {
     category: string,

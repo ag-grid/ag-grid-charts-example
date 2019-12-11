@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import {EnterNode, Selection} from "@ag-grid-enterprise/charts/src/charts/scene/selection";
-import {Node} from "@ag-grid-enterprise/charts/src/charts/scene/node";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Rect} from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
+import {EnterNode, Selection} from "ag-charts-community/src/scene/selection";
+import {Node} from "ag-charts-community/src/scene/node";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {Scene} from "ag-charts-community/src/scene/scene";
 
 function test_SelectionSelect() {
     const scene = new Scene();

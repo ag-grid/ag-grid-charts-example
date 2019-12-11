@@ -1,7 +1,7 @@
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
-import {Arc} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {Arc} from "ag-charts-community/src/scene/shape/arc";
 import { arc } from "d3";
 
 function delay() {

@@ -1,7 +1,7 @@
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Sector} from "@ag-grid-enterprise/charts/src/charts/scene/shape/sector";
-import borneo from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Sector} from "ag-charts-community/src/scene/shape/sector";
+import borneo from "ag-charts-community/src/chart/palettes";
 
 document.addEventListener('DOMContentLoaded', () => {
     testSector();

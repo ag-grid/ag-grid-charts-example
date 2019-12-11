@@ -1,11 +1,11 @@
-import scaleLinear from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
-import {BandScale} from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Axis} from "@ag-grid-enterprise/charts/src/charts/axis";
-import {Arc, ArcType} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
-import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Axis} from "ag-charts-community/src/axis";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import { Caption } from "ag-charts-community/src/caption";
 
 function nextFrame() {
     return new Promise(resolve => {

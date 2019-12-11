@@ -1,15 +1,15 @@
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import borneo from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
-import { linearRegression } from "@ag-grid-enterprise/charts/src/charts/util/stat";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { Caption } from "ag-charts-community/src/caption";
+import borneo from "ag-charts-community/src/chart/palettes";
+import { linearRegression } from "ag-charts-community/src/util/stat";
 import { data as timeData } from './data';
 
 import { createButton } from "../../lib/ui";
 import * as d3 from 'd3';
-import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/scatterSeries";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 type Datum = {
     x: number,

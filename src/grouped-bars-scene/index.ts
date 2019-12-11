@@ -1,11 +1,11 @@
-import scaleLinear from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
-import {BandScale} from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
-import {Rect} from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
-import {DropShadow} from "@ag-grid-enterprise/charts/src/charts/scene/dropShadow";
-import {Axis} from "@ag-grid-enterprise/charts/src/charts/axis";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
+import {Axis} from "ag-charts-community/src/axis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],

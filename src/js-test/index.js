@@ -1,10 +1,10 @@
-import { PolarChart } from "@ag-grid-enterprise/charts/src/charts/chart/polarChart";
-import { PieSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/polar/pieSeries";
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { ColumnSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/columnSeries";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
+import { PolarChart } from "ag-charts-community/src/chart/polarChart";
+import { PieSeries } from "ag-charts-community/src/chart/series/polar/pieSeries";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
 import {createButton} from "../../lib/ui";
 
 function createPieChart() {

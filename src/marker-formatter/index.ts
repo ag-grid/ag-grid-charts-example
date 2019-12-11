@@ -1,12 +1,12 @@
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
-import { AreaSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/areaSeries";
-import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/scatterSeries";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
-import { Diamond } from "@ag-grid-enterprise/charts/src/charts/chart/marker/diamond";
-import { Plus } from "@ag-grid-enterprise/charts/src/charts/chart/marker/plus";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
+import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { Diamond } from "ag-charts-community/src/chart/marker/diamond";
+import { Plus } from "ag-charts-community/src/chart/marker/plus";
 import { makeChartResizeable } from "../../lib/chart";
 
 function createChart() {

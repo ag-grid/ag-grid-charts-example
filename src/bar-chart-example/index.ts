@@ -1,17 +1,17 @@
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
-import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
-import borneo from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
+import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
+import { Chart } from "ag-charts-community/src/chart/chart";
+import borneo from "ag-charts-community/src/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
-import { CartesianChart, CartesianChartLayout } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { DropShadow } from "@ag-grid-enterprise/charts/src/charts/scene/dropShadow";
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
-import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
-import { ColumnSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/columnSeries";
+import { CartesianChart, CartesianChartLayout } from "ag-charts-community/src/chart/cartesianChart";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
+import { Caption } from "ag-charts-community/src/caption";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
 
 type Datum = {
     category: string,

@@ -1,12 +1,12 @@
 import * as d3 from "d3";
-import { LogScale } from "@ag-grid-enterprise/charts/src/charts/scale/logScale";
-import { Axis } from "@ag-grid-enterprise/charts/src/charts/axis";
-import { Scene } from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { LogScale } from "ag-charts-community/src/scale/logScale";
+import { Axis } from "ag-charts-community/src/axis";
+import { Scene } from "ag-charts-community/src/scene/scene";
+import { Group } from "ag-charts-community/src/scene/group";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 document.addEventListener('DOMContentLoaded', () => {
     // testConvert();
