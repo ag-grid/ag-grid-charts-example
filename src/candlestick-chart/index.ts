@@ -43,9 +43,9 @@ function createChart() {
         const x = params.datum[params.xKey];
         const y = params.datum[params.yKey];
         const titleStyle = `style="color: white; background-color: ${color}"`;
-        const titleHtml = title ? `<div class="title" ${titleStyle}>${title}</div>` : '';
+        const titleHtml = title ? `<div class="ag-chart-tooltip-title" ${titleStyle}>${title}</div>` : '';
         const contentHtml = dateFormatter(x) + ': ' + (typeof y === 'number' ? y.toFixed(2) : String(y));
-        return `${titleHtml}<div class="content">${contentHtml}</div>`;
+        return `${titleHtml}<div class="ag-chart-tooltip-content">${contentHtml}</div>`;
     };
 
     const ohlcSeries = new OHLCSeries();
