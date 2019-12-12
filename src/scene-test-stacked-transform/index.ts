@@ -1,8 +1,8 @@
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Arc} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
-import {Rect} from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
-import {FpsCounter} from "@ag-grid-enterprise/charts/src/charts/scene/fpsCounter";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Arc} from "ag-charts-community/src/scene/shape/arc";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
 import * as d3 from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {

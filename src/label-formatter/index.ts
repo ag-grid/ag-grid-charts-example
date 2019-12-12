@@ -1,9 +1,9 @@
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
-import { toReadableNumber } from "@ag-grid-enterprise/charts/src/charts/util/number";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { toReadableNumber } from "ag-charts-community/src/util/number";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 const data1 = [
     { category: '1', value: 0.0001234 },

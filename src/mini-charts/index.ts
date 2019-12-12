@@ -1,16 +1,16 @@
-import { Scene } from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import { Sector } from "@ag-grid-enterprise/charts/src/charts/scene/shape/sector";
-import { palettes, ChartPalette } from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
-import { toRadians } from "@ag-grid-enterprise/charts/src/charts/util/angle";
-import { Path } from "@ag-grid-enterprise/charts/src/charts/scene/shape/path";
-import { Line } from "@ag-grid-enterprise/charts/src/charts/scene/shape/line";
-import linearScale from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
-import { BandScale } from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
-import { Rect } from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
-import { ClipRect } from "@ag-grid-enterprise/charts/src/charts/scene/clipRect";
-import { Arc } from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
-import { Shape } from "@ag-grid-enterprise/charts/src/charts/scene/shape/shape";
+import { Scene } from "ag-charts-community/src/scene/scene";
+import { Group } from "ag-charts-community/src/scene/group";
+import { Sector } from "ag-charts-community/src/scene/shape/sector";
+import { palettes, ChartPalette } from "ag-charts-community/src/chart/palettes";
+import { toRadians } from "ag-charts-community/src/util/angle";
+import { Path } from "ag-charts-community/src/scene/shape/path";
+import { Line } from "ag-charts-community/src/scene/shape/line";
+import linearScale from "ag-charts-community/src/scale/linearScale";
+import { BandScale } from "ag-charts-community/src/scale/bandScale";
+import { Rect } from "ag-charts-community/src/scene/shape/rect";
+import { ClipRect } from "ag-charts-community/src/scene/clipRect";
+import { Arc } from "ag-charts-community/src/scene/shape/arc";
+import { Shape } from "ag-charts-community/src/scene/shape/shape";
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
     const button = document.createElement('button');

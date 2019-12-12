@@ -1,11 +1,11 @@
-import { Group } from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import { Scene } from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import { Selection } from "@ag-grid-enterprise/charts/src/charts/scene/selection";
+import { Group } from "ag-charts-community/src/scene/group";
+import { Scene } from "ag-charts-community/src/scene/scene";
+import { Selection } from "ag-charts-community/src/scene/selection";
 import { data } from "./data";
 import { FinvizMapData } from "./finviz_data";
-import { Rect } from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
-import { Text, FontWeight } from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
-import { DropShadow } from "@ag-grid-enterprise/charts/src/charts/scene/dropShadow";
+import { Rect } from "ag-charts-community/src/scene/shape/rect";
+import { Text, FontWeight } from "ag-charts-community/src/scene/shape/text";
+import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
 import { convertGridTreeData, rowData } from "./convert";
 import { createButton } from "../../lib/ui";
 

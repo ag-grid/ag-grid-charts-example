@@ -1,15 +1,15 @@
-import {Selection} from "@ag-grid-enterprise/charts/src/charts/scene/selection";
-import {Node} from "@ag-grid-enterprise/charts/src/charts/scene/node";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Rect} from "@ag-grid-enterprise/charts/src/charts/scene/shape/rect";
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import Scale from "@ag-grid-enterprise/charts/src/charts/scale/scale";
-import {Line} from "@ag-grid-enterprise/charts/src/charts/scene/shape/line";
-import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
-import {normalizeAngle360} from "@ag-grid-enterprise/charts/src/charts/util/angle";
-import scaleLinear from "@ag-grid-enterprise/charts/src/charts/scale/linearScale";
-import {BandScale} from "@ag-grid-enterprise/charts/src/charts/scale/bandScale";
-import {DropShadow} from "@ag-grid-enterprise/charts/src/charts/scene/dropShadow";
+import {Selection} from "ag-charts-community/src/scene/selection";
+import {Node} from "ag-charts-community/src/scene/node";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import Scale from "ag-charts-community/src/scale/scale";
+import {Line} from "ag-charts-community/src/scene/shape/line";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {normalizeAngle360} from "ag-charts-community/src/util/angle";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
 
 document.addEventListener('DOMContentLoaded', () => {
     renderChart();

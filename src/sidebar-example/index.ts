@@ -1,14 +1,14 @@
-import { BarSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries";
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import { material } from "@ag-grid-enterprise/charts/src/charts/chart/palettes";
+import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
+import { Caption } from "ag-charts-community/src/caption";
+import { material } from "ag-charts-community/src/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 function generateData(n = 50, yKeyCount = 10) {
     const data: any[] = [];

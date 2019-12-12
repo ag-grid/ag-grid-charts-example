@@ -1,15 +1,15 @@
-import { GroupedCategoryChart } from '@ag-grid-enterprise/charts/src/charts/chart/groupedCategoryChart';
-import { Chart } from '@ag-grid-enterprise/charts/src/charts/chart/chart';
-import { GroupedCategoryAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/groupedCategoryAxis';
-import { Caption } from "@ag-grid-enterprise/charts/src/charts/caption";
-import { NumberAxis } from '@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis';
-import { BarSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/barSeries';
-import { LineSeries } from '@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries';
+import { GroupedCategoryChart } from 'ag-charts-community/src/chart/groupedCategoryChart';
+import { Chart } from 'ag-charts-community/src/chart/chart';
+import { GroupedCategoryAxis } from 'ag-charts-community/src/chart/axis/groupedCategoryAxis';
+import { Caption } from "ag-charts-community/src/caption";
+import { NumberAxis } from 'ag-charts-community/src/chart/axis/numberAxis';
+import { BarSeries } from 'ag-charts-community/src/chart/series/cartesian/barSeries';
+import { LineSeries } from 'ag-charts-community/src/chart/series/cartesian/lineSeries';
 import { createButton, createSlider } from '../../lib/ui';
-import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
-import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
-import { ChartAxisPosition } from '@ag-grid-enterprise/charts/src/charts/chart/chartAxis';
-import { find } from '@ag-grid-enterprise/charts/src/charts/util/array';
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { Square } from "ag-charts-community/src/chart/marker/square";
+import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
+import { find } from 'ag-charts-community/src/util/array';
 
 type CategoryDatum = {
     category: { labels: string[] },

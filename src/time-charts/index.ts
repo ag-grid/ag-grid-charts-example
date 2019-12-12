@@ -1,19 +1,19 @@
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { TimeAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/timeAxis";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { TimeAxis } from "ag-charts-community/src/chart/axis/timeAxis";
 import { data as timestampData } from './timestampData';
 import { data as minuteData1 } from './minuteData1';
 import { data as minuteData2 } from './minuteData2';
-import { Chart } from "@ag-grid-enterprise/charts/src/charts/chart/chart";
-import year from "@ag-grid-enterprise/charts/src/charts/util/time/year";
-import month from "@ag-grid-enterprise/charts/src/charts/util/time/month";
-import second from "@ag-grid-enterprise/charts/src/charts/util/time/second";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
-import { ScatterSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/scatterSeries";
-import setDefaultLocale from "@ag-grid-enterprise/charts/src/charts/util/time/format/defaultLocale";
-import { Padding } from "@ag-grid-enterprise/charts/src/charts/util/padding";
-import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
+import { Chart } from "ag-charts-community/src/chart/chart";
+import year from "ag-charts-community/src/util/time/year";
+import month from "ag-charts-community/src/util/time/month";
+import second from "ag-charts-community/src/util/time/second";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
+import setDefaultLocale from "ag-charts-community/src/util/time/format/defaultLocale";
+import { Padding } from "ag-charts-community/src/util/padding";
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 function makeChartResizeable(chart: Chart) {
     let startX = 0;

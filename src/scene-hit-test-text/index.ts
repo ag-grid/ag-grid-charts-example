@@ -1,6 +1,6 @@
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Text} from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Text} from "ag-charts-community/src/scene/shape/text";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();

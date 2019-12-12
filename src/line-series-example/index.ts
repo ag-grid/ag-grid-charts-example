@@ -1,13 +1,13 @@
-import { CartesianChart } from "@ag-grid-enterprise/charts/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "@ag-grid-enterprise/charts/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/lineSeries";
-import { ColumnSeries } from "@ag-grid-enterprise/charts/src/charts/chart/series/cartesian/columnSeries";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
 
 import './app.css';
-import { Circle } from "@ag-grid-enterprise/charts/src/charts/chart/marker/circle";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/src/charts/chart/chartAxis";
-import { Square } from "@ag-grid-enterprise/charts/src/charts/chart/marker/square";
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { Square } from "ag-charts-community/src/chart/marker/square";
 import { makeChartResizeable } from "../../lib/chart";
 
 type CategoryDatum = {
@@ -280,6 +280,16 @@ function createTwoVerticalAxesLineChart() {
         stroke: '#c2c3c2'
     }];
     yAxisRight.keys = ['y2'];
+
+    const yAxisRight2 = new NumberAxis();
+    yAxisRight2.position = ChartAxisPosition.Right;
+    yAxisRight2.gridStyle = [];
+    yAxisRight2.linkedTo = yAxisRight;
+
+    const yAxisRight3 = new NumberAxis();
+    yAxisRight3.position = ChartAxisPosition.Right;
+    yAxisRight3.gridStyle = [];
+    yAxisRight3.linkedTo = yAxisRight;
 
     const chart = new CartesianChart();
     chart.axes = [xAxisTop, xAxisBottom, yAxisLeft, yAxisRight];

@@ -1,8 +1,8 @@
-import {Scene} from "@ag-grid-enterprise/charts/src/charts/scene/scene";
-import {Group} from "@ag-grid-enterprise/charts/src/charts/scene/group";
-import {Arc, ArcType} from "@ag-grid-enterprise/charts/src/charts/scene/shape/arc";
-import {FpsCounter} from "@ag-grid-enterprise/charts/src/charts/scene/fpsCounter";
-import { FontWeight, Text } from "@ag-grid-enterprise/charts/src/charts/scene/shape/text";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
+import { FontWeight, Text } from "ag-charts-community/src/scene/shape/text";
 
 function createArcPathExample() {
     const scene = new Scene();
