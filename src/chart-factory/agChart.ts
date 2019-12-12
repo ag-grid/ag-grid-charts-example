@@ -9,6 +9,8 @@ import { AreaSeries } from "../../../../charts-community-modules/core/src/chart/
 import { PolarChart } from "../../../../charts-community-modules/core/src/chart/polarChart";
 import { PieSeries } from "../../../../charts-community-modules/core/src/chart/series/polar/pieSeries";
 import { Caption } from "../../../../charts-community-modules/core/src/caption";
+import { Circle } from "../../../../charts-community-modules/core/src/chart/marker/circle";
+import { Plus } from "../../../../charts-community-modules/core/src/chart/marker/plus";
 
 // function setValueIfExists<T, K extends keyof T>(target: T, property: K, value?: T[K], transform?: (value: any) => T[K]): void {
 //     if (value !== undefined) {
@@ -48,10 +50,10 @@ const typeMappings = {
         series: {
             line: {
                 fn: LineSeries,
-                // marker: {
-                //     circle: Circle,
-                //     plus: Plus
-                // }
+                marker: {
+                    circle: Circle,
+                    plus: Plus
+                }
             },
             column: {
                 fn: ColumnSeries
@@ -60,7 +62,11 @@ const typeMappings = {
                 fn: BarSeries
             },
             scatter: {
-                fn: ScatterSeries
+                fn: ScatterSeries,
+                marker: {
+                    circle: Circle,
+                    plus: Plus
+                }
             },
             area: {
                 fn: AreaSeries
@@ -119,7 +125,14 @@ export const agChart = {
             options.type = 'pie';
         }
 
-        path = (path ? path + '.' : '') + options.type;
+        // path = (path ? path + '.' : '') + options.type;
+        if (path) {
+            if (options.type) {
+                path = path + '.' + options.type;
+            }
+        } else {
+            path = options.type;
+        }
 
         const entry = getMapping(path);
 
@@ -147,7 +160,7 @@ export const agChart = {
                             const subComponents = value.map(config => agChart.create(config, path + '.' + key)).filter(config => !!config);
                             component[key] = subComponents;
                         } else {
-                            const subComponent = agChart.create(value, path);
+                            const subComponent = agChart.create(value, value.type ? path : path + '.' + key);
                             if (subComponent) {
                                 component[key] = subComponent;
                             }
