@@ -86,9 +86,9 @@ function createLineChart() {
         }],
         series: [{
             type: 'scatter',
-            marker: {
-                type: 'plus'
-            },
+            // marker: {
+            //     type: 'plus'
+            // },
             xKey: 'x',
             yKey: 'y'
         }]
