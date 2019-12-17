@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 import { CartesianChart, CategoryAxis, ChartAxisPosition, ColumnSeries } from "ag-charts-community";
 import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
 import { Legend } from "ag-charts-community/dist/cjs/chart/legend";
+import { agChart } from "ag-charts-community/src/chart/agChart";
 
 const CounterExample = () => {
     const [count, setCount] = useState(0);
@@ -113,11 +114,20 @@ interface AgLegendProps {
     labelFontFamily?: string;
 }
 
-interface AgChartProps {
+interface AgChartOptions {
     width?: number;
     height?: number;
     data?: any[];
+    series: {
+        type?: string;
+        xKey: string;
+        yKey: string;
+    }[];
     legend?: AgLegendProps;
+}
+
+interface AgChartProps {
+    options: AgChartOptions;
 }
 
 interface AgChartState {
@@ -142,50 +152,11 @@ class AgChartReact extends React.Component<AgChartProps, AgChartState> {
     componentDidMount() {
         const props = this.props;
 
-        const chart = new CartesianChart();
-        chart.parent = document.body;
-        this.chart = chart;
-
-        const bottomAxis = new CategoryAxis();
-        bottomAxis.position = ChartAxisPosition.Bottom;
-
-        const leftAxis = new NumberAxis();
-        leftAxis.position = ChartAxisPosition.Left;
-
-        chart.axes = [bottomAxis, leftAxis];
-
-        const columnSeries = new ColumnSeries();
-        columnSeries.xKey = 'x';
-        columnSeries.yKeys = ['y1', 'y2', 'y3'];
-
-        chart.series = [columnSeries];
-
-        chart.width = props.width;
-        chart.height = props.height;
-        chart.data = props.data;
-
-
-        // Need to set chart properties only when corresponding React props are defined.
-        // However, `undefined` may be a value you actually want to set,
-        // like remove the existing label formatter function.
-        if (props.legend) {
-            if (props.legend.enabled === undefined) {
-                chart.legend.enabled = Legend.defaults.enabled;
-            } else {
-                chart.legend.enabled = props.legend.enabled;
-            }
-            // chart.legend.padding = props.legend.padding;
-            // chart.legend.itemPaddingX = props.legend.itemPaddingX;
-            // chart.legend.itemPaddingY = props.legend.itemPaddingY;
-            // chart.legend.markerSize = props.legend.markerSize;
-            // chart.legend.markerStrokeWidth = props.legend.markerStrokeWidth;
-        }
+        this.chart = agChart.create(props.options);
     }
 
     processPropsChanges(prevProps: Readonly<AgChartProps> & Readonly<{ children?: React.ReactNode }>, nextProps: Readonly<AgChartProps>) {
-        this.chart.width = nextProps.width;
-        this.chart.height = nextProps.height;
-        this.chart.data = nextProps.data;
+        agChart.reconfigure(this.chart, nextProps.options);
     }
 
     shouldComponentUpdate(nextProps: Readonly<AgChartProps>, nextState: Readonly<AgChartState>, nextContext: any): boolean {
@@ -195,42 +166,52 @@ class AgChartReact extends React.Component<AgChartProps, AgChartState> {
 }
 
 const chartData = [{
-    x: 'Bob',
-    y1: 10,
+    month: 'Jan',
+    revenue: 155000,
+    profit: 33000
 }, {
-    x: 'Joe',
-    y1: 4,
+    month: 'Feb',
+    revenue: 123000,
+    profit: 35500
 }, {
-    x: 'John',
-    y1: 7,
-}] as any[];
+    month: 'Mar',
+    revenue: 172500,
+    profit: 41000
+}, {
+    month: 'Apr',
+    revenue: 185000,
+    profit: 50000
+}];
 
 // Need more granular control
 // How to specify axes and series? And anything not on the top level.
 
 const ChartExample = () => {
-    const [width, setWidth] = useState(500);
+    const [markerSize, setMarkerSize] = useState(15);
     const [data, setData] = useState(chartData);
-
-    useEffect(() => {
-        document.title = `The chart width is ${width}px`;
-    });
 
     return (
         <div>
             <AgChartReact
-                width={width}
-                height={500}
-                data={data}
-                legend={{
-                    // enabled: false
+                options={{
+                    data,
+                    series: [{
+                        xKey: 'month',
+                        yKey: 'revenue'
+                    }],
+                    legend: {
+                        markerSize
+                    }
                 }}
             />
-            <p>The chart width is {width}px</p>
-            <button onClick={() => setWidth(width + 100)}>
-                Increase width
+            <p>chart.legend.markerSize: {markerSize}</p>
+            <button onClick={() => setMarkerSize(markerSize + 3)}>
+                Increase marker size
             </button>
-            <button onClick={() => { setData([{x: 'Mary', y1: 5, y2: 3, y3: 1}, {x: 'Ann', y1: 7, y2: 4, y3: 2}]) }}>
+            <button onClick={() => setMarkerSize(undefined)}>
+                Set marker size to undefined
+            </button>
+            <button onClick={() => { setData([]) }}>
                 Set data
             </button>
         </div>
