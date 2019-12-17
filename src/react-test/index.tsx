@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { CartesianChart, CategoryAxis, ChartAxisPosition, ColumnSeries } from "ag-charts-community";
 import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
+import { Legend } from "ag-charts-community/dist/cjs/chart/legend";
 
 const CounterExample = () => {
     const [count, setCount] = useState(0);
@@ -169,7 +170,7 @@ class AgChartReact extends React.Component<AgChartProps, AgChartState> {
         // like remove the existing label formatter function.
         if (props.legend) {
             if (props.legend.enabled === undefined) {
-                chart.legend.enabled = true;
+                chart.legend.enabled = Legend.defaults.enabled;
             } else {
                 chart.legend.enabled = props.legend.enabled;
             }
@@ -222,7 +223,7 @@ const ChartExample = () => {
                 height={500}
                 data={data}
                 legend={{
-                    enabled: false
+                    // enabled: false
                 }}
             />
             <p>The chart width is {width}px</p>

@@ -1,4 +1,4 @@
-import { agChart } from "./agChart";
+import { agChart } from "ag-charts-community/src/chart/agChart";
 
 function createLineChart() {
     const data = [{
@@ -36,39 +36,39 @@ function createLineChart() {
         y: 66
     }];
 
-    // agChart.create({
-    //     // chart type is optional because it defaults to `cartesian`
-    //     data,
-    //     series: [{
-    //         // series type if optional because `line` is default for `cartesian` charts
-    //         xKey: 'month',
-    //         yKey: 'revenue'
-    //     }, {
-    //         type: 'column', // have to specify type explicitly here
-    //         xKey: 'month',
-    //         yKeys: ['profit'],
-    //         fills: ['lime']
-    //     }]
-    // });
-    //
-    // agChart.create({
-    //     type: 'polar',
-    //     data,
-    //     series: [{ // series type is optional because that's the default for `polar` charts
-    //         angleKey: 'profit'
-    //     }]
-    // });
-    //
-    // agChart.create({
-    //     // `polar` chart type is optional because it can be inferred from the type of series
-    //     data,
-    //     series: [{
-    //         type: 'pie',
-    //         angleKey: 'revenue',
-    //         labelKey: 'month',
-    //         innerRadiusOffset: -50 // donut hole
-    //     }]
-    // });
+    agChart.create({
+        // chart type is optional because it defaults to `cartesian`
+        data,
+        series: [{
+            // series type if optional because `line` is default for `cartesian` charts
+            xKey: 'month',
+            yKey: 'revenue'
+        }, {
+            type: 'column', // have to specify type explicitly here
+            xKey: 'month',
+            yKeys: ['profit'],
+            fills: ['lime']
+        }]
+    });
+
+    agChart.create({
+        type: 'polar',
+        data,
+        series: [{ // series type is optional because that's the default for `polar` charts
+            angleKey: 'profit'
+        }]
+    });
+
+    agChart.create({
+        // `polar` chart type is optional because it can be inferred from the type of series
+        data,
+        series: [{
+            type: 'pie',
+            angleKey: 'revenue',
+            labelKey: 'month',
+            innerRadiusOffset: -50 // donut hole
+        }]
+    });
 
     agChart.create({
         data: scatterData,
@@ -91,7 +91,10 @@ function createLineChart() {
             // },
             xKey: 'x',
             yKey: 'y'
-        }]
+        }],
+        // legend: {
+        //     enabled: true
+        // }
     });
 }
 
