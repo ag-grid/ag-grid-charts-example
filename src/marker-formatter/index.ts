@@ -31,7 +31,7 @@ function createChart() {
     chart.height = 600;
 
     const areaSeries = new AreaSeries();
-    areaSeries.marker.type = Plus;
+    areaSeries.marker.shape = Plus;
     areaSeries.marker.size = 16;
     areaSeries.marker.formatter = params => {
         return {
@@ -48,7 +48,7 @@ function createChart() {
     areaSeries.yNames = ['sin * 1.5', 'cos * 2'];
 
     const lineSeries = new LineSeries();
-    lineSeries.marker.type = Circle;
+    lineSeries.marker.shape = Circle;
     lineSeries.marker.formatter = params => {
         return {
             fill: params.highlighted ? 'cyan' : (params.datum[params.yKey] > 0 ? 'green' : 'red'),
@@ -63,7 +63,7 @@ function createChart() {
     lineSeries.yName = 'sin';
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.marker.type = Diamond;
+    scatterSeries.marker.shape = Diamond;
     scatterSeries.marker.minSize = 10;
     scatterSeries.marker.size = 40;
     scatterSeries.marker.formatter = params => {

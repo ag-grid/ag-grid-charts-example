@@ -205,7 +205,7 @@ function createCategoryLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker.type = Circle;
+    lineSeries.marker.shape = Circle;
     lineSeries.marker.enabled = true;
     chart.addSeries(lineSeries);
     lineSeries.tooltipEnabled = true;
@@ -316,7 +316,7 @@ function createTwoVerticalAxesLineChart() {
     }];
 
     const lineSeries1 = new LineSeries();
-    lineSeries1.marker.type = Circle;
+    lineSeries1.marker.shape = Circle;
     lineSeries1.marker.enabled = true;
     lineSeries1.tooltipEnabled = true;
     lineSeries1.data = data;
@@ -326,7 +326,7 @@ function createTwoVerticalAxesLineChart() {
     const lineSeries2 = new LineSeries();
     lineSeries2.fill = '#57b757';
     lineSeries2.stroke = '#3d803d';
-    lineSeries2.marker.type = Square;
+    lineSeries2.marker.shape = Square;
     lineSeries2.marker.enabled = true;
     lineSeries2.tooltipEnabled = true;
     lineSeries2.data = data;
@@ -354,7 +354,7 @@ function createNumericLineChart() {
     chart.height = 600;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker.type = Circle;
+    lineSeries.marker.shape = Circle;
     lineSeries.marker.enabled = true;
     lineSeries.strokeWidth = 2;
     lineSeries.showInLegend = false;
@@ -478,21 +478,21 @@ function createMultiLineChart() {
     const data = generateMultiValueData(10);
 
     const lineSeries1 = new LineSeries();
-    lineSeries1.marker.type = Circle;
+    lineSeries1.marker.shape = Circle;
     lineSeries1.strokeWidth = 4;
     lineSeries1.fill = '#f3622d';
     lineSeries1.xKey = 'category';
     lineSeries1.yKey = 'value1';
 
     const lineSeries2 = new LineSeries();
-    lineSeries2.marker.type = Circle;
+    lineSeries2.marker.shape = Circle;
     lineSeries2.strokeWidth = 4;
     lineSeries2.fill = '#fba71b';
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'value2';
 
     const lineSeries3 = new LineSeries();
-    lineSeries3.marker.type = Circle;
+    lineSeries3.marker.shape = Circle;
     lineSeries3.strokeWidth = 4;
     lineSeries3.fill = '#57b757';
     lineSeries3.xKey = 'category';

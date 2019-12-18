@@ -66,12 +66,12 @@ function createChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Add line markers', () => {
-        lineSeries.marker.type = Square;
+        lineSeries.marker.shape = Square;
         lineSeries.marker.size = 3;
     });
 
     createButton('Remove line markers', () => {
-        lineSeries.marker.type = undefined;
+        lineSeries.marker.shape = undefined;
     });
 }
 

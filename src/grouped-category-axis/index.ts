@@ -106,14 +106,14 @@ function createCategoryColumnChart() {
     barSeries.fillOpacity = 0.3;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker.type = Circle;
+    lineSeries.marker.shape = Circle;
     lineSeries.fill = 'rgba(227,111,106,0.61)';
     lineSeries.data = categoryData;
     lineSeries.xKey = 'category';
     lineSeries.yKey = 'value';
 
     const lineSeries2 = new LineSeries();
-    lineSeries2.marker.type = Square;
+    lineSeries2.marker.shape = Square;
     lineSeries2.fill = 'rgba(123,145,222,0.61)';
     lineSeries2.data = categoryData;
     lineSeries2.xKey = 'category';

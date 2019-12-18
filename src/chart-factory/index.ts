@@ -1,6 +1,9 @@
 import { agChart } from "ag-charts-community/src/chart/agChart";
 import { createButton } from "../../lib/ui";
 import { LegendPosition } from "ag-charts-community";
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { Plus } from "ag-charts-community/src/chart/marker/plus";
+import { Diamond } from "ag-charts-community/src/chart/marker/diamond";
 
 function createLineChart() {
     const data = [{
@@ -44,7 +47,11 @@ function createLineChart() {
         series: [{
             // series type if optional because `line` is default for `cartesian` charts
             xKey: 'month',
-            yKey: 'revenue'
+            yKey: 'revenue',
+            marker: {
+                shape: 'plus',
+                size: 20
+            }
         }, {
             type: 'column', // have to specify type explicitly here
             xKey: 'month',

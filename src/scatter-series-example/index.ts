@@ -126,7 +126,7 @@ function createHeightWeightGenderChart() {
         maleSeries.yName = 'Weight';
         maleSeries.sizeKey = 'age';
         maleSeries.sizeName = 'Age';
-        maleSeries.marker.type = Square;
+        maleSeries.marker.shape = Square;
         maleSeries.marker.size = 30;
         maleSeries.fill = 'rgb(227,111,106)';
         maleSeries.fillOpacity = 0.61;
@@ -139,7 +139,7 @@ function createHeightWeightGenderChart() {
         femaleSeries.xKey = 'height';
         femaleSeries.yKey = 'weight';
         femaleSeries.sizeKey = 'age';
-        femaleSeries.marker.type = Circle;
+        femaleSeries.marker.shape = Circle;
         femaleSeries.marker.size = 30;
         femaleSeries.fill = 'rgb(123,145,222)';
         femaleSeries.fillOpacity = 0.61;
@@ -159,7 +159,7 @@ function createHeightWeightGenderChart() {
     });
 
     createSlider('Marker type', [Circle, Square, Diamond, Cross, Plus, Triangle], v => {
-        maleSeries.marker.type = v;
+        maleSeries.marker.shape = v;
     });
 
     createSlider('Marker fill', ['#57b757', '#41a9c9', '#4258c9'], v => {
@@ -246,7 +246,7 @@ function createAgeWeightGenderChart() {
         maleSeries.yKey = 'weight';
         maleSeries.title = 'Male';
         maleSeries.tooltipEnabled = true;
-        maleSeries.marker.type = Diamond;
+        maleSeries.marker.shape = Diamond;
         maleSeries.fill = 'rgba(227,111,106,0.71)';
         maleSeries.strokeWidth = 0.5;
 
@@ -256,7 +256,7 @@ function createAgeWeightGenderChart() {
         femaleSeries.yKey = 'weight';
         femaleSeries.title = 'Female';
         femaleSeries.tooltipEnabled = true;
-        femaleSeries.marker.type = Cross;
+        femaleSeries.marker.shape = Cross;
         femaleSeries.fill = 'rgba(123,145,222,0.71)';
         femaleSeries.strokeWidth = 0.5;
 

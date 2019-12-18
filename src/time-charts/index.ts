@@ -60,7 +60,7 @@ function createTimeChart() {
     scatterSeries.fill = 'red';
     scatterSeries.stroke = 'black';
     scatterSeries.strokeWidth = 0;
-    scatterSeries.marker.type = Circle;
+    scatterSeries.marker.shape = Circle;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
@@ -91,7 +91,7 @@ function createTimeChart2() {
     scatterSeries.fill = 'red';
     scatterSeries.stroke = 'black';
     scatterSeries.strokeWidth = 0;
-    scatterSeries.marker.type = Circle;
+    scatterSeries.marker.shape = Circle;
     scatterSeries.marker.size = 2;
     scatterSeries.data = timestampData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
@@ -119,7 +119,7 @@ function createTimeChart3() {
     chart.axes = [xAxis, yAxis];
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.marker.type = Circle;
+    scatterSeries.marker.shape = Circle;
     scatterSeries.marker.size = 8;
     scatterSeries.fill = 'red';
     scatterSeries.stroke = 'black';
@@ -153,7 +153,7 @@ function createComboTimeChart() {
     scatterSeries.fill = 'red';
     scatterSeries.stroke = 'black';
     scatterSeries.strokeWidth = 0;
-    scatterSeries.marker.type = Circle;
+    scatterSeries.marker.shape = Circle;
     scatterSeries.marker.size = 8;
     scatterSeries.data = minuteData1;
     scatterSeries.xKey = 'x';
@@ -163,7 +163,7 @@ function createComboTimeChart() {
     lineSeries.fill = 'orange';
     lineSeries.stroke = 'black';
     lineSeries.strokeWidth = 0;
-    lineSeries.marker.type = Circle;
+    lineSeries.marker.shape = Circle;
     lineSeries.marker.size = 8;
     lineSeries.data = minuteData2;
     lineSeries.xKey = 'x';
@@ -203,7 +203,7 @@ function createCustomLocaleTimeChart() {
     chart.axes = [xAxis, yAxis];
 
     const scatterSeries = new ScatterSeries();
-    scatterSeries.marker.type = Circle;
+    scatterSeries.marker.shape = Circle;
     scatterSeries.marker.size = 2;
     scatterSeries.fill = 'red';
     scatterSeries.stroke = 'black';
@@ -248,7 +248,7 @@ function createRealTimeChart() {
 
     const lineSeries = new LineSeries();
     lineSeries.showInLegend = false;
-    lineSeries.marker.type = Circle;
+    lineSeries.marker.shape = Circle;
     lineSeries.marker.size = 8;
     lineSeries.strokeWidth = 0;
     lineSeries.data = data;
