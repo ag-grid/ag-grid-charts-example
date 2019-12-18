@@ -109,10 +109,19 @@ function createLineChart() {
         },
         axes: [{
             type: 'number',
-            position: 'right'
+            position: 'right',
+            gridStyle: [{
+                stroke: 'rgba(0,0,0,0.3)',
+                lineDash: [2, 2]
+            }, {
+                stroke: undefined
+            }]
         }, {
             type: 'number',
-            position: 'bottom'
+            position: 'bottom',
+            label: {
+                rotation: 45
+            }
         }],
         series: [{
             type: 'scatter',
