@@ -1,4 +1,6 @@
 import { agChart } from "ag-charts-community/src/chart/agChart";
+import { createButton } from "../../lib/ui";
+import { LegendPosition } from "ag-charts-community";
 
 function createLineChart() {
     const data = [{
@@ -36,7 +38,7 @@ function createLineChart() {
         y: 66
     }];
 
-    agChart.create({
+    const chart1 = agChart.create({
         // chart type is optional because it defaults to `cartesian`
         data,
         series: [{
@@ -49,6 +51,27 @@ function createLineChart() {
             yKeys: ['profit'],
             fills: ['lime']
         }]
+    });
+
+    let legendMarkerSize = 15;
+    let legendPositionIndex = 0;
+    createButton('Increase legend marker size', () => {
+        agChart.reconfigure(chart1, {
+            data,
+            series: [{
+                xKey: 'month',
+                yKey: 'revenue'
+            }, {
+                type: 'column',
+                xKey: 'month',
+                yKeys: ['profit'],
+                fills: ['lime']
+            }],
+            legend: {
+                markerSize: (legendMarkerSize += 2),
+                position: [LegendPosition.Right, LegendPosition.Bottom, LegendPosition.Left, LegendPosition.Right][legendPositionIndex++ % 4]
+            }
+        });
     });
 
     agChart.create({
