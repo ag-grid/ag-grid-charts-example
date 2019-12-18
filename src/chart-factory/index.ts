@@ -1,9 +1,7 @@
+import './app.css';
 import { agChart } from "ag-charts-community/src/chart/agChart";
 import { createButton } from "../../lib/ui";
 import { LegendPosition } from "ag-charts-community";
-import { Circle } from "ag-charts-community/src/chart/marker/circle";
-import { Plus } from "ag-charts-community/src/chart/marker/plus";
-import { Diamond } from "ag-charts-community/src/chart/marker/diamond";
 
 function createLineChart() {
     const data = [{
@@ -57,7 +55,8 @@ function createLineChart() {
             xKey: 'month',
             yKeys: ['profit'],
             fills: ['lime']
-        }]
+        }],
+        legend: {}
     });
 
     let legendMarkerSize = 15;
@@ -85,7 +84,8 @@ function createLineChart() {
         type: 'polar',
         data,
         series: [{ // series type is optional because that's the default for `polar` charts
-            angleKey: 'profit'
+            angleKey: 'profit',
+            tooltipEnabled: true
         }]
     });
 

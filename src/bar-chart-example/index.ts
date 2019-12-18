@@ -4,7 +4,7 @@ import borneo from "ag-charts-community/src/chart/palettes";
 
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
-import { CartesianChart, CartesianChartLayout } from "ag-charts-community/src/chart/cartesianChart";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
 import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
@@ -215,9 +215,8 @@ function createBarChart() {
     chart.parent = document.body;
     chart.width = 800;
     chart.height = 500;
-    chart.layout = CartesianChartLayout.Horizontal;
     chart.scene.canvas.element.style.border = '1px solid black';
-    chart.legend.markerType = Circle;
+    chart.legend.markerShape = Circle;
 
     function addSeriesIf() {
         if (!chart.series.length) {

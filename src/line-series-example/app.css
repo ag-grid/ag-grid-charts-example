@@ -17,12 +17,12 @@
     transition-property: opacity, transform;
 }
 
-.ag-chart-tooltip.visible {
+.ag-chart-tooltip-visible {
     opacity: 1;
     transform: scale(1);
 }
 
-.ag-chart-tooltip .title {
+.ag-chart-tooltip-title {
     font-weight: bold;
     padding: 7px;
     border-top-left-radius: 5px;
@@ -31,7 +31,7 @@
     background-color: #888888;
 }
 
-.ag-chart-tooltip .content {
+.ag-chart-tooltip-content {
     padding: 7px;
 }
 
