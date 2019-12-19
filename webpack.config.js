@@ -39,8 +39,14 @@ const moduleExports = env => {
     // on a single example at a time. This example is supposed to be
     // in the `_` directory that should be given a proper name when
     // one is done working on the example.
-    const activeExampleName = env && env.example ? env.example : '_';
+    const defaultExampleName = '_';
+    const activeExampleName = env && env.example ? env.example : defaultExampleName;
     const hasActiveExample = existsSync(join(srcPath, activeExampleName));
+
+    if (activeExampleName !== defaultExampleName && !hasActiveExample) {
+        console.warn(`Could not find specified example "${activeExampleName}". Building all examples instead.`);
+    }
+
     const examples = hasActiveExample ? [{ path: srcPath, name: activeExampleName }] : getExamples(srcPath);
 
     return examples.map(example => {
