@@ -10,14 +10,15 @@ export function makeChartResizeable(chart: Chart) {
     scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
         startX = e.offsetX;
         startY = e.offsetY;
-        chartSize = chart.size;
+        chartSize = [chart.width, chart.height];
         isDragging = true;
     });
     scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
         if (isDragging) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
+            chart.width = chartSize[0] + dx;
+            chart.height = chartSize[1] + dy;
         }
     });
     scene.canvas.element.addEventListener('mouseup', () => {

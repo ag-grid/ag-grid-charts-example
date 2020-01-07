@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import { CartesianChart, CategoryAxis, ChartAxisPosition, ColumnSeries } from "ag-charts-community";
 import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
 import { Legend } from "ag-charts-community/dist/cjs/chart/legend";
-import { agChart } from "ag-charts-community/src/chart/agChart";
+import { AgChart } from "ag-charts-community/src/chart/agChart";
 
 const CounterExample = () => {
     const [count, setCount] = useState(0);
@@ -152,11 +152,11 @@ class AgChartReact extends React.Component<AgChartProps, AgChartState> {
     componentDidMount() {
         const props = this.props;
 
-        this.chart = agChart.create(props.options);
+        this.chart = AgChart.create(props.options);
     }
 
     processPropsChanges(prevProps: Readonly<AgChartProps> & Readonly<{ children?: React.ReactNode }>, nextProps: Readonly<AgChartProps>) {
-        agChart.reconfigure(this.chart, nextProps.options);
+        AgChart.update(this.chart, nextProps.options);
     }
 
     shouldComponentUpdate(nextProps: Readonly<AgChartProps>, nextState: Readonly<AgChartState>, nextContext: any): boolean {

@@ -1,5 +1,5 @@
 import './app.css';
-import { agChart } from "ag-charts-community/src/chart/agChart";
+import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton } from "../../lib/ui";
 import { LegendPosition } from "ag-charts-community";
 
@@ -39,7 +39,7 @@ function createLineChart() {
         y: 66
     }];
 
-    const chart1 = agChart.create({
+    const chart1 = AgChart.create({
         // chart type is optional because it defaults to `cartesian`
         data,
         series: [{
@@ -62,7 +62,7 @@ function createLineChart() {
     let legendMarkerSize = 15;
     let legendPositionIndex = 0;
     createButton('Increase legend marker size', () => {
-        agChart.reconfigure(chart1, {
+        AgChart.update(chart1, {
             data,
             series: [{
                 xKey: 'month',
@@ -80,7 +80,7 @@ function createLineChart() {
         });
     });
 
-    agChart.create({
+    AgChart.create({
         type: 'polar',
         data,
         series: [{ // series type is optional because that's the default for `polar` charts
@@ -89,7 +89,7 @@ function createLineChart() {
         }]
     });
 
-    agChart.create({
+    AgChart.create({
         // `polar` chart type is optional because it can be inferred from the type of series
         data,
         series: [{
@@ -100,7 +100,7 @@ function createLineChart() {
         }]
     });
 
-    agChart.create({
+    AgChart.create({
         data: scatterData,
         title: {
             text: 'Scatter Plot',
