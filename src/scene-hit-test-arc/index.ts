@@ -5,9 +5,8 @@ import {toRadians} from "ag-charts-community/src/util/angle";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 400;
-    scene.parent = document.body;
+    scene.resize(800, 400);
+    scene.container = document.body;
 
     const rootGroup = new Group();
     const pimpGroup = new Group();

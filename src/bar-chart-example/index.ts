@@ -1,5 +1,4 @@
 import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-import { Chart } from "ag-charts-community/src/chart/chart";
 import borneo from "ag-charts-community/src/chart/palettes";
 
 import './app.css';
@@ -12,6 +11,7 @@ import { Caption } from "ag-charts-community/src/caption";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
+import { makeChartResizeable } from "../../lib/chart";
 
 type Datum = {
     category: string,
@@ -88,31 +88,6 @@ const negativeData: NegativeDatum[] = [{
     yKey3: 20
 }];
 
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}
-
 function createColumnChart() {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
@@ -123,7 +98,7 @@ function createColumnChart() {
 
     const chart = new CartesianChart();
     chart.axes = [xAxis, yAxis];
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 500;
     chart.title = new Caption();
@@ -212,7 +187,7 @@ function createBarChart() {
     const chart = new CartesianChart();
     chart.axes = [xAxis, yAxis];
 
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 500;
     chart.scene.canvas.element.style.border = '1px solid black';

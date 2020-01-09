@@ -88,7 +88,7 @@ function createCategoryLineChart() {
 
     const chart = new CartesianChart();
     chart.axes = [xAxis, yAxis];
-    chart.parent = parentDiv;
+    chart.container = parentDiv;
     chart.width = 800;
     chart.height = 500;
 

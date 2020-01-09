@@ -2,7 +2,6 @@ import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
 import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
-import { Chart, LegendPosition } from "ag-charts-community/src/chart/chart";
 import { Caption } from "ag-charts-community/src/caption";
 import { Path } from "ag-charts-community/src/scene/shape/path";
 import { Group } from "ag-charts-community/src/scene/group";
@@ -19,6 +18,8 @@ import { createButton, createSlider } from "../../lib/ui";
 import { BandScale } from "ag-charts-community/src/scale/bandScale";
 import { find } from "ag-charts-community/src/util/array";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { makeChartResizeable } from "../../lib/chart";
+import { LegendPosition } from "ag-charts-community";
 
 type Datum = {
     category: string,
@@ -133,31 +134,6 @@ function generateData(n = 50, yKeyCount = 10) {
     };
 }
 
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}
-
 function makeNuclearChart() {
     document.body.appendChild(document.createElement('br'));
 
@@ -202,7 +178,7 @@ function makeNuclearChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 1200;
     chart.height = 400;
     chart.axes = [xAxis, yAxis];
@@ -309,7 +285,7 @@ function makeNuclearChartWithNumericX() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 1200;
     chart.height = 400;
     chart.axes = [xAxis, yAxis];
@@ -359,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 500;
     chart.axes = [xAxis, yAxis];

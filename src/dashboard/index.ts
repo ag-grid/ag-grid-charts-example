@@ -1,15 +1,13 @@
-import { CartesianChart } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/cartesianChart";
-import { CategoryAxis } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/axis/categoryAxis";
-import { ChartAxisPosition } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/chartAxis";
-import { ColumnSeries } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/series/cartesian/columnSeries";
-import { Caption } from "@ag-grid-enterprise/charts/dist/cjs/charts/caption";
-import { NumberAxis } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/axis/numberAxis";
 import './app.css';
-import { material, palettes, pastel } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/palettes";
-import { GroupedCategoryAxis } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/axis/groupedCategoryAxis";
-import { GroupedCategoryChart } from "@ag-grid-enterprise/charts/dist/cjs/charts/chart/groupedCategoryChart";
-import { FontWeight } from "@ag-grid-enterprise/charts/dist/cjs/charts/chartOptions";
-import { ChartBuilder } from "@ag-grid-enterprise/charts/dist/cjs/charts/chartBuilder";
+import {
+    Caption,
+    CartesianChart,
+    CategoryAxis,
+    ChartAxisPosition,
+    ColumnSeries,
+    LegendPosition, pastel
+} from "ag-charts-community";
+import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
 
 function createOldestCompaniesChart() {
     const data = [{
@@ -56,9 +54,10 @@ function createOldestCompaniesChart() {
     });
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
-    chart.size = [800, 400];
-    chart.legend.position = 'bottom';
+    chart.container = document.body;
+    chart.width = 800;
+    chart.height = 400;
+    chart.legend.position = LegendPosition.Bottom;
     chart.title = new Caption();
     chart.title.fontFamily = 'Verdana';
     chart.title.fontSize = 20;
@@ -111,12 +110,6 @@ function createOldestCompaniesChart() {
     chart.axes = [leftAxis, bottomAxis];
     chart.series = [columnSeries];
     chart.data = data;
-}
-
-function createSimpleOldestCompaniesChart() {
-    (ChartBuilder as any).create({
-
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

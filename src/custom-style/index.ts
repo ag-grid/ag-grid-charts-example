@@ -3,6 +3,7 @@ import { PieSeries } from "ag-charts-community/src/chart/series/polar/pieSeries"
 import { Caption } from "ag-charts-community/src/caption";
 import { createButton } from "../../lib/ui";
 import { toDegrees } from "ag-charts-community/src/util/angle";
+import { LegendPosition } from "ag-charts-community";
 
 const data = [
     {
@@ -27,8 +28,8 @@ function renderChart() {
     const chart = new PolarChart();
     chart.width = 550;
     chart.height = 350;
-    chart.parent = document.body;
-    chart.legend.position = 'bottom';
+    chart.container = document.body;
+    chart.legend.position = LegendPosition.Bottom;
     chart.legend.labelFontSize = 15;
     chart.legend.labelFontFamily = 'Source Sans Pro';
     chart.legend.labelColor = 'rgb(124, 124, 124)';

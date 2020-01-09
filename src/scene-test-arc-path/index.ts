@@ -2,13 +2,12 @@ import {Scene} from "ag-charts-community/src/scene/scene";
 import {Group} from "ag-charts-community/src/scene/group";
 import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
 import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
-import { FontWeight, Text } from "ag-charts-community/src/scene/shape/text";
+import { Text } from "ag-charts-community/src/scene/shape/text";
 
 function createArcPathExample() {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 400;
-    scene.parent = document.body;
+    scene.resize(800, 400);
+    scene.container = document.body;
 
     const group = new Group();
 
@@ -69,9 +68,8 @@ function createArcPathExample() {
 
 function createTextExample() {
     const scene = new Scene();
-    scene.width = 1200;
-    scene.height = 800;
-    scene.parent = document.body;
+    scene.resize(1200, 800);
+    scene.container = document.body;
 
     const group = new Group();
 

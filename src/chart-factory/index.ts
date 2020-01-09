@@ -41,6 +41,7 @@ function createLineChart() {
 
     const chart1 = AgChart.create({
         // chart type is optional because it defaults to `cartesian`
+        container: document.body,
         data,
         series: [{
             // series type if optional because `line` is default for `cartesian` charts
@@ -82,6 +83,7 @@ function createLineChart() {
 
     AgChart.create({
         type: 'polar',
+        container: document.body,
         data,
         series: [{ // series type is optional because that's the default for `polar` charts
             angleKey: 'profit',
@@ -91,6 +93,7 @@ function createLineChart() {
 
     AgChart.create({
         // `polar` chart type is optional because it can be inferred from the type of series
+        container: document.body,
         data,
         series: [{
             type: 'pie',
@@ -101,6 +104,7 @@ function createLineChart() {
     });
 
     AgChart.create({
+        container: document.body,
         data: scatterData,
         title: {
             text: 'Scatter Plot',

@@ -7,9 +7,8 @@ import { areaRadial } from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 700;
-    scene.height = 900;
-    scene.parent = document.body;
+    scene.resize(700, 900);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     {

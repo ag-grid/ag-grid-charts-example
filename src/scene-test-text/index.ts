@@ -6,9 +6,8 @@ import {Node} from "ag-charts-community/src/scene/node";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 600;
-    scene.parent = document.body;
+    scene.resize(800, 600);
+    scene.container = document.body;
     scene.renderFrameIndex = false;
     const group = new Group();
 

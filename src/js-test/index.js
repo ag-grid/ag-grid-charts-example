@@ -5,12 +5,12 @@ import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
 import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import {createButton} from "../../lib/ui";
 
 function createPieChart() {
     const chart = new PolarChart();
-    chart.size = [400, 300];
-    chart.parent = document.body;
+    chart.width = 400;
+    chart.height = 300;
+    chart.container = document.body;
 
     const series = new PieSeries();
     series.data = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }];
@@ -26,8 +26,9 @@ function createBarChart() {
     yAxis.position = 'left';
 
     const chart = new CartesianChart();
-    chart.size = [400, 300];
-    chart.parent = document.body;
+    chart.width = 400;
+    chart.height = 300;
+    chart.container = document.body;
     chart.axes = [xAxis, yAxis];
 
     const series = new ColumnSeries();
@@ -45,8 +46,9 @@ function createLineChart() {
     yAxis.position = 'left';
 
     const chart = new CartesianChart();
-    chart.size = [400, 300];
-    chart.parent = document.body;
+    chart.width = 400;
+    chart.height = 300;
+    chart.container = document.body;
     chart.axes = [xAxis, yAxis];
 
     const series = new LineSeries();
@@ -74,8 +76,9 @@ function createFirstChartExample() {
 
     function createColumnChart1() {
         const chart = new CartesianChart();
-        chart.size = [400, 300];
-        chart.parent = document.body;
+        chart.width = 400;
+        chart.height = 300;
+        chart.container = document.body;
 
         const xAxis = new CategoryAxis();
         xAxis.position = 'bottom';
@@ -95,8 +98,9 @@ function createFirstChartExample() {
 
     function createColumnChart2() {
         const chart = new CartesianChart();
-        chart.size = [400, 300];
-        chart.parent = document.body;
+        chart.width = 400;
+        chart.height = 300;
+        chart.container = document.body;
 
         const xAxis = new CategoryAxis();
         xAxis.position = 'bottom';
@@ -116,8 +120,9 @@ function createFirstChartExample() {
 
     function createColumnChart3() {
         const chart = new CartesianChart();
-        chart.size = [400, 300];
-        chart.parent = document.body;
+        chart.width = 400;
+        chart.height = 300;
+        chart.container = document.body;
 
         const xAxis = new CategoryAxis();
         xAxis.position = 'bottom';

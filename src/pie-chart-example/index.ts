@@ -1,5 +1,4 @@
 import { PieSeries } from 'ag-charts-community/src/chart/series/polar/pieSeries';
-import { Chart, LegendPosition } from 'ag-charts-community/src/chart/chart';
 import { Padding } from 'ag-charts-community/src/util/padding';
 import { Caption } from 'ag-charts-community/src/caption';
 
@@ -7,6 +6,8 @@ import './app.css';
 import { FontStyle, FontWeight } from 'ag-charts-community/src/scene/shape/text';
 import { PolarChart } from 'ag-charts-community/src/chart/polarChart';
 import { DropShadow } from 'ag-charts-community/src/scene/dropShadow';
+import { makeChartResizeable } from "../../lib/chart";
+import { LegendPosition } from "ag-charts-community";
 
 type Datum = {
     label: string,
@@ -100,34 +101,9 @@ function createSlider<D>(text: string, values: D[], action: (value: D) => void):
     return slider;
 }
 
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 400;
 
@@ -234,7 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Run other tests', () => {
         setTimeout(() => {
             chart.padding = new Padding(70, 100, 70, 100);
-            chart.size = [640, 300];
+            chart.width = 640;
+            chart.height = 300;
         }, 2000);
 
         setTimeout(() => {

@@ -26,7 +26,7 @@ function createCategoryLineChart() {
 
     const chart = new CartesianChart();
     chart.axes = [xAxis, yAxis];
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 500;
 
@@ -46,7 +46,7 @@ function createBarChart() {
     const yAxis = new NumberAxis();
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 500;
     chart.axes = [xAxis, yAxis];

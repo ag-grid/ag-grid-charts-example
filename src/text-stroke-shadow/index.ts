@@ -5,9 +5,8 @@ import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 400;
-    scene.parent = document.body;
+    scene.resize(800, 400);
+    scene.container = document.body;
 
     const text = new Text();
     text.text = 'Hello';

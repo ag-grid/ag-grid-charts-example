@@ -1,7 +1,7 @@
 import {PolarChart} from "ag-charts-community/src/chart/polarChart";
 import {PieSeries} from "ag-charts-community/src/chart/series/polar/pieSeries";
 import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
-import { Chart } from "ag-charts-community/src/chart/chart";
+import { makeChartResizeable } from "../../lib/chart";
 
 const data = [
     { label: 'John', value1: 3, value2: 7, value3: 5 },
@@ -27,34 +27,9 @@ function createButton(text: string, action: EventListenerOrEventListenerObject):
     return button;
 }
 
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const chart = new PolarChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 700;
     chart.height = 700;
 

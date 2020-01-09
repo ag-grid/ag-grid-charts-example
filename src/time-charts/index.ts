@@ -4,7 +4,6 @@ import { TimeAxis } from "ag-charts-community/src/chart/axis/timeAxis";
 import { data as timestampData } from './timestampData';
 import { data as minuteData1 } from './minuteData1';
 import { data as minuteData2 } from './minuteData2';
-import { Chart } from "ag-charts-community/src/chart/chart";
 import year from "ag-charts-community/src/util/time/year";
 import month from "ag-charts-community/src/util/time/month";
 import second from "ag-charts-community/src/util/time/second";
@@ -14,31 +13,7 @@ import setDefaultLocale from "ag-charts-community/src/util/time/format/defaultLo
 import { Padding } from "ag-charts-community/src/util/padding";
 import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
-
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}
+import { makeChartResizeable } from "../../lib/chart";
 
 function createTimeChart() {
     const xAxis = new TimeAxis();
@@ -51,7 +26,7 @@ function createTimeChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];
@@ -82,7 +57,7 @@ function createTimeChart2() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];
@@ -113,7 +88,7 @@ function createTimeChart3() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];
@@ -144,7 +119,7 @@ function createComboTimeChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];
@@ -197,7 +172,7 @@ function createCustomLocaleTimeChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];
@@ -241,7 +216,7 @@ function createRealTimeChart() {
 
     const chart = new CartesianChart();
     chart.padding = new Padding(20, 60, 20, 20);
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];

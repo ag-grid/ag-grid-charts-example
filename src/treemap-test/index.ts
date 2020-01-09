@@ -35,14 +35,14 @@ function makeResizeable(scene: Scene, update: () => void) {
     scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
         startX = e.offsetX;
         startY = e.offsetY;
-        size = scene.size;
+        size = [scene.width, scene.height];
         isDragging = true;
     });
     scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
         if (isDragging) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
-            scene.size = [size[0] + dx, size[1] + dy];
+            scene.resize(size[0] + dx, size[1] + dy);
             update();
         }
     });
@@ -90,9 +90,8 @@ function createStockTreeMap() {
     };
 
     const scene = new Scene();
-    scene.width = 1200;
-    scene.height = 800;
-    scene.parent = document.body;
+    scene.resize(1200, 800);
+    scene.container = document.body;
 
     const rootGroup = new Group();
 
@@ -110,7 +109,7 @@ function createStockTreeMap() {
     labelShadow.yOffset = 1.5;
 
     function update() {
-        const [width, height] = scene.size;
+        const { width, height } = scene;
         const dataRoot = d3.hierarchy(data).sum(datum => datum.children ? 1 : datum.size);
         const treemapLayout = d3.treemap().size([width, height]).round(true)
             .paddingRight(nodePadding).paddingBottom(nodePadding).paddingLeft(nodePadding).paddingTop(node => {
@@ -256,9 +255,8 @@ function createOrgTreeMap() {
     const data = convertGridTreeData(rowData);
 
     const scene = new Scene();
-    scene.width = 1200;
-    scene.height = 800;
-    scene.parent = document.body;
+    scene.resize(1200, 800);
+    scene.container = document.body;
 
     const rootGroup = new Group();
 
@@ -269,7 +267,7 @@ function createOrgTreeMap() {
     const colorMap = new Map<Rect, string>();
 
     function update() {
-        const [width, height] = scene.size;
+        const { width, height } = scene;
         const dataRoot = d3.hierarchy(data).sum(datum => datum.children ? 0 : 1);
         const treemapLayout = d3.treemap().size([width, height]).round(true)
             .paddingRight(4).paddingBottom(4).paddingLeft(4).paddingTop(node => {

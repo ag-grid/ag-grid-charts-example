@@ -29,9 +29,8 @@ export function interpolateBasis(values: number[]) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 1200;
-    scene.height = 900;
-    scene.parent = document.body;
+    scene.resize(1200, 900);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     const starPath = 'M 54.479341,8.93861 63.990133,35.839945 65.664178,40.57499 99.20847,41.43623 72.576788,61.8498 82.123461,94.0185 54.47934,74.9984 26.835216,94.0185 36.381891,61.8498 9.7502099,41.43623 43.294501,40.575 z';

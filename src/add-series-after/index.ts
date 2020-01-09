@@ -5,6 +5,7 @@ import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
 import { createButton } from "../../lib/ui";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { makeChartResizeable } from "../../lib/chart";
 
 const data = [
     { label: 'L1', v1: 1, v2: 2, v3: 5, v4: 4, v5: 5 },
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chart = new CartesianChart();
     chart.width = 800;
     chart.height = 600;
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.axes = [xAxis, yAxis];
 
     const series1 = new AreaSeries();
@@ -62,28 +63,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     makeChartResizeable(chart);
 });
-
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}

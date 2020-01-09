@@ -7,23 +7,21 @@ import {Scene} from "ag-charts-community/src/scene/scene";
 
 function test_SelectionSelect() {
     const scene = new Scene();
-    scene.width = 100;
-    scene.height = 100;
-    scene.parent = document.body;
+    scene.resize(100, 100);
+    scene.container = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
 
     const rootSelection: Selection<Group, Node | EnterNode, any, any> = Selection.select(rootGroup);
     console.assert(rootSelection.node() instanceof Group === true);
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 function test_append_setDatum_attr_each() {
     const scene = new Scene();
-    scene.width = 100;
-    scene.height = 100;
-    scene.parent = document.body;
+    scene.resize(100, 100);
+    scene.container = document.body;
 
     const rootGroup = new Group();
     scene.root = rootGroup;
@@ -58,14 +56,13 @@ function test_append_setDatum_attr_each() {
     console.assert(rootGroup.countChildren() === 2);
     console.assert((rootGroup.children[1] as Rect).fill === 'magenta');
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 function test_selectAll_setData_enter() {
     const scene = new Scene();
-    scene.width = 300;
-    scene.height = 150;
-    scene.parent = document.body;
+    scene.resize(300, 150);
+    scene.container = document.body;
 
     const rootGroup = new Group();
     scene.root = rootGroup;
@@ -94,14 +91,13 @@ function test_selectAll_setData_enter() {
 
     console.assert(_.isEqual(selection.data, data) === true);
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 function test_call_merge() {
     const scene = new Scene();
-    scene.width = 500;
-    scene.height = 250;
-    scene.parent = document.body;
+    scene.resize(500, 250);
+    scene.container = document.body;
 
     const rootGroup = new Group();
     scene.root = rootGroup;
@@ -180,7 +176,7 @@ function test_call_merge() {
         });
     }
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

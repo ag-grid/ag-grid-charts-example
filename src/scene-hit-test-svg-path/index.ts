@@ -4,9 +4,8 @@ import {Path} from "ag-charts-community/src/scene/shape/path";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 1000;
-    scene.height = 400;
-    scene.parent = document.body;
+    scene.resize(1000, 400);
+    scene.container = document.body;
 
     const rootGroup = new Group();
     const pimpGroup = new Group();

@@ -1,5 +1,4 @@
 import { GroupedCategoryChart } from 'ag-charts-community/src/chart/groupedCategoryChart';
-import { Chart } from 'ag-charts-community/src/chart/chart';
 import { GroupedCategoryAxis } from 'ag-charts-community/src/chart/axis/groupedCategoryAxis';
 import { Caption } from "ag-charts-community/src/caption";
 import { NumberAxis } from 'ag-charts-community/src/chart/axis/numberAxis';
@@ -9,7 +8,7 @@ import { createButton, createSlider } from '../../lib/ui';
 import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { Square } from "ag-charts-community/src/chart/marker/square";
 import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
-import { find } from 'ag-charts-community/src/util/array';
+import { makeChartResizeable } from "../../lib/chart";
 
 type CategoryDatum = {
     category: { labels: string[] },
@@ -55,31 +54,6 @@ const noGroupData: CategoryDatum[] = [
     { category: { labels: ['San Francisco'] }, value: 3, value2: 4 }
 ];
 
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}
-
 function createCategoryColumnChart() {
     const xAxis = new GroupedCategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
@@ -92,7 +66,7 @@ function createCategoryColumnChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new GroupedCategoryChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];
@@ -182,7 +156,7 @@ function createCategoryBarChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new GroupedCategoryChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 1000;
     chart.padding.left = 60;

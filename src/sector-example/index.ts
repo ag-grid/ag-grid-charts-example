@@ -9,9 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function testSector() {
     const scene = new Scene();
-    scene.width = 500;
-    scene.height = 500;
-    scene.parent = document.body;
+    scene.resize(500, 500);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     const sector1 = new Sector();

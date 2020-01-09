@@ -2,7 +2,6 @@ import {Scene} from "ag-charts-community/src/scene/scene";
 import {Group} from "ag-charts-community/src/scene/group";
 import {Text} from "ag-charts-community/src/scene/shape/text";
 import {Arc} from "ag-charts-community/src/scene/shape/arc";
-import { arc } from "d3";
 
 function delay() {
     return new Promise(resolve => {
@@ -12,9 +11,8 @@ function delay() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 800;
-    scene.parent = document.body;
+    scene.resize(800, 800);
+    scene.container = document.body;
 
     const rootGroup = new Group();
 

@@ -29,7 +29,7 @@ function createChart(data: Datum[]) {
 
     chart.axes = [xAxis, yAxis];
 
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     // chart.padding = new Padding(20, 80, 20, 20);
@@ -131,7 +131,7 @@ function createTimeChart() {
     chart.title = new Caption();
     chart.title.text = 'Number axis time chart';
 
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
 

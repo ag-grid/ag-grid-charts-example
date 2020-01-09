@@ -71,10 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
     root.translationX = 200;
     root.translationY = 200;
     const scene = new Scene();
-    scene.width = width;
-    scene.height = height;
+    scene.resize(width, height);
     scene.root = root;
-    scene.parent = document.body;
+    scene.container = document.body;
 
     importSvg(scene, tiger);
 

@@ -64,9 +64,8 @@ function testNice() {
 
 function createScene() {
     const scene = new Scene();
-    scene.width = 400;
-    scene.height = 1200;
-    scene.parent = document.body;
+    scene.resize(400, 1200);
+    scene.container = document.body;
     const root = new Group();
 
     testAxis(root);
@@ -142,7 +141,7 @@ function createLineChart() {
     chart.height = 1000;
     chart.axes = [xAxis, yAxis];
 
-    chart.parent = document.body;
+    chart.container = document.body;
 
     const series = new LineSeries();
     series.data = [{ x: 1, y: 5 }, { x: 3, y: 70 }, { x: 7, y: 800 }, { x: 9, y: 3300 }];

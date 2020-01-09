@@ -13,9 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 800;
     const height = 400;
     const scene = new Scene();
-    scene.width = width;
-    scene.height = height;
-    scene.parent = document.body;
+    scene.resize(width, height);
+    scene.container = document.body;
 
     const group = new Group();
 

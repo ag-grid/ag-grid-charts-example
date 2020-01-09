@@ -5,9 +5,8 @@ import { createSlider } from "../../lib/ui";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 800;
-    scene.parent = document.body;
+    scene.resize(800, 800);
+    scene.container = document.body;
     const group = new Group();
 
     const rect1 = new Rect();

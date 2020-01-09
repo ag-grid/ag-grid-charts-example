@@ -30,7 +30,7 @@ function createCategoryLineChart() {
     const chart = new CartesianChart();
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.axes = [xAxis, yAxis];
 
     setTimeout(() => {

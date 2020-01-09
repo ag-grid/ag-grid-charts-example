@@ -17,9 +17,8 @@ function delay() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 400;
-    scene.height = 400;
-    scene.parent = document.body;
+    scene.resize(400, 400);
+    scene.container = document.body;
 
     const root = new Group();
 
@@ -45,10 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     scene.root = root;
 
     delay().then(() => {
-        scene.width -= 100;
+        scene.resize(scene.width - 100, scene.height);
     }).then(delay).then(() => {
-        scene.height -= 100;
+        scene.resize(scene.width, scene.height - 100);
     }).then(delay).then(() => {
-        scene.size = [600, 600];
+        scene.resize(600, 600);
     });
 });

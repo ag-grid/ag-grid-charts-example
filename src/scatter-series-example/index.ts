@@ -82,7 +82,7 @@ function createHeightWeightGenderChart() {
 
     const chart = new CartesianChart();
     makeChartResizeable(chart);
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 1000;
     chart.height = 600;
     chart.title = new Caption();
@@ -208,7 +208,7 @@ function createAgeWeightGenderChart() {
 
     const chart = new CartesianChart();
     makeChartResizeable(chart);
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 1000;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];

@@ -27,9 +27,8 @@ function shortDelay() {
 
 function renderVerticalAxesNormalLabels() {
     const scene = new Scene();
-    scene.width = 700;
-    scene.height = 500;
-    scene.parent = document.body;
+    scene.resize(700, 500);
+    scene.container = document.body;
     const root = new Group();
 
     leftAxisBottomUp(root);
@@ -42,9 +41,8 @@ function renderVerticalAxesNormalLabels() {
 
 function renderVerticalAxesRotatedLabels() {
     const scene = new Scene();
-    scene.width = 700;
-    scene.height = 500;
-    scene.parent = document.body;
+    scene.resize(700, 500);
+    scene.container = document.body;
     const root = new Group();
 
     leftAxisRotatedLabels45(root);
@@ -57,9 +55,8 @@ function renderVerticalAxesRotatedLabels() {
 
 function renderHorizontalAxes() {
     const scene = new Scene();
-    scene.width = 900;
-    scene.height = 500;
-    scene.parent = document.body;
+    scene.resize(900, 500);
+    scene.container = document.body;
 
     const root = new Group();
 
@@ -78,9 +75,8 @@ function renderHorizontalAxes() {
 
 function testAutoFlippingParallelMirroredLabels() {
     const scene = new Scene();
-    scene.width = 900;
-    scene.height = 900;
-    scene.parent = document.body;
+    scene.resize(900, 900);
+    scene.container = document.body;
 
     const root = new Group();
 
@@ -140,9 +136,8 @@ function testAutoFlippingParallelMirroredLabels() {
 
 function testAutoFlippingPerpendicularMirroredLabels() {
     const scene = new Scene();
-    scene.width = 900;
-    scene.height = 900;
-    scene.parent = document.body;
+    scene.resize(900, 900);
+    scene.container = document.body;
 
     const root = new Group();
 
@@ -203,9 +198,8 @@ function testAutoFlippingPerpendicularMirroredLabels() {
 
 function testRotationFixedPerpendicularMirroredLabels() {
     const scene = new Scene();
-    scene.width = 900;
-    scene.height = 900;
-    scene.parent = document.body;
+    scene.resize(900, 900);
+    scene.container = document.body;
 
     const root = new Group();
 
@@ -265,9 +259,8 @@ function testRotationFixedPerpendicularMirroredLabels() {
 
 function testRotationFixedParallelMirroredLabels() {
     const scene = new Scene();
-    scene.width = 900;
-    scene.height = 900;
-    scene.parent = document.body;
+    scene.resize(900, 900);
+    scene.container = document.body;
 
     const root = new Group();
 
@@ -334,9 +327,8 @@ function testRadialGrid() {
     const radius = Math.min(width, height) / 2 - 50;
 
     const scene = new Scene();
-    scene.width = width;
-    scene.height = height;
-    scene.parent = document.body;
+    scene.resize(width, height);
+    scene.container = document.body;
 
     const root = new Group();
 

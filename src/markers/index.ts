@@ -11,9 +11,8 @@ import { pad } from "ag-charts-community/src/util/time/format/locale";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 400;
-    scene.height = 100;
-    scene.parent = document.body;
+    scene.resize(400, 100);
+    scene.container = document.body;
 
     const rootGroup = new Group();
     rootGroup.translationY = 50;

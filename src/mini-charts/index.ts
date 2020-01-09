@@ -26,8 +26,7 @@ export abstract class MiniChart {
     protected readonly root = new Group();
     protected readonly scene: Scene = (() => {
         const scene = new Scene()
-        scene.width = this.size;
-        scene.height = this.size;
+        scene.resize(this.size, this.size);
         scene.root = this.root;
         return scene;
     })();
@@ -62,10 +61,10 @@ export class MiniPie extends MiniChart {
         return sector;
     });
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
         this.root.append(this.sectors);
         this.updateColors(fills, strokes);
     }
@@ -94,10 +93,10 @@ export class MiniDonut extends MiniChart {
         return sector;
     });
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
         this.root.append(this.sectors);
         this.updateColors(fills, strokes);
     }
@@ -113,10 +112,10 @@ export class MiniDonut extends MiniChart {
 class MiniLine extends MiniChart {
     private readonly lines: Path[];
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
 
         const size = this.size;
         const padding = this.padding;
@@ -189,10 +188,10 @@ class MiniLine extends MiniChart {
 class MiniScatter extends MiniChart {
     private readonly points: Shape[];
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
 
         const size = this.size;
         const padding = this.padding;
@@ -269,10 +268,10 @@ class MiniScatter extends MiniChart {
 class MiniBar extends MiniChart {
     private readonly bars: Rect[];
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
 
         const size = this.size;
         const padding = this.padding;
@@ -344,10 +343,10 @@ class MiniBar extends MiniChart {
 class MiniStackedBar extends MiniChart {
     private readonly bars: Rect[][];
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
 
         const size = this.size;
         const padding = this.padding;
@@ -426,10 +425,10 @@ class MiniStackedBar extends MiniChart {
 class MiniNormalizedBar extends MiniChart {
     private readonly bars: Rect[][];
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[]) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
 
         const size = this.size;
         const padding = this.padding;
@@ -514,10 +513,10 @@ class MiniArea extends MiniChart {
         [6, 2, 2]
     ];
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[], data: number[][] = MiniArea.data) {
+    constructor(container: HTMLElement, fills: string[], strokes: string[], data: number[][] = MiniArea.data) {
         super();
 
-        this.scene.parent = parent;
+        this.scene.container = container;
 
         const size = this.size;
         const padding = this.padding;

@@ -351,9 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const scene = new Scene();
-    scene.width = 1500;
-    scene.height = 1200;
-    scene.parent = document.body;
+    scene.resize(1500, 1200);
+    scene.container = document.body;
 
     const rootGroup = new Group();
     rootGroup.translationX = 600;

@@ -12,9 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function sceneGraphTest() {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 400;
-    scene.parent = document.body;
+    scene.resize(800, 400);
+    scene.container = document.body;
     const group = new Group();
 
     let x1 = 50;
@@ -178,9 +177,8 @@ function d3SvgTest() {
 
 function lineDashTest() {
     const scene = new Scene();
-    scene.width = 800;
-    scene.height = 200;
-    scene.parent = document.body;
+    scene.resize(800, 200);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     const line1 = new Line();

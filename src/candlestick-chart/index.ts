@@ -55,7 +55,7 @@ function createChart() {
 
     chart.series = [ohlcSeries, lineSeries] as any;
 
-    chart.parent = document.body;
+    chart.container = document.body;
 
     const volumeChart = createVolumeChart();
 
@@ -105,7 +105,7 @@ function createVolumeChart() {
         };
     });
 
-    chart.parent = document.body;
+    chart.container = document.body;
 
     makeChartResizeable(chart);
 

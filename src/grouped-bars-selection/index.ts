@@ -203,9 +203,8 @@ function renderChart() {
     const barWidth = xBarScale.bandwidth;
 
     const scene = new Scene();
-    scene.width = chartWidth;
-    scene.height = chartHeight;
-    scene.parent = document.body;
+    scene.resize(chartWidth, chartHeight);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     // bars

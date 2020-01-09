@@ -200,7 +200,7 @@ function createCategoryLineChart() {
 
     const chart = new CartesianChart();
     chart.axes = [xAxis, yAxis];
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
 
@@ -293,7 +293,7 @@ function createTwoVerticalAxesLineChart() {
 
     const chart = new CartesianChart();
     chart.axes = [xAxisTop, xAxisBottom, yAxisLeft, yAxisRight];
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
 
@@ -349,7 +349,7 @@ function createNumericLineChart() {
 
     const chart = new CartesianChart();
     chart.axes = [xAxis, yAxis];
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = 600;
     chart.height = 600;
 
@@ -470,7 +470,7 @@ function createMultiLineChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
     chart.axes = [xAxis, yAxis];

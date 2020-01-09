@@ -1,5 +1,4 @@
 import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-import { Chart, LegendPosition } from "ag-charts-community/src/chart/chart";
 import { Caption } from "ag-charts-community/src/caption";
 import borneo, {
     bright,
@@ -15,6 +14,8 @@ import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { find } from "ag-charts-community/src/util/array";
+import { makeChartResizeable } from "../../lib/chart";
+import { LegendPosition } from "ag-charts-community";
 
 type Datum = {
     category: string,
@@ -129,31 +130,6 @@ function generateData(n = 50, yKeyCount = 10) {
     };
 }
 
-function makeChartResizeable(chart: Chart) {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let chartSize: [number, number];
-    const scene = chart.scene;
-
-    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
-        startX = e.offsetX;
-        startY = e.offsetY;
-        chartSize = chart.size;
-        isDragging = true;
-    });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
-            const dx = e.offsetX - startX;
-            const dy = e.offsetY - startY;
-            chart.size = [chartSize[0] + dx, chartSize[1] + dy];
-        }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
@@ -165,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chart = new CartesianChart();
     chart.width = 800;
     chart.height = 500;
-    chart.parent = document.body;
+    chart.container = document.body;
     chart.axes = [xAxis, yAxis];
 
     chart.title = new Caption();

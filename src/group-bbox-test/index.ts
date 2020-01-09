@@ -18,9 +18,8 @@ function delay() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
-    scene.width = 600;
-    scene.height = 600;
-    scene.parent = document.body;
+    scene.resize(600, 600);
+    scene.container = document.body;
     const group = new Group();
     const parentGroup = new Group();
 
