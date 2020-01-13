@@ -270,9 +270,59 @@ function createScatterChart() {
     });
 }
 
+function testAxisMappings() {
+    const chart = AgChart.create({
+        container: document.body,
+        data: revenueProfitData,
+        series: [{
+            type: 'area',
+            xKey: 'month',
+            yKeys: ['revenue'],
+            fills: ['green']
+        }],
+        axes: [{
+            type: 'category',
+            position: 'bottom',
+            label: {
+                fontSize: 20
+            }
+        }, {
+            type: 'number',
+            position: 'left',
+            tick: {
+                size: 15
+            }
+        }]
+    });
+    // AgChart.update(chart, {
+    //     container: document.body,
+    //     data: revenueProfitData,
+    //     series: [{
+    //         type: 'area',
+    //         xKey: 'month',
+    //         yKeys: ['revenue'],
+    //         fills: ['green']
+    //     }],
+    //     axes: [{
+    //         type: 'category',
+    //         position: 'bottom',
+    //         label: {
+    //             fontWeight: 'bold'
+    //         }
+    //     }, {
+    //         type: 'number',
+    //         position: 'left',
+    //         tick: {
+    //             width: 4
+    //         }
+    //     }]
+    // });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // createLineChart();
-    createAreaChart();
-    createScatterChart();
+    // createAreaChart();
+    // createScatterChart();
+    testAxisMappings();
     // test();
 });
