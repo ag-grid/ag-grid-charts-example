@@ -3,46 +3,45 @@ import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton } from "../../lib/ui";
 import { LegendPosition } from "ag-charts-community";
 
+const revenueProfitData = [{
+    month: 'Jan',
+    revenue: 155000,
+    profit: 33000
+}, {
+    month: 'Feb',
+    revenue: 123000,
+    profit: 35500
+}, {
+    month: 'Mar',
+    revenue: 172500,
+    profit: 41000
+}, {
+    month: 'Apr',
+    revenue: 185000,
+    profit: 50000
+}];
+
+function randomNumber(range: [number, number] = [0, 100]): number {
+    const delta = range[1] - range[0];
+    return range[0] + Math.random() * delta;
+}
+
+const scatterData = [0, 1, 2].map(_ => {
+    const data: {x: number, y: number}[] = [];
+    for (let i = 0; i < 10; i++) {
+        data.push({
+            x: randomNumber(),
+            y: randomNumber()
+        });
+    }
+    return data;
+});
+
 function createLineChart() {
-    const data = [{
-        month: 'Jan',
-        revenue: 155000,
-        profit: 33000
-    }, {
-        month: 'Feb',
-        revenue: 123000,
-        profit: 35500
-    }, {
-        month: 'Mar',
-        revenue: 172500,
-        profit: 41000
-    }, {
-        month: 'Apr',
-        revenue: 185000,
-        profit: 50000
-    }];
-
-    const scatterData = [{
-        x: 23,
-        y: 74
-    }, {
-        x: 83,
-        y: 80
-    }, {
-        x: 55,
-        y: 93
-    }, {
-        x: 34,
-        y: 45
-    }, {
-        x: 77,
-        y: 66
-    }];
-
     const chart1 = AgChart.create({
         // chart type is optional because it defaults to `cartesian`
         container: document.body,
-        data,
+        data: revenueProfitData,
         series: [{
             // series type if optional because `line` is default for `cartesian` charts
             xKey: 'month',
@@ -64,7 +63,7 @@ function createLineChart() {
     let legendPositionIndex = 0;
     createButton('Increase legend marker size', () => {
         AgChart.update(chart1, {
-            data,
+            data: revenueProfitData,
             series: [{
                 xKey: 'month',
                 yKey: 'revenue'
@@ -84,7 +83,7 @@ function createLineChart() {
     AgChart.create({
         type: 'polar',
         container: document.body,
-        data,
+        data: revenueProfitData,
         series: [{ // series type is optional because that's the default for `polar` charts
             angleKey: 'profit',
             tooltipEnabled: true
@@ -94,7 +93,7 @@ function createLineChart() {
     AgChart.create({
         // `polar` chart type is optional because it can be inferred from the type of series
         container: document.body,
-        data,
+        data: revenueProfitData,
         series: [{
             type: 'pie',
             angleKey: 'revenue',
@@ -105,7 +104,7 @@ function createLineChart() {
 
     AgChart.create({
         container: document.body,
-        data: scatterData,
+        data: scatterData[0],
         title: {
             text: 'Scatter Plot',
             // fontSize: 18,
@@ -185,6 +184,7 @@ function test() {
             left: 60
         },
         subtitle: {
+            enabled: false,
             text: 'My Subtitle',
             fontSize: 20
         },
@@ -219,9 +219,57 @@ function test() {
     console.assert(chart.title === undefined);
     console.assert(chart.subtitle.text === 'My Subtitle');
     console.assert(chart.subtitle.fontSize === 20);
+    console.assert(chart.subtitle.enabled === false);
+}
+
+function createAreaChart() {
+    AgChart.create({
+        type: 'area',
+        container: document.body,
+        data: revenueProfitData,
+        series: [{
+            xKey: 'month',
+            yKeys: ['revenue'],
+            fills: ['red']
+        }, {
+            xKey: 'month',
+            yKeys: ['profit'],
+            fills: ['blue']
+        }]
+    });
+}
+
+function createScatterChart() {
+    AgChart.create({
+        type: 'scatter',
+        container: document.body,
+        series: [{
+            title: 'foo',
+            data: scatterData[0],
+            xKey: 'x',
+            yKey: 'y',
+            fill: 'red',
+            marker: {
+                shape: 'plus',
+                size: 20
+            }
+        }, {
+            title: 'bar',
+            data: scatterData[1],
+            xKey: 'x',
+            yKey: 'y',
+            fill: 'blue',
+            marker: {
+                shape: 'cross',
+                size: 20
+            }
+        }]
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     // createLineChart();
-    test();
+    createAreaChart();
+    createScatterChart();
+    // test();
 });
