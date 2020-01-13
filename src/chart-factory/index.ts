@@ -285,7 +285,8 @@ function testAxisMappings() {
             position: 'bottom',
             label: {
                 fontSize: 20
-            }
+            },
+            title: {}
         }, {
             type: 'number',
             position: 'left',
