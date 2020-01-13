@@ -234,7 +234,10 @@ function createAreaChart() {
         }, {
             xKey: 'month',
             yKeys: ['profit'],
-            fills: ['blue']
+            fills: ['blue'],
+            shadow: {
+                color: 'red'
+            }
         }]
     });
 }
