@@ -286,7 +286,15 @@ function testAxisMappings() {
             label: {
                 fontSize: 20
             },
-            title: {}
+            line: {
+                width: 5,
+                color: 'cyan'
+            },
+            title: {},
+            gridStyle: [{
+                stroke: 'red',
+                lineDash: [8, 8]
+            }]
         }, {
             type: 'number',
             position: 'left',
