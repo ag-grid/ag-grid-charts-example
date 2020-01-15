@@ -6,19 +6,23 @@ import { LegendPosition } from "ag-charts-community";
 const revenueProfitData = [{
     month: 'Jan',
     revenue: 155000,
-    profit: 33000
+    profit: 33000,
+    foobar: 44700
 }, {
     month: 'Feb',
     revenue: 123000,
-    profit: 35500
+    profit: 35500,
+    foobar: 23400
 }, {
     month: 'Mar',
     revenue: 172500,
-    profit: 41000
+    profit: 41000,
+    foobar: 43400
 }, {
     month: 'Apr',
     revenue: 185000,
-    profit: 50000
+    profit: 50000,
+    foobar: 23500
 }];
 
 function randomNumber(range: [number, number] = [0, 100]): number {
@@ -328,10 +332,56 @@ function testAxisMappings() {
     // });
 }
 
+function testSeriesUpdate() {
+    const chart = AgChart.create({
+        data: revenueProfitData,
+        series: [{
+            // series type if optional because `line` is default for `cartesian` charts
+            xKey: 'month',
+            yKey: 'revenue',
+            marker: {
+                shape: 'plus',
+                size: 20
+            }
+        }, {
+            type: 'column', // have to specify type explicitly here
+            xKey: 'month',
+            yKeys: ['profit'],
+            fills: ['lime']
+        }]
+    });
+    const firstSeries = chart.series[0];
+    const secondSeries = chart.series[1];
+    AgChart.update(chart, {
+        data: revenueProfitData,
+        series: [{
+            // series type if optional because `line` is default for `cartesian` charts
+            xKey: 'month',
+            yKey: 'revenue',
+            marker: {
+                shape: 'plus',
+                size: 10
+            }
+        }, {
+            type: 'column', // have to specify type explicitly here
+            xKey: 'month',
+            yKeys: ['profit'],
+            fills: ['lime', 'cyan']
+        }]
+    });
+    console.assert(chart.series[0] === firstSeries);
+    console.assert(chart.series[1] === secondSeries);
+    console.assert(chart.series[0].marker.size === 10);
+    console.assert(chart.series[1].fills.length === 2);
+    console.assert(chart.series[1].fills[0] === 'lime');
+    console.assert(chart.series[1].fills[1] === 'cyan');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // createLineChart();
     // createAreaChart();
     // createScatterChart();
-    testAxisMappings();
+    testSeriesUpdate();
+    // testAxisMappings();
     // test();
 });
