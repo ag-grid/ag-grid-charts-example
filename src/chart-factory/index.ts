@@ -1,28 +1,33 @@
 import './app.css';
 import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton } from "../../lib/ui";
-import { LegendPosition } from "ag-charts-community";
+import { CartesianChart, CategoryAxis, ChartAxisPosition, LegendPosition, LineSeries } from "ag-charts-community";
+import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
 
 const revenueProfitData = [{
     month: 'Jan',
     revenue: 155000,
     profit: 33000,
-    foobar: 44700
+    foobar: 44700,
+    blah: 10
 }, {
     month: 'Feb',
     revenue: 123000,
     profit: 35500,
-    foobar: 23400
+    foobar: 23400,
+    blah: 30
 }, {
     month: 'Mar',
     revenue: 172500,
     profit: 41000,
-    foobar: 43400
+    foobar: 43400,
+    blah: 40
 }, {
     month: 'Apr',
     revenue: 185000,
     profit: 50000,
-    foobar: 23500
+    foobar: 23500,
+    blah: 70
 }];
 
 function randomNumber(range: [number, number] = [0, 100]): number {
@@ -350,8 +355,10 @@ function testSeriesUpdate() {
             fills: ['lime']
         }]
     });
+
     const firstSeries = chart.series[0];
     const secondSeries = chart.series[1];
+
     AgChart.update(chart, {
         data: revenueProfitData,
         series: [{
@@ -359,29 +366,108 @@ function testSeriesUpdate() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'plus',
+                shape: 'square',
                 size: 10
             }
         }, {
             type: 'column', // have to specify type explicitly here
             xKey: 'month',
-            yKeys: ['profit'],
+            yKeys: ['profit', 'foobar'],
+            fills: ['lime', 'cyan']
+        }, {
+            type: 'area',
+            xKey: 'month',
+            yKeys: ['foobar']
+        }]
+    });
+
+    AgChart.update(chart, {
+        data: revenueProfitData,
+        series: [{
+            // series type if optional because `line` is default for `cartesian` charts
+            xKey: 'month',
+            yKey: 'revenue',
+            marker: {
+                shape: 'square',
+                size: 10
+            }
+        }, {
+            type: 'column', // have to specify type explicitly here
+            xKey: 'month',
+            yKeys: ['profit', 'foobar'],
             fills: ['lime', 'cyan']
         }]
     });
-    console.assert(chart.series[0] === firstSeries);
-    console.assert(chart.series[1] === secondSeries);
-    console.assert(chart.series[0].marker.size === 10);
-    console.assert(chart.series[1].fills.length === 2);
-    console.assert(chart.series[1].fills[0] === 'lime');
-    console.assert(chart.series[1].fills[1] === 'cyan');
+
+    AgChart.update(chart, {
+        data: revenueProfitData,
+        series: [{
+            type: 'column', // have to specify type explicitly here
+            xKey: 'month',
+            yKeys: ['profit', 'foobar'],
+            fills: ['lime', 'cyan']
+        }, {
+            // series type if optional because `line` is default for `cartesian` charts
+            xKey: 'month',
+            yKey: 'revenue',
+            marker: {
+                shape: 'square',
+                size: 10
+            }
+        }]
+    });
+
+    AgChart.update(chart, {
+        data: revenueProfitData,
+        series: [{
+            type: 'area', // have to specify type explicitly here
+            xKey: 'month',
+            yKeys: ['profit', 'foobar'],
+            fills: ['lime', 'cyan']
+        }, {
+            // series type if optional because `line` is default for `cartesian` charts
+            xKey: 'month',
+            yKey: 'revenue',
+            marker: {
+                shape: 'square',
+                size: 10
+            }
+        }]
+    });
+}
+
+function swapAxes() {
+    const chart = new CartesianChart();
+    const bottomCategoryAxis = new CategoryAxis();
+    const leftNumberAxis = new NumberAxis();
+    const bottomNumberAxis = new NumberAxis();
+
+    leftNumberAxis.position = ChartAxisPosition.Left;
+    bottomCategoryAxis.position = ChartAxisPosition.Bottom;
+    bottomNumberAxis.position = ChartAxisPosition.Bottom;
+
+    const lineSeries = new LineSeries();
+    lineSeries.xKey = 'month';
+    lineSeries.yKey = 'revenue';
+    lineSeries.tooltipEnabled = true;
+
+    chart.container = document.body;
+    chart.axes = [leftNumberAxis, bottomCategoryAxis];
+    chart.series = [lineSeries];
+    chart.data = revenueProfitData;
+
+    createButton('Swap bottom axis', () => {
+        chart.axes = [leftNumberAxis, bottomNumberAxis];
+        lineSeries.xKey = 'blah';
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     // createLineChart();
     // createAreaChart();
     // createScatterChart();
-    testSeriesUpdate();
+    // testSeriesUpdate();
     // testAxisMappings();
+    swapAxes();
     // test();
 });
