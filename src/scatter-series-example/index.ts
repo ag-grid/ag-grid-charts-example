@@ -94,8 +94,8 @@ function createHeightWeightGenderChart() {
     chart.subtitle.color = 'gray';
     chart.subtitle.fontSize = 14;
     chart.legend.markerSize = 12;
-    chart.legend.markerStrokeWidth = 2;
-    chart.legend.itemPaddingY = 15;
+    chart.legend.strokeWidth = 2;
+    chart.legend.layoutVerticalSpacing = 15;
     chart.axes = [xAxis, yAxis];
 
     const maleSeries = new ScatterSeries();

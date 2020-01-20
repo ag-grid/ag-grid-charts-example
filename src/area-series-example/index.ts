@@ -547,7 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis.update();
         }
 
-        chart.legend.labelColor = labelColor;
+        chart.legend.textColor = labelColor;
 
         if (chart.title) {
             chart.title.color = labelColor;
@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         chart.background.fill = '#1e1e1e';
-        chart.legend.labelColor = labelColor;
+        chart.legend.textColor = labelColor;
 
         if (chart.title) {
             chart.title.color = labelColor;
@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.legend.position = v;
     });
     createSlider('legend font family', ['sans-serif', 'serif', 'Snell Roundhand'], v => {
-        chart.legend.labelFontFamily = v;
+        chart.legend.fontFamily = v;
     });
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {

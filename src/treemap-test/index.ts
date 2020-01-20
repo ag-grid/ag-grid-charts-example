@@ -10,6 +10,7 @@ import { convertGridTreeData, rowData } from "./convert";
 import { createButton } from "../../lib/ui";
 
 import * as d3 from "d3";
+import { HdpiCanvas } from "ag-charts-community/dist/cjs/canvas/hdpiCanvas";
 
 function processFinVizData() {
     console.log(FinvizMapData);
@@ -118,7 +119,7 @@ function createStockTreeMap() {
                     name = name.toUpperCase();
                 }
                 const font = node.depth > 1 ? fonts.subtitle : fonts.title;
-                const textSize = scene.canvas.getTextSize(
+                const textSize = HdpiCanvas.getTextSize(
                     name, [font.fontWeight, font.fontSize + 'px', font.fontFamily].join(' ').trim()
                 );
                 const innerNodeWidth = node.x1 - node.x0 - nodePadding * 2;
@@ -272,7 +273,7 @@ function createOrgTreeMap() {
         const treemapLayout = d3.treemap().size([width, height]).round(true)
             .paddingRight(4).paddingBottom(4).paddingLeft(4).paddingTop(node => {
                 const name = (node.data as any).orgHierarchy;
-                const nameSize = scene.canvas.getTextSize(name, fontName);
+                const nameSize = HdpiCanvas.getTextSize(name, fontName);
                 const width = node.x1 - node.x0;
                 const hasTitlePadding = node.depth > 0 && node.children && nameSize.width - 4 < width;
                 (node as any).hasTitle = hasTitlePadding;

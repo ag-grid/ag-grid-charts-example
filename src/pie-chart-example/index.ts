@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('br'));
 
     function changeTheme(labelColor: string, bgColor: string) {
-        chart.legend.labelColor = labelColor;
+        chart.legend.textColor = labelColor;
         chart.background.fill = bgColor;
         pieSeries.label.color = labelColor;
         pieSeries2.label.color = labelColor;
@@ -351,26 +351,26 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.legend.position = v;
     });
     createSlider('legendPadding', [20, 80, 160, 240], v => {
-        chart.legend.padding = v;
+        chart.legend.spacing = v;
     });
     createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
-        chart.legend.markerStrokeWidth = v;
+        chart.legend.strokeWidth = v;
     });
     createSlider('legendMarkerSize', [4, 6, 10, 14, 18, 22, 26, 30], v => {
         chart.legend.markerSize = v;
     });
     createSlider('legendItemPaddingX', [4, 6, 8, 10, 12, 16], v => {
-        chart.legend.itemPaddingX = v;
+        chart.legend.layoutHorizontalSpacing = v;
     });
     createSlider('legendItemPaddingY', [4, 6, 8, 10, 12, 16], v => {
-        chart.legend.itemPaddingY = v;
+        chart.legend.layoutVerticalSpacing = v;
     });
     createSlider('legendLabelFont', [12, 18, 24, 30, 36], v => {
-        chart.legend.labelFontSize = v;
-        chart.legend.labelFontFamily = 'sans-serif';
+        chart.legend.fontSize = v;
+        chart.legend.fontFamily = 'sans-serif';
     });
     createSlider('legendLabelColor', ['black', 'red', 'gold', 'green'], v => {
-        chart.legend.labelColor = v;
+        chart.legend.textColor = v;
     });
     createSlider('title color', ['black', 'red', 'gold', 'green'], v => {
         if (chart.title) {
@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     createSlider('legendMarkerPadding', [8, 12, 16, 20, 24], v => {
-        chart.legend.markerPadding = v;
+        chart.legend.itemSpacing = v;
     });
 
     createSlider('stroke opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {

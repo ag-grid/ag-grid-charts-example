@@ -30,10 +30,10 @@ function renderChart() {
     chart.height = 350;
     chart.container = document.body;
     chart.legend.position = LegendPosition.Bottom;
-    chart.legend.labelFontSize = 15;
-    chart.legend.labelFontFamily = 'Source Sans Pro';
-    chart.legend.labelColor = 'rgb(124, 124, 124)';
-    chart.legend.markerPadding = 6;
+    chart.legend.fontSize = 15;
+    chart.legend.fontFamily = 'Source Sans Pro';
+    chart.legend.textColor = 'rgb(124, 124, 124)';
+    chart.legend.itemSpacing = 6;
 
     const series = new PieSeries();
     series.data = data;
