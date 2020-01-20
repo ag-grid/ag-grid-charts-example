@@ -8,6 +8,7 @@ import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { Diamond } from "ag-charts-community/src/chart/marker/diamond";
 import { Plus } from "ag-charts-community/src/chart/marker/plus";
 import { makeChartResizeable } from "../../lib/chart";
+import { createButton, createSlider } from "../../lib/ui";
 
 function createChart() {
     const data = generateData({
@@ -85,6 +86,18 @@ function createChart() {
     chart.addSeries(scatterSeries);
 
     makeChartResizeable(chart);
+
+    createSlider('areaSeries.marker.shape', ['plus', 'circle', 'diamond', 'cross', 'triangle'], shape => {
+        areaSeries.marker.shape = shape;
+    });
+
+    createSlider('legend.markerShape (overrides series)', ['plus', 'circle', 'diamond', 'cross', 'triangle'], shape => {
+        chart.legend.markerShape = shape;
+    });
+
+    createButton('Make legend use series markers again', () => {
+        chart.legend.markerShape = undefined;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
