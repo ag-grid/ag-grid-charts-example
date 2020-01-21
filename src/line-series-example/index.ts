@@ -4,7 +4,6 @@ import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
 import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
 
-import './app.css';
 import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { Square } from "ag-charts-community/src/chart/marker/square";
@@ -316,6 +315,7 @@ function createTwoVerticalAxesLineChart() {
     }];
 
     const lineSeries1 = new LineSeries();
+    lineSeries1.title = 'Flashy Title';
     lineSeries1.marker.shape = Circle;
     lineSeries1.marker.enabled = true;
     lineSeries1.tooltipEnabled = true;

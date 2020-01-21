@@ -1,7 +1,6 @@
 import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
 import borneo from "ag-charts-community/src/chart/palettes";
 
-import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
 import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
