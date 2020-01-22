@@ -1,4 +1,3 @@
-import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
 import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";

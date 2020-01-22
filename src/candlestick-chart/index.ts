@@ -1,4 +1,3 @@
-import './app.css';
 import { data } from './data';
 import { TimeAxis } from 'ag-charts-community/src/chart/axis/timeAxis';
 import { CartesianChart } from 'ag-charts-community/src/chart/cartesianChart';
@@ -13,6 +12,7 @@ import { locale } from 'ag-charts-community/src/util/time/format/defaultLocale';
 import { CategoryAxis } from 'ag-charts-community/src/chart/axis/categoryAxis';
 import { BarSeries } from 'ag-charts-community/src/chart/series/cartesian/barSeries';
 import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
+import { Chart } from "ag-charts-community";
 
 function createChart() {
     const xAxis = new TimeAxis();
@@ -43,9 +43,9 @@ function createChart() {
         const x = params.datum[params.xKey];
         const y = params.datum[params.yKey];
         const titleStyle = `style="color: white; background-color: ${color}"`;
-        const titleHtml = title ? `<div class="ag-chart-tooltip-title" ${titleStyle}>${title}</div>` : '';
+        const titleHtml = title ? `<div class="${Chart.defaultTooltipClass}-title" ${titleStyle}>${title}</div>` : '';
         const contentHtml = dateFormatter(x) + ': ' + (typeof y === 'number' ? y.toFixed(2) : String(y));
-        return `${titleHtml}<div class="ag-chart-tooltip-content">${contentHtml}</div>`;
+        return `${titleHtml}<div class="${Chart.defaultTooltipClass}-content">${contentHtml}</div>`;
     };
 
     const ohlcSeries = new OHLCSeries();

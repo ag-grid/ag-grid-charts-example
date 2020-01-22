@@ -2,7 +2,6 @@ import { PieSeries } from 'ag-charts-community/src/chart/series/polar/pieSeries'
 import { Padding } from 'ag-charts-community/src/util/padding';
 import { Caption } from 'ag-charts-community/src/caption';
 
-import './app.css';
 import { FontStyle, FontWeight } from 'ag-charts-community/src/scene/shape/text';
 import { PolarChart } from 'ag-charts-community/src/chart/polarChart';
 import { DropShadow } from 'ag-charts-community/src/scene/dropShadow';

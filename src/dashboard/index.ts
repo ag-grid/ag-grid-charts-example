@@ -1,4 +1,3 @@
-import './app.css';
 import {
     Caption,
     CartesianChart,

@@ -8,6 +8,7 @@ import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { Square } from "ag-charts-community/src/chart/marker/square";
 import { makeChartResizeable } from "../../lib/chart";
+import { Chart } from "ag-charts-community";
 
 type CategoryDatum = {
     category: string,
@@ -212,7 +213,7 @@ function createCategoryLineChart() {
         if (params.datum[params.xKey] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }
-        return '<div class="ag-chart-tooltip-content"><strong>Value: </strong>' + String(params.datum[params.yKey]) + '</div>';
+        return `<div class="${Chart.defaultTooltipClass}-content"><strong>Value: </strong>` + String(params.datum[params.yKey]) + '</div>';
     };
     lineSeries.data = categoryData;
     lineSeries.xKey = 'category';

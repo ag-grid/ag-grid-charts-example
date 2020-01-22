@@ -4,8 +4,6 @@ import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSer
 import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 
-import './app.css';
-
 type CategoryDatum = {
     country: { toString: () => string },
     value: number,

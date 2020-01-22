@@ -1,4 +1,3 @@
-import './app.css';
 import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton } from "../../lib/ui";
 import { CartesianChart, CategoryAxis, ChartAxisPosition, LegendPosition, LineSeries } from "ag-charts-community";
