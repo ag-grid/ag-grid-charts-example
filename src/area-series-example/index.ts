@@ -20,6 +20,7 @@ import { find } from "ag-charts-community/src/util/array";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { makeChartResizeable } from "../../lib/chart";
 import { LegendPosition } from "ag-charts-community";
+import { Circle } from "ag-charts-community/dist/cjs/chart/marker/circle";
 
 type Datum = {
     category: string,
@@ -624,6 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createSlider('marker size', [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26], v => {
         areaSeries.marker.enabled = true;
+        areaSeries.marker.shape = 'circle';
         areaSeries.marker.size = v;
     });
 
