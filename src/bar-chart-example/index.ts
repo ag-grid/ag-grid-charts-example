@@ -11,6 +11,7 @@ import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
 import { makeChartResizeable } from "../../lib/chart";
+import { AgChart, Padding } from "ag-charts-community";
 
 type Datum = {
     category: string,
@@ -87,6 +88,57 @@ const negativeData: NegativeDatum[] = [{
     yKey3: 20
 }];
 
+function createColumnChartDeclaratively() {
+    const data = [
+        {
+            beverage: 'Coffee',
+            Q1: 450,
+            Q2: 560,
+            Q3: 600,
+            Q4: 700
+        },
+        {
+            beverage: 'Tea',
+            Q1: 270,
+            Q2: 380,
+            Q3: 450,
+            Q4: 520
+        },
+        {
+            beverage: 'Milk',
+            Q1: 180,
+            Q2: 170,
+            Q3: 190,
+            Q4: 200
+        },
+    ];
+
+    const chart = AgChart.create({
+        data,
+        container: document.body,
+        title: {
+            text: 'Beverage Expenses'
+        },
+        subtitle: {
+            text: 'per quarter'
+        },
+        padding: {
+            top: 40,
+            right: 40,
+            bottom: 40,
+            left: 40
+        },
+        series: [{
+            type: 'column',
+            xKey: 'beverage',
+            yKeys: ['Q1', 'Q2', 'Q3', 'Q4']
+        }],
+        legend: {
+            spacing: 40
+        }
+    });
+}
+
 function createColumnChart() {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
@@ -96,6 +148,8 @@ function createColumnChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
+    chart.padding = new Padding(40);
+    chart.legend.spacing = 40;
     chart.axes = [xAxis, yAxis];
     chart.container = document.body;
     chart.width = 800;
@@ -123,9 +177,9 @@ function createColumnChart() {
     barSeries.fills = borneo.fills;
     barSeries.tooltipEnabled = true;
     barSeries.label.enabled = false;
-    barSeries.shadow = new DropShadow();
-    barSeries.shadow.color = 'rgba(0,0,0,0.5)';
-    barSeries.shadow.blur = 10;
+    // barSeries.shadow = new DropShadow();
+    // barSeries.shadow.color = 'rgba(0,0,0,0.5)';
+    // barSeries.shadow.blur = 10;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -262,6 +316,9 @@ function createBarChart() {
 document.addEventListener('DOMContentLoaded', () => {
     const columnChart = createColumnChart();
     makeChartResizeable(columnChart);
+
+    // document.body.appendChild(document.createElement('br'));
+    // createColumnChartDeclaratively();
 
     document.body.appendChild(document.createElement('br'));
 
