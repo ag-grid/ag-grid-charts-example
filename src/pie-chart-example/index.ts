@@ -49,6 +49,8 @@ function createPieChart() {
     pieSeries.label.enabled = true;
     pieSeries.title = new Caption();
     pieSeries.title.text = 'Mobile OSes';
+    pieSeries.title.fontSize = 14;
+    pieSeries.title.fontWeight = 'bold';
     pieSeries.strokeWidth = 2;
     pieSeries.calloutStrokeWidth = 1;
     pieSeries.shadow = new DropShadow();
@@ -61,6 +63,8 @@ function createPieChart() {
     pieSeries2.innerRadiusOffset = -120;
     pieSeries2.title = new Caption();
     pieSeries2.title.text = 'Users';
+    pieSeries2.title.fontSize = 14;
+    pieSeries2.title.fontWeight = 'bold';
     pieSeries2.angleKey = 'value';
     pieSeries2.labelKey = 'label';
     pieSeries2.label.enabled = true;
@@ -349,14 +353,52 @@ function createPieChart() {
 }
 
 function createPieChartDeclaratively() {
-    AgChart.create({
+    const config = {
         data,
         container: document.body,
         series: [{
             type: 'pie',
             angleKey: 'value',
-            labelKey: 'label'
+            labelKey: 'label',
+            strokeWidth: 3
+            // shadow: {
+            //     color: 'red'
+            // }
         }]
+    } as any;
+
+    const chart = AgChart.create(config);
+
+    createButton('change tooltipOffset', () => {
+        config.tooltipOffset = [40, 40];
+        AgChart.update(chart, config);
+    });
+
+    createButton('add shadow', () => {
+        config.series[0].shadow = {
+            color: 'red'
+        };
+        AgChart.update(chart, config);
+    });
+
+    createButton('add title', () => {
+        config.series[0].title = {};
+        AgChart.update(chart, config);
+    });
+
+    createButton('change highlightStyle', () => {
+        config.series[0].highlightStyle = {
+            fill: 'red',
+            stroke: 'black'
+        };
+        AgChart.update(chart, config);
+    });
+
+    createButton('change label offset', () => {
+        config.series[0].label = {
+            offset: 20
+        };
+        AgChart.update(chart, config);
     });
 }
 
