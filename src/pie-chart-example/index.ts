@@ -6,7 +6,8 @@ import { FontStyle, FontWeight } from 'ag-charts-community/src/scene/shape/text'
 import { PolarChart } from 'ag-charts-community/src/chart/polarChart';
 import { DropShadow } from 'ag-charts-community/src/scene/dropShadow';
 import { makeChartResizeable } from "../../lib/chart";
-import { LegendPosition } from "ag-charts-community";
+import { AgChart, LegendPosition } from "ag-charts-community";
+import { createButton, createSlider } from "../../lib/ui";
 
 type Datum = {
     label: string,
@@ -34,73 +35,7 @@ const data2: Datum[] = [
     { label: 'Vicky', value: 8, other: 11 }
 ];
 
-function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
-    const button = document.createElement('button');
-    button.textContent = text;
-    document.body.appendChild(button);
-    button.addEventListener('click', action);
-    return button;
-}
-
-function createSlider<D>(text: string, values: D[], action: (value: D) => void): HTMLInputElement {
-    const n = values.length;
-    const id = String(Date.now());
-    const sliderId = 'slider-' + id;
-    const datalistId = 'slider-list-' + id;
-    const wrapper = document.createElement('div');
-    wrapper.style.display = 'inline-flex';
-    wrapper.style.alignItems = 'center';
-    wrapper.style.width = '300px';
-    wrapper.style.padding = '5px';
-    wrapper.style.margin = '5px';
-    wrapper.style.border = '1px solid lightgray';
-    wrapper.style.borderRadius = '5px';
-    wrapper.style.backgroundColor = 'white';
-
-    const slider = document.createElement('input');
-    slider.setAttribute('id', sliderId);
-    slider.setAttribute('list', datalistId);
-    slider.style.height = '1.8em';
-    slider.style.flex = '1';
-
-    const label = document.createElement('label');
-    label.setAttribute('for', sliderId);
-    label.innerHTML = text;
-    label.style.font = '12px sans-serif';
-    label.style.marginRight = '5px';
-
-    // Currently, no browser fully supports these features.
-    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
-    const datalist = document.createElement('datalist');
-    datalist.setAttribute('id', datalistId);
-
-    values.forEach((value, index) => {
-        const option = document.createElement('option');
-        option.setAttribute('value', String(index));
-        option.setAttribute('label', String(value));
-        datalist.appendChild(option);
-    });
-
-    slider.type = 'range';
-    slider.min = '0';
-    slider.max = String(n - 1);
-    slider.step = '1';
-    slider.value = '0';
-    slider.style.width = '200px';
-
-    wrapper.appendChild(label);
-    wrapper.appendChild(slider);
-    wrapper.appendChild(datalist);
-    document.body.appendChild(wrapper);
-
-    slider.addEventListener('input', (e) => {
-        const index = +(e.target as HTMLInputElement).value;
-        action(values[index]);
-    });
-    return slider;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+function createPieChart() {
     const chart = new PolarChart();
     chart.container = document.body;
     chart.width = 800;
@@ -411,4 +346,21 @@ document.addEventListener('DOMContentLoaded', () => {
     createSlider('fill opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
         pieSeries.fillOpacity = v;
     });
+}
+
+function createPieChartDeclaratively() {
+    AgChart.create({
+        data,
+        container: document.body,
+        series: [{
+            type: 'pie',
+            angleKey: 'value',
+            labelKey: 'label'
+        }]
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    createPieChart();
+    createPieChartDeclaratively();
 });

@@ -89,28 +89,6 @@ function createLineChart() {
     });
 
     AgChart.create({
-        type: 'polar',
-        container: document.body,
-        data: revenueProfitData,
-        series: [{ // series type is optional because that's the default for `polar` charts
-            angleKey: 'profit',
-            tooltipEnabled: true
-        }]
-    });
-
-    AgChart.create({
-        // `polar` chart type is optional because it can be inferred from the type of series
-        container: document.body,
-        data: revenueProfitData,
-        series: [{
-            type: 'pie',
-            angleKey: 'revenue',
-            labelKey: 'month',
-            innerRadiusOffset: -50 // donut hole
-        }]
-    });
-
-    AgChart.create({
         container: document.body,
         data: scatterData[0],
         title: {
@@ -461,12 +439,37 @@ function swapAxes() {
     });
 }
 
+function createPieChart() {
+    AgChart.create({
+        type: 'polar',
+        container: document.body,
+        data: revenueProfitData,
+        series: [{ // series type is optional because that's the default for `polar` charts
+            angleKey: 'profit',
+            tooltipEnabled: true
+        }]
+    });
+
+    AgChart.create({
+        // `polar` chart type is optional because it can be inferred from the type of series
+        container: document.body,
+        data: revenueProfitData,
+        series: [{
+            type: 'pie',
+            angleKey: 'revenue',
+            labelKey: 'month',
+            innerRadiusOffset: -50 // donut hole
+        }]
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // createLineChart();
-    // createAreaChart();
-    // createScatterChart();
-    // testSeriesUpdate();
-    // testAxisMappings();
+    createLineChart();
+    createAreaChart();
+    createScatterChart();
+    createPieChart();
+    testSeriesUpdate();
+    testAxisMappings();
     swapAxes();
     // test();
 });
