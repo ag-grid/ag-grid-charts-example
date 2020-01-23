@@ -285,22 +285,22 @@ function createPieChart() {
         pieSeries2.label.minAngle = v;
     });
 
-    createSlider('legendPosition', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
+    createSlider('legend position', ['right', 'bottom', 'left', 'top'] as LegendPosition[], v => {
         chart.legend.position = v;
     });
-    createSlider('legendPadding', [20, 80, 160, 240], v => {
+    createSlider('legend spacing', [20, 80, 160, 240], v => {
         chart.legend.spacing = v;
     });
-    createSlider('legendMarkerLineWidth', [1, 2, 3, 4, 5, 6], v => {
+    createSlider('legend strokeWidth', [1, 2, 3, 4, 5, 6], v => {
         chart.legend.strokeWidth = v;
     });
     createSlider('legendMarkerSize', [4, 6, 10, 14, 18, 22, 26, 30], v => {
         chart.legend.markerSize = v;
     });
-    createSlider('legendItemPaddingX', [4, 6, 8, 10, 12, 16], v => {
+    createSlider('layoutHorizontalSpacing', [4, 6, 8, 10, 12, 16], v => {
         chart.legend.layoutHorizontalSpacing = v;
     });
-    createSlider('legendItemPaddingY', [4, 6, 8, 10, 12, 16], v => {
+    createSlider('layoutVerticalSpacing', [4, 6, 8, 10, 12, 16], v => {
         chart.legend.layoutVerticalSpacing = v;
     });
     createSlider('legendLabelFont', [12, 18, 24, 30, 36], v => {
