@@ -72,6 +72,7 @@ function createLineChart() {
     createButton('Increase legend marker size', () => {
         AgChart.update(chart1, {
             data: revenueProfitData,
+            container: document.body,
             series: [{
                 xKey: 'month',
                 yKey: 'revenue'
@@ -463,6 +464,25 @@ function createPieChart() {
     });
 }
 
+function createNormalizedColumnChart() {
+    const config = {
+        container: document.body,
+        data: revenueProfitData,
+        series: [{
+            type: 'column',
+            xKey: 'month',
+            yKeys: ['revenue', 'profit']
+        }]
+    } as any;
+
+    const chart = AgChart.create(config);
+
+    createButton('Normalize to 50', () => {
+        config.series[0].normalizedTo = 50;
+        AgChart.update(chart, config);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createLineChart();
     createAreaChart();
@@ -471,5 +491,6 @@ document.addEventListener('DOMContentLoaded', () => {
     testSeriesUpdate();
     testAxisMappings();
     swapAxes();
+    createNormalizedColumnChart();
     // test();
 });
