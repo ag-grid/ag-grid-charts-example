@@ -32,7 +32,7 @@ function renderChart() {
     chart.legend.position = LegendPosition.Bottom;
     chart.legend.fontSize = 15;
     chart.legend.fontFamily = 'Source Sans Pro';
-    chart.legend.textColor = 'rgb(124, 124, 124)';
+    chart.legend.color = 'rgb(124, 124, 124)';
     chart.legend.itemSpacing = 6;
 
     const series = new PieSeries();
@@ -41,12 +41,12 @@ function renderChart() {
     series.labelKey = 'label';
     series.fills = ['#5e64b2', '#fec444', '#f07372', '#35c2bd'];
     series.strokes = [];
-    series.calloutColors = ['rgb(118, 117, 117)'];
-    series.calloutLength = 13;
+    series.callout.colors = ['rgb(118, 117, 117)'];
+    series.callout.length = 13;
     series.showInLegend = true;
-    series.labelFontSize = 14;
-    series.labelFontFamily = 'Source Sans Pro';
-    series.labelColor = 'rgb(102, 102, 102)';
+    series.label.fontSize = 14;
+    series.label.fontFamily = 'Source Sans Pro';
+    series.label.color = 'rgb(102, 102, 102)';
 
     chart.addSeries(series);
 

@@ -40,6 +40,7 @@ function createPieChart() {
     chart.container = document.body;
     chart.width = 800;
     chart.height = 400;
+    chart.element.style.marginBottom = '50px';
 
     const pieSeries = new PieSeries();
     pieSeries.data = data;
@@ -52,7 +53,7 @@ function createPieChart() {
     pieSeries.title.fontSize = 14;
     pieSeries.title.fontWeight = 'bold';
     pieSeries.strokeWidth = 2;
-    pieSeries.calloutStrokeWidth = 1;
+    pieSeries.callout.strokeWidth = 1;
     pieSeries.shadow = new DropShadow();
     pieSeries.shadow.color = 'rgba(0,0,0,0.2)';
     pieSeries.shadow.blur = 15;
@@ -79,6 +80,8 @@ function createPieChart() {
     chart.subtitle.fontStyle = 'italic';
     chart.subtitle.fontSize = 12;
 
+    chart.padding = new Padding(40);
+
     chart.scene.canvas.element.style.border = '1px solid black';
 
     makeChartResizeable(chart);
@@ -87,6 +90,9 @@ function createPieChart() {
 
     createButton('Save Chart Image', () => {
         chart.scene.download('pie-chart');
+    });
+    createButton('Toggle Legend', () => {
+        chart.legend.enabled = !chart.legend.enabled;
     });
     createButton('Show tooltips', () => {
         pieSeries.tooltipEnabled = true;
@@ -173,16 +179,16 @@ function createPieChart() {
         setTimeout(() => {
             pieSeries2.radiusKey = 'other';
             pieSeries2.strokes = ['white'];
-            pieSeries2.calloutColors = ['black'];
+            pieSeries2.callout.colors = ['black'];
             pieSeries2.strokeWidth = 3;
-            pieSeries2.calloutStrokeWidth = 1;
+            pieSeries2.callout.strokeWidth = 1;
         }, 12000);
     });
 
     document.body.appendChild(document.createElement('br'));
 
     function changeTheme(labelColor: string, bgColor: string) {
-        chart.legend.textColor = labelColor;
+        chart.legend.color = labelColor;
         chart.background.fill = bgColor;
         pieSeries.label.color = labelColor;
         pieSeries2.label.color = labelColor;
@@ -214,10 +220,10 @@ function createPieChart() {
         pieSeries2.innerRadiusOffset = v;
     });
     createSlider('calloutColor', ['red', 'green', 'blue', 'rgba(0,0,0,0)'], v => {
-        pieSeries2.calloutColors = [v];
+        pieSeries2.callout.colors = [v];
     });
     createSlider('calloutStrokeWidth', [2, 3, 4, 5, 6], v => {
-        pieSeries2.calloutStrokeWidth = v;
+        pieSeries2.callout.strokeWidth = v;
     });
 
     let rotationIncrement = 0;
@@ -233,7 +239,7 @@ function createPieChart() {
     });
 
     createSlider('calloutLength', [10, 20, 30], v => {
-        pieSeries.calloutLength = v;
+        pieSeries.callout.length = v;
     });
 
     createSlider('calloutPadding', [3, 6, 9, 12], v => {
@@ -294,22 +300,36 @@ function createPieChart() {
     createSlider('legend strokeWidth', [1, 2, 3, 4, 5, 6], v => {
         chart.legend.strokeWidth = v;
     });
-    createSlider('legendMarkerSize', [4, 6, 10, 14, 18, 22, 26, 30], v => {
+    createSlider('legend markerSize', [15, 20, 25, 30, 5, 10], v => {
         chart.legend.markerSize = v;
     });
-    createSlider('layoutHorizontalSpacing', [4, 6, 8, 10, 12, 16], v => {
+    createSlider('legend markerShape', ['square', 'circle', 'diamond', 'cross', 'plus', 'triangle'], v => {
+        chart.legend.markerShape = v;
+    });
+    createSlider('legend layoutHorizontalSpacing', [4, 6, 8, 10, 12, 16], v => {
         chart.legend.layoutHorizontalSpacing = v;
     });
-    createSlider('layoutVerticalSpacing', [4, 6, 8, 10, 12, 16], v => {
+    createSlider('legend layoutVerticalSpacing', [4, 6, 8, 10, 12, 16], v => {
         chart.legend.layoutVerticalSpacing = v;
     });
-    createSlider('legendLabelFont', [12, 18, 24, 30, 36], v => {
+    document.body.appendChild(document.createElement('hr'));
+    createSlider('legend font size', [12, 14, 16, 18, 20, 22, 24, 30, 36], v => {
         chart.legend.fontSize = v;
-        chart.legend.fontFamily = 'sans-serif';
     });
-    createSlider('legendLabelColor', ['black', 'red', 'gold', 'green'], v => {
-        chart.legend.textColor = v;
+    createSlider('legend fontWeight', ['normal', 'bold'], (v: FontWeight) => {
+        chart.legend.fontWeight = v;
     });
+    createSlider('legend fontFamily', ['Verdana', 'Papyrus', 'Comic Sans', 'Palatino'], v => {
+        chart.legend.fontFamily = v;
+    });
+    createSlider('legend fontStyle', ['normal', 'italic'], (v: FontStyle) => {
+        chart.legend.fontStyle = v;
+    });
+    createSlider('legend color', ['black', 'red', 'gold', 'green'], v => {
+        chart.legend.color = v;
+    });
+    document.body.appendChild(document.createElement('hr'));
+
     createSlider('title color', ['black', 'red', 'gold', 'green'], v => {
         if (chart.title) {
             chart.title.color = v;
@@ -340,7 +360,7 @@ function createPieChart() {
             chart.subtitle.enabled = subtitleEnabled;
         }
     });
-    createSlider('legendMarkerPadding', [8, 12, 16, 20, 24], v => {
+    createSlider('legend itemSpacing', [8, 12, 16, 20, 24], v => {
         chart.legend.itemSpacing = v;
     });
 

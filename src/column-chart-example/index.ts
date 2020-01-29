@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis.update();
         }
 
-        chart.legend.textColor = 'black';
+        chart.legend.color = 'black';
 
         if (chart.title) {
             chart.title.color = 'black';
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis.update();
         }
 
-        chart.legend.textColor = labelColor;
+        chart.legend.color = labelColor;
 
         if (chart.title) {
             chart.title.color = labelColor;

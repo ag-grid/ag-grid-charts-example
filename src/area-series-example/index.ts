@@ -548,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis.update();
         }
 
-        chart.legend.textColor = labelColor;
+        chart.legend.color = labelColor;
 
         if (chart.title) {
             chart.title.color = labelColor;
@@ -584,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         chart.background.fill = '#1e1e1e';
-        chart.legend.textColor = labelColor;
+        chart.legend.color = labelColor;
 
         if (chart.title) {
             chart.title.color = labelColor;
