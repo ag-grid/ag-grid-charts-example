@@ -55,8 +55,7 @@ function createLineChart() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'plus',
-                size: 20
+                shape: 'plus'
             }
         }, {
             type: 'column', // have to specify type explicitly here
@@ -148,8 +147,7 @@ function test() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'plus',
-                size: 20
+                shape: 'plus'
             }
         }, {
             type: 'column', // have to specify type explicitly here
@@ -180,8 +178,7 @@ function test() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'plus',
-                size: 20
+                shape: 'plus'
             }
         }, {
             type: 'column', // have to specify type explicitly here
@@ -217,13 +214,19 @@ function createAreaChart() {
         series: [{
             xKey: 'month',
             yKeys: ['revenue'],
-            fills: ['red']
+            fills: ['red'],
+            marker: {
+                enabled: true
+            }
         }, {
             xKey: 'month',
             yKeys: ['profit'],
             fills: ['blue'],
             shadow: {
                 color: 'red'
+            },
+            marker: {
+                enabled: true
             }
         }]
     });
@@ -240,8 +243,7 @@ function createScatterChart() {
             yKey: 'y',
             fill: 'red',
             marker: {
-                shape: 'plus',
-                size: 20
+                shape: 'plus'
             }
         }, {
             title: 'bar',
@@ -250,8 +252,7 @@ function createScatterChart() {
             yKey: 'y',
             fill: 'blue',
             marker: {
-                shape: 'cross',
-                size: 20
+                shape: 'cross'
             }
         }]
     });
@@ -323,8 +324,7 @@ function testSeriesUpdate() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'plus',
-                size: 20
+                shape: 'plus'
             }
         }, {
             type: 'column', // have to specify type explicitly here
@@ -344,8 +344,7 @@ function testSeriesUpdate() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'square',
-                size: 10
+                shape: 'square'
             }
         }, {
             type: 'column', // have to specify type explicitly here
@@ -366,8 +365,7 @@ function testSeriesUpdate() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'square',
-                size: 10
+                shape: 'square'
             }
         }, {
             type: 'column', // have to specify type explicitly here
@@ -389,8 +387,7 @@ function testSeriesUpdate() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'square',
-                size: 10
+                shape: 'square'
             }
         }]
     });
@@ -407,8 +404,7 @@ function testSeriesUpdate() {
             xKey: 'month',
             yKey: 'revenue',
             marker: {
-                shape: 'square',
-                size: 10
+                shape: 'square'
             }
         }]
     });
