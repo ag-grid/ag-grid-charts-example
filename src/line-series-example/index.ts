@@ -533,14 +533,14 @@ function createMultiLineChart() {
 // import { Marker } from "./marker";
 
 export class Heart extends Marker {
-    toRad(degrees: number) {
-        return degrees / 180 * Math.PI;
+    rad(degree: number) {
+        return degree / 180 * Math.PI;
     }
 
     updatePath() {
-        const { x, y, path, size } = this;
+        let { x, path, size, rad } = this;
         const r = size / 4;
-        const rad = this.toRad;
+        const y = this.y + r / 2;
 
         path.clear();
         path.cubicArc(x - r, y - r, r, r, 0, rad(130), rad(330), 0);
@@ -606,7 +606,7 @@ function createBasicLineChartUsingFactory() {
             title: 'Gas',
             marker: {
                 shape: Heart,
-                size: 30,
+                size: 16
             }
         }, {
             xKey: 'quarter',
@@ -614,9 +614,10 @@ function createBasicLineChartUsingFactory() {
             yName: 'Diesel',
             stroke: 'black',
             marker: {
-                shape: 'square',
+                shape: 'plus',
                 size: 16,
-                fill: 'gray'
+                fill: 'gray',
+                stroke: 'black'
             }
         }],
         legend: {
@@ -625,6 +626,7 @@ function createBasicLineChartUsingFactory() {
         }
     });
     makeChartResizeable(chart);
+    createButton('Download', () => chart.download());
 }
 
 function test() {
@@ -737,7 +739,7 @@ function createGapChart() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // createBasicLineChartUsingFactory();
+    createBasicLineChartUsingFactory();
     createGapChart();
     // createTwoVerticalAxesLineChart();
     // createCategoryLineChart();
