@@ -135,7 +135,6 @@ function createComboTimeChart() {
     scatterSeries.yKey = 'y';
 
     const lineSeries = new LineSeries();
-    lineSeries.fill = 'orange';
     lineSeries.stroke = 'black';
     lineSeries.strokeWidth = 0;
     lineSeries.marker.shape = Circle;

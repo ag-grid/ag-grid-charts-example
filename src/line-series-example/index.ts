@@ -11,6 +11,7 @@ import { makeChartResizeable } from "../../lib/chart";
 import { Chart } from "ag-charts-community";
 import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton, createSlider } from "../../lib/ui";
+import { Marker } from "ag-charts-community/src/chart/marker/marker";
 
 type CategoryDatum = {
     category: string,
@@ -260,7 +261,7 @@ function createTwoVerticalAxesLineChart() {
     lineSeries1.yKey = 'y1';
 
     const lineSeries2 = new LineSeries();
-    lineSeries2.fill = '#57b757';
+    // lineSeries2.fill = '#57b757';
     lineSeries2.stroke = '#3d803d';
     lineSeries2.marker.shape = Square;
     lineSeries2.marker.enabled = true;
@@ -416,21 +417,24 @@ function createMultiLineChart() {
     const lineSeries1 = new LineSeries();
     lineSeries1.marker.shape = Circle;
     lineSeries1.strokeWidth = 4;
-    lineSeries1.fill = '#f3622d';
+    lineSeries1.marker.size = 15;
+    lineSeries1.marker.fill = '#f3622d';
     lineSeries1.xKey = 'category';
     lineSeries1.yKey = 'value1';
 
     const lineSeries2 = new LineSeries();
     lineSeries2.marker.shape = Circle;
     lineSeries2.strokeWidth = 4;
-    lineSeries2.fill = '#fba71b';
+    lineSeries2.marker.size = 15;
+    lineSeries2.marker.fill = '#fba71b';
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'value2';
 
     const lineSeries3 = new LineSeries();
     lineSeries3.marker.shape = Circle;
     lineSeries3.strokeWidth = 4;
-    lineSeries3.fill = '#57b757';
+    lineSeries3.marker.size = 15;
+    lineSeries3.marker.fill = '#57b757';
     lineSeries3.xKey = 'category';
     lineSeries3.yKey = 'value3';
 
@@ -526,24 +530,56 @@ function createMultiLineChart() {
     });
 }
 
+// import { Marker } from "./marker";
+
+export class Heart extends Marker {
+    toRad(degrees: number) {
+        return degrees / 180 * Math.PI;
+    }
+
+    updatePath() {
+        const { x, y, path, size } = this;
+        const r = size / 4;
+        const rad = this.toRad;
+
+        path.clear();
+        path.cubicArc(x - r, y - r, r, r, 0, rad(130), rad(330), 0);
+        path.cubicArc(x + r, y - r, r, r, 0, rad(220), rad(50), 0);
+        path.lineTo(x, y + r);
+        path.closePath();
+    }
+}
+
 function createBasicLineChartUsingFactory() {
-    const coffeeSpending = [
+    const fuelSpending = [
         {
             quarter: 'Q1',
-            spending: 450
+            gas: 200,
+            diesel: 100
         },
         {
             quarter: 'Q2',
-            spending: 560
+            gas: 300,
+            diesel: 130
         },
         {
             quarter: 'Q3',
-            spending: 600
+            gas: 350,
+            diesel: 160
         },
         {
             quarter: 'Q4',
-            spending: 700
+            gas: 400,
+            diesel: 200
         }
+        // {
+        //     quarter: 'Q3',
+        //     spending: 600
+        // },
+        // {
+        //     quarter: 'Q4',
+        //     spending: 700
+        // }
     ];
 
     // const chart = AgChart.create({
@@ -556,17 +592,39 @@ function createBasicLineChartUsingFactory() {
     // });
 
     const chart = AgChart.create({
-        data: coffeeSpending,
+        width: 400,
+        height: 300,
+        data: fuelSpending,
         container: document.body,
+        title: {
+            text: 'Fuel Spending (2019)'
+        },
         series: [{
             xKey: 'quarter',
-            yKey: 'spending',
-            yName: 'Coffee Spending'
+            yKey: 'gas',
+            yName: 'Gas',
+            title: 'Gas',
+            marker: {
+                shape: Heart,
+                size: 30,
+            }
+        }, {
+            xKey: 'quarter',
+            yKey: 'diesel',
+            yName: 'Diesel',
+            stroke: 'black',
+            marker: {
+                shape: 'square',
+                size: 16,
+                fill: 'gray'
+            }
         }],
         legend: {
-            position: 'bottom'
+            // enabled: false,
+            // position: 'bottom'
         }
     });
+    makeChartResizeable(chart);
 }
 
 function test() {
@@ -612,10 +670,77 @@ function test() {
     });
 }
 
+function createGapChart() {
+    const discontinousData = [{
+        year: '2005',
+        visitors: 191000
+    }, {
+        year: '2006',
+        visitors: 45000
+    }, {
+        year: '2007',
+        visitors: 100000
+    }, {
+        year: '2008',
+        visitors: null
+    }, {
+        year: '2009',
+        visitors: 78000
+    }, {
+        year: '2010',
+        visitors: 136000
+    }, {
+        year: '2011',
+        visitors: null
+    }, {
+        year: '2012',
+        visitors: 74000
+    }, {
+        year: '2013',
+        visitors: 67000
+    }, {
+        year: '2014',
+        visitors: 74000
+    }, {
+        year: '2015',
+        visitors: 174000
+    }, {
+        year: '2016',
+        visitors: 76000
+    }, {
+        year: '2017',
+        visitors: 56000
+    }];
+
+    const gapChart = AgChart.create({
+        width: 700,
+        height: 400,
+        data: discontinousData,
+        container: document.body,
+        title: {
+            text: 'Visitors to website'
+        },
+        subtitle: {
+            text: '2005-2017'
+        },
+        series: [{
+            xKey: 'year',
+            yKey: 'visitors'
+        }]
+    });
+
+    makeChartResizeable(gapChart);
+
+    createButton('Save Chart', () => {
+        gapChart.download();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    createTwoVerticalAxesLineChart();
-    createCategoryLineChart();
-    createNumericLineChart();
-    createMultiLineChart();
-    createBasicLineChartUsingFactory();
+    // createBasicLineChartUsingFactory();
+    createGapChart();
+    // createTwoVerticalAxesLineChart();
+    // createCategoryLineChart();
+    // createNumericLineChart();
+    // createMultiLineChart();
 });
