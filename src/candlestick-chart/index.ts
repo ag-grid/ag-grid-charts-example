@@ -34,7 +34,6 @@ function createChart() {
     lineSeries.xKey = 'date';
     lineSeries.yKey = 'high';
     lineSeries.stroke = 'black';
-    lineSeries.fill = '#0082cf';
     lineSeries.strokeWidth = 1;
     lineSeries.tooltipEnabled = true;
     lineSeries.visible = false;

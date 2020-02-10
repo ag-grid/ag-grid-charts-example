@@ -12,6 +12,7 @@ import { Chart } from "ag-charts-community";
 import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton, createSlider } from "../../lib/ui";
 import { Marker } from "ag-charts-community/src/chart/marker/marker";
+import second from "ag-charts-community/src/util/time/second";
 
 type CategoryDatum = {
     category: string,
@@ -572,24 +573,53 @@ function createBasicLineChartUsingFactory() {
             gas: 400,
             diesel: 200
         }
-        // {
-        //     quarter: 'Q3',
-        //     spending: 600
-        // },
-        // {
-        //     quarter: 'Q4',
-        //     spending: 700
-        // }
     ];
 
-    // const chart = AgChart.create({
-    //     data: coffeeSpending,
-    //     container: document.body,
-    //     series: [{
-    //         xKey: 'quarter',
-    //         yKey: 'spending'
-    //     }]
-    // });
+    AgChart.create({
+        container: document.body,
+        width: 400,
+        height: 300,
+        title: {
+            text: 'Average expenditure on coffee'
+        },
+        subtitle: {
+            text: 'per person per week in the UK'
+        },
+        data: [{
+            quarter: '2015',
+            spending: 37
+        }, {
+            quarter: '2016',
+            spending: 40
+        }, {
+            quarter: '2017',
+            spending: 42
+        }, {
+            quarter: '2018',
+            spending: 43
+        }],
+        series: [{
+            xKey: 'quarter',
+            yKey: 'spending'
+        }],
+        // axes: [{
+        //     type: 'number',
+        //     position: 'left',
+        //     min: 0,
+        //     max: 50
+        //     // tick: {
+        //     //     count: 5
+        //     // }
+        // }, {
+        //     type: 'category',
+        //     position: 'bottom'
+        // }],
+        // legend: {
+        //     enabled: false
+        // }
+    });
+
+    document.body.appendChild(document.createElement('br'));
 
     const chart = AgChart.create({
         width: 400,
@@ -602,16 +632,15 @@ function createBasicLineChartUsingFactory() {
         series: [{
             xKey: 'quarter',
             yKey: 'gas',
-            yName: 'Gas',
             title: 'Gas',
             marker: {
-                shape: Heart,
-                size: 16
+                size: 16,
+                shape: 'heart'
             }
         }, {
             xKey: 'quarter',
             yKey: 'diesel',
-            yName: 'Diesel',
+            title: 'Diesel',
             stroke: 'black',
             marker: {
                 shape: 'plus',
@@ -619,11 +648,7 @@ function createBasicLineChartUsingFactory() {
                 fill: 'gray',
                 stroke: 'black'
             }
-        }],
-        legend: {
-            // enabled: false,
-            // position: 'bottom'
-        }
+        }]
     });
     makeChartResizeable(chart);
     createButton('Download', () => chart.download());
@@ -738,11 +763,154 @@ function createGapChart() {
     });
 }
 
+function createTimeLineChart() {
+    AgChart.create({
+        container: document.body,
+        series: [{
+            data: [{
+                time: new Date('01 Jan 2020 13:25:30 GMT'),
+                sensor: 25
+            }, {
+                time: new Date('01 Jan 2020 13:26:30 GMT'),
+                sensor: 24
+            }, {
+                time: new Date('01 Jan 2020 13:27:30 GMT'),
+                sensor: 24
+            }, {
+                time: new Date('01 Jan 2020 13:28:30 GMT'),
+                sensor: 23
+            }, {
+                time: new Date('01 Jan 2020 13:29:30 GMT'),
+                sensor: 22.5
+            }, {
+                time: new Date('01 Jan 2020 13:30:30 GMT'),
+                sensor: 21.5
+            }, {
+                time: new Date('01 Jan 2020 13:31:30 GMT'),
+                sensor: 22.5
+            }],
+            xKey: 'time',
+            yKey: 'sensor',
+            yName: 'Lounge Temperature',
+            stroke: '#03a9f4',
+            marker: {
+                fill: '#03a9f4',
+                stroke: '#0276ab'
+            }
+        }, {
+            data: [{
+                time: Date.parse('01 Jan 2020 13:25:00 GMT'),
+                sensor: 21
+            }, {
+                time: Date.parse('01 Jan 2020 13:26:00 GMT'),
+                sensor: 22
+            }, {
+                time: Date.parse('01 Jan 2020 13:28:00 GMT'),
+                sensor: 22
+            }, {
+                time: Date.parse('01 Jan 2020 13:29:00 GMT'),
+                sensor: 23
+            }, {
+                time: Date.parse('01 Jan 2020 13:30:00 GMT'),
+                sensor: 24
+            }, {
+                time: Date.parse('01 Jan 2020 13:31:00 GMT'),
+                sensor: 24
+            }, {
+                time: Date.parse('01 Jan 2020 13:32:00 GMT'),
+                sensor: 24.5
+            }, {
+                time: Date.parse('01 Jan 2020 13:33:00 GMT'),
+                sensor: 24.5
+            }],
+            xKey: 'time',
+            yKey: 'sensor',
+            yName: 'Office Temperature',
+            stroke: '#8bc24a',
+            marker: {
+                fill: '#8bc24a',
+                stroke: '#658d36'
+            }
+        }],
+        axes: [{
+            type: 'time',
+            position: 'bottom',
+        }, {
+            type: 'number',
+            position: 'left',
+            label: {
+                formatter: (params: any) => {
+                    return params.value + ' C°';
+                }
+            }
+        }],
+        legend: {
+            position: 'bottom'
+        }
+    });
+}
+
+function createRealTimeChart() {
+    var lastTime = new Date('07 Jan 2020 13:25:00 GMT').getTime();
+    var data = [] as any;
+    for (var i = 0; i < 20; i++) {
+        data.push({
+            time: new Date(lastTime += 1000),
+            voltage: 1.1 + Math.random() / 2
+        });
+    }
+
+    var chart = AgChart.create({
+        container: document.body,
+        data,
+        series: [{
+            xKey: 'time',
+            yKey: 'voltage',
+            tooltipEnabled: false
+        }],
+        axes: [{
+            type: 'time',
+            position: 'bottom',
+            tick: {
+                count: second.every(5)
+            },
+            label: {
+                format: '%H:%M:%S'
+            }
+        }, {
+            type: 'number',
+            position: 'left',
+            label: {
+                formatter: (params: any) => {
+                    return params.value + 'v';
+                }
+            }
+        }],
+        title: {
+            text: 'Core Voltage'
+        },
+        legend: {
+            enabled: false
+        }
+    });
+
+    setInterval(function () {
+        data.shift();
+        data.push({
+            time: new Date(lastTime += 1000),
+            voltage: 1.1 + Math.random() / 2
+        });
+        chart.data = data;
+    }, 1000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    createBasicLineChartUsingFactory();
-    createGapChart();
+    // createBasicLineChartUsingFactory();
+    // createGapChart();
     // createTwoVerticalAxesLineChart();
     // createCategoryLineChart();
-    // createNumericLineChart();
+    createNumericLineChart();
+    createTimeLineChart();
+    createRealTimeChart();
     // createMultiLineChart();
 });
