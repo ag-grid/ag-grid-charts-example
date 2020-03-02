@@ -325,7 +325,7 @@ function createNumericLineChart() {
 
     createButton('Animate Math.sin data', () => {
         const data: NumericDatum[] = [];
-        const step = 0.1;
+        const step = 0.02;
         let i = -10;
 
         chart.addEventListener('layoutDone', nextFrame);
