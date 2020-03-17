@@ -1,11 +1,11 @@
-import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
-import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
-import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {DropShadow, Offset} from "ag-grid-enterprise/src/charts/scene/dropShadow";
-import {Axis} from "ag-grid-enterprise/src/charts/axis";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
+import {Axis} from "ag-charts-community/src/axis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -58,8 +58,8 @@ function renderChart() {
         },
     ];
 
-    const yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    const yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    const yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
     const colors = gradientTheme;
 
     const padding = {
@@ -74,7 +74,7 @@ function renderChart() {
     // of each bar in the group.
     const yData = data.map(datum => {
         const values: number[] = [];
-        yFields.forEach(field => values.push((datum as any)[field]));
+        yKeys.forEach(key => values.push((datum as any)[key]));
         return values;
     });
 
@@ -96,14 +96,15 @@ function renderChart() {
     const groupWidth = xGroupScale.bandwidth;
 
     const xBarScale = new BandScale<string>();
-    xBarScale.domain = yFields;
+    xBarScale.domain = yKeys;
     xBarScale.range = [0, groupWidth];
     xBarScale.padding = 0.1;
     xBarScale.round = true;
     const barWidth = xBarScale.bandwidth;
 
-    const scene = new Scene(chartWidth, chartHeight);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(chartWidth, chartHeight);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     // bars
@@ -115,33 +116,40 @@ function renderChart() {
         const values = yData[i];
         const groupX = xGroupScale.convert(category); // x-coordinate of the group
         values.forEach((value, j) => {
-            const barX = xBarScale.convert(yFields[j]); // x-coordinate of the bar within a group
+            const barX = xBarScale.convert(yKeys[j]); // x-coordinate of the bar within a group
             const x = groupX + barX;
             const y = yScale.convert(value);
 
             const color = colors[j % colors.length];
-            const rect = Rect.create(x, y, barWidth, seriesHeight - y);
+            const rect = new Rect();
+            rect.x = x;
+            rect.y = y;
+            rect.width = barWidth;
+            rect.height = seriesHeight - y;
             rect.fill = color[0];
             rect.stroke = 'black';
-            rect.fillShadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+            rect.fillShadow = new DropShadow();
+            rect.fillShadow.color = 'rbba(0,0,0,0.2)';
+            rect.fillShadow.blur = 15;
             rect.opacity = 0.9;
 
-            const labelText = yFieldNames[j];
+            const labelText = yNames[j];
             const label = new Text();
             label.text = labelText;
             label.textAlign = 'center';
             label.x = x + barWidth / 2;
             label.y = y + 20;
             label.fill = 'black';
-            label.font = '14px Verdana';
+            label.fontSize = 14;
+            label.fontFamily = 'Verdana';
             barGroup.append([rect, label]);
         });
     }
 
     // y-axis
-    const yAxis = new Axis<number>(yScale);
-    yAxis.translationX = padding.left;
-    yAxis.translationY = padding.top;
+    const yAxis = new Axis(yScale);
+    yAxis.translation.x = padding.left;
+    yAxis.translation.y = padding.top;
     yAxis.gridLength = seriesWidth;
     yAxis.gridStyle = [{
         stroke: undefined,
@@ -153,11 +161,11 @@ function renderChart() {
     yAxis.update();
 
     // x-axis
-    const xAxis = new Axis<string>(xGroupScale);
+    const xAxis = new Axis(xGroupScale);
     xAxis.rotation = -90;
-    xAxis.translationX = padding.left;
-    xAxis.translationY = padding.top + seriesHeight + 1;
-    xAxis.parallelLabels = true;
+    xAxis.translation.x = padding.left;
+    xAxis.translation.y = padding.top + seriesHeight + 1;
+    xAxis.label.parallel = true;
     xAxis.update();
 
     rootGroup.append([xAxis.group, yAxis.group, barGroup]);

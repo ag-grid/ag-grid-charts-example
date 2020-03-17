@@ -1,15 +1,16 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Sector} from "ag-grid-enterprise/src/charts/scene/shape/sector";
-import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Sector} from "ag-charts-community/src/scene/shape/sector";
+import borneo from "ag-charts-community/src/chart/palettes";
 
 document.addEventListener('DOMContentLoaded', () => {
     testSector();
 });
 
 function testSector() {
-    const scene = new Scene(500, 500);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(500, 500);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     const sector1 = new Sector();
@@ -22,7 +23,13 @@ function testSector() {
     sector1.outerRadius = 100;
     sector1.endAngle = Math.PI * 3 / 4;
 
-    const sector2 = Sector.create(200, 200, 50, 100, Math.PI * 3 / 4, Math.PI * 4 / 3);
+    const sector2 = new Sector();
+    sector2.centerX = 200;
+    sector2.centerY = 200;
+    sector2.innerRadius = 50;
+    sector2.outerRadius = 100;
+    sector2.startAngle = Math.PI * 3 / 4;
+    sector2.endAngle = Math.PI * 4 / 3;
     sector2.fill = borneo.fills[1];
     sector2.stroke = borneo.strokes[1];
     sector2.strokeWidth = 2;

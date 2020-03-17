@@ -1,14 +1,22 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
 
-import './app.css';
+import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { Square } from "ag-charts-community/src/chart/marker/square";
+import { makeChartResizeable } from "../../lib/chart";
+import { Chart } from "ag-charts-community";
+import { AgChart } from "ag-charts-community/src/chart/agChart";
+import { createButton, createSlider } from "../../lib/ui";
+import { Marker } from "ag-charts-community/src/chart/marker/marker";
+import second from "ag-charts-community/src/util/time/second";
 
 type CategoryDatum = {
     category: string,
-    value: number
+    value: any
 };
 
 type NumericDatum = {
@@ -24,14 +32,28 @@ type MultiValue = {
 };
 
 const categoryData: CategoryDatum[] = [
-    {category: 'John', value: 3},
-    {category: 'Nige', value: 7},
-    {category: 'Vicky', value: 6},
-    {category: 'Rick', value: 4},
-    {category: 'Lucy', value: 8},
-    {category: 'Ben', value: 5},
-    {category: 'Barbara', value: 6},
-    {category: 'Maria', value: 3}
+    { category: 'John', value: 3 },
+    { category: 'Nige', value: 7 },
+    { category: 'Vicky', value: 6 },
+    { category: 'Rick', value: 4 },
+    { category: 'Lucy', value: 8 },
+    { category: 'Ben', value: 5 },
+    { category: 'Barbara', value: 6 },
+    { category: 'Maria', value: 3 }
+];
+
+const categoryDataWithGaps: CategoryDatum[] = [
+    { category: 'John', value: 0 },
+    { category: 'Nige', value: 7 },
+    { category: 'Vicky', value: null },
+    { category: 'Rick', value: 4 },
+    { category: 'Lucy', value: 8 },
+    { category: 'Ben', value: undefined },
+    { category: 'Barbara', value: undefined },
+    { category: 'Bob', value: 7 },
+    { category: 'Maria', value: 3 },
+    { category: 'Susie', value: NaN },
+    { category: 'Maria', value: 5 }
 ];
 
 function generateCategoryData(n = 50): CategoryDatum[] {
@@ -105,121 +127,65 @@ function generateSpiralData(): NumericDatum[] {
     return data;
 }
 
-function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
-    const button = document.createElement('button');
-    button.textContent = text;
-    document.body.appendChild(button);
-    button.addEventListener('click', action);
-    return button;
-}
-
-function createSlider<D>(text: string, values: D[], action: (value: D) => void): HTMLInputElement {
-    const n = values.length;
-    const id = String(Date.now());
-    const sliderId = 'slider-' + id;
-    const datalistId = 'slider-list-' + id;
-    const wrapper = document.createElement('div');
-    wrapper.style.display = 'inline-flex';
-    wrapper.style.alignItems = 'center';
-    wrapper.style.width = '300px';
-    wrapper.style.padding = '5px';
-    wrapper.style.margin = '5px';
-    wrapper.style.border = '1px solid lightgray';
-    wrapper.style.borderRadius = '5px';
-    wrapper.style.backgroundColor = 'white';
-
-    const slider = document.createElement('input');
-    slider.setAttribute('id', sliderId);
-    slider.setAttribute('list', datalistId);
-    slider.style.height = '1.8em';
-    slider.style.flex = '1';
-
-    const label = document.createElement('label');
-    label.setAttribute('for', sliderId);
-    label.innerHTML = text;
-    label.style.font = '12px sans-serif';
-    label.style.marginRight = '5px';
-
-    // Currently, no browser fully supports these features.
-    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
-    const datalist = document.createElement('datalist');
-    datalist.setAttribute('id', datalistId);
-
-    values.forEach((value, index) => {
-        const option = document.createElement('option');
-        option.setAttribute('value', String(index));
-        option.setAttribute('label', String(value));
-        datalist.appendChild(option);
-    });
-
-    slider.type = 'range';
-    slider.min = '0';
-    slider.max = String(n - 1);
-    slider.step = '1';
-    slider.value = '0';
-    slider.style.width = '200px';
-
-    wrapper.appendChild(label);
-    wrapper.appendChild(slider);
-    wrapper.appendChild(datalist);
-    document.body.appendChild(wrapper);
-
-    slider.addEventListener('input', (e) => {
-        const index = +(e.target as HTMLInputElement).value;
-        action(values[index]);
-    });
-    return slider;
-}
-
-
 function createCategoryLineChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
-    chart.parent = document.body;
+    const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+
+    xAxis.label.rotation = 45;
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
+    chart.container = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker = true;
-    chart.xAxis.labelRotation = 45;
+    lineSeries.marker.shape = Circle;
+    lineSeries.marker.enabled = true;
     chart.addSeries(lineSeries);
     lineSeries.tooltipEnabled = true;
     lineSeries.tooltipRenderer = params => {
-        if (params.datum[params.xField] === 'Rick') {
+        if (params.datum[params.xKey] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }
-        return '<strong>Value: </strong>' + params.datum[params.yField].toString();
+        return `<div class="${Chart.defaultTooltipClass}-content"><strong>Value: </strong>` + String(params.datum[params.yKey]) + '</div>';
     };
     lineSeries.data = categoryData;
-    lineSeries.xField = 'category';
-    lineSeries.yField = 'value';
+    lineSeries.xKey = 'category';
+    lineSeries.yKey = 'value';
 
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({fileName: 'chart'});
+        chart.scene.download('chart');
     });
+
+    createButton('Use data with gaps', () => {
+        lineSeries.data = categoryDataWithGaps;
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
+    })
 
     createButton('Change data', () => {
         lineSeries.data = generateCategoryData(Math.floor(Math.random() * 50));
-        lineSeries.xField = 'category';
-        lineSeries.yField = 'value';
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
     });
 
     createButton('No data', () => {
         lineSeries.data = [];
-        lineSeries.xField = 'category';
-        lineSeries.yField = 'value';
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
     });
 
-    createButton('No x-field', () => {
-        lineSeries.xField = '';
+    createButton('No x-key', () => {
+        lineSeries.xKey = '';
     });
 
-    createButton('No y-field', () => {
-        lineSeries.yField = '';
+    createButton('No y-key', () => {
+        lineSeries.yKey = '';
     });
 
     createButton('Single data point', () => {
@@ -227,36 +193,118 @@ function createCategoryLineChart() {
             category: 'One',
             value: 17
         }];
-        lineSeries.xField = 'category';
-        lineSeries.yField = 'value';
+        lineSeries.xKey = 'category';
+        lineSeries.yKey = 'value';
     });
+}
+
+function createTwoVerticalAxesLineChart() {
+    const xAxisTop = new CategoryAxis();
+    xAxisTop.position = ChartAxisPosition.Top;
+
+    const xAxisBottom = new CategoryAxis();
+    xAxisBottom.position = ChartAxisPosition.Bottom;
+    xAxisBottom.linkedTo = xAxisTop;
+
+    const yAxisLeft = new NumberAxis();
+    yAxisLeft.position = ChartAxisPosition.Left;
+    yAxisLeft.gridStyle = [];
+    yAxisLeft.keys = ['y1'];
+
+    const yAxisRight = new NumberAxis();
+    yAxisRight.position = ChartAxisPosition.Right;
+    yAxisRight.gridStyle = [{
+        stroke: '#c2c3c2'
+    }];
+    yAxisRight.keys = ['y2'];
+
+    const yAxisRight2 = new NumberAxis();
+    yAxisRight2.position = ChartAxisPosition.Right;
+    yAxisRight2.gridStyle = [];
+    yAxisRight2.linkedTo = yAxisRight;
+
+    const yAxisRight3 = new NumberAxis();
+    yAxisRight3.position = ChartAxisPosition.Right;
+    yAxisRight3.gridStyle = [];
+    yAxisRight3.linkedTo = yAxisRight;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxisTop, xAxisBottom, yAxisLeft, yAxisRight];
+    chart.container = document.body;
+    chart.width = document.body.clientWidth;
+    chart.height = 600;
+
+    const data = [{
+        category: 'A1',
+        y1: 5,
+        y2: 800
+    }, {
+        category: 'A2',
+        y1: 12,
+        y2: 300
+    }, {
+        category: 'A3',
+        y1: 8,
+        y2: 500
+    }, {
+        category: 'A4',
+        y1: 10,
+        y2: 450
+    }];
+
+    const lineSeries1 = new LineSeries();
+    lineSeries1.title = 'Flashy Title';
+    lineSeries1.marker.shape = Circle;
+    lineSeries1.marker.enabled = true;
+    lineSeries1.tooltipEnabled = true;
+    lineSeries1.data = data;
+    lineSeries1.xKey = 'category';
+    lineSeries1.yKey = 'y1';
+
+    const lineSeries2 = new LineSeries();
+    // lineSeries2.fill = '#57b757';
+    lineSeries2.stroke = '#3d803d';
+    lineSeries2.marker.shape = Square;
+    lineSeries2.marker.enabled = true;
+    lineSeries2.tooltipEnabled = true;
+    lineSeries2.data = data;
+    lineSeries2.xKey = 'category';
+    lineSeries2.yKey = 'y2';
+
+    chart.series = [lineSeries1, lineSeries2];
+
+    makeChartResizeable(chart);
 }
 
 function createNumericLineChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const chart = new CartesianChart(
-        new NumberAxis(),
-        new NumberAxis()
-    );
-    chart.parent = document.body;
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
+    chart.container = document.body;
     chart.width = 600;
     chart.height = 600;
 
     const lineSeries = new LineSeries();
-    lineSeries.marker = true;
+    lineSeries.marker.shape = Circle;
+    lineSeries.marker.enabled = true;
     lineSeries.strokeWidth = 2;
     lineSeries.showInLegend = false;
-    chart.xAxis.labelRotation = 45;
     chart.addSeries(lineSeries);
     lineSeries.data = generateSinData();
-    lineSeries.xField = 'xValue';
-    lineSeries.yField = 'yValue';
+    lineSeries.xKey = 'xValue';
+    lineSeries.yKey = 'yValue';
 
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({fileName: 'chart'});
+        chart.scene.download('chart');
     });
 
     createButton('Math.log data', () => {
@@ -268,19 +316,19 @@ function createNumericLineChart() {
     });
 
     createButton('Hide markers', () => {
-        lineSeries.marker = false;
+        lineSeries.marker.enabled = false;
     });
 
     createButton('Show markers', () => {
-        lineSeries.marker = true;
+        lineSeries.marker.enabled = true;
     });
 
     createButton('Animate Math.sin data', () => {
         const data: NumericDatum[] = [];
-        const step = 0.1;
+        const step = 0.02;
         let i = -10;
 
-        chart.onLayoutDone = nextFrame;
+        chart.addEventListener('layoutDone', nextFrame);
 
         function nextFrame() {
             data.push({
@@ -292,7 +340,7 @@ function createNumericLineChart() {
             if (i < 10) {
                 i += step;
             } else {
-                chart.onLayoutDone = undefined;
+                chart.removeEventListener('layoutDone', nextFrame);
             }
         }
 
@@ -306,7 +354,7 @@ function createNumericLineChart() {
         const step = 0.1;
         let th = 1;
 
-        chart.onLayoutDone = nextFrame;
+        chart.addEventListener('layoutDone', nextFrame);
 
         function nextFrame() {
             const r = (a + b * th);
@@ -319,7 +367,7 @@ function createNumericLineChart() {
             if (th < 50) {
                 th += step;
             } else {
-                chart.onLayoutDone = undefined;
+                chart.removeEventListener('layoutDone', nextFrame);
             }
         }
 
@@ -336,8 +384,6 @@ function createNumericLineChart() {
     document.body.appendChild(niceCheckboxLabel);
     niceCheckbox.addEventListener('input', (e) => {
         const target = e.target as HTMLInputElement;
-        const xAxis = chart.xAxis;
-        const yAxis = chart.yAxis;
 
         if (xAxis instanceof NumberAxis) {
             xAxis.nice = target.checked;
@@ -348,54 +394,64 @@ function createNumericLineChart() {
         chart.layoutPending = true;
     });
 
-    createSlider('lineWidth', [0, 2, 4, 6, 8], value => lineSeries.strokeWidth = value);
-    createSlider('markerLineWidth', [0, 2, 4, 6, 8], value => lineSeries.markerStrokeWidth = value);
-    createSlider('markerSize', [0, 2, 4, 6, 8], value => lineSeries.markerSize = value);
+    createSlider('stroke width', [0, 2, 4, 6, 8], value => lineSeries.strokeWidth = value);
+    createSlider('marker stroke width', [0, 2, 4, 6, 8], value => lineSeries.marker.strokeWidth = value);
+    createSlider('marker size', [0, 2, 4, 6, 8], value => lineSeries.marker.size = value);
 }
 
 function createMultiLineChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
-    chart.parent = document.body;
+    const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 90;
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.container = document.body;
     chart.width = document.body.clientWidth;
     chart.height = 600;
-    chart.xAxis.labelRotation = 90;
+    chart.axes = [xAxis, yAxis];
 
     const data = generateMultiValueData(10);
 
     const lineSeries1 = new LineSeries();
+    lineSeries1.marker.shape = Circle;
     lineSeries1.strokeWidth = 4;
-    lineSeries1.fill = '#f3622d';
-    lineSeries1.xField = 'category';
-    lineSeries1.yField = 'value1';
+    lineSeries1.marker.size = 15;
+    lineSeries1.marker.fill = '#f3622d';
+    lineSeries1.xKey = 'category';
+    lineSeries1.yKey = 'value1';
 
     const lineSeries2 = new LineSeries();
+    lineSeries2.marker.shape = Circle;
     lineSeries2.strokeWidth = 4;
-    lineSeries2.fill = '#fba71b';
-    lineSeries2.xField = 'category';
-    lineSeries2.yField = 'value2';
+    lineSeries2.marker.size = 15;
+    lineSeries2.marker.fill = '#fba71b';
+    lineSeries2.xKey = 'category';
+    lineSeries2.yKey = 'value2';
 
     const lineSeries3 = new LineSeries();
+    lineSeries3.marker.shape = Circle;
     lineSeries3.strokeWidth = 4;
-    lineSeries3.fill = '#57b757';
-    lineSeries3.xField = 'category';
-    lineSeries3.yField = 'value3';
+    lineSeries3.marker.size = 15;
+    lineSeries3.marker.fill = '#57b757';
+    lineSeries3.xKey = 'category';
+    lineSeries3.yKey = 'value3';
 
-    const barSeries = new BarSeries();
-    barSeries.fills = ['#41a9c9'];
-    barSeries.xField = 'category';
-    barSeries.yFields = ['value3'];
+    const columnSeries = new ColumnSeries();
+    columnSeries.fills = ['#41a9c9'];
+    columnSeries.xKey = 'category';
+    columnSeries.yKeys = ['value3'];
 
     // Both approaches are valid here:
-    // chart.addSeries(barSeries);
+    // chart.addSeries(columnSeries);
     // chart.addSeries(lineSeries1);
     // chart.addSeries(lineSeries2);
     // chart.addSeries(lineSeries3);
 
     chart.series = [
-        barSeries,
+        columnSeries,
         lineSeries1,
         lineSeries2,
         lineSeries3
@@ -408,7 +464,7 @@ function createMultiLineChart() {
     saveImageButton.textContent = 'Save Chart Image';
     document.body.appendChild(saveImageButton);
     saveImageButton.addEventListener('click', () => {
-        chart.scene.download({fileName: 'chart'});
+        chart.scene.download('chart');
     });
 
     const changeDataButton = document.createElement('button');
@@ -427,7 +483,7 @@ function createMultiLineChart() {
         let i = -10;
         let index = 0;
 
-        chart.onLayoutDone = nextFrame;
+        chart.addEventListener('layoutDone', nextFrame);
 
         function nextFrame() {
             data.push({
@@ -443,7 +499,7 @@ function createMultiLineChart() {
             if (i < 10) {
                 i += step;
             } else {
-                chart.onLayoutDone = undefined;
+                chart.removeEventListener('layoutDone', nextFrame);
             }
         }
 
@@ -451,7 +507,7 @@ function createMultiLineChart() {
     });
 
     createButton('Remove the bar series', () => {
-        if (chart.removeSeries(barSeries)) {
+        if (chart.removeSeries(columnSeries)) {
             console.log('The bar series was removed.');
         } else {
             console.log('No series removed. The chart does not contain the given series.');
@@ -459,7 +515,7 @@ function createMultiLineChart() {
     });
 
     createButton('Add the bar series back', () => {
-        if (chart.addSeries(barSeries)) {
+        if (chart.addSeries(columnSeries)) {
             console.log('Bar series was successfully added.');
         } else {
             console.log('Could not add bar series.');
@@ -467,7 +523,7 @@ function createMultiLineChart() {
     });
 
     createButton('Insert bar series before line series', () => {
-        if (chart.addSeries(barSeries, lineSeries1)) {
+        if (chart.addSeries(columnSeries, lineSeries1)) {
             console.log('Bar series was successfully inserted.');
         } else {
             console.log('Could not insert bar series.');
@@ -475,8 +531,386 @@ function createMultiLineChart() {
     });
 }
 
+// import { Marker } from "./marker";
+
+export class Heart extends Marker {
+    rad(degree: number) {
+        return degree / 180 * Math.PI;
+    }
+
+    updatePath() {
+        let { x, path, size, rad } = this;
+        const r = size / 4;
+        const y = this.y + r / 2;
+
+        path.clear();
+        path.cubicArc(x - r, y - r, r, r, 0, rad(130), rad(330), 0);
+        path.cubicArc(x + r, y - r, r, r, 0, rad(220), rad(50), 0);
+        path.lineTo(x, y + r);
+        path.closePath();
+    }
+}
+
+function createBasicLineChartUsingFactory() {
+    const fuelSpending = [
+        {
+            quarter: 'Q1',
+            gas: 200,
+            diesel: 100
+        },
+        {
+            quarter: 'Q2',
+            gas: 300,
+            diesel: 130
+        },
+        {
+            quarter: 'Q3',
+            gas: 350,
+            diesel: 160
+        },
+        {
+            quarter: 'Q4',
+            gas: 400,
+            diesel: 200
+        }
+    ];
+
+    AgChart.create({
+        container: document.body,
+        width: 400,
+        height: 300,
+        title: {
+            text: 'Average expenditure on coffee'
+        },
+        subtitle: {
+            text: 'per person per week in the UK'
+        },
+        data: [{
+            quarter: '2015',
+            spending: 37
+        }, {
+            quarter: '2016',
+            spending: 40
+        }, {
+            quarter: '2017',
+            spending: 42
+        }, {
+            quarter: '2018',
+            spending: 43
+        }],
+        series: [{
+            xKey: 'quarter',
+            yKey: 'spending'
+        }],
+        // axes: [{
+        //     type: 'number',
+        //     position: 'left',
+        //     min: 0,
+        //     max: 50
+        //     // tick: {
+        //     //     count: 5
+        //     // }
+        // }, {
+        //     type: 'category',
+        //     position: 'bottom'
+        // }],
+        // legend: {
+        //     enabled: false
+        // }
+    });
+
+    document.body.appendChild(document.createElement('br'));
+
+    const chart = AgChart.create({
+        width: 400,
+        height: 300,
+        data: fuelSpending,
+        container: document.body,
+        title: {
+            text: 'Fuel Spending (2019)'
+        },
+        series: [{
+            xKey: 'quarter',
+            yKey: 'gas',
+            title: 'Gas',
+            marker: {
+                size: 16,
+                shape: 'heart'
+            }
+        }, {
+            xKey: 'quarter',
+            yKey: 'diesel',
+            title: 'Diesel',
+            stroke: 'black',
+            marker: {
+                shape: 'plus',
+                size: 16,
+                fill: 'gray',
+                stroke: 'black'
+            }
+        }]
+    });
+    makeChartResizeable(chart);
+    createButton('Download', () => chart.download());
+}
+
+function test() {
+    const beverageSpending = [
+        {
+            beverage: 'Coffee',
+            Q1: 450,
+            Q2: 560,
+            Q3: 600,
+            Q4: 700
+        },
+        {
+            beverage: 'Tea',
+            Q1: 270,
+            Q2: 380,
+            Q3: 450,
+            Q4: 520
+        },
+        {
+            beverage: 'Milk',
+            Q1: 180,
+            Q2: 170,
+            Q3: 190,
+            Q4: 200
+        },
+    ];
+
+    const chart2 = AgChart.create({
+        data: beverageSpending,
+        container: document.body,
+        title: {
+            text: 'Beverage Expenses'
+        },
+        subtitle: {
+            text: 'per quarter'
+        },
+        series: [{
+            type: 'column',
+            xKey: 'beverage',
+            yKeys: ['Q1', 'Q2', 'Q3', 'Q4'],
+            label: {}
+        }]
+    });
+}
+
+function createGapChart() {
+    const discontinousData = [{
+        year: '2005',
+        visitors: 191000
+    }, {
+        year: '2006',
+        visitors: 45000
+    }, {
+        year: '2007',
+        visitors: 100000
+    }, {
+        year: '2008',
+        visitors: null
+    }, {
+        year: '2009',
+        visitors: 78000
+    }, {
+        year: '2010',
+        visitors: 136000
+    }, {
+        year: '2011',
+        visitors: null
+    }, {
+        year: '2012',
+        visitors: 74000
+    }, {
+        year: '2013',
+        visitors: 67000
+    }, {
+        year: '2014',
+        visitors: 74000
+    }, {
+        year: '2015',
+        visitors: 174000
+    }, {
+        year: '2016',
+        visitors: 76000
+    }, {
+        year: '2017',
+        visitors: 56000
+    }];
+
+    const gapChart = AgChart.create({
+        width: 700,
+        height: 400,
+        data: discontinousData,
+        container: document.body,
+        title: {
+            text: 'Visitors to website'
+        },
+        subtitle: {
+            text: '2005-2017'
+        },
+        series: [{
+            xKey: 'year',
+            yKey: 'visitors'
+        }]
+    });
+
+    makeChartResizeable(gapChart);
+
+    createButton('Save Chart', () => {
+        gapChart.download();
+    });
+}
+
+function createTimeLineChart() {
+    AgChart.create({
+        container: document.body,
+        series: [{
+            data: [{
+                time: new Date('01 Jan 2020 13:25:30 GMT'),
+                sensor: 25
+            }, {
+                time: new Date('01 Jan 2020 13:26:30 GMT'),
+                sensor: 24
+            }, {
+                time: new Date('01 Jan 2020 13:27:30 GMT'),
+                sensor: 24
+            }, {
+                time: new Date('01 Jan 2020 13:28:30 GMT'),
+                sensor: 23
+            }, {
+                time: new Date('01 Jan 2020 13:29:30 GMT'),
+                sensor: 22.5
+            }, {
+                time: new Date('01 Jan 2020 13:30:30 GMT'),
+                sensor: 21.5
+            }, {
+                time: new Date('01 Jan 2020 13:31:30 GMT'),
+                sensor: 22.5
+            }],
+            xKey: 'time',
+            yKey: 'sensor',
+            yName: 'Lounge Temperature',
+            stroke: '#03a9f4',
+            marker: {
+                fill: '#03a9f4',
+                stroke: '#0276ab'
+            }
+        }, {
+            data: [{
+                time: Date.parse('01 Jan 2020 13:25:00 GMT'),
+                sensor: 21
+            }, {
+                time: Date.parse('01 Jan 2020 13:26:00 GMT'),
+                sensor: 22
+            }, {
+                time: Date.parse('01 Jan 2020 13:28:00 GMT'),
+                sensor: 22
+            }, {
+                time: Date.parse('01 Jan 2020 13:29:00 GMT'),
+                sensor: 23
+            }, {
+                time: Date.parse('01 Jan 2020 13:30:00 GMT'),
+                sensor: 24
+            }, {
+                time: Date.parse('01 Jan 2020 13:31:00 GMT'),
+                sensor: 24
+            }, {
+                time: Date.parse('01 Jan 2020 13:32:00 GMT'),
+                sensor: 24.5
+            }, {
+                time: Date.parse('01 Jan 2020 13:33:00 GMT'),
+                sensor: 24.5
+            }],
+            xKey: 'time',
+            yKey: 'sensor',
+            yName: 'Office Temperature',
+            stroke: '#8bc24a',
+            marker: {
+                fill: '#8bc24a',
+                stroke: '#658d36'
+            }
+        }],
+        axes: [{
+            type: 'time',
+            position: 'bottom',
+        }, {
+            type: 'number',
+            position: 'left',
+            label: {
+                formatter: (params: any) => {
+                    return params.value + ' C°';
+                }
+            }
+        }],
+        legend: {
+            position: 'bottom'
+        }
+    });
+}
+
+function createRealTimeChart() {
+    var lastTime = new Date('07 Jan 2020 13:25:00 GMT').getTime();
+    var data = [] as any;
+    for (var i = 0; i < 20; i++) {
+        data.push({
+            time: new Date(lastTime += 1000),
+            voltage: 1.1 + Math.random() / 2
+        });
+    }
+
+    var chart = AgChart.create({
+        container: document.body,
+        data,
+        series: [{
+            xKey: 'time',
+            yKey: 'voltage',
+            tooltipEnabled: false
+        }],
+        axes: [{
+            type: 'time',
+            position: 'bottom',
+            tick: {
+                count: second.every(5)
+            },
+            label: {
+                format: '%H:%M:%S'
+            }
+        }, {
+            type: 'number',
+            position: 'left',
+            label: {
+                formatter: (params: any) => {
+                    return params.value + 'v';
+                }
+            }
+        }],
+        title: {
+            text: 'Core Voltage'
+        },
+        legend: {
+            enabled: false
+        }
+    });
+
+    setInterval(function () {
+        data.shift();
+        data.push({
+            time: new Date(lastTime += 1000),
+            voltage: 1.1 + Math.random() / 2
+        });
+        chart.data = data;
+    }, 1000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    createCategoryLineChart();
+    // createBasicLineChartUsingFactory();
+    // createGapChart();
+    // createTwoVerticalAxesLineChart();
+    // createCategoryLineChart();
     createNumericLineChart();
-    createMultiLineChart();
+    createTimeLineChart();
+    createRealTimeChart();
+    // createMultiLineChart();
 });

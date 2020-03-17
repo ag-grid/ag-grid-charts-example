@@ -1,10 +1,10 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
-import {ClipRect} from "ag-grid-enterprise/src/charts/scene/clipRect";
-import {Selection} from "ag-grid-enterprise/src/charts/scene/selection";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {Line} from "ag-charts-community/src/scene/shape/line";
+import {ClipRect} from "ag-charts-community/src/scene/clipRect";
+import {Selection} from "ag-charts-community/src/scene/selection";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -24,8 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function testClipRect() {
-    const scene = new Scene(500, 500);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(500, 500);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     const clipRect = new ClipRect();
@@ -36,22 +37,40 @@ function testClipRect() {
 
     const label = new Text();
     label.text = 'Spectacular';
-    label.font = '20px Verdana';
+    label.fontSize = 20;
+    label.fontFamily = 'Verdana';
     label.textAlign = 'right';
     label.x = 140;
     label.y = 200;
 
-    const arc1 = Arc.create(50, 50, 50);
+    const arc1 = new Arc();
+    arc1.centerX = 50;
+    arc1.centerY = 50;
+    arc1.radiusX = 50;
+    arc1.radiusY = 50;
     arc1.type = ArcType.Chord;
     arc1.fill = 'red';
 
-    const arc2 = Arc.create(200, 100, 100);
+    const arc2 = new Arc();
+    arc2.centerX = 200;
+    arc2.centerY = 100;
+    arc2.radiusX = 100;
+    arc2.radiusY = 100;
     arc2.fill = 'lime';
     arc2.type = ArcType.Chord;
     arc2.opacity = 0.7;
 
-    const hLine = Line.create(0, 150, 300, 150);
-    const vLine = Line.create(150, 0, 150, 300);
+    const hLine = new Line();
+    hLine.x1 = 0;
+    hLine.y1 = 150;
+    hLine.x2 = 300;
+    hLine.y2 = 150;
+
+    const vLine = new Line();
+    vLine.x1 = 150;
+    vLine.y1 = 0;
+    vLine.x2 = 150;
+    vLine.y2 = 300;
 
     clipRect.append([arc1, label, hLine, vLine]);
     rootGroup.append([clipRect, arc2]);
@@ -72,8 +91,9 @@ function testClipRect() {
 }
 
 function testClipRectSelection() {
-    const scene = new Scene(500, 500);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(500, 500);
+    scene.container = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
 
@@ -90,7 +110,8 @@ function testClipRectSelection() {
     clipSelection.append(Text)
         .each(label => {
             label.text = 'Spectacular';
-            label.font = '20px Verdana';
+            label.fontSize = 20;
+            label.fontFamily = 'Verdana';
             label.textAlign = 'right';
             label.x = 140;
             label.y = 200

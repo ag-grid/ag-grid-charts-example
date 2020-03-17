@@ -1,6 +1,6 @@
-import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
-import {createHdpiCanvas} from "ag-grid-enterprise/src/charts/canvas/canvas";
-import {normalizeAngle180} from "ag-grid-enterprise/src/charts/util/angle";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
+import {normalizeAngle180} from "ag-charts-community/src/util/angle";
 
 // Q1'12 data
 const data = [
@@ -21,7 +21,7 @@ const colorTheme = [
     '#fa3081'
 ];
 
-function renderChart(angleField: string, labelField?: string, radiusField?: string) {
+function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
     const colors = colorTheme;
 
     const padding = {
@@ -32,7 +32,7 @@ function renderChart(angleField: string, labelField?: string, radiusField?: stri
     };
 
     const n = data.length;
-    const angleData = data.map(datum => (datum as any)[angleField]);
+    const angleData = data.map(datum => (datum as any)[angleKey]);
     const angleDataTotal = angleData.reduce((a, b) => a + b, 0);
     const angleDataRatios = (() => {
         let sum = 0;
@@ -40,13 +40,13 @@ function renderChart(angleField: string, labelField?: string, radiusField?: stri
     })();
 
     let labelData: string[] = [];
-    if (labelField) {
-        labelData = data.map(datum => (datum as any)[labelField]);
+    if (labelKey) {
+        labelData = data.map(datum => (datum as any)[labelKey]);
     }
 
     let raduisData: number[] = [];
-    if (radiusField) {
-        raduisData = data.map(datum => (datum as any)[radiusField]);
+    if (radiusKey) {
+        raduisData = data.map(datum => (datum as any)[radiusKey]);
     }
 
     const canvasWidth = document.body.getBoundingClientRect().width;
@@ -134,7 +134,7 @@ function renderChart(angleField: string, labelField?: string, radiusField?: stri
         let sectorIndex = 0;
         // Simply use reduce here to pair up adjacent ratios.
         angleDataRatios.reduce((start, end) => {
-            const radius = radiusField ? yScale.convert(raduisData[sectorIndex]) : fullRadius;
+            const radius = radiusKey ? yScale.convert(raduisData[sectorIndex]) : fullRadius;
             const startAngle = xScale.convert(start);
             const endAngle = xScale.convert(end);
 

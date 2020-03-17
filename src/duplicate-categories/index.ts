@@ -1,10 +1,8 @@
-import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { BarSeries } from "ag-grid-enterprise/src/charts/chart/series/barSeries";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-
-import './app.css';
+import {CartesianChart} from "ag-charts-community/src/chart/cartesianChart";
+import {LineSeries} from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 
 type CategoryDatum = {
     country: { toString: () => string },
@@ -21,43 +19,45 @@ const data: CategoryDatum[] = [
 ];
 
 function createCategoryLineChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
-    chart.parent = document.body;
+    const xAxis = new CategoryAxis();
+    const yAxis = new NumberAxis();
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 500;
 
     const lineSeries = new LineSeries();
     lineSeries.strokeWidth = 4;
     lineSeries.data = data;
-    lineSeries.xField = 'country';
-    lineSeries.yField = 'value';
+    lineSeries.xKey = 'country';
+    lineSeries.yKey = 'value';
     lineSeries.tooltipEnabled = true;
     lineSeries.title = 'Countries';
 
-    chart.series = [lineSeries];
+    chart.series = [lineSeries as any];
 }
 
 function createBarChart() {
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
-    chart.parent = document.body;
+    const xAxis = new CategoryAxis();
+    const yAxis = new NumberAxis();
+
+    const chart = new CartesianChart();
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 500;
+    chart.axes = [xAxis, yAxis];
 
     const lineSeries = new BarSeries();
     lineSeries.strokeWidth = 4;
     lineSeries.data = data;
-    lineSeries.xField = 'country';
-    lineSeries.yFields = ['value', 'other'];
-    lineSeries.yFieldNames = ['Countries', 'Whatever'];
+    lineSeries.xKey = 'country';
+    lineSeries.yKeys = ['value', 'other'];
+    lineSeries.yNames = ['Countries', 'Whatever'];
     lineSeries.tooltipEnabled = true;
 
-    chart.series = [lineSeries];
+    chart.series = [lineSeries as any];
 }
 
 document.addEventListener('DOMContentLoaded', () => {

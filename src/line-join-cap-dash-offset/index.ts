@@ -1,7 +1,7 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Path} from "ag-grid-enterprise/src/charts/scene/shape/path";
-import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Path} from "ag-charts-community/src/scene/shape/path";
+import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
 
 function delay() {
     return new Promise(resolve => {
@@ -10,8 +10,9 @@ function delay() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(800, 800);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(800, 800);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     const starPath = 'M 54.479341,8.93861 63.990133,35.839945 65.664178,40.57499 99.20847,41.43623 72.576788,61.8498 82.123461,94.0185 54.47934,74.9984 26.835216,94.0185 36.381891,61.8498 9.7502099,41.43623 43.294501,40.575 z';

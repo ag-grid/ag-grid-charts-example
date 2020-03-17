@@ -1,14 +1,15 @@
 {
   "name": "ag-grid-charts-example",
-  "version": "21.0.0",
+  "version": "23.0.0",
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
-    "build": "npm run build:types && npm run build:js",
-    "build:types": "tsc --emitDeclarationOnly",
-    "build:js": "babel src --out-dir dist/lib --extensions \".ts,.tsx\" --source-maps inline",
-    "bundle": "webpack"
+    "compile": "tsc --emitDeclarationOnly",
+    "bundleAll": "npx parallel-webpack --config ./webpack.config.js",
+    "bundleOneAndWatch": "npx webpack --config ./webpack.config.js --progress",
+    "electron": "npx webpack --config webpack.electron.config.js && electron ./dist/_/main.js"
   },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ag-grid/ag-grid-charts-example.git"
@@ -24,28 +25,28 @@
   },
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
-    "ag-grid-community": "^21.0.0",
-    "ag-grid-enterprise": "^21.0.0",
+    "ag-charts-community": "~1.0.0",
+    "@types/electron": "^1.6.10",
     "d3": "^5.7.0",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/plugin-proposal-decorators": "^7.1.6",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "@babel/preset-env": "^7.2.0",
-    "@babel/preset-typescript": "^7.1.0",
     "@types/d3": "^5.7.0",
     "@types/lodash": "^4.14.120",
-    "babel-loader": "^8.0.4",
-    "html-webpack-plugin": "^3.2.0",
-    "webpack": "^4.22.0",
-    "typescript": "~3.4.1",
-    "webpack-cli": "^3.1.2",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
     "css-loader": "^1.0.1",
+    "electron": "^6.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "parallel-webpack": "^2.4.0",
+    "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "sass-loader": "^7.1.0"
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.6.3",
+    "url-loader": "^2.0.0",
+    "webpack": "^4.22.0",
+    "webpack-cli": "^3.3.6"
   }
 }

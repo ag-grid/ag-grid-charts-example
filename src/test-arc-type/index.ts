@@ -1,16 +1,24 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {toRadians} from "ag-grid-enterprise/src/charts/util/angle";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {toRadians} from "ag-charts-community/src/util/angle";
+import { areaRadial } from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(700, 900);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(700, 900);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     {
-        const arc = Arc.create(100, 100, 80, 80, toRadians(0), toRadians(270));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 100;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(0);
+        arc.endAngle = toRadians(270);
         arc.fill = 'gold';
         arc.stroke = 'red';
         arc.strokeWidth = 5;
@@ -26,7 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 100, 80, 80, toRadians(0), toRadians(270));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 100;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(0);
+        arc.endAngle = toRadians(270);
         arc.fill = 'gold';
         arc.stroke = 'green';
         arc.strokeWidth = 5;
@@ -44,7 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 100, 80, 80, toRadians(0), toRadians(270));
+        const arc = new Arc();
+        arc.centerY = 100;
+        arc.centerY = 100;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(0);
+        arc.endAngle = toRadians(270);
         arc.fill = 'gold';
         arc.stroke = 'blue';
         arc.strokeWidth = 5;
@@ -64,7 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ------------------------------------------------------------------------
 
     {
-        const arc = Arc.create(100, 300, 80, 80, toRadians(0), toRadians(230));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 300;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(0);
+        arc.endAngle = toRadians(230);
         arc.fill = 'gold';
         arc.stroke = 'red';
         arc.strokeWidth = 5;
@@ -73,7 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 300, 80, 80, toRadians(0), toRadians(230));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 300;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(0);
+        arc.endAngle = toRadians(230);
         arc.fill = 'gold';
         arc.stroke = 'green';
         arc.strokeWidth = 5;
@@ -83,7 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 300, 80, 80, toRadians(0), toRadians(230));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 300;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(0);
+        arc.endAngle = toRadians(230);
         arc.fill = 'gold';
         arc.stroke = 'blue';
         arc.strokeWidth = 5;
@@ -95,7 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ------------------------------------------------------------------------
 
     {
-        const arc = Arc.create(100, 500, 80, 80, toRadians(-70), toRadians(20));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 500;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(-70);
+        arc.endAngle = toRadians(20);
         arc.fill = 'gold';
         arc.stroke = 'red';
         arc.strokeWidth = 5;
@@ -104,7 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 500, 80, 80, toRadians(-70), toRadians(20));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 500;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(-70);
+        arc.endAngle = toRadians(20);
         arc.fill = 'gold';
         arc.stroke = 'green';
         arc.strokeWidth = 5;
@@ -114,7 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 500, 80, 80, toRadians(-70), toRadians(20));
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 500;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = toRadians(-70);
+        arc.endAngle = toRadians(20);
         arc.fill = 'gold';
         arc.stroke = 'blue';
         arc.strokeWidth = 5;
@@ -126,7 +182,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ------------------------------------------------------------------------
 
     {
-        const arc = Arc.create(100, 700, 80, 80, 0, Math.PI * 2);
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 700;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = 0;
+        arc.endAngle = Math.PI * 2;
         arc.fill = 'gold';
         arc.stroke = 'red';
         arc.strokeWidth = 5;
@@ -135,7 +197,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 700, 80, 80, 0, Math.PI * 2);
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 700;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = 0;
+        arc.endAngle = Math.PI * 2;
         arc.fill = 'gold';
         arc.stroke = 'green';
         arc.strokeWidth = 5;
@@ -145,7 +213,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     {
-        const arc = Arc.create(100, 700, 80, 80, 0, Math.PI * 2);
+        const arc = new Arc();
+        arc.centerX = 100;
+        arc.centerY = 700;
+        arc.radiusX = 80;
+        arc.radiusY = 80;
+        arc.startAngle = 0;
+        arc.endAngle = Math.PI * 2;
         arc.fill = 'gold';
         arc.stroke = 'blue';
         arc.strokeWidth = 5;

@@ -1,15 +1,16 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
 import * as d3 from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
 
     // Canvas scene graph API
 
-    const scene = new Scene(800, 400);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(800, 400);
+    scene.container = document.body;
     const group = new Group();
 
     const arc = new Arc();
@@ -21,7 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     arc.stroke = 'black';
     arc.type = ArcType.Chord;
 
-    const rect = Rect.create(200, 100, 50, 50);
+    const rect = new Rect();
+    rect.x = 200;
+    rect.y = 100;
+    rect.width = 50;
+    rect.height = 50;
     rect.fill = 'red';
     rect.stroke = 'black';
 

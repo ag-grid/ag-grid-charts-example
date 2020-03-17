@@ -1,8 +1,8 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {Text} from "ag-charts-community/src/scene/shape/text";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -17,18 +17,27 @@ function delay() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(600, 600);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(600, 600);
+    scene.container = document.body;
     const group = new Group();
     const parentGroup = new Group();
 
-    const rect = Rect.create(100, 50, 150, 150);
+    const rect = new Rect();
+    rect.x = 100;
+    rect.y = 50;
+    rect.width = 150;
+    rect.height = 150;
     rect.fill = 'blue';
     rect.rotation = Math.PI / 9;
     rect.translationX = 100;
     group.append(rect);
 
-    const arc = Arc.create(300, 200, 130, 100);
+    const arc = new Arc();
+    arc.centerX = 300;
+    arc.centerY = 200;
+    arc.radiusX = 130;
+    arc.radiusY = 100;
     arc.fill = 'orange';
     arc.type = ArcType.Chord;
 
@@ -36,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     text.x = 100;
     text.y = 100;
     text.text = 'Vitaly Kravchenko';
-    text.font = '24px Verdana';
+    text.fontSize = 24;
+    text.fontFamily = 'Verdana';
     text.rotation = Math.PI / 6;
 
     scene.root = group;

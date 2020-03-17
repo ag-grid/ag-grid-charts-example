@@ -1,9 +1,9 @@
-import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
-import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Axis} from "ag-grid-enterprise/src/charts/axis";
-import {toDegrees} from "ag-grid-enterprise/src/charts/util/angle";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Axis} from "ag-charts-community/src/axis";
+import {toDegrees} from "ag-charts-community/src/util/angle";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -43,23 +43,24 @@ function renderAxes() {
     xScale.paddingInner = 0.1;
     xScale.paddingOuter = 0.3;
 
-    const scene = new Scene(chartWidth, chartHeight);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(chartWidth, chartHeight);
+    scene.container = document.body;
     scene.renderFrameIndex = true;
     const rootGroup = new Group();
 
     // y-axis
-    const yAxis = new Axis<number>(yScale);
-    yAxis.translationX = padding.left;
-    yAxis.translationY = padding.top;
+    const yAxis = new Axis(yScale);
+    yAxis.translation.x = padding.left;
+    yAxis.translation.y = padding.top;
     yAxis.update();
 
     // x-axis
-    const xAxis = new Axis<string>(xScale);
+    const xAxis = new Axis(xScale);
     xAxis.rotation = -90;
-    xAxis.translationX = padding.left;
-    xAxis.translationY = padding.top + seriesHeight;
-    xAxis.parallelLabels = true;
+    xAxis.translation.x = padding.left;
+    xAxis.translation.y = padding.top + seriesHeight;
+    xAxis.label.parallel = true;
     xAxis.update();
 
     rootGroup.append([xAxis.group, yAxis.group]);
@@ -82,7 +83,7 @@ function renderAxes() {
     }).then(delay).then(() => {
         xScale.domain = ['Cat', 'Wolf', 'Sheep', 'Horse', 'Bear'];
         xScale.range = [0, 300];
-        xAxis.mirrorLabels = true;
+        xAxis.label.mirrored = true;
         xAxis.update();
 
         yScale.domain = [1, 2];

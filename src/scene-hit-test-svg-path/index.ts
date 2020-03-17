@@ -1,10 +1,12 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Path} from "ag-grid-enterprise/src/charts/scene/shape/path";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Path} from "ag-charts-community/src/scene/shape/path";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(1000, 400);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(1000, 400);
+    scene.container = document.body;
+
     const rootGroup = new Group();
     const pimpGroup = new Group();
     const innerGroup = new Group();

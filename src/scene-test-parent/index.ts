@@ -1,6 +1,6 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -9,10 +9,13 @@ function nextFrame() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene1 = new Scene(200, 200);
-    const scene2 = new Scene(200, 200);
-    scene1.parent = document.body;
-    scene2.parent = document.body;
+    const scene1 = new Scene();
+    scene1.resize(200, 200);
+    scene1.container = document.body;
+
+    const scene2 = new Scene();
+    scene2.resize(200, 200);
+    scene2.container = document.body;
 
     const rootGroup1 = new Group();
     const rootGroup2 = new Group();

@@ -1,7 +1,7 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {Arc} from "ag-charts-community/src/scene/shape/arc";
 
 function delay() {
     return new Promise(resolve => {
@@ -10,25 +10,40 @@ function delay() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(800, 800);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(800, 800);
+    scene.container = document.body;
+
     const rootGroup = new Group();
 
     const label = new Text();
-    label.font = '20px Verdana';
+    label.fontSize = 20;
+    label.fontFamily = 'Verdana';
     label.textAlign = 'center';
     label.x = 150;
     label.y = 20;
 
     // Default composite operation is 'source-over'.
 
-    const arc1 = Arc.create(150, 100, 50);
+    const arc1 = new Arc();
+    arc1.centerX = 150;
+    arc1.centerY = 100;
+    arc1.radiusX = 50;
+    arc1.radiusY = 50;
     arc1.fill = 'red';
 
-    const arc2 = Arc.create(185, 150, 50);
+    const arc2 = new Arc();
+    arc2.centerX = 185;
+    arc2.centerY = 150;
+    arc2.radiusX = 50;
+    arc2.radiusY = 50;
     arc2.fill = 'lime';
 
-    const arc3 = Arc.create(115, 150, 50);
+    const arc3 = new Arc();
+    arc3.centerX = 115;
+    arc3.centerY = 150;
+    arc3.radiusX = 50;
+    arc3.radiusY = 50;
     arc3.fill = 'blue';
 
     rootGroup.append([arc1, arc2, arc3, label]);

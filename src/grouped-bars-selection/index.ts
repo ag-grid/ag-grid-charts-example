@@ -1,15 +1,15 @@
-import {Selection} from "ag-grid-enterprise/src/charts/scene/selection";
-import {Node} from "ag-grid-enterprise/src/charts/scene/node";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import Scale from "ag-grid-enterprise/src/charts/scale/scale";
-import {Line} from "ag-grid-enterprise/src/charts/scene/shape/line";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
-import {normalizeAngle360} from "ag-grid-enterprise/src/charts/util/angle";
-import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
-import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {DropShadow, Offset} from "ag-grid-enterprise/src/charts/scene/dropShadow";
+import {Selection} from "ag-charts-community/src/scene/selection";
+import {Node} from "ag-charts-community/src/scene/node";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import Scale from "ag-charts-community/src/scale/scale";
+import {Line} from "ag-charts-community/src/scene/shape/line";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import {normalizeAngle360} from "ag-charts-community/src/util/angle";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
 
 document.addEventListener('DOMContentLoaded', () => {
     renderChart();
@@ -31,7 +31,8 @@ class NodeAxis<D> {
     tickPadding: number = 5;
     lineColor: string = 'black';
     tickColor: string = 'black';
-    labelFont: string = '14px Verdana';
+    labelFontSize: number = 14;
+    labelFontFamily: string = 'Verdana';
     labelColor: string = 'black';
     flippedLabels: boolean = false;
     mirroredLabels: boolean = false;
@@ -46,7 +47,7 @@ class NodeAxis<D> {
 
         // Render ticks and labels.
         {
-            const ticks = scale.ticks!(10);
+            const ticks = scale.ticks!(10) as any[];
             const bandwidth = (scale.bandwidth || 0) / 2;
             const tickCount = ticks.length;
             const pxShift = Math.floor(this.tickWidth) % 2 / 2;
@@ -83,7 +84,8 @@ class NodeAxis<D> {
                     label.y = r;
                     label.textAlign = sideFlag === -1 ? 'end' : 'start';
                 }
-                label.font = this.labelFont;
+                label.fontSize = this.labelFontSize;
+                label.fontFamily = this.labelFontFamily;
                 label.fill = this.labelColor;
                 label.textBaseline = 'middle';
                 nodes.push(label);
@@ -158,8 +160,8 @@ function renderChart() {
         },
     ];
 
-    const yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    const yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    const yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
 
     const padding = {
         top: 20,
@@ -172,7 +174,7 @@ function renderChart() {
     // of each bar in the group.
     const yData = data.map(datum => {
         const values: number[] = [];
-        yFields.forEach(field => values.push((datum as any)[field]));
+        yKeys.forEach(key => values.push((datum as any)[key]));
         return values;
     });
 
@@ -194,14 +196,15 @@ function renderChart() {
     const groupWidth = xGroupScale.bandwidth;
 
     const xBarScale = new BandScale<string>();
-    xBarScale.domain = yFields;
+    xBarScale.domain = yKeys;
     xBarScale.range = [0, groupWidth];
     xBarScale.padding = 0.1;
     xBarScale.round = true;
     const barWidth = xBarScale.bandwidth;
 
-    const scene = new Scene(chartWidth, chartHeight);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(chartWidth, chartHeight);
+    scene.container = document.body;
     const rootGroup = new Group();
 
     // bars
@@ -209,7 +212,9 @@ function renderChart() {
     barGroup.translationX = padding.left;
     barGroup.translationY = padding.top;
 
-    const shadow = new DropShadow('rgba(0,0,0,0.2)', new Offset(0, 0), 15);
+    const shadow = new DropShadow();
+    shadow.color = 'rgba(0,0,0,0.2)';
+    shadow.blur = 15;
 
     Selection.select(barGroup).selectAll().setData(data, (node, datum) => datum.category)
         .enter.append(Group).each((group, datum) => {
@@ -217,7 +222,7 @@ function renderChart() {
         }).selectAll().setData((parent, datum, i) => {
             return yData[i];
         }).enter.call(enter => enter.append(Rect).each((rect, datum, i) => {
-            rect.x = xBarScale.convert(yFields[i]);
+            rect.x = xBarScale.convert(yKeys[i]);
             rect.y = yScale.convert(datum);
             rect.width = barWidth;
             rect.height = seriesHeight - rect.y;
@@ -225,12 +230,13 @@ function renderChart() {
             rect.stroke = 'black';
             rect.fillShadow = shadow;
         })).call(enter => enter.append(Text).each((label, datum, i) => {
-            label.text = yFieldNames[i];
+            label.text = yNames[i];
             label.textAlign = 'center';
-            label.x = xBarScale.convert(yFields[i]) + barWidth / 2;
+            label.x = xBarScale.convert(yKeys[i]) + barWidth / 2;
             label.y = yScale.convert(datum) + 20;
             label.fill = 'black';
-            label.font = '14px Verdana';
+            label.fontSize = 14;
+            label.fontFamily = 'Verdana';
         }));
 
     // y-axis

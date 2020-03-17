@@ -1,25 +1,28 @@
 import * as _ from 'lodash';
-import {EnterNode, Selection} from "ag-grid-enterprise/src/charts/scene/selection";
-import {Node} from "ag-grid-enterprise/src/charts/scene/node";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
+import {EnterNode, Selection} from "ag-charts-community/src/scene/selection";
+import {Node} from "ag-charts-community/src/scene/node";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {Scene} from "ag-charts-community/src/scene/scene";
 
 function test_SelectionSelect() {
-    const scene = new Scene(100, 100);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(100, 100);
+    scene.container = document.body;
     const rootGroup = new Group();
     scene.root = rootGroup;
 
     const rootSelection: Selection<Group, Node | EnterNode, any, any> = Selection.select(rootGroup);
     console.assert(rootSelection.node() instanceof Group === true);
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 function test_append_setDatum_attr_each() {
-    const scene = new Scene(100, 100);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(100, 100);
+    scene.container = document.body;
+
     const rootGroup = new Group();
     scene.root = rootGroup;
 
@@ -53,12 +56,14 @@ function test_append_setDatum_attr_each() {
     console.assert(rootGroup.countChildren() === 2);
     console.assert((rootGroup.children[1] as Rect).fill === 'magenta');
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 function test_selectAll_setData_enter() {
-    const scene = new Scene(300, 150);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(300, 150);
+    scene.container = document.body;
+
     const rootGroup = new Group();
     scene.root = rootGroup;
 
@@ -86,12 +91,14 @@ function test_selectAll_setData_enter() {
 
     console.assert(_.isEqual(selection.data, data) === true);
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 function test_call_merge() {
-    const scene = new Scene(500, 250);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(500, 250);
+    scene.container = document.body;
+
     const rootGroup = new Group();
     scene.root = rootGroup;
 
@@ -169,7 +176,7 @@ function test_call_merge() {
         });
     }
 
-    scene.parent = undefined;
+    scene.container = undefined;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

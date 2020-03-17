@@ -1,8 +1,9 @@
-import {CartesianChart} from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import {LineSeries} from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { toReadableNumber } from "ag-grid-enterprise/src/charts/util/number";
-import { CategoryAxis } from "ag-grid-enterprise/src/charts/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { toReadableNumber } from "ag-charts-community/src/util/number";
+import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 const data1 = [
     { category: '1', value: 0.0001234 },
@@ -79,11 +80,15 @@ function createCategoryLineChart() {
     dataDiv.style.width = '200px';
     parentDiv.appendChild(dataDiv);
 
-    const chart = new CartesianChart(
-        new CategoryAxis(),
-        new NumberAxis()
-    );
-    chart.parent = parentDiv;
+    const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
+    chart.container = parentDiv;
     chart.width = 800;
     chart.height = 500;
 
@@ -91,21 +96,21 @@ function createCategoryLineChart() {
     chart.addSeries(lineSeries);
     lineSeries.tooltipEnabled = true;
     lineSeries.tooltipRenderer = params => {
-        if (params.datum[params.xField] === 'Rick') {
+        if (params.datum[params.xKey] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }
-        return '<strong>Value: </strong>' + params.datum[params.yField].toString();
+        return '<strong>Value: </strong>' + params.datum[params.yKey].toString();
     };
     lineSeries.data = data1;
-    lineSeries.xField = 'category';
-    lineSeries.yField = 'value';
+    lineSeries.xKey = 'category';
+    lineSeries.yKey = 'value';
 
     dataDiv.innerHTML = dataToHtml(data1);
 
     document.body.appendChild(document.createElement('br'));
 
     createButton('Download', () => {
-        chart.scene.download({ fileName: 'chart' });
+        chart.scene.download('chart');
     });
 
     document.body.appendChild(document.createElement('br'));
@@ -143,21 +148,21 @@ function createCategoryLineChart() {
     document.body.appendChild(document.createElement('br'));
 
     createButton('Show markers', () => {
-        lineSeries.marker = true;
+        lineSeries.marker.enabled = true;
     });
 
     createButton('Hide markers', () => {
-        lineSeries.marker = false;
+        lineSeries.marker.enabled = false;
     });
 
     document.body.appendChild(document.createElement('br'));
 
     createButton('Label formatters #1', () => {
-        chart.xAxis.labelFormatter = value => {
+        xAxis.label.formatter = (value: any) => {
             return `-${value}-`;
         };
-        chart.yAxis.labelFormatter = (value, decimalDigits) => {
-            return (decimalDigits != null ? value.toFixed(decimalDigits + 2) : value.toString()) + 'g';
+        yAxis.label.formatter = (value: any, fractionDigits?: number) => {
+            return (fractionDigits != null ? value.toFixed(fractionDigits + 2) : value.toString()) + 'g';
         };
         chart.layoutPending = true;
         // Note: we can simply call `axis.update` to update the scene graph
@@ -170,18 +175,18 @@ function createCategoryLineChart() {
     });
 
     createButton('Label formatters #2', () => {
-        chart.xAxis.labelFormatter = value => {
+        xAxis.label.formatter = (value: any) => {
             return `[${value}]`;
         };
-        chart.yAxis.labelFormatter = (value, decimalDigits) => {
-            return '$' + toReadableNumber(value, decimalDigits);
+        yAxis.label.formatter = (value: any, fractionDigits?: number) => {
+            return '$' + toReadableNumber(value, fractionDigits);
         };
         chart.layoutPending = true;
     });
 
     createButton('No label formatters', () => {
-        chart.xAxis.labelFormatter = undefined;
-        chart.yAxis.labelFormatter = undefined;
+        xAxis.label.formatter = undefined;
+        yAxis.label.formatter = undefined;
         chart.layoutPending = true;
     });
 }

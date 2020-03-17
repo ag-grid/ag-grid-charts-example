@@ -1,11 +1,14 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arcPath2D";
-import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Arc} from "ag-charts-community/src/scene/shape/arcPath2D";
+import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
+import { ArcType } from "ag-charts-community/src/scene/shape/arc";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const scene = new Scene(800, 400);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(800, 400);
+    scene.container = document.body;
+
     const group = new Group();
 
     const n = 1000;
@@ -23,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         arc.fill = 'red';
         arc.stroke = 'black';
         arc.strokeWidth = 3;
+        arc.type = ArcType.Round;
         arcs.push(arc);
 
         deltas.push([Math.random() - 0.5, Math.random() - 0.5]);

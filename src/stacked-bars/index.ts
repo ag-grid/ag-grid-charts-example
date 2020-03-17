@@ -1,7 +1,7 @@
-import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
-import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {createHdpiCanvas} from "ag-grid-enterprise/src/charts/canvas/canvas";
-import {CanvasAxis} from "ag-grid-enterprise/src/charts/canvasAxis";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
+import {CanvasAxis} from "ag-charts-community/src/canvasAxis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -54,8 +54,8 @@ const data = [
 ];
 
 function renderChart() {
-    const yFields = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
-    const yFieldNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    const yNames = ['Q1', 'Q2', 'Q3', 'Q4'];
     const colors = gradientTheme;
 
     const padding = {
@@ -71,7 +71,7 @@ function renderChart() {
     const yData = data.map(datum => {
         const values: number[] = [];
         let sum = 0;
-        yFields.forEach(field => values.push(sum += (datum as any)[field]));
+        yKeys.forEach(key => values.push(sum += (datum as any)[key]));
         return values;
     });
     const canvasWidth = document.body.getBoundingClientRect().width;
@@ -126,7 +126,7 @@ function renderChart() {
             ctx.fillRect(x, yTop, barWidth, yBottom - yTop);
             ctx.strokeRect(x, yTop, barWidth, yBottom - yTop);
 
-            const label = yFieldNames[j] + ': ' + (data[i] as any)[yFields[j]].toString();
+            const label = yNames[j] + ': ' + (data[i] as any)[yKeys[j]].toString();
             const labelWidth = ctx.measureText(label).width;
             ctx.fillStyle = 'black';
             ctx.fillText(label, x + barWidth / 2 - labelWidth / 2, yTop + 20);

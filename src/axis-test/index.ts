@@ -1,10 +1,11 @@
-import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
-import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Axis} from "ag-grid-enterprise/src/charts/axis";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {Text} from "ag-grid-enterprise/src/charts/scene/shape/text";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Axis} from "ag-charts-community/src/axis";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {Text} from "ag-charts-community/src/scene/shape/text";
+import { Caption } from "ag-charts-community/src/caption";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -24,15 +25,26 @@ function shortDelay() {
     }).then(nextFrame);
 }
 
-function renderVerticalAxes() {
-    const scene = new Scene(900, 500);
-    scene.parent = document.body;
+function renderVerticalAxesNormalLabels() {
+    const scene = new Scene();
+    scene.resize(700, 500);
+    scene.container = document.body;
     const root = new Group();
 
     leftAxisBottomUp(root);
     leftAxisTopDown(root);
     rightAxisBottomUp(root);
     rightAxisTopDown(root);
+
+    scene.root = root;
+}
+
+function renderVerticalAxesRotatedLabels() {
+    const scene = new Scene();
+    scene.resize(700, 500);
+    scene.container = document.body;
+    const root = new Group();
+
     leftAxisRotatedLabels45(root);
     leftAxisRotatedLabelsMinus45(root);
     rightAxisRotatedLabels45(root);
@@ -42,8 +54,10 @@ function renderVerticalAxes() {
 }
 
 function renderHorizontalAxes() {
-    const scene = new Scene(900, 500);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(900, 500);
+    scene.container = document.body;
+
     const root = new Group();
 
     bottomCategoryAxis(root);
@@ -60,24 +74,35 @@ function renderHorizontalAxes() {
 }
 
 function testAutoFlippingParallelMirroredLabels() {
-    const scene = new Scene(900, 900);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(900, 900);
+    scene.container = document.body;
+
     const root = new Group();
 
     const title = new Text();
     title.text = 'Parallel labels option is used. Labels should auto flip to avoid upside-down text.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -88,12 +113,12 @@ function testAutoFlippingParallelMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = 0;
-    axis.translationX = 450;
-    axis.translationY = 450;
-    axis.parallelLabels = true;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 450;
+    axis.label.parallel = true;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
@@ -110,24 +135,35 @@ function testAutoFlippingParallelMirroredLabels() {
 }
 
 function testAutoFlippingPerpendicularMirroredLabels() {
-    const scene = new Scene(900, 900);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(900, 900);
+    scene.container = document.body;
+
     const root = new Group();
 
     const title = new Text();
     title.text = 'Regular labels. Labels should auto flip to avoid upside-down text.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -138,11 +174,13 @@ function testAutoFlippingPerpendicularMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = 0;
-    axis.translationX = 450;
-    axis.translationY = 450;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 450;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
@@ -159,24 +197,35 @@ function testAutoFlippingPerpendicularMirroredLabels() {
 }
 
 function testRotationFixedPerpendicularMirroredLabels() {
-    const scene = new Scene(900, 900);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(900, 900);
+    scene.container = document.body;
+
     const root = new Group();
 
     const title = new Text();
     title.text = 'Perpendicular labels with custom rotation that should be preserved at all times. No auto flipping.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -187,12 +236,12 @@ function testRotationFixedPerpendicularMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = 0;
-    axis.translationX = 450;
-    axis.translationY = 450;
-    axis.labelRotation = 45;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 450;
+    axis.label.rotation = 45;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
@@ -209,24 +258,35 @@ function testRotationFixedPerpendicularMirroredLabels() {
 }
 
 function testRotationFixedParallelMirroredLabels() {
-    const scene = new Scene(900, 900);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(900, 900);
+    scene.container = document.body;
+
     const root = new Group();
 
     const title = new Text();
     title.text = 'Parallel labels with custom rotation that should be preserved at all times. No auto flipping.';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = 450;
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(450, 450, 400);
+    const arc = new Arc();
+    arc.centerX = 450;
+    arc.centerY = 450;
+    arc.radiusX = 400;
+    arc.radiusY = 400;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(450, 450, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = 450;
+    centerDot.centerY = 450;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -237,13 +297,13 @@ function testRotationFixedParallelMirroredLabels() {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.4;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
-    axis.translationX = 450;
-    axis.translationY = 450;
-    axis.labelRotation = -30;
-    axis.parallelLabels = true;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 450;
+    axis.label.rotation = -30;
+    axis.label.parallel = true;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
@@ -266,24 +326,35 @@ function testRadialGrid() {
     const centerY = height / 2;
     const radius = Math.min(width, height) / 2 - 50;
 
-    const scene = new Scene(width, height);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(width, height);
+    scene.container = document.body;
+
     const root = new Group();
 
     const title = new Text();
     title.text = '';
     title.textAlign = 'center';
-    title.font = '14px sans-serif';
+    title.fontSize = 14;
+    title.fontFamily = 'sans-serif';
     title.x = centerX;
     title.y = 20;
     root.append(title);
 
-    const arc = Arc.create(centerX, centerY, radius);
+    const arc = new Arc();
+    arc.centerX = centerX;
+    arc.centerY = centerY;
+    arc.radiusX = radius;
+    arc.radiusY = radius;
     arc.fill = undefined;
     arc.stroke = 'black';
     root.append(arc);
 
-    const centerDot = Arc.create(centerX, centerY, 5);
+    const centerDot = new Arc();
+    centerDot.centerX = centerX;
+    centerDot.centerY = centerY;
+    centerDot.radiusX = 5;
+    centerDot.radiusY = 5;
     centerDot.type = ArcType.Chord;
     centerDot.fill = 'black';
     root.append(centerDot);
@@ -295,10 +366,12 @@ function testRadialGrid() {
     scale.paddingOuter = 0.3;
 
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Planets';
     axis.rotation = 0;
-    axis.translationX = centerX;
-    axis.translationY = centerY;
+    axis.translation.x = centerX;
+    axis.translation.y = centerY;
     axis.update();
 
     root.append(axis.group);
@@ -306,7 +379,7 @@ function testRadialGrid() {
     shortDelay().then(() => {
         axis.gridLength = 360;
         axis.radialGrid = true;
-        axis.tickColor = undefined;
+        axis.tick.color = undefined;
         axis.update();
     }).then(shortDelay).then(() => {
         axis.gridStyle = [{
@@ -354,7 +427,7 @@ function testRadialGrid() {
             })();
         });
     }).then(shortDelay).then(() => {
-        axis.mirrorLabels = true;
+        axis.label.mirrored = true;
         axis.update();
     }).then(shortDelay).then(() => {
         title.text = 'Grid should be invisible now.';
@@ -393,9 +466,11 @@ function leftAxisBottomUp(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
-    axis.translationX = 50;
-    axis.translationY = 50;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.translation.x = 100;
+    axis.translation.y = 50;
     axis.update();
 
     root.append(axis.group);
@@ -406,9 +481,11 @@ function leftAxisTopDown(root: Group) {
     scale.domain = [0, 700];
     scale.range = [0, 400];
 
-    const axis = new Axis<number>(scale);
-    axis.translationX = 100;
-    axis.translationY = 50;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.translation.x = 250;
+    axis.translation.y = 50;
     axis.update();
 
     root.append(axis.group);
@@ -419,10 +496,12 @@ function rightAxisBottomUp(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
-    axis.mirrorLabels = true;
-    axis.translationX = 120;
-    axis.translationY = 50;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.label.mirrored = true;
+    axis.translation.x = 400;
+    axis.translation.y = 50;
     axis.update();
 
     root.append(axis.group);
@@ -433,10 +512,12 @@ function rightAxisTopDown(root: Group) {
     scale.domain = [0, 700];
     scale.range = [0, 400];
 
-    const axis = new Axis<number>(scale);
-    axis.mirrorLabels = true;
-    axis.translationX = 170;
-    axis.translationY = 50;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.label.mirrored = true;
+    axis.translation.x = 550;
+    axis.translation.y = 50;
     axis.update();
 
     root.append(axis.group);
@@ -447,17 +528,19 @@ function leftAxisRotatedLabels45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
-    axis.translationX = 300;
-    axis.translationY = 50;
-    axis.labelRotation = 45;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.translation.x = 100;
+    axis.translation.y = 50;
+    axis.label.rotation = 45;
     axis.update();
 
     root.append(axis.group);
 
     delay().then(() => {
         (function step() {
-            axis.labelRotation++;
+            axis.label.rotation++;
             axis.update();
             requestAnimationFrame(step);
         })();
@@ -469,17 +552,19 @@ function leftAxisRotatedLabelsMinus45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
-    axis.translationX = 400;
-    axis.translationY = 50;
-    axis.labelRotation = -45;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.translation.x = 250;
+    axis.translation.y = 50;
+    axis.label.rotation = -45;
     axis.update();
 
     root.append(axis.group);
 
     delay().then(() => {
         (function step() {
-            axis.labelRotation += 1;
+            axis.label.rotation += 1;
             axis.update();
             requestAnimationFrame(step);
         })();
@@ -491,18 +576,20 @@ function rightAxisRotatedLabels45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
-    axis.translationX = 500;
-    axis.translationY = 50;
-    axis.mirrorLabels = true;
-    axis.labelRotation = 45;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.translation.x = 400;
+    axis.translation.y = 50;
+    axis.label.mirrored = true;
+    axis.label.rotation = 45;
     axis.update();
 
     root.append(axis.group);
 
     delay().then(() => {
         (function step() {
-            axis.labelRotation += 1;
+            axis.label.rotation += 1;
             axis.update();
             requestAnimationFrame(step);
         })();
@@ -514,18 +601,20 @@ function rightAxisRotatedLabelsMinus45(root: Group) {
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
-    const axis = new Axis<number>(scale);
-    axis.translationX = 600;
-    axis.translationY = 50;
-    axis.mirrorLabels = true;
-    axis.labelRotation = -45;
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
+    axis.translation.x = 550;
+    axis.translation.y = 50;
+    axis.label.mirrored = true;
+    axis.label.rotation = -45;
     axis.update();
 
     root.append(axis.group);
 
     delay().then(() => {
         (function step() {
-            axis.labelRotation += 1;
+            axis.label.rotation += 1;
             axis.update();
             requestAnimationFrame(step);
         })();
@@ -539,11 +628,13 @@ function bottomCategoryAxis(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
-    axis.translationX = 10;
-    axis.translationY = 50;
-    axis.parallelLabels = true;
+    axis.translation.x = 10;
+    axis.translation.y = 50;
+    axis.label.parallel = true;
     axis.update();
 
     root.append(axis.group);
@@ -556,12 +647,14 @@ function bottomCategoryAxisRotatedLabels45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
-    axis.translationX = 10;
-    axis.translationY = 120;
-    axis.parallelLabels = true;
-    axis.labelRotation = 45;
+    axis.translation.x = 10;
+    axis.translation.y = 120;
+    axis.label.parallel = true;
+    axis.label.rotation = 45;
     axis.update();
 
     root.append(axis.group);
@@ -574,12 +667,14 @@ function bottomCategoryAxisRotatedLabelsMinus45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
-    axis.translationX = 10;
-    axis.translationY = 190;
-    axis.parallelLabels = true;
-    axis.labelRotation = -45;
+    axis.translation.x = 10;
+    axis.translation.y = 190;
+    axis.label.parallel = true;
+    axis.label.rotation = -45;
     axis.update();
 
     root.append(axis.group);
@@ -592,12 +687,14 @@ function bottomCategoryAxisRotatedLabels90(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
+    axis.title = new Caption();
+    axis.title.text = 'Axis Title';
     axis.rotation = -90;
-    axis.translationX = 10;
-    axis.translationY = 260;
-    axis.parallelLabels = true;
-    axis.labelRotation = 90;
+    axis.translation.x = 10;
+    axis.translation.y = 260;
+    axis.label.parallel = true;
+    axis.label.rotation = 90;
     axis.update();
 
     root.append(axis.group);
@@ -610,12 +707,12 @@ function topCategoryAxis(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
-    axis.translationX = 450;
-    axis.translationY = 50;
-    axis.parallelLabels = true;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 50;
+    axis.label.parallel = true;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
@@ -628,13 +725,13 @@ function topCategoryAxisRotatedLabels45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
-    axis.translationX = 450;
-    axis.translationY = 120;
-    axis.parallelLabels = true;
-    axis.labelRotation = 45;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 120;
+    axis.label.parallel = true;
+    axis.label.rotation = 45;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
@@ -647,13 +744,13 @@ function topCategoryAxisRotatedLabelsMinus45(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
-    axis.translationX = 450;
-    axis.translationY = 190;
-    axis.parallelLabels = true;
-    axis.labelRotation = -45;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 190;
+    axis.label.parallel = true;
+    axis.label.rotation = -45;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
@@ -666,20 +763,21 @@ function topCategoryAxisRotatedLabels90(root: Group) {
     scale.paddingInner = 0.1;
     scale.paddingOuter = 0.3;
 
-    const axis = new Axis<string>(scale);
+    const axis = new Axis(scale);
     axis.rotation = -90;
-    axis.translationX = 450;
-    axis.translationY = 260;
-    axis.parallelLabels = true;
-    axis.labelRotation = -90;
-    axis.mirrorLabels = true;
+    axis.translation.x = 450;
+    axis.translation.y = 260;
+    axis.label.parallel = true;
+    axis.label.rotation = -90;
+    axis.label.mirrored = true;
     axis.update();
 
     root.append(axis.group);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderVerticalAxes();
+    renderVerticalAxesNormalLabels();
+    renderVerticalAxesRotatedLabels();
     renderHorizontalAxes();
     testAutoFlippingPerpendicularMirroredLabels();
     testAutoFlippingParallelMirroredLabels();

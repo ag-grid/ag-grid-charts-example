@@ -1,7 +1,7 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc, ArcType} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
+import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
 
 // This example uses translationX/Y properties to position arcs,
 // so that the arc paths are not recalculated on every frame.
@@ -12,8 +12,10 @@ import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
 document.addEventListener('DOMContentLoaded', () => {
     const width = 800;
     const height = 400;
-    const scene = new Scene(width, height);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(width, height);
+    scene.container = document.body;
+
     const group = new Group();
 
     const n = 1000;

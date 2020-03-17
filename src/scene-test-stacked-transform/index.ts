@@ -1,16 +1,18 @@
-import {Scene} from "ag-grid-enterprise/src/charts/scene/scene";
-import {Group} from "ag-grid-enterprise/src/charts/scene/group";
-import {Arc} from "ag-grid-enterprise/src/charts/scene/shape/arc";
-import {Rect} from "ag-grid-enterprise/src/charts/scene/shape/rect";
-import {FpsCounter} from "ag-grid-enterprise/src/charts/scene/fpsCounter";
+import {Scene} from "ag-charts-community/src/scene/scene";
+import {Group} from "ag-charts-community/src/scene/group";
+import {Arc} from "ag-charts-community/src/scene/shape/arc";
+import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
 import * as d3 from "d3";
 
 document.addEventListener('DOMContentLoaded', () => {
 
     // Canvas scene graph API
 
-    const scene = new Scene(800, 400);
-    scene.parent = document.body;
+    const scene = new Scene();
+    scene.resize(800, 400);
+    scene.container = document.body;
+
     const group = new Group();
 
     const arc = new Arc();
@@ -19,7 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     arc.radiusX = 30;
     arc.radiusY = 20;
 
-    const rect = Rect.create(100, 100, 50, 50);
+    const rect = new Rect();
+    rect.x = 100;
+    rect.y = 100;
+    rect.width = 50;
+    rect.height = 50;
 
     rect.scalingX = 2;
     rect.rotationDeg = 10;

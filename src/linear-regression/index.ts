@@ -1,52 +1,57 @@
-import { CartesianChart } from "ag-grid-enterprise/src/charts/chart/cartesianChart";
-import { NumberAxis } from "ag-grid-enterprise/src/charts/chart/axis/numberAxis";
-import { LineSeries } from "ag-grid-enterprise/src/charts/chart/series/lineSeries";
-import { Caption } from "ag-grid-enterprise/src/charts/chart/caption";
-import borneo from "ag-grid-enterprise/src/charts/chart/palettes";
-import { linearRegression } from "ag-grid-enterprise/src/charts/util/stat";
+import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
+import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { Caption } from "ag-charts-community/src/caption";
+import borneo from "ag-charts-community/src/chart/palettes";
+import { linearRegression } from "ag-charts-community/src/util/stat";
+import { data as timeData } from './data';
 
-import { createButton, createSlider } from "../../lib/ui";
+import { createButton } from "../../lib/ui";
 import * as d3 from 'd3';
+import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
+import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 
 type Datum = {
     x: number,
     y: number
 };
 
-function createNumericLineChart(data: Datum[]) {
-    const chart = new CartesianChart(
-        new NumberAxis(),
-        new NumberAxis()
-    );
+function createChart(data: Datum[]) {
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    xAxis.label.formatter = params => new Date(params.value).toDateString();
 
-    chart.xAxis.labelRotation = 45;
-    chart.xAxis.labelFormatter = value => new Date(value).toDateString();
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
 
-    chart.parent = document.body;
+    const chart = new CartesianChart();
+
+    chart.axes = [xAxis, yAxis];
+
+    chart.container = document.body;
     chart.width = 800;
     chart.height = 600;
     // chart.padding = new Padding(20, 80, 20, 20);
-    chart.title = Caption.create({
-        text: 'S&P 500 weekly data (1950 to present)'
-    });
+    chart.title = new Caption();
+    chart.title.text = 'S&P 500 weekly data (1950 to present)';
 
-    const lineSeries = new LineSeries();
-    lineSeries.title = 'Price Data';
-    lineSeries.marker = true;
-    lineSeries.strokeWidth = 0;
-    // lineSeries.showInLegend = false;
-    lineSeries.markerSize = 2;
-    lineSeries.markerStrokeWidth = 0;
-    lineSeries.data = data;
-    lineSeries.xField = 'x';
-    lineSeries.yField = 'y';
+    const scatterSeries = new ScatterSeries();
+    scatterSeries.title = 'Price Data';
+    // scatterSeries.marker = true;
+    scatterSeries.strokeWidth = 0;
+    // scatterSeries.showInLegend = false;
+    scatterSeries.marker.size = 2;
+    scatterSeries.data = data;
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
 
-    chart.addSeries(lineSeries);
+    chart.addSeries(scatterSeries);
 
     document.body.appendChild(document.createElement('br'));
 
     createButton('Save Chart Image', () => {
-        chart.scene.download({fileName: 'chart'});
+        chart.scene.download('chart');
     });
 
     createButton('Load MSFT data', () => {
@@ -56,7 +61,7 @@ function createNumericLineChart(data: Datum[]) {
                 y: +(datum['Adj Close'] || 0)
             } as Datum));
 
-            lineSeries.data = data;
+            scatterSeries.data = data;
         });
 
         chart.series = chart.series.slice(0, 1);
@@ -70,7 +75,7 @@ function createNumericLineChart(data: Datum[]) {
                 y: +(datum['Adj Close'] || 0)
             } as Datum));
 
-            lineSeries.data = data;
+            scatterSeries.data = data;
         });
 
         chart.series = chart.series.slice(0, 1);
@@ -78,7 +83,7 @@ function createNumericLineChart(data: Datum[]) {
     });
 
     createButton('Linear Regression', () => {
-        const data = lineSeries.data;
+        const data = scatterSeries.data;
         const X: number[] = [];
         const Y: number[] = [];
         data.forEach(datum => {
@@ -88,7 +93,7 @@ function createNumericLineChart(data: Datum[]) {
 
         const fit = linearRegression(X, Y);
         if (fit) {
-            const {slope, intercept} = fit;
+            const { slope, intercept } = fit;
 
             const firstX = data[0].x;
             const lastX = data[data.length - 1].x;
@@ -99,16 +104,45 @@ function createNumericLineChart(data: Datum[]) {
             slopeSeries.title = 'Linear Regression';
             slopeSeries.fill = borneo.fills[2];
             slopeSeries.stroke = borneo.strokes[2];
-            slopeSeries.marker = false;
+            slopeSeries.marker.enabled = false;
             slopeSeries.strokeWidth = 2;
             // slopeSeries.showInLegend = false;
-            slopeSeries.data = [{x: firstX, y: firstY}, {x: lastX, y: lastY}];
-            slopeSeries.xField = 'x';
-            slopeSeries.yField = 'y';
+            slopeSeries.data = [{ x: firstX, y: firstY }, { x: lastX, y: lastY }];
+            slopeSeries.xKey = 'x';
+            slopeSeries.yKey = 'y';
 
             chart.addSeries(slopeSeries);
         }
     });
+}
+
+function createTimeChart() {
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    xAxis.label.formatter = params => new Date(params.value).toDateString();
+
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
+
+    chart.title = new Caption();
+    chart.title.text = 'Number axis time chart';
+
+    chart.container = document.body;
+    chart.width = 800;
+    chart.height = 600;
+
+    const scatterSeries = new ScatterSeries();
+    scatterSeries.strokeWidth = 0;
+    scatterSeries.marker.size = 2;
+    scatterSeries.data = timeData.map(v => ({ x: v[0], y: v[1] }));
+    scatterSeries.xKey = 'x';
+    scatterSeries.yKey = 'y';
+
+    chart.addSeries(scatterSeries);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -118,6 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
             y: +(datum['Adj Close'] || 0)
         } as Datum));
 
-        createNumericLineChart(data);
+        createChart(data);
     });
+
+    createTimeChart();
 });

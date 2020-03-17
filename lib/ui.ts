@@ -1,9 +1,18 @@
-export function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
+export function createButton(text: string, action: EventListenerOrEventListenerObject, parent = document.body): HTMLButtonElement {
     const button = document.createElement('button');
     button.textContent = text;
-    document.body.appendChild(button);
+    parent.appendChild(button);
     button.addEventListener('click', action);
     return button;
+}
+
+export function createSliderValues(start: number, range: number, steps: number): number[] {
+    const step = range / steps;
+    const values: number[] = [];
+    for (let i = 0; i <= steps; i++) {
+        values.push(start + step * i);
+    }
+    return values;
 }
 
 export function createSlider<D>(text: string, values: D[], action: (value: D) => void): HTMLInputElement {
@@ -61,5 +70,76 @@ export function createSlider<D>(text: string, values: D[], action: (value: D) =>
         const index = +(e.target as HTMLInputElement).value;
         action(values[index]);
     });
+    return slider;
+}
+
+export function createSlider2(options = {} as any) {
+    var values = options.values;
+    var n = values && values.length;
+    var id = String(Date.now());
+    var sliderId = 'slider-' + id;
+
+    var wrapper = document.createElement('div');
+    wrapper.style.display = 'inline-flex';
+    wrapper.style.alignItems = 'center';
+    wrapper.style.width = (options.width || 300) + 'px';
+    wrapper.style.padding = '5px 10px';
+    wrapper.style.margin = '5px';
+    wrapper.style.border = '1px solid lightgray';
+    wrapper.style.borderRadius = '5px';
+    wrapper.style.backgroundColor = 'white';
+
+    var slider = document.createElement('input');
+    slider.type = 'range';
+    slider.setAttribute('id', sliderId);
+    slider.style.height = '1.8em';
+    slider.style.flex = '1';
+
+    function updateValue(value: any) {
+        if (options.showValue) {
+            label.innerHTML = options.text + ': ' + String(value);
+        }
+    }
+
+    var label = document.createElement('label');
+    label.setAttribute('for', sliderId);
+    label.style.font = '12px sans-serif';
+    label.style.marginRight = '5px';
+
+    if (values) {
+        values.forEach((value: any, index: any) => {
+            var option = document.createElement('option');
+            option.setAttribute('value', String(index));
+            option.setAttribute('label', String(value));
+        });
+        slider.min = '0';
+        slider.max = String(n - 1);
+        slider.step = '1';
+        slider.value = '0';
+    } else {
+        slider.min = String(options.min || 0);
+        slider.max = String(options.max || 100);
+        slider.step = String(options.step || 1);
+        slider.value = String(options.value || 0);
+    }
+    updateValue(slider.value);
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(slider);
+    document.body.appendChild(wrapper);
+
+    var action = options.action;
+    if (action) {
+        slider.addEventListener('input', function (e: any) {
+            var value = +e.target.value;
+            if (values) {
+                value = values[value];
+            }
+            action(value);
+            if (options.showValue) {
+                label.innerHTML = options.text + ': ' + String(value);
+            }
+        });
+    }
     return slider;
 }

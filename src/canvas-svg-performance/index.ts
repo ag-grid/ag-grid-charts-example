@@ -1,7 +1,7 @@
-import scaleLinear from "ag-grid-enterprise/src/charts/scale/linearScale";
-import {BandScale} from "ag-grid-enterprise/src/charts/scale/bandScale";
-import {createHdpiCanvas} from "ag-grid-enterprise/src/charts/canvas/canvas";
-import {CanvasAxis} from "ag-grid-enterprise/src/charts/canvasAxis";
+import scaleLinear from "ag-charts-community/src/scale/linearScale";
+import {BandScale} from "ag-charts-community/src/scale/bandScale";
+import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
+import {CanvasAxis} from "ag-charts-community/src/canvasAxis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -55,7 +55,7 @@ function renderChart() {
         'DPR: 1',
         'DPR: 2'
     ];
-    const stackFieldNames = [
+    const stackKeyNames = [
         ['Chrome Mac', 'Firefox Mac', 'Chrome Win', 'Firefox Win'],
         ['Chrome Mac', 'Firefox Mac', 'Chrome Win', 'Firefox Win', 'iPad Air 2']
     ];
@@ -70,12 +70,12 @@ function renderChart() {
     const n = data.length;
     const xData = data.map(d => d.category);
     const yData = data.map(datum => {
-        const groupStacks = stacks.map(stackFields => {
+        const groupStacks = stacks.map(stackKeys => {
             // For each stack returns an array of values representing the top
             // of each bar in the stack, the last value being the height of the stack.
             const values: number[] = [];
             let sum = 0;
-            stackFields.forEach(field => values.push(sum += (datum as any)[field]));
+            stackKeys.forEach(key => values.push(sum += (datum as any)[key]));
             return values;
         });
         return groupStacks;
@@ -127,12 +127,12 @@ function renderChart() {
             ctx.fillStyle = 'black';
             ctx.fillText(label, x + barWidth / 2 - labelWidth / 2, seriesHeight + 20);
 
-            let fieldIndex = 0;
+            let keyIndex = 0;
             stack.reduce((bottom, top) => {
                 const yBottom = yScale.convert(bottom);
                 const yTop = yScale.convert(top);
 
-                const color = colors[fieldIndex % colors.length];
+                const color = colors[keyIndex % colors.length];
                 if (Array.isArray(color)) {
                     const gradient = ctx.createLinearGradient(x, yTop, x + barWidth, yBottom);
                     gradient.addColorStop(0, color[0]);
@@ -145,13 +145,13 @@ function renderChart() {
                 ctx.fillRect(x, yTop, barWidth, yBottom - yTop);
                 ctx.strokeRect(x, yTop, barWidth, yBottom - yTop);
 
-                const label = stackFieldNames[stackIndex][fieldIndex] + ': ' +
-                    (data[i] as any)[stacks[stackIndex][fieldIndex]].toString();
+                const label = stackKeyNames[stackIndex][keyIndex] + ': ' +
+                    (data[i] as any)[stacks[stackIndex][keyIndex]].toString();
                 const labelWidth = ctx.measureText(label).width;
                 ctx.fillStyle = 'black';
                 ctx.fillText(label, x + barWidth / 2 - labelWidth / 2, yTop + 20);
 
-                fieldIndex++;
+                keyIndex++;
                 return top;
             }, 0);
         });
