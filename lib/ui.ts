@@ -6,6 +6,59 @@ export function createButton(text: string, action: EventListenerOrEventListenerO
     return button;
 }
 
+const wrapInLabel = (labelText: string, ele: HTMLElement) => {
+    const label: HTMLLabelElement = document.createElement('label');
+
+    label.appendChild( document.createTextNode( labelText ) );
+    label.appendChild( ele );
+
+    return label;
+}
+
+export function createDropdown<D>(
+    labelText: string,
+    values: D[] | {[label: string]: D},
+    action: (value: D) => void
+): void {
+
+    const select : HTMLSelectElement = document.createElement('select');
+
+    Object.entries(values).forEach( ([key, value]: [string, D]) => {
+        const option = document.createElement('option');
+
+        option.setAttribute('value', key);
+
+        if( values instanceof Array ) {
+            option.appendChild(document.createTextNode(String(value)));
+        } else {
+            option.appendChild(document.createTextNode(key));
+        }
+
+        select.appendChild(option);
+    });
+
+    select.addEventListener('change', (e) => {
+        const selectedKey: string | number = (e.target as HTMLInputElement).value;
+
+        let selectionOption: D;
+
+        if( values instanceof Array ) {
+            selectionOption = values[Number(selectedKey)];
+        } else {
+            selectionOption = values[selectedKey];
+        }
+
+        action( selectionOption );
+    });
+
+    document.body.appendChild(
+        wrapInLabel(
+            labelText,
+            select
+        )
+    );
+}
+
 export function createSliderValues(start: number, range: number, steps: number): number[] {
     const step = range / steps;
     const values: number[] = [];

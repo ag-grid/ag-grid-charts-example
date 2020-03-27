@@ -6,6 +6,8 @@ import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
 import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
 
+// test of JS as opposed to TS, to verify the library is accessible from plain javascript
+
 function createPieChart() {
     const chart = new PolarChart();
     chart.width = 400;
