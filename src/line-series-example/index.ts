@@ -13,6 +13,7 @@ import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton, createSlider } from "../../lib/ui";
 import { Marker } from "ag-charts-community/src/chart/marker/marker";
 import second from "ag-charts-community/src/util/time/second";
+import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
 
 type CategoryDatum = {
     category: string,
@@ -415,6 +416,14 @@ function createMultiLineChart() {
 
     const data = generateMultiValueData(10);
 
+    const areaSeries = new AreaSeries();
+    areaSeries.marker.shape = Circle;
+    areaSeries.marker.size = 15;
+    // areaSeries.marker.enabled = true;
+    areaSeries.strokeWidth = 3;
+    areaSeries.xKey = 'category';
+    areaSeries.yKeys = ['value1', 'value2', 'value3'];
+
     const lineSeries1 = new LineSeries();
     lineSeries1.marker.shape = Circle;
     lineSeries1.strokeWidth = 4;
@@ -451,6 +460,7 @@ function createMultiLineChart() {
     // chart.addSeries(lineSeries3);
 
     chart.series = [
+        // areaSeries,
         columnSeries,
         lineSeries1,
         lineSeries2,
@@ -912,5 +922,5 @@ document.addEventListener('DOMContentLoaded', () => {
     createNumericLineChart();
     createTimeLineChart();
     createRealTimeChart();
-    // createMultiLineChart();
+    createMultiLineChart();
 });
