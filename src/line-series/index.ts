@@ -914,13 +914,52 @@ function createRealTimeChart() {
     }, 1000);
 }
 
+function createAllCategoryLineChart() {
+    document.body.appendChild(document.createElement('br'));
+
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 45;
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
+    chart.container = document.body;
+    chart.width = 600;
+    chart.height = 600;
+
+    const lineSeries = new LineSeries();
+    lineSeries.marker.shape = Circle;
+    lineSeries.marker.enabled = true;
+    lineSeries.strokeWidth = 2;
+    lineSeries.showInLegend = false;
+    chart.addSeries(lineSeries);
+    lineSeries.data = [
+        {
+            x: 'Rob',
+            y: 'Paris'
+        },
+        {
+            x: 'Vitaly',
+            y: 'London'
+        },
+        {
+            x: ''
+        }
+    ];
+    lineSeries.xKey = 'x';
+    lineSeries.yKey = 'y';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // createBasicLineChartUsingFactory();
     // createGapChart();
     // createTwoVerticalAxesLineChart();
-    // createCategoryLineChart();
+    createCategoryLineChart();
+    createAllCategoryLineChart();
     createNumericLineChart();
-    createTimeLineChart();
-    createRealTimeChart();
-    createMultiLineChart();
+    // createTimeLineChart();
+    // createRealTimeChart();
+    // createMultiLineChart();
 });
