@@ -3,7 +3,7 @@ import {
     CartesianChart,
     CategoryAxis,
     ChartAxisPosition,
-    ColumnSeries,
+    BarSeries,
     LegendPosition, pastel
 } from "ag-charts-community";
 import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
@@ -88,18 +88,18 @@ function createOldestCompaniesChart() {
         stroke: undefined
     }];
 
-    const columnSeries = new ColumnSeries();
-    columnSeries.xKey = 'name';
-    columnSeries.yKeys = ['founded'];
-    columnSeries.yNames = ['Oldest companies'];
-    columnSeries.tooltipEnabled = true;
-    columnSeries.fills = [pastel.fills[1]];
-    columnSeries.strokes = [pastel.strokes[1]];
-    columnSeries.strokeWidth = 2;
-    columnSeries.fillOpacity = 0.7;
-    columnSeries.label.enabled = true;
-    columnSeries.label.formatter = params => params.value.toFixed(0);
-    columnSeries.tooltipRenderer = params => {
+    const barSeries = new BarSeries();
+    barSeries.xKey = 'name';
+    barSeries.yKeys = ['founded'];
+    barSeries.yNames = ['Oldest companies'];
+    barSeries.tooltipEnabled = true;
+    barSeries.fills = [pastel.fills[1]];
+    barSeries.strokes = [pastel.strokes[1]];
+    barSeries.strokeWidth = 2;
+    barSeries.fillOpacity = 0.7;
+    barSeries.label.enabled = true;
+    barSeries.label.formatter = params => params.value.toFixed(0);
+    barSeries.tooltipRenderer = params => {
         const titleStyle = `style="color: white; background-color: ${params.color}"`;
         const titleString = params.title ? `<div class="title" ${titleStyle}>${params.datum.name}</div>` : '';
 
@@ -107,7 +107,7 @@ function createOldestCompaniesChart() {
     };
 
     chart.axes = [leftAxis, bottomAxis];
-    chart.series = [columnSeries];
+    chart.series = [barSeries];
     chart.data = data;
 }
 

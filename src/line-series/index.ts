@@ -2,7 +2,7 @@ import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
 import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
+import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
 
 import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
@@ -448,20 +448,20 @@ function createMultiLineChart() {
     lineSeries3.xKey = 'category';
     lineSeries3.yKey = 'value3';
 
-    const columnSeries = new ColumnSeries();
-    columnSeries.fills = ['#41a9c9'];
-    columnSeries.xKey = 'category';
-    columnSeries.yKeys = ['value3'];
+    const barSeries = new BarSeries();
+    barSeries.fills = ['#41a9c9'];
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['value3'];
 
     // Both approaches are valid here:
-    // chart.addSeries(columnSeries);
+    // chart.addSeries(barSeries);
     // chart.addSeries(lineSeries1);
     // chart.addSeries(lineSeries2);
     // chart.addSeries(lineSeries3);
 
     chart.series = [
         // areaSeries,
-        columnSeries,
+        barSeries,
         lineSeries1,
         lineSeries2,
         lineSeries3
@@ -517,7 +517,7 @@ function createMultiLineChart() {
     });
 
     createButton('Remove the bar series', () => {
-        if (chart.removeSeries(columnSeries)) {
+        if (chart.removeSeries(barSeries)) {
             console.log('The bar series was removed.');
         } else {
             console.log('No series removed. The chart does not contain the given series.');
@@ -525,7 +525,7 @@ function createMultiLineChart() {
     });
 
     createButton('Add the bar series back', () => {
-        if (chart.addSeries(columnSeries)) {
+        if (chart.addSeries(barSeries)) {
             console.log('Bar series was successfully added.');
         } else {
             console.log('Could not add bar series.');
@@ -533,7 +533,7 @@ function createMultiLineChart() {
     });
 
     createButton('Insert bar series before line series', () => {
-        if (chart.addSeries(columnSeries, lineSeries1)) {
+        if (chart.addSeries(barSeries, lineSeries1)) {
             console.log('Bar series was successfully inserted.');
         } else {
             console.log('Could not insert bar series.');
