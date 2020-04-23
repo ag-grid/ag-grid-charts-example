@@ -8,7 +8,6 @@ import { Circle } from "ag-charts-community/src/chart/marker/circle";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { Square } from "ag-charts-community/src/chart/marker/square";
 import { makeChartResizeable } from "../../lib/chart";
-import { Chart } from "ag-charts-community";
 import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton, createSlider } from "../../lib/ui";
 import { Marker } from "ag-charts-community/src/chart/marker/marker";
@@ -132,71 +131,99 @@ function createCategoryLineChart() {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
 
-    xAxis.label.rotation = 45;
-    const yAxis = new NumberAxis();
+    const yAxis = new CategoryAxis();
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
     chart.axes = [xAxis, yAxis];
     chart.container = document.body;
-    chart.width = document.body.clientWidth;
-    chart.height = 600;
+    chart.width = 400;
+    chart.height = 300;
 
     const lineSeries = new LineSeries();
     lineSeries.marker.shape = Circle;
     lineSeries.marker.enabled = true;
     chart.addSeries(lineSeries);
     lineSeries.tooltipEnabled = true;
-    lineSeries.tooltipRenderer = params => {
-        if (params.datum[params.xKey] === 'Rick') {
-            return ''; // don't show tooltip for this guy
-        }
-        return `<div class="${Chart.defaultTooltipClass}-content"><strong>Value: </strong>` + String(params.datum[params.yKey]) + '</div>';
-    };
-    lineSeries.data = categoryData;
-    lineSeries.xKey = 'category';
-    lineSeries.yKey = 'value';
+    lineSeries.data = [{
+        x: 'Tea',
+        y: 'John'
+    }, {
+        x: 'Coffee',
+        y: 'Mary'
+    }, {
+        x: 'Milk',
+        y: 'Ann'
+    }];
+    lineSeries.xKey = 'x';
+    lineSeries.yKey = 'y';
 
     document.body.appendChild(document.createElement('br'));
 
-    createButton('Save Chart Image', () => {
-        chart.scene.download('chart');
-    });
-
-    createButton('Use data with gaps', () => {
-        lineSeries.data = categoryDataWithGaps;
-        lineSeries.xKey = 'category';
-        lineSeries.yKey = 'value';
-    })
-
-    createButton('Change data', () => {
-        lineSeries.data = generateCategoryData(Math.floor(Math.random() * 50));
-        lineSeries.xKey = 'category';
-        lineSeries.yKey = 'value';
-    });
-
-    createButton('No data', () => {
-        lineSeries.data = [];
-        lineSeries.xKey = 'category';
-        lineSeries.yKey = 'value';
-    });
-
-    createButton('No x-key', () => {
-        lineSeries.xKey = '';
-    });
-
-    createButton('No y-key', () => {
-        lineSeries.yKey = '';
-    });
-
-    createButton('Single data point', () => {
+    createButton('Data #2', () => {
         lineSeries.data = [{
-            category: 'One',
-            value: 17
+            x: 'Tea',
+            y: 'John'
+        }, {
+            x: 'Coffee',
+            y: 'Ann'
+        }, {
+            x: 'Milk',
+            y: 'Mary'
         }];
-        lineSeries.xKey = 'category';
-        lineSeries.yKey = 'value';
     });
+
+    createButton('Data #3', () => {
+        lineSeries.data = [{
+            x: 'UK',
+            y: 'English'
+        }, {
+            x: 'US',
+            y: 'English'
+        }, {
+            x: 'Spain',
+            y: 'Spanish'
+        }, {
+            x: 'Singapore',
+            y: 'English'
+        }];
+    });
+
+    document.body.appendChild(document.createElement('br'));
+}
+
+function createLeftCategoryLineChart() {
+    const xAxis = new NumberAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+
+    const yAxis = new CategoryAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.axes = [xAxis, yAxis];
+    chart.container = document.body;
+    chart.width = 400;
+    chart.height = 300;
+
+    const lineSeries = new LineSeries();
+    lineSeries.marker.shape = Circle;
+    lineSeries.marker.enabled = true;
+    chart.addSeries(lineSeries);
+    lineSeries.tooltipEnabled = true;
+    lineSeries.data = [{
+        x: 5,
+        y: 'John'
+    }, {
+        x: 3,
+        y: 'Mary'
+    }, {
+        x: 7,
+        y: 'Ann'
+    }];
+    lineSeries.xKey = 'x';
+    lineSeries.yKey = 'y';
+
+    document.body.appendChild(document.createElement('br'));
 }
 
 function createTwoVerticalAxesLineChart() {
@@ -957,8 +984,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // createGapChart();
     // createTwoVerticalAxesLineChart();
     createCategoryLineChart();
-    createAllCategoryLineChart();
-    createNumericLineChart();
+    createLeftCategoryLineChart();
+    // createAllCategoryLineChart();
+    // createNumericLineChart();
     // createTimeLineChart();
     // createRealTimeChart();
     // createMultiLineChart();
