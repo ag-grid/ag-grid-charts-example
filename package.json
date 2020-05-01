@@ -1,6 +1,6 @@
 {
   "name": "ag-grid-charts-example",
-  "version": "23.0.2",
+  "version": "23.1.0",
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
@@ -27,7 +27,7 @@
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
     "@types/electron": "^1.6.10",
-    "ag-charts-community": "~1.0.0",
+    "ag-charts-community": "~1.1.0",
     "d3": "^5.7.0",
     "lodash": "^4.17.11",
     "puppeteer": "2.1.1",
