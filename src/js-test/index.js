@@ -3,8 +3,10 @@ import { PieSeries } from "ag-charts-community/src/chart/series/polar/pieSeries"
 import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
 import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
+import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
 import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+
+// test of JS as opposed to TS, to verify the library is accessible from plain javascript
 
 function createPieChart() {
     const chart = new PolarChart();
@@ -31,7 +33,7 @@ function createBarChart() {
     chart.container = document.body;
     chart.axes = [xAxis, yAxis];
 
-    const series = new ColumnSeries();
+    const series = new BarSeries();
     series.data = [{ x: 'Pat', y: 1 }, { x: 'Dan', y: 2 }, { x: 'Bob', y: 3 }, { x: 'Jes', y: 4 }];
     series.xKey = 'x';
     series.yKeys = ['y'];
@@ -88,12 +90,12 @@ function createFirstChartExample() {
 
         chart.axes = [xAxis, yAxis];
 
-        const columnSeries = new ColumnSeries();
-        columnSeries.data = peopleData;
-        columnSeries.xKey = 'name';
-        columnSeries.yKeys = ['theater'];
+        const barSeries = new BarSeries();
+        barSeries.data = peopleData;
+        barSeries.xKey = 'name';
+        barSeries.yKeys = ['theater'];
 
-        chart.series = [columnSeries];
+        chart.series = [barSeries];
     }
 
     function createColumnChart2() {
@@ -110,12 +112,12 @@ function createFirstChartExample() {
 
         chart.axes = [xAxis, yAxis];
 
-        const columnSeries = new ColumnSeries();
-        columnSeries.data = peopleData;
-        columnSeries.xKey = 'name';
-        columnSeries.yKeys = ['theater', 'cinema'];
+        const barSeries = new BarSeries();
+        barSeries.data = peopleData;
+        barSeries.xKey = 'name';
+        barSeries.yKeys = ['theater', 'cinema'];
 
-        chart.series = [columnSeries];
+        chart.series = [barSeries];
     }
 
     function createColumnChart3() {
@@ -132,13 +134,13 @@ function createFirstChartExample() {
 
         chart.axes = [xAxis, yAxis];
 
-        const columnSeries = new ColumnSeries();
-        columnSeries.data = peopleData;
-        columnSeries.xKey = 'name';
-        columnSeries.yKeys = ['theater', 'cinema'];
-        columnSeries.grouped = true;
+        const barSeries = new BarSeries();
+        barSeries.data = peopleData;
+        barSeries.xKey = 'name';
+        barSeries.yKeys = ['theater', 'cinema'];
+        barSeries.grouped = true;
 
-        chart.series = [columnSeries];
+        chart.series = [barSeries];
     }
 
     createColumnChart1();

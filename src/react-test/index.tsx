@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { CartesianChart, CategoryAxis, ChartAxisPosition, ColumnSeries } from "ag-charts-community";
+import { CartesianChart, CategoryAxis, ChartAxisPosition, BarSeries } from "ag-charts-community";
 import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
 import { Legend } from "ag-charts-community/dist/cjs/chart/legend";
 import { AgChart } from "ag-charts-community/src/chart/agChart";

@@ -1,13 +1,14 @@
 {
   "name": "ag-grid-charts-example",
-  "version": "23.0.0",
+  "version": "23.1.0",
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
     "compile": "tsc --emitDeclarationOnly",
     "bundleAll": "npx parallel-webpack --config ./webpack.config.js",
     "bundleOneAndWatch": "npx webpack --config ./webpack.config.js --progress",
-    "electron": "npx webpack --config webpack.electron.config.js && electron ./dist/_/main.js"
+    "electron": "npx webpack --config webpack.electron.config.js && electron ./dist/_/main.js",
+    "serve": "npx http-server dist -c1 -o -p 8081"
   },
   "private": true,
   "repository": {
@@ -25,18 +26,21 @@
   },
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
-    "ag-charts-community": "~1.0.0",
     "@types/electron": "^1.6.10",
+    "ag-charts-community": "~1.1.0",
     "d3": "^5.7.0",
     "lodash": "^4.17.11",
+    "puppeteer": "2.1.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
+    "@types/chance": "^1.0.9",
     "@types/d3": "^5.7.0",
     "@types/lodash": "^4.14.120",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
+    "chance": "^1.1.4",
     "css-loader": "^1.0.1",
     "electron": "^6.0.2",
     "html-webpack-plugin": "^3.2.0",

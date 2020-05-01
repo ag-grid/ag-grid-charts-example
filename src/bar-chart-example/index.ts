@@ -1,4 +1,3 @@
-import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
 import borneo from "ag-charts-community/src/chart/palettes";
 
 import { createButton, createSlider } from "../../lib/ui";
@@ -9,7 +8,7 @@ import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
 import { Caption } from "ag-charts-community/src/caption";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { Circle } from "ag-charts-community/src/chart/marker/circle";
-import { ColumnSeries } from "ag-charts-community/src/chart/series/cartesian/columnSeries";
+import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
 import { makeChartResizeable } from "../../lib/chart";
 import { AgChart, Padding } from "ag-charts-community";
 
@@ -168,7 +167,7 @@ function createColumnChart() {
         }
     }
 
-    const barSeries = new ColumnSeries();
+    const barSeries = new BarSeries();
     addSeriesIf();
     barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
     barSeries.xKey = 'category';
