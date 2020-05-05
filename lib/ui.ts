@@ -68,7 +68,7 @@ export function createSliderValues(start: number, range: number, steps: number):
     return values;
 }
 
-export function createSlider<D>(text: string, values: D[], action: (value: D) => void): HTMLInputElement {
+export function createSlider<D>(text: string, values: D[], action: (value: D) => any): HTMLInputElement {
     const n = values.length;
     const id = String(Date.now());
     const sliderId = 'slider-' + id;
@@ -124,6 +124,82 @@ export function createSlider<D>(text: string, values: D[], action: (value: D) =>
         action(values[index]);
     });
     return slider;
+}
+
+export function createRangeSlider(text: string, range: [number, number], step: number, action: (range: [number, number]) => any): HTMLInputElement {
+    const id = String(Date.now());
+    const sliderId = 'slider-' + id;
+    const wrapper = document.createElement('div');
+    // wrapper.style.display = 'inline-flex';
+    wrapper.style.alignItems = 'center';
+    wrapper.style.width = '300px';
+    wrapper.style.padding = '5px';
+    wrapper.style.margin = '5px';
+    wrapper.style.float = 'left';
+    wrapper.style.border = '1px solid lightgray';
+    wrapper.style.borderRadius = '5px';
+    wrapper.style.backgroundColor = 'white';
+
+    const slider1 = document.createElement('input');
+    slider1.setAttribute('id', sliderId);
+    slider1.style.height = '1.8em';
+    slider1.style.flex = '1';
+
+    const slider2 = document.createElement('input');
+    slider1.setAttribute('id', sliderId);
+    slider1.style.height = '1.8em';
+    slider1.style.flex = '1';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', sliderId);
+    label.innerHTML = text;
+    label.style.font = '12px sans-serif';
+    label.style.marginRight = '5px';
+
+    slider1.type = 'range';
+    slider1.min = String(range[0]);
+    slider1.max = String(range[1]);
+    slider1.step = String(step);
+    slider1.value = String(range[0]);
+    slider1.style.display = 'block';
+    slider1.style.width = '300px';
+    slider1.style.height = '2em';
+    slider1.style.margin = '0';
+    slider1.style.pointerEvents = 'none';
+
+    slider2.type = 'range';
+    slider2.min = String(range[0]);
+    slider2.max = String(range[1]);
+    slider2.step = String(step);
+    slider2.value = String(range[1]);
+    slider2.style.display = 'block';
+    slider2.style.width = '300px';
+    slider2.style.height = '2em';
+    slider2.style.margin = '0';
+    slider2.style.marginTop = '-2em';
+    slider2.style.pointerEvents = 'none';
+
+    const styleElement = document.createElement('style');
+    styleElement.innerHTML = `
+    input[type="range"]::-webkit-slider-thumb {
+        pointer-events: all;
+    }`;
+    document.head.insertBefore(styleElement, document.head.querySelector('style'));
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(slider1);
+    wrapper.appendChild(slider2);
+    document.body.appendChild(wrapper);
+
+    slider1.addEventListener('input', (e) => {
+        const value = +(e.target as HTMLInputElement).value;
+        action([value, +slider2.value]);
+    });
+    slider2.addEventListener('input', (e) => {
+        const value = +(e.target as HTMLInputElement).value;
+        action([+slider1.value, value]);
+    });
+    return slider1;
 }
 
 export function createSlider2(options = {} as any) {
