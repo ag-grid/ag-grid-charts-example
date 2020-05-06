@@ -9,6 +9,7 @@ import { createSlider, createRangeSlider } from "../../lib/ui";
 import { Scene } from "ag-charts-community/src/scene/scene";
 import { Group } from "ag-charts-community/src/scene/group";
 import { LinearScale } from "ag-charts-community/src/scale/linearScale";
+import { Path } from "ag-charts-community/src/scene/shape/path";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -39,6 +40,295 @@ const data = [
     { name: "Z", value: 0.00074 },
 ];
 
+class RangeSelector extends Group {
+    static className = 'Range';
+
+    protected isContainerNode: boolean = true;
+
+    private static defaults = {
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 30,
+        min: 0,
+        max: 1
+    };
+
+    private minHandle = new RangeHandle();
+    private maxHandle = new RangeHandle();
+    private mask = (() => {
+        const { x, y, width, height, min, max } = RangeSelector.defaults;
+        const mask = new RangeMask();
+
+        mask.x = x;
+        mask.y = y;
+        mask.width = width;
+        mask.height = height;
+        mask.min = min;
+        mask.max = max;
+
+        const { minHandle, maxHandle } = this;
+        minHandle.centerX = x;
+        maxHandle.centerX = x + width;
+        minHandle.centerY = maxHandle.centerY = y + height / 2;
+
+        this.append([mask, minHandle, maxHandle]);
+
+        return mask;
+    })();
+
+    protected _x: number = RangeSelector.defaults.x;
+    set x(value: number) {
+        this.mask.x = value;
+        this.updateHandles();
+    }
+    get x(): number {
+        return this.mask.x;
+    }
+
+    protected _y: number = RangeSelector.defaults.y;
+    set y(value: number) {
+        this.mask.y = value;
+        this.updateHandles();
+    }
+    get y(): number {
+        return this.mask.y;
+    }
+
+    protected _width: number = RangeSelector.defaults.width;
+    set width(value: number) {
+        this.mask.width = value;
+        this.updateHandles();
+    }
+    get width(): number {
+        return this.mask.width;
+    }
+
+    protected _height: number = RangeSelector.defaults.height;
+    set height(value: number) {
+        this.mask.height = value;
+        this.updateHandles();
+    }
+    get height(): number {
+        return this.mask.height;
+    }
+
+    protected _min: number = RangeSelector.defaults.min;
+    set min(value: number) {
+        this.mask.min = value;
+        this.updateHandles();
+    }
+    get min(): number {
+        return this.mask.min;
+    }
+
+    protected _max: number = RangeSelector.defaults.max;
+    set max(value: number) {
+        this.mask.max = value;
+        this.updateHandles();
+    }
+    get max(): number {
+        return this.mask.max;
+    }
+
+    private updateHandles() {
+        const { minHandle, maxHandle, x, y, width, height, mask } = this;
+        minHandle.centerX = x + width * mask.min;
+        maxHandle.centerX = x + width * mask.max;
+        minHandle.centerY = maxHandle.centerY = y + height / 2;
+    }
+
+    render(ctx: CanvasRenderingContext2D) {
+        if (this.dirtyTransform) {
+            this.computeTransformMatrix();
+        }
+        this.matrix.toContext(ctx);
+
+        const { mask, minHandle, maxHandle } = this;
+        [mask, minHandle, maxHandle].forEach(child => {
+            ctx.save();
+            if (child.visible) {
+                child.render(ctx);
+            }
+            ctx.restore();
+        });
+    }
+}
+
+class RangeHandle extends Path {
+    static className = 'RangeHandle';
+
+    protected _fill = '#f2f2f2';
+    protected _stroke = '#999999';
+    protected _strokeWidth = 1;
+
+    protected _centerX: number = 0;
+    set centerX(value: number) {
+        if (this._centerX !== value) {
+            this._centerX = value;
+            this.dirtyPath = true;
+        }
+    }
+    get centerX(): number {
+        return this._centerX;
+    }
+
+    protected _centerY: number = 0;
+    set centerY(value: number) {
+        if (this._centerY !== value) {
+            this._centerY = value;
+            this.dirtyPath = true;
+        }
+    }
+    get centerY(): number {
+        return this._centerY;
+    }
+
+    protected _width: number = 8;
+    set width(value: number) {
+        if (this._width !== value) {
+            this._width = value;
+            this.dirtyPath = true;
+        }
+    }
+    get width(): number {
+        return this._width;
+    }
+
+    protected _height: number = 16;
+    set height(value: number) {
+        if (this._height !== value) {
+            this._height = value;
+            this.dirtyPath = true;
+        }
+    }
+    get height(): number {
+        return this._height;
+    }
+
+    updatePath() {
+        const { path, centerX, centerY, width, height } = this;
+
+        path.clear();
+
+        const x = centerX - width / 2;
+        const y = centerY - height / 2;
+
+        // Handle.
+        path.moveTo(x, y);
+        path.lineTo(x + width, y);
+        path.lineTo(x + width, y + height);
+        path.lineTo(x, y + height);
+        path.lineTo(x, y);
+
+        // Grip lines.
+        path.moveTo(centerX - 1, centerY - 4);
+        path.lineTo(centerX - 1, centerY + 4);
+        path.moveTo(centerX + 1, centerY - 4);
+        path.lineTo(centerX + 1, centerY + 4);
+    }
+}
+
+class RangeMask extends Path {
+    static className = 'RangeMask';
+
+    protected _stroke = 'black';
+    protected _strokeWidth = 1;
+    protected _fillOpacity = 0.2;
+
+    protected _x: number = 0;
+    set x(value: number) {
+        if (this._x !== value) {
+            this._x = value;
+            this.dirtyPath = true;
+        }
+    }
+    get x(): number {
+        return this._x;
+    }
+
+    protected _y: number = 0;
+    set y(value: number) {
+        if (this._y !== value) {
+            this._y = value;
+            this.dirtyPath = true;
+        }
+    }
+    get y(): number {
+        return this._y;
+    }
+
+    protected _width: number = 200;
+    set width(value: number) {
+        if (this._width !== value) {
+            this._width = value;
+            this.dirtyPath = true;
+        }
+    }
+    get width(): number {
+        return this._width;
+    }
+
+    protected _height: number = 30;
+    set height(value: number) {
+        if (this._height !== value) {
+            this._height = value;
+            this.dirtyPath = true;
+        }
+    }
+    get height(): number {
+        return this._height;
+    }
+
+    protected _min: number = 0;
+    set min(value: number) {
+        value = Math.min(Math.max(value, 0), this.max);
+        if (this._min !== value) {
+            this._min = value;
+            this.dirtyPath = true;
+        }
+    }
+    get min(): number {
+        return this._min;
+    }
+
+    protected _max: number = 1;
+    set max(value: number) {
+        value = Math.max(Math.min(value, 1), this.min);
+        if (this._max !== value) {
+            this._max = value;
+            this.dirtyPath = true;
+        }
+    }
+    get max(): number {
+        return this._max;
+    }
+
+    updatePath() {
+        const { path, x, y, width, height, min, max } = this;
+
+        path.clear();
+
+        // Whole range.
+        path.moveTo(x, y);
+        path.lineTo(x + width, y);
+        path.lineTo(x + width, y + height);
+        path.lineTo(x, y + height);
+        path.lineTo(x, y);
+
+        const minX = x + width * min;
+        const maxX = x + width * max;
+        // Visible range.
+        path.moveTo(minX, y);
+        path.lineTo(minX, y + height);
+        path.lineTo(maxX, y + height);
+        path.lineTo(maxX, y);
+        path.lineTo(minX, y);
+    }
+}
+
+
+
 function createColumnChart() {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
@@ -63,15 +353,49 @@ function createColumnChart() {
 
     chart.series = [barSeries];
 
+    const scene = new Scene();
+    scene.resize(800, 50);
+    scene.container = document.body;
+    const rangeMask = new RangeMask();
+    rangeMask.x = 1;
+    rangeMask.y = 200;
+    rangeMask.width = scene.width - 2;
+    rangeMask.height = scene.height - 2;
+    // scene.root = rangeMask;
+
+    const rangeHandle = new RangeHandle();
+    rangeHandle.centerX = 300;
+    rangeHandle.centerY = 225;
+
+    const rangeSelector = new RangeSelector();
+    rangeSelector.x = 77;
+    rangeSelector.y = chart.height - 30 - 1;
+    rangeSelector.width = 589;
+    rangeSelector.height = 30;
+
+    // chart.scene.root.appendChild(rangeMask);
+    // chart.scene.root.appendChild(rangeHandle);
+    chart.scene.root.appendChild(rangeSelector);
+
     const xRangeScale = new LinearScale();
     xRangeScale.domain = [0, 1];
 
     let first = true;
     let originalRange: number[];
+    let originalTranslationX: number;
     createRangeSlider('Visible Range', [0, 1], 0.01, range => {
         if (first) {
             xRangeScale.range = originalRange = xAxis.range;
+            originalTranslationX = xAxis.translation.x;
             first = false;
+        }
+        {
+            const [min, max] = range;
+            rangeMask.min = min;
+            rangeMask.max = max;
+
+            rangeSelector.min = min;
+            rangeSelector.max = max;
         }
         const scale = 1 / Math.max(Math.abs(range[1] - range[0]), 0.05);
         console.log(range, scale);
@@ -83,6 +407,7 @@ function createColumnChart() {
             originalRange[0],
             originalRange[1] * scale
         ];
+        // xAxis.translation.x = originalTranslationX + (originalRange[1] - originalRange[0]) * scale;
         console.log('Visible Range', visibleRange);
         xAxis.range = visibleRange;
         xAxis.update();
