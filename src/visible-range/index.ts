@@ -5,11 +5,12 @@ import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { Padding } from "ag-charts-community/src/util/padding";
 import { Series } from "ag-charts-community/src/chart/series/series";
 import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-import { createSlider, createRangeSlider } from "../../lib/ui";
+import { createSlider, createRangeSlider, createButton } from "../../lib/ui";
 import { Scene } from "ag-charts-community/src/scene/scene";
 import { Group } from "ag-charts-community/src/scene/group";
 import { LinearScale } from "ag-charts-community/src/scale/linearScale";
 import { Path } from "ag-charts-community/src/scene/shape/path";
+import { makeChartResizeable } from "../../lib/chart";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -338,7 +339,7 @@ function createColumnChart() {
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
-    chart.padding = new Padding(40);
+    // chart.padding = new Padding(40);
     chart.legend.spacing = 40;
     chart.axes = [xAxis, yAxis];
     chart.container = document.body;
@@ -375,7 +376,7 @@ function createColumnChart() {
 
     // chart.scene.root.appendChild(rangeMask);
     // chart.scene.root.appendChild(rangeHandle);
-    chart.scene.root.appendChild(rangeSelector);
+    // chart.scene.root.appendChild(rangeSelector);
 
     const xRangeScale = new LinearScale();
     xRangeScale.domain = [0, 1];
@@ -383,22 +384,21 @@ function createColumnChart() {
     let first = true;
     let originalRange: number[];
     let originalTranslationX: number;
-    createRangeSlider('Visible Range', [0, 1], 0.01, range => {
+
+    createRangeSlider('Visible Range', [0, 1], 0.01, (min, max) => {
         if (first) {
             xRangeScale.range = originalRange = xAxis.range;
             originalTranslationX = xAxis.translation.x;
             first = false;
         }
         {
-            const [min, max] = range;
             rangeMask.min = min;
             rangeMask.max = max;
 
-            rangeSelector.min = min;
-            rangeSelector.max = max;
+            chart.rangeSelector.min = min;
+            chart.rangeSelector.max = max;
         }
-        const scale = 1 / Math.max(Math.abs(range[1] - range[0]), 0.05);
-        console.log(range, scale);
+        const scale = 1 / Math.max(Math.abs(max - min), 0.05);
         // const visibleRange = range = [
         //     xRangeScale.convert(range[0]) * scale,
         //     xRangeScale.convert(range[1]) * scale
@@ -408,11 +408,36 @@ function createColumnChart() {
             originalRange[1] * scale
         ];
         // xAxis.translation.x = originalTranslationX + (originalRange[1] - originalRange[0]) * scale;
-        console.log('Visible Range', visibleRange);
+        // console.log('Visible Range', visibleRange);
         xAxis.range = visibleRange;
         xAxis.update();
 
         barSeries.update();
+    });
+
+    makeChartResizeable(chart);
+
+    chart.rangeSelector.onRangeChange = (min, max) => {
+        // console.log(`MIN: ${min}, MAX: ${max}`);
+        if (first) {
+            xRangeScale.range = originalRange = xAxis.range;
+            originalTranslationX = xAxis.translation.x;
+            first = false;
+        }
+        const scale = 1 / Math.max(Math.abs(max - min), 0.05);
+        const visibleRange = [
+            originalRange[0],
+            originalRange[1] * scale
+        ];
+        xAxis.range = visibleRange;
+        xAxis.update();
+
+        barSeries.update();
+    };
+
+    createButton('Toggle Range Selector Visibility', () => {
+        chart.rangeSelector.visible = !chart.rangeSelector.visible;
+        chart.performLayout();
     });
 
     return chart;
