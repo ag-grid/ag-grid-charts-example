@@ -14,7 +14,7 @@ export function makeChartResizeable(chart: Chart) {
         isDragging = true;
     });
     scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
-        if (isDragging) {
+        if (isDragging && e.shiftKey) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
             chart.width = chartSize[0] + dx;
