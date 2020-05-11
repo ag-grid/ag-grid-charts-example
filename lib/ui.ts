@@ -126,7 +126,7 @@ export function createSlider<D>(text: string, values: D[], action: (value: D) =>
     return slider;
 }
 
-export function createRangeSlider(text: string, range: [number, number], step: number, action: (range: [number, number]) => any): HTMLInputElement {
+export function createRangeSlider(text: string, range: [number, number], step: number, action: (min: number, max: number) => any): HTMLInputElement {
     const id = String(Date.now());
     const sliderId = 'slider-' + id;
     const wrapper = document.createElement('div');
@@ -193,11 +193,11 @@ export function createRangeSlider(text: string, range: [number, number], step: n
 
     slider1.addEventListener('input', (e) => {
         const value = +(e.target as HTMLInputElement).value;
-        action([value, +slider2.value]);
+        action(value, +slider2.value);
     });
     slider2.addEventListener('input', (e) => {
         const value = +(e.target as HTMLInputElement).value;
-        action([+slider1.value, value]);
+        action(+slider1.value, value);
     });
     return slider1;
 }
