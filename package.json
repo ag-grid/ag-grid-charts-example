@@ -1,6 +1,6 @@
 {
   "name": "ag-grid-charts-example",
-  "version": "23.1.0",
+  "version": "23.1.1",
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
