@@ -2,15 +2,13 @@ import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
 import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
-import { Padding } from "ag-charts-community/src/util/padding";
-import { Series } from "ag-charts-community/src/chart/series/series";
 import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-import { createSlider, createRangeSlider, createButton } from "../../lib/ui";
-import { Scene } from "ag-charts-community/src/scene/scene";
+import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
+import { createRangeSlider, createButton, createSlider } from "../../lib/ui";
 import { Group } from "ag-charts-community/src/scene/group";
-import { LinearScale } from "ag-charts-community/src/scale/linearScale";
 import { Path } from "ag-charts-community/src/scene/shape/path";
 import { makeChartResizeable } from "../../lib/chart";
+import { GroupedCategoryAxis } from "ag-charts-community/src/chart/axis/groupedCategoryAxis";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -40,6 +38,82 @@ const data = [
     { name: "Q", value: 0.00095 },
     { name: "Z", value: 0.00074 },
 ];
+
+const groupedCategoryData = [
+    {
+        category: {
+            labels: [
+                "Poppy Grady",
+                "Argentina"
+            ]
+        },
+        jan: 86135,
+        feb: 178,
+        mar: 55905
+    },
+    {
+        category: {
+            labels: [
+                "Layla Smith",
+                "Argentina"
+            ]
+        },
+        jan: 23219,
+        feb: 11523,
+        mar: 54291
+    },
+    {
+        category: {
+            labels: [
+                "Isabella Kingston",
+                "Belgium"
+            ]
+        },
+        jan: 66433,
+        feb: 3655,
+        mar: 52061
+    },
+    {
+        category: {
+            labels: [
+                "Mia Unalkat",
+                "Brazil"
+            ]
+        },
+        jan: 57544,
+        feb: 39051,
+        mar: 78481
+    },
+    {
+        category: {
+            labels: [
+                "Gil Lopes",
+                "Colombia"
+            ]
+        },
+        jan: 20479,
+        feb: 2253,
+        mar: 39309
+    },
+    {
+        category: {
+            labels: [
+                "Isabelle Donovan",
+                "Colombia"
+            ]
+        },
+        jan: 73957,
+        feb: 25775,
+        mar: 56291
+    }
+].map(d => {
+    d.category.toString = function () {
+        return this.labels.slice().reverse().join(' - ');
+    };
+    return d;
+});
+
+groupedCategoryData.forEach(d => console.log((d as any).category.toString()));
 
 class RangeSelector extends Group {
     static className = 'Range';
@@ -350,141 +424,80 @@ function createColumnChart() {
     const barSeries = new BarSeries();
     barSeries.xKey = 'name';
     barSeries.yKeys = ['value'];
+    barSeries.fills = ['#f7bc09'];
     barSeries.data = data;
 
-    chart.series = [barSeries];
+    const lineSeries = new LineSeries();
+    lineSeries.xKey = 'name';
+    lineSeries.yKey = 'value';
+    lineSeries.marker.fill = '#88be48';
+    lineSeries.marker.stroke = 'black';
+    lineSeries.stroke = '#88be48';
+    lineSeries.data = data.map(d => ({ ...d, value: d.value -= 0.05 }));
 
-    const scene = new Scene();
-    scene.resize(800, 50);
-    scene.container = document.body;
-    const rangeMask = new RangeMask();
-    rangeMask.x = 1;
-    rangeMask.y = 200;
-    rangeMask.width = scene.width - 2;
-    rangeMask.height = scene.height - 2;
-    // scene.root = rangeMask;
+    chart.series = [barSeries, lineSeries];
 
-    const rangeHandle = new RangeHandle();
-    rangeHandle.centerX = 300;
-    rangeHandle.centerY = 225;
-
-    const rangeSelector = new RangeSelector();
-    rangeSelector.x = 77;
-    rangeSelector.y = chart.height - 30 - 1;
-    rangeSelector.width = 589;
-    rangeSelector.height = 30;
-
-    // chart.scene.root.appendChild(rangeMask);
-    // chart.scene.root.appendChild(rangeHandle);
-    // chart.scene.root.appendChild(rangeSelector);
-
-    const xRangeScale = new LinearScale();
-    xRangeScale.domain = [0, 1];
-
-    let first = true;
-    let originalRange: number[];
-    let originalTranslationX: number;
+    document.body.appendChild(document.createElement('br'));
 
     createRangeSlider('Visible Range', [0, 1], 0.01, (min, max) => {
-        if (first) {
-            xRangeScale.range = originalRange = xAxis.range;
-            originalTranslationX = xAxis.translation.x;
-            first = false;
-        }
-        {
-            rangeMask.min = min;
-            rangeMask.max = max;
-
-            chart.rangeSelector.min = min;
-            chart.rangeSelector.max = max;
-        }
-        const scale = 1 / Math.max(Math.abs(max - min), 0.05);
-        // const visibleRange = range = [
-        //     xRangeScale.convert(range[0]) * scale,
-        //     xRangeScale.convert(range[1]) * scale
-        // ];
-        const visibleRange = [
-            originalRange[0],
-            originalRange[1] * scale
-        ];
-        // xAxis.translation.x = originalTranslationX + (originalRange[1] - originalRange[0]) * scale;
-        // console.log('Visible Range', visibleRange);
-        xAxis.range = visibleRange;
-        xAxis.update();
-
-        barSeries.update();
+        chart.rangeSelector.min = min;
+        chart.rangeSelector.max = max;
     });
 
     makeChartResizeable(chart);
 
-    chart.rangeSelector.onRangeChange = (min, max) => {
-        // console.log(`MIN: ${min}, MAX: ${max}`);
-        if (first) {
-            xRangeScale.range = originalRange = xAxis.range;
-            originalTranslationX = xAxis.translation.x;
-            first = false;
-        }
-        const scale = 1 / Math.max(Math.abs(max - min), 0.05);
-        const visibleRange = [
-            originalRange[0],
-            originalRange[1] * scale
-        ];
-        xAxis.range = visibleRange;
-        xAxis.update();
-
-        barSeries.update();
-    };
+    // chart.scene.canvas.setPixelRatio(1);
+    // chart.scene.canvas.pixelated = true;
 
     createButton('Toggle Range Selector Visibility', () => {
         chart.rangeSelector.visible = !chart.rangeSelector.visible;
         chart.performLayout();
     });
 
+    createSlider('Pixel Ratio', [0.1, 0.25, 0.5, 1, 2, 4], value => {
+        chart.scene.canvas.setPixelRatio(value);
+    });
+
+    createButton('Pixelated: ON', () => {
+        chart.scene.canvas.pixelated = true;
+    });
+
+    createButton('Pixelated: OFF', () => {
+        chart.scene.canvas.pixelated = false;
+    });
+
     return chart;
 }
 
-class Navigator {
-    readonly group: Group = new Group();
-}
+function createGroupedColumnChart() {
+    const xAxis = new GroupedCategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    xAxis.label.rotation = 0;
 
-function canvasEx() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 200;
-    const ctx = canvas.getContext('2d');
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
 
-    document.body.appendChild(canvas);
+    const chart = new CartesianChart();
+    chart.legend.spacing = 40;
+    chart.axes = [xAxis, yAxis];
+    chart.container = document.body;
+    chart.width = 800;
+    chart.height = 500;
+    chart.scene.canvas.element.style.border = '1px solid black';
 
-    ctx.fillStyle = 'red';
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(800, 0);
-    ctx.lineTo(800, 200);
-    ctx.lineTo(0, 200);
-    ctx.fill();
+    const barSeries = new BarSeries();
+    barSeries.xKey = 'category';
+    barSeries.yKeys = ['jan', 'feb', 'mar'];
+    barSeries.data = groupedCategoryData;
 
-    ctx.globalCompositeOperation = 'source-out';
-    ctx.beginPath();
-    ctx.moveTo(400, 0);
-    ctx.lineTo(600, 0);
-    ctx.lineTo(600, 200);
-    ctx.lineTo(400, 200);
-    ctx.closePath();
-    // ctx.fill();
-    // ctx.fillRect(400, 0, 200, 200);
-    ctx.clip();
+    chart.series = [barSeries];
 
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    // ctx.fillRect(0, 0, 800, 200);
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(800, 0);
-    ctx.lineTo(800, 200);
-    ctx.lineTo(0, 200);
-    // ctx.closePath();
-    ctx.fill();
+    makeChartResizeable(chart);
+
+    return chart;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
+    createGroupedColumnChart();
 });
