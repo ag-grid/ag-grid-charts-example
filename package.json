@@ -30,7 +30,6 @@
     "ag-charts-community": "~1.1.0",
     "d3": "^5.7.0",
     "lodash": "^4.17.11",
-    "puppeteer": "2.1.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
@@ -45,6 +44,7 @@
     "electron": "^6.0.2",
     "html-webpack-plugin": "^3.2.0",
     "parallel-webpack": "^2.4.0",
+    "puppeteer": "^3.1.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^6.2.1",
