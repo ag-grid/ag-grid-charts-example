@@ -9,6 +9,7 @@ import { Group } from "ag-charts-community/src/scene/group";
 import { Path } from "ag-charts-community/src/scene/shape/path";
 import { makeChartResizeable } from "../../lib/chart";
 import { GroupedCategoryAxis } from "ag-charts-community/src/chart/axis/groupedCategoryAxis";
+import { AgChart } from "ag-charts-community";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -112,8 +113,6 @@ const groupedCategoryData = [
     };
     return d;
 });
-
-groupedCategoryData.forEach(d => console.log((d as any).category.toString()));
 
 class RangeSelector extends Group {
     static className = 'Range';
@@ -433,15 +432,15 @@ function createColumnChart() {
     lineSeries.marker.fill = '#88be48';
     lineSeries.marker.stroke = 'black';
     lineSeries.stroke = '#88be48';
-    lineSeries.data = data.map(d => ({ ...d, value: d.value -= 0.05 }));
+    lineSeries.data = data; //.map(d => ({ ...d, value: d.value -= 0.05 }));
 
     chart.series = [barSeries, lineSeries];
 
     document.body.appendChild(document.createElement('br'));
 
     createRangeSlider('Visible Range', [0, 1], 0.01, (min, max) => {
-        chart.rangeSelector.min = min;
-        chart.rangeSelector.max = max;
+        chart.navigator.min = min;
+        chart.navigator.max = max;
     });
 
     makeChartResizeable(chart);
@@ -450,7 +449,7 @@ function createColumnChart() {
     // chart.scene.canvas.pixelated = true;
 
     createButton('Toggle Range Selector Visibility', () => {
-        chart.rangeSelector.visible = !chart.rangeSelector.visible;
+        chart.navigator.enabled = !chart.navigator.enabled;
         chart.performLayout();
     });
 
@@ -497,7 +496,38 @@ function createGroupedColumnChart() {
     return chart;
 }
 
+function createZoomedColumnChartUsingFactory() {
+    const chart = AgChart.create({
+        container: document.body,
+        data,
+        width: 500,
+        series: [{
+            type: 'column',
+            xKey: 'name',
+            yKeys: ['value']
+        }],
+        axes: [{
+            type: 'number',
+            position: 'left',
+            // visibleRange: [0, 0.5]
+        }, {
+            type: 'category',
+            position: 'bottom',
+            // visibleRange: [0, 0.5]
+        }],
+        navigator: {
+            enabled: true,
+            height: 60
+        }
+    });
+
+    makeChartResizeable(chart);
+
+    return chart;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
     createGroupedColumnChart();
+    createZoomedColumnChartUsingFactory();
 });
