@@ -9,7 +9,7 @@ import { Group } from "ag-charts-community/src/scene/group";
 import { Path } from "ag-charts-community/src/scene/shape/path";
 import { makeChartResizeable } from "../../lib/chart";
 import { GroupedCategoryAxis } from "ag-charts-community/src/chart/axis/groupedCategoryAxis";
-import { AgChart } from "ag-charts-community";
+import { AgChart } from "ag-charts-community/src/chart/agChart";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -517,7 +517,25 @@ function createZoomedColumnChartUsingFactory() {
         }],
         navigator: {
             enabled: true,
-            height: 60
+            height: 60,
+            mask: {
+                fill: 'red',
+                strokeWidth: 2
+            },
+            minHandle: {
+                width: 16,
+                height: 30,
+                stroke: 'blue',
+                fill: 'yellow',
+                gripLineGap: 4,
+                gripLineLength: 12,
+                strokeWidth: 2
+            },
+            maxHandle: {
+                width: 16,
+                stroke: 'red',
+                fill: 'cyan'
+            }
         }
     });
 
