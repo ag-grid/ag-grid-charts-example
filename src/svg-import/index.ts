@@ -3,8 +3,8 @@ import { Scene } from "ag-charts-community/src/scene/scene";
 import { Path } from "ag-charts-community/src/scene/shape/path";
 import { Group } from "ag-charts-community/src/scene/group";
 import { Node } from "ag-charts-community/src/scene/node";
-import { createButton } from "../../lib/ui";
 import { Shape } from "ag-charts-community/src/scene/shape/shape";
+import { createButton } from "../../lib/ui";
 
 function importSvg(scene: Scene, svg: string) {
     const parser = new DOMParser();
@@ -77,15 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     importSvg(scene, tiger);
 
-    function slide(node: Node, dx: number, dy: number) {
+    function animate(node: Node, dx: number, dy: number) {
         if (!(node instanceof Group)) {
-            node.translationX += dx;
-            node.translationY += dy;
+            node.translationX = dx;
+            node.translationY = dy;
         }
         node.children.forEach((child, index) => {
-            const deltaX = -0.5 * Math.random();
-            const deltaY = -0.5 * Math.random();
-            slide(child, deltaX, deltaY);
+            const deltaX = -2 * Math.random() * 4;
+            const deltaY = -2 * Math.random() * 4;
+            animate(child, deltaX, deltaY);
         });
     }
 
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function animate1() {
-        slide(root, 0, 0);
+        animate(root, 0, 0);
         requestAnimationFrame(animate1);
     }
     function animate2() {
@@ -116,10 +116,46 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Save', () => {
         scene.download();
     });
-    createButton('Slide', () => {
+    createButton('Animate', () => {
         requestAnimationFrame(animate1);
     });
     createButton('Colorize', () => {
         requestAnimationFrame(animate2);
     });
+
+    scene.canvas.element.style.border = '1px solid black';
+    scene.debug.renderFrameIndex = true;
+    scene.debug.renderBoundingBoxes = true;
+
+    {
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+        let sceneSize: [number, number];
+
+        scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
+            startX = e.offsetX;
+            startY = e.offsetY;
+            sceneSize = [scene.width, scene.height];
+            isDragging = true;
+        });
+        scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
+            if (isDragging && e.shiftKey) {
+                const dx = e.offsetX - startX;
+                const dy = e.offsetY - startY;
+
+                const { root } = scene;
+                const scale = Math.min(scene.width / 600, scene.height / 600);
+                root.scalingX = scale;
+                root.scalingY = scale;
+                root.translationX = 200 * scale;
+                root.translationY = 200 * scale;
+
+                scene.resize(sceneSize[0] + dx, sceneSize[1] + dy);
+            }
+        });
+        scene.canvas.element.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+    }
 });

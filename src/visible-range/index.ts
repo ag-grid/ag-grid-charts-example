@@ -200,6 +200,8 @@ function createGroupedColumnChart() {
 
     chart.series = [barSeries];
 
+    chart.navigator.enabled = true;
+
     makeChartResizeable(chart);
 
     return chart;
