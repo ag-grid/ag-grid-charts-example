@@ -4,6 +4,7 @@ import { Path } from "ag-charts-community/src/scene/shape/path";
 import { Group } from "ag-charts-community/src/scene/group";
 import { Node } from "ag-charts-community/src/scene/node";
 import { Shape } from "ag-charts-community/src/scene/shape/shape";
+import { Text } from "ag-charts-community/src/scene/shape/text";
 import { createButton } from "../../lib/ui";
 
 function importSvg(scene: Scene, svg: string) {
@@ -89,6 +90,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const maxWords = 15;
+    const words: Text[] = [];
+    function shout() {
+        for (let i = words.length - 1; i >= 0; i--) {
+            const word = words[i];
+            word.fontSize += 1;
+            word.fillOpacity = Math.min(0.5, word.fillOpacity + 0.01);
+            word.y -= 0.2;
+            word.x += -2 + Math.random() * 4;
+            if (word.fontSize >= 60) {
+                scene.root.removeChild(word);
+                words.splice(i, 1);
+            }
+        }
+        if (words.length < maxWords) {
+            const word = new Text();
+            word.text = 'A';
+            word.fontSize = Math.floor(Math.random() * 10);
+            word.fill = 'black';
+            word.stroke = 'white';
+            word.strokeWidth = 1;
+            word.fillOpacity = 0.05;
+            word.x = -50 + Math.random() * 100;
+            word.y = 190 + Math.random() * 100;
+            words.push(word);
+            scene.root.appendChild(word);
+        }
+    }
+
     let i = 0;
     const colors1 = ['#619fd5', '#65bbb8', '#b5c43d', '#f4d146', '#eaa93a', '#eaa93a', '#e16e2a', '#c7493a', '#db6e7a', '#9a5fd5'];
     const colors2 = ['#e6380d', '#ec8921', '#feff43', '#7bfe40', '#4d9cc5', '#1500f8', '#7600cd'];
@@ -105,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animate1() {
         animate(root, 0, 0);
+        shout();
         requestAnimationFrame(animate1);
     }
     function animate2() {
