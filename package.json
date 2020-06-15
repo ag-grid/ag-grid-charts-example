@@ -4,6 +4,7 @@
   "description": "ag-Grid Charts Examples",
   "main": "src/index.ts",
   "scripts": {
+    "setup": "node setup.mjs",
     "compile": "tsc --emitDeclarationOnly",
     "bundleAll": "npx parallel-webpack --config ./webpack.config.js",
     "bundleOneAndWatch": "npx webpack --config ./webpack.config.js --progress",
@@ -27,7 +28,6 @@
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
     "@types/electron": "^1.6.10",
-    "ag-charts-community": "~1.2.0",
     "d3": "^5.7.0",
     "lodash": "^4.17.11",
     "react": "^16.12.0",

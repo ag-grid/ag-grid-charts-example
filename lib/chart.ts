@@ -1,4 +1,4 @@
-import { Chart } from "ag-charts-community/src/chart/chart";
+import { Chart } from "../charts/chart/chart";
 
 export function makeChartResizeable(chart: Chart) {
     let startX = 0;
