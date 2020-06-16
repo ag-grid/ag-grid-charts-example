@@ -1,13 +1,11 @@
-import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
 import { ChartAxisPosition } from "../../charts/chart/chartAxis";
 import { NumberAxis } from "../../charts/chart/axis/numberAxis";
 import { CartesianChart } from "../../charts/chart/cartesianChart";
 import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
-import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
-import { createRangeSlider, createButton, createSlider } from "../../lib/ui";
 import { makeChartResizeable } from "../../lib/chart";
 import { GroupedCategoryAxis } from "../../charts/chart/axis/groupedCategoryAxis";
 import { AgChart } from "../../charts/chart/agChart";
+import { createButton } from "../../lib/ui";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -113,66 +111,82 @@ const groupedCategoryData = [
 });
 
 function createColumnChart() {
-    const xAxis = new CategoryAxis();
-    xAxis.position = ChartAxisPosition.Bottom;
-    xAxis.label.rotation = 0;
+    const options: any = {
+        autoSize: false,
+        tooltipTracking: false,
+        data,
+        title: {
+            text: 'Theme Test'
+        },
+        subtitle: {
+            text: 'testing, testing...'
+        },
+        axes: [{
+            type: 'category',
+            position: 'bottom',
+        }, {
+            type: 'number',
+            position: 'left'
+        }],
+        series: [{
+            type: 'column',
+            xKey: 'name',
+            yKeys: ['value']
+        }, {
+            type: 'line',
+            xKey: 'name',
+            yKey: 'value'
+        }]
+    };
+    const chart = AgChart.create(options, document.body);
 
-    const yAxis = new NumberAxis();
-    yAxis.position = ChartAxisPosition.Left;
-
-    const chart = new CartesianChart();
-    // chart.padding = new Padding(40);
-    chart.legend.spacing = 40;
-    chart.axes = [xAxis, yAxis];
-    chart.container = document.body;
-    chart.width = 800;
-    chart.height = 500;
     chart.scene.canvas.element.style.border = '1px solid black';
-
-    const barSeries = new BarSeries();
-    barSeries.xKey = 'name';
-    barSeries.yKeys = ['value'];
-    barSeries.fills = ['#f7bc09'];
-    barSeries.data = data;
-
-    const lineSeries = new LineSeries();
-    lineSeries.xKey = 'name';
-    lineSeries.yKey = 'value';
-    lineSeries.marker.fill = '#88be48';
-    lineSeries.marker.stroke = 'black';
-    lineSeries.stroke = '#88be48';
-    lineSeries.data = data; //.map(d => ({ ...d, value: d.value -= 0.05 }));
-
-    chart.series = [barSeries, lineSeries];
-
-    document.body.appendChild(document.createElement('br'));
-
-    createRangeSlider('Visible Range', [0, 1], 0.01, (min, max) => {
-        chart.navigator.min = min;
-        chart.navigator.max = max;
-    });
 
     makeChartResizeable(chart);
 
-    // chart.scene.canvas.setPixelRatio(1);
-    // chart.scene.canvas.pixelated = true;
+    document.body.appendChild(document.createElement('br'));
+    // createButton('Switch Theme', () => {
+    //     delete options.theme;
+    //     AgChart.update(chart, options);
+    // });
 
-    createButton('Toggle Range Selector Visibility', () => {
-        chart.navigator.enabled = !chart.navigator.enabled;
-        chart.performLayout();
-    });
+    return chart;
+}
 
-    createSlider('Pixel Ratio', [0.1, 0.25, 0.5, 1, 2, 4], value => {
-        chart.scene.canvas.setPixelRatio(value);
-    });
+function createPastelColumnChart() {
+    const options: any = {
+        theme: 'pastel',
+        autoSize: false,
+        tooltipTracking: false,
+        data,
+        title: {
+            text: 'Theme Test'
+        },
+        subtitle: {
+            text: 'testing, testing...'
+        },
+        axes: [{
+            type: 'category',
+            position: 'bottom',
+        }, {
+            type: 'number',
+            position: 'left'
+        }],
+        series: [{
+            type: 'column',
+            xKey: 'name',
+            yKeys: ['value']
+        }, {
+            type: 'line',
+            xKey: 'name',
+            yKey: 'value'
+        }]
+    };
+    const chart = AgChart.create(options, document.body);
 
-    createButton('Pixelated: ON', () => {
-        chart.scene.canvas.pixelated = true;
-    });
+    chart.scene.canvas.element.style.border = '1px solid black';
 
-    createButton('Pixelated: OFF', () => {
-        chart.scene.canvas.pixelated = false;
-    });
+    makeChartResizeable(chart);
 
     return chart;
 }
@@ -257,6 +271,7 @@ function createZoomedColumnChartUsingFactory() {
 
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
-    createGroupedColumnChart();
-    createZoomedColumnChartUsingFactory();
+    createPastelColumnChart();
+    // createGroupedColumnChart();
+    // createZoomedColumnChartUsingFactory();
 });
