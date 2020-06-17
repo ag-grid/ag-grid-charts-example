@@ -145,10 +145,10 @@ function createColumnChart() {
     makeChartResizeable(chart);
 
     document.body.appendChild(document.createElement('br'));
-    // createButton('Switch Theme', () => {
-    //     delete options.theme;
-    //     AgChart.update(chart, options);
-    // });
+    createButton('Switch Theme', () => {
+        delete options.theme;
+        AgChart.update(chart, options, document.body, data.slice(0, 5));
+    });
 
     return chart;
 }
