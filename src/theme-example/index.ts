@@ -115,12 +115,8 @@ function createColumnChart() {
         autoSize: false,
         tooltipTracking: false,
         data,
-        title: {
-            text: 'Theme Test'
-        },
-        subtitle: {
-            text: 'testing, testing...'
-        },
+        title: {},
+        subtitle: {},
         axes: [{
             type: 'category',
             position: 'bottom',
@@ -145,17 +141,17 @@ function createColumnChart() {
     makeChartResizeable(chart);
 
     document.body.appendChild(document.createElement('br'));
-    createButton('Switch Theme', () => {
-        delete options.theme;
-        AgChart.update(chart, options, document.body, data.slice(0, 5));
+    createButton('Toggle Theme', () => {
+        options.theme = !options.theme ? 'dark-egypt' : undefined;
+        AgChart.update(chart, options, document.body);
     });
 
     return chart;
 }
 
-function createPastelColumnChart() {
+function createEgyptColumnChart() {
     const options: any = {
-        theme: 'pastel',
+        theme: 'dark-egypt',
         autoSize: false,
         tooltipTracking: false,
         data,
@@ -271,7 +267,7 @@ function createZoomedColumnChartUsingFactory() {
 
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
-    createPastelColumnChart();
+    // createEgyptColumnChart();
     // createGroupedColumnChart();
     // createZoomedColumnChartUsingFactory();
 });
