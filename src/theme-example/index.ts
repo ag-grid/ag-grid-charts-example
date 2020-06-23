@@ -36,6 +36,15 @@ const data = [
     { name: "Z", value: 0.00074 },
 ];
 
+const polarChartData = [
+    { label: 'Android', value: 56.9, other: 7 },
+    { label: 'iOS', value: 22.5, other: 8 },
+    { label: 'BlackBerry', value: 6.8, other: 9 },
+    { label: 'Symbian', value: 8.5, other: 10 },
+    { label: 'Bada', value: 2.6, other: 11 },
+    { label: 'Windows', value: 1.9, other: 12 }
+];
+
 const groupedCategoryData = [
     {
         category: {
@@ -111,6 +120,9 @@ const groupedCategoryData = [
 });
 
 function createColumnChart() {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
     const options: any = {
         autoSize: false,
         tooltipTracking: false,
@@ -134,7 +146,7 @@ function createColumnChart() {
             yKey: 'value'
         }]
     };
-    const chart = AgChart.create(options, document.body);
+    const chart = AgChart.create(options, div);
 
     chart.scene.canvas.element.style.border = '1px solid black';
 
@@ -142,47 +154,9 @@ function createColumnChart() {
 
     document.body.appendChild(document.createElement('br'));
     createButton('Toggle Theme', () => {
-        options.theme = !options.theme ? 'dark-egypt' : undefined;
-        AgChart.update(chart, options, document.body);
-    });
-
-    return chart;
-}
-
-function createEgyptColumnChart() {
-    const options: any = {
-        theme: 'dark-egypt',
-        autoSize: false,
-        tooltipTracking: false,
-        data,
-        title: {
-            text: 'Theme Test'
-        },
-        subtitle: {
-            text: 'testing, testing...'
-        },
-        axes: [{
-            type: 'category',
-            position: 'bottom',
-        }, {
-            type: 'number',
-            position: 'left'
-        }],
-        series: [{
-            type: 'column',
-            xKey: 'name',
-            yKeys: ['value']
-        }, {
-            type: 'line',
-            xKey: 'name',
-            yKey: 'value'
-        }]
-    };
-    const chart = AgChart.create(options, document.body);
-
-    chart.scene.canvas.element.style.border = '1px solid black';
-
-    makeChartResizeable(chart);
+        options.theme = !options.theme ? 'dark' : undefined;
+        AgChart.update(chart, options, div);
+    }, div);
 
     return chart;
 }
@@ -265,9 +239,40 @@ function createZoomedColumnChartUsingFactory() {
     return chart;
 }
 
+function createPieChart() {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const options: any = {
+        autoSize: false,
+        tooltipTracking: false,
+        data: polarChartData,
+        title: {},
+        subtitle: {},
+        series: [{
+            type: 'pie',
+            angleKey: 'value',
+            labelKey: 'label'
+        }]
+    };
+    const chart = AgChart.create(options, div);
+
+    chart.scene.canvas.element.style.border = '1px solid black';
+
+    makeChartResizeable(chart);
+
+    document.body.appendChild(document.createElement('br'));
+    createButton('Toggle Theme', () => {
+        options.theme = !options.theme ? 'dark' : undefined;
+        AgChart.update(chart, options, div);
+    }, div);
+
+    return chart;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
-    // createEgyptColumnChart();
+    createPieChart();
     // createGroupedColumnChart();
     // createZoomedColumnChartUsingFactory();
 });

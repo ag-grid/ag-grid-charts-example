@@ -82,7 +82,7 @@ function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
 
     let isDragging = false;
     let startAngle = 0;
-    canvas.addEventListener('mousedown', (e) => {
+    canvas.addEventListener('mousedown', (e: any) => {
         const x = e.offsetX;
         const y = e.offsetY;
 
@@ -93,7 +93,7 @@ function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
 
         isDragging = true;
     });
-    canvas.addEventListener('mousemove', (e) => {
+    canvas.addEventListener('mousemove', (e: any) => {
         if (isDragging) {
             const x = e.offsetX;
             const y = e.offsetY;
@@ -108,7 +108,7 @@ function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
             draw();
         }
     });
-    canvas.addEventListener('mouseup', (e) => {
+    canvas.addEventListener('mouseup', (e: any) => {
         isDragging = false;
     });
 
