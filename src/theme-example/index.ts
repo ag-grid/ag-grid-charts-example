@@ -34,7 +34,14 @@ const data = [
     { name: "X", value: 0.0015 },
     { name: "Q", value: 0.00095 },
     { name: "Z", value: 0.00074 },
-];
+].map((v: any) => {
+    v.value2 = v.value * Math.random();
+    v.value3 = v.value * Math.random();
+    v.value4 = 0.1 + Math.random() * 0.1;
+    v.value5 = 0.1 + Math.random() * 0.2;
+    v.value6 = 0.2 + Math.random() * 0.2;
+    return v;
+});
 
 const polarChartData = [
     { label: 'Android', value: 56.9, other: 7 },
@@ -139,11 +146,23 @@ function createColumnChart() {
         series: [{
             type: 'column',
             xKey: 'name',
-            yKeys: ['value']
+            yKeys: ['value', 'value2']
+        }, {
+            type: 'scatter',
+            xKey: 'name',
+            yKey: 'value3'
         }, {
             type: 'line',
             xKey: 'name',
-            yKey: 'value'
+            yKey: 'value4'
+        }, {
+            type: 'line',
+            xKey: 'name',
+            yKey: 'value5'
+        }, {
+            type: 'line',
+            xKey: 'name',
+            yKey: 'value6'
         }]
     };
     const chart = AgChart.create(options, div);
@@ -272,7 +291,7 @@ function createPieChart() {
 
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
-    createPieChart();
+    // createPieChart();
     // createGroupedColumnChart();
     // createZoomedColumnChartUsingFactory();
 });
