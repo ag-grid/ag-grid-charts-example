@@ -40,6 +40,8 @@ const data = [
     v.value4 = 0.1 + Math.random() * 0.1;
     v.value5 = 0.1 + Math.random() * 0.2;
     v.value6 = 0.2 + Math.random() * 0.2;
+    v.value7 = 0.15 + Math.random() * 0.10;
+    v.value8 = 0.10 + Math.random() * 0.10;
     return v;
 });
 
@@ -131,6 +133,8 @@ function createColumnChart() {
     document.body.appendChild(div);
 
     const options: any = {
+        width: 900,
+        height: 600,
         autoSize: false,
         tooltipTracking: false,
         data,
@@ -144,6 +148,10 @@ function createColumnChart() {
             position: 'left'
         }],
         series: [{
+            type: 'area',
+            xKey: 'name',
+            yKeys: ['value7', 'value8']
+        }, {
             type: 'column',
             xKey: 'name',
             yKeys: ['value', 'value2']
