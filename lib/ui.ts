@@ -68,7 +68,7 @@ export function createSliderValues(start: number, range: number, steps: number):
     return values;
 }
 
-export function createSlider<D>(text: string, values: D[], action: (value: D) => any): HTMLInputElement {
+export function createSlider<D>(text: string, values: D[], action: (value: D) => any, parent = document.body): HTMLInputElement {
     const n = values.length;
     const id = String(Date.now());
     const sliderId = 'slider-' + id;
@@ -76,7 +76,7 @@ export function createSlider<D>(text: string, values: D[], action: (value: D) =>
     const wrapper = document.createElement('div');
     wrapper.style.display = 'inline-flex';
     wrapper.style.alignItems = 'center';
-    wrapper.style.width = '300px';
+    wrapper.style.width = '400px';
     wrapper.style.padding = '5px';
     wrapper.style.margin = '5px';
     wrapper.style.border = '1px solid lightgray';
@@ -117,7 +117,7 @@ export function createSlider<D>(text: string, values: D[], action: (value: D) =>
     wrapper.appendChild(label);
     wrapper.appendChild(slider);
     wrapper.appendChild(datalist);
-    document.body.appendChild(wrapper);
+    parent.appendChild(wrapper);
 
     slider.addEventListener('input', (e) => {
         const index = +(e.target as HTMLInputElement).value;
@@ -135,7 +135,6 @@ export function createRangeSlider(text: string, range: [number, number], step: n
     wrapper.style.width = '300px';
     wrapper.style.padding = '5px';
     wrapper.style.margin = '5px';
-    wrapper.style.float = 'left';
     wrapper.style.border = '1px solid lightgray';
     wrapper.style.borderRadius = '5px';
     wrapper.style.backgroundColor = 'white';
