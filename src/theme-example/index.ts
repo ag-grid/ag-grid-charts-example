@@ -5,7 +5,15 @@ import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
 import { makeChartResizeable } from "../../lib/chart";
 import { GroupedCategoryAxis } from "../../charts/chart/axis/groupedCategoryAxis";
 import { AgChart } from "../../charts/chart/agChart";
-import { createButton } from "../../lib/ui";
+import { createSlider } from "../../lib/ui";
+import { MaterialDark } from "../../charts/chart/themes/materialDark";
+import { PastelDark } from "../../charts/chart/themes/pastelDark";
+import { SolarDark } from "../../../../charts-packages/ag-charts-community/src/chart/themes/solarDark";
+import { VividDark } from "../../charts/chart/themes/vividDark";
+import { MaterialLight } from "../../charts/chart/themes/materialLight";
+import { PastelLight } from "../../charts/chart/themes/pastelLight";
+import { SolarLight } from "../../charts/chart/themes/solarLight";
+import { VividLight } from "../../charts/chart/themes/vividLight";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -128,13 +136,24 @@ const groupedCategoryData = [
     return d;
 });
 
+const themes = [
+    'light',
+    new MaterialLight(),
+    new PastelLight(),
+    new SolarLight(),
+    new VividLight(),
+    'dark',
+    new MaterialDark(),
+    new PastelDark(),
+    new SolarDark(),
+    new VividDark()
+];
+
 function createColumnChart() {
     const div = document.createElement('div');
     document.body.appendChild(div);
 
     const options: any = {
-        width: 900,
-        height: 600,
         autoSize: false,
         tooltipTracking: false,
         data,
@@ -180,10 +199,11 @@ function createColumnChart() {
     makeChartResizeable(chart);
 
     document.body.appendChild(document.createElement('br'));
-    createButton('Toggle Theme', () => {
-        options.theme = !options.theme ? 'dark' : undefined;
+
+    createSlider('Theme', themes, value => {
+        options.theme = value;
         AgChart.update(chart, options, div);
-    }, div);
+    });
 
     return chart;
 }
@@ -271,13 +291,14 @@ function createPieChart() {
     document.body.appendChild(div);
 
     const options: any = {
+        type: 'pie',
         autoSize: false,
         tooltipTracking: false,
         data: polarChartData,
         title: {},
         subtitle: {},
         series: [{
-            type: 'pie',
+            // type: 'pie',
             angleKey: 'value',
             labelKey: 'label'
         }]
@@ -289,17 +310,18 @@ function createPieChart() {
     makeChartResizeable(chart);
 
     document.body.appendChild(document.createElement('br'));
-    createButton('Toggle Theme', () => {
-        options.theme = !options.theme ? 'dark' : undefined;
+
+    createSlider('Theme', themes, value => {
+        options.theme = value;
         AgChart.update(chart, options, div);
-    }, div);
+    });
 
     return chart;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
-    // createPieChart();
+    createPieChart();
     // createGroupedColumnChart();
     // createZoomedColumnChartUsingFactory();
 });
