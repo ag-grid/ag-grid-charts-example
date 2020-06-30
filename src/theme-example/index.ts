@@ -138,6 +138,33 @@ const groupedCategoryData = [
 
 const themes = [
     'light',
+    {
+        palette: {
+            fills: [
+                '#5C2983',
+                '#0076C5',
+                '#21B372',
+                '#FDDE02',
+                '#F76700',
+                '#D30018'
+            ],
+            strokes: ['black']
+        },
+        defaults: {
+            cartesian: {
+                title: {
+                    text: 'Get Your Pot Of Gold Theme'
+                },
+                series: {
+                    line: {
+                        marker: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        }
+    },
     new MaterialLight(),
     new PastelLight(),
     new SolarLight(),
