@@ -14,6 +14,7 @@ import { MaterialLight } from "../../charts/chart/themes/materialLight";
 import { PastelLight } from "../../charts/chart/themes/pastelLight";
 import { SolarLight } from "../../charts/chart/themes/solarLight";
 import { VividLight } from "../../charts/chart/themes/vividLight";
+import { AgCartesianChartOptions, AgChartTheme } from "../../charts/chart/agChartOptions";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -180,7 +181,7 @@ function createColumnChart() {
     const div = document.createElement('div');
     document.body.appendChild(div);
 
-    const options: any = {
+    const options: AgCartesianChartOptions = {
         autoSize: false,
         tooltipTracking: false,
         data,
@@ -227,7 +228,7 @@ function createColumnChart() {
 
     document.body.appendChild(document.createElement('br'));
 
-    createSlider('Theme', themes, value => {
+    createSlider('Theme', themes, (value: AgChartTheme) => {
         options.theme = value;
         AgChart.update(chart, options, div);
     });
@@ -266,7 +267,7 @@ function createGroupedColumnChart() {
 }
 
 function createZoomedColumnChartUsingFactory() {
-    const chart = AgChart.create({
+    const options: AgCartesianChartOptions = {
         container: document.body,
         data,
         width: 500,
@@ -306,7 +307,8 @@ function createZoomedColumnChartUsingFactory() {
                 fill: 'cyan'
             }
         }
-    });
+    };
+    const chart = AgChart.create(options);
 
     makeChartResizeable(chart);
 
