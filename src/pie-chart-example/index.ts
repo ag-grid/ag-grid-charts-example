@@ -1,13 +1,12 @@
-import { PieSeries } from 'ag-charts-community/src/chart/series/polar/pieSeries';
-import { Padding } from 'ag-charts-community/src/util/padding';
-import { Caption } from 'ag-charts-community/src/caption';
-
-import { FontStyle, FontWeight } from 'ag-charts-community/src/scene/shape/text';
-import { PolarChart } from 'ag-charts-community/src/chart/polarChart';
-import { DropShadow } from 'ag-charts-community/src/scene/dropShadow';
 import { makeChartResizeable } from "../../lib/chart";
 import { AgChart, LegendPosition } from "ag-charts-community";
 import { createButton, createSlider } from "../../lib/ui";
+import { PolarChart } from "../../charts/chart/polarChart";
+import { PieSeries } from "../../charts/chart/series/polar/pieSeries";
+import { Caption } from "../../charts/caption";
+import { DropShadow } from "../../charts/scene/dropShadow";
+import { Padding } from "../../charts/util/padding";
+import { FontStyle, FontWeight } from "../../charts/scene/shape/text";
 
 type Datum = {
     label: string,

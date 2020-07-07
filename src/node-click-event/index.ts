@@ -1,16 +1,14 @@
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-
-import { Circle } from "ag-charts-community/src/chart/marker/circle";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { createButton } from "../../lib/ui";
-import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
-import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
-import { Caption } from "ag-charts-community/src/caption";
 import { AgChart } from "ag-charts-community";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { AreaSeries } from "../../charts/chart/series/cartesian/areaSeries";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
+import { Circle } from "../../charts/chart/marker/circle";
+import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
+import { Caption } from "../../charts/caption";
 
 type MultiValue = {
     category: string,
@@ -277,7 +275,7 @@ function createDrilldownChart() {
     setData(productData);
 
     chart.addEventListener('seriesNodeClick', event => {
-        setData((event as any)?.datum?.data);
+        // setData((event as any)?.datum?.data);
     });
 
     chart.element.addEventListener('click', event => { // native DOM event

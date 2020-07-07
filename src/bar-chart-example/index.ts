@@ -1,16 +1,13 @@
-import borneo from "ag-charts-community/src/chart/palettes";
-
 import { createButton, createSlider } from "../../lib/ui";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
-import { Caption } from "ag-charts-community/src/caption";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
-import { Circle } from "ag-charts-community/src/chart/marker/circle";
-import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
 import { makeChartResizeable } from "../../lib/chart";
 import { AgChart, Padding } from "ag-charts-community";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { Caption } from "../../charts/caption";
+import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
+import { Circle } from "../../charts/chart/marker/circle";
 
 type Datum = {
     category: string,
@@ -173,7 +170,7 @@ function createColumnChart() {
     barSeries.xKey = 'category';
     barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
     barSeries.data = data;
-    barSeries.fills = borneo.fills;
+    barSeries.fills = ['red', 'green', 'blue'];
     barSeries.tooltipEnabled = true;
     barSeries.label.enabled = false;
     // barSeries.shadow = new DropShadow();
@@ -243,7 +240,7 @@ function createBarChart() {
     chart.width = 800;
     chart.height = 500;
     chart.scene.canvas.element.style.border = '1px solid black';
-    chart.legend.markerShape = Circle;
+    chart.legend.item.marker.shape = Circle;
 
     function addSeriesIf() {
         if (!chart.series.length) {
@@ -258,7 +255,7 @@ function createBarChart() {
     barSeries.xKey = 'category';
     barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
     barSeries.data = data;
-    barSeries.fills = borneo.fills;
+    barSeries.fills = ['red', 'green', 'blue'];
     barSeries.tooltipEnabled = true;
     barSeries.label.enabled = false;
 

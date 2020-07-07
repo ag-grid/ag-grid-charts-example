@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { CartesianChart, CategoryAxis, ChartAxisPosition, BarSeries } from "ag-charts-community";
-import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
-import { Legend } from "ag-charts-community/dist/cjs/chart/legend";
-import { AgChart } from "ag-charts-community/src/chart/agChart";
+import { CartesianChart } from "ag-charts-community";
+import { AgChart } from "../../charts/chart/agChart";
+import { AgChartOptions } from "../../charts/chart/agChartOptions";
 
 const CounterExample = () => {
     const [count, setCount] = useState(0);
@@ -103,29 +102,6 @@ class NameForm extends React.Component<NameFormProps, NameFormState> {
     }
 }
 
-interface AgLegendProps {
-    enabled?: boolean;
-    padding?: number;
-    itemPaddingX?: number;
-    itemPaddingY?: number;
-    markerSize?: number;
-    markerStrokeWidth?: number;
-    labelColor?: string;
-    labelFontFamily?: string;
-}
-
-interface AgChartOptions {
-    width?: number;
-    height?: number;
-    data?: any[];
-    series: {
-        type?: string;
-        xKey: string;
-        yKey: string;
-    }[];
-    legend?: AgLegendProps;
-}
-
 interface AgChartProps {
     options: AgChartOptions;
 }
@@ -200,7 +176,11 @@ const ChartExample = () => {
                         yKey: 'revenue'
                     }],
                     legend: {
-                        markerSize
+                        item: {
+                            marker: {
+                                size: markerSize
+                            }
+                        }
                     }
                 }}
             />

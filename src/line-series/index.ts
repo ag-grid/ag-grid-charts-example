@@ -1,18 +1,17 @@
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-
-import { Circle } from "ag-charts-community/src/chart/marker/circle";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
-import { Square } from "ag-charts-community/src/chart/marker/square";
 import { makeChartResizeable } from "../../lib/chart";
-import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton, createSlider } from "../../lib/ui";
-import { Marker } from "ag-charts-community/src/chart/marker/marker";
-import second from "ag-charts-community/src/util/time/second";
-import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
+import { Circle } from "../../charts/chart/marker/circle";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { Marker } from "../../charts/chart/marker/marker";
+import { Square } from "../../charts/chart/marker/square";
+import { AreaSeries } from "../../charts/chart/series/cartesian/areaSeries";
+import { AgChart } from "../../charts/chart/agChart";
+import second from "../../charts/util/time/second";
+import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
 
 type CategoryDatum = {
     category: string,

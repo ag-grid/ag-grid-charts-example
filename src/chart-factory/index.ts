@@ -1,7 +1,7 @@
-import { AgChart } from "ag-charts-community/src/chart/agChart";
 import { createButton } from "../../lib/ui";
 import { CartesianChart, CategoryAxis, ChartAxisPosition, LegendPosition, LineSeries } from "ag-charts-community";
 import { NumberAxis } from "ag-charts-community/dist/cjs/chart/axis/numberAxis";
+import { AgChart } from "../../charts/chart/agChart";
 
 const revenueProfitData = [{
     month: 'Jan',
