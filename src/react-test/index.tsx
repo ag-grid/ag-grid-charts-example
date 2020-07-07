@@ -165,15 +165,27 @@ const chartData = [{
 const ChartExample = () => {
     const [markerSize, setMarkerSize] = useState(15);
     const [data, setData] = useState(chartData);
+    const [theme, setTheme] = useState(undefined);
 
     return (
         <div>
             <AgChartReact
                 options={{
+                    theme,
+                    container: document.body,
+                    width: 600,
+                    height: 400,
                     data,
                     series: [{
                         xKey: 'month',
                         yKey: 'revenue'
+                    }],
+                    axes: [{
+                        type: 'category',
+                        position: 'bottom'
+                    }, {
+                        type: 'number',
+                        position: 'left'
                     }],
                     legend: {
                         item: {
@@ -188,11 +200,20 @@ const ChartExample = () => {
             <button onClick={() => setMarkerSize(markerSize + 3)}>
                 Increase marker size
             </button>
-            <button onClick={() => setMarkerSize(undefined)}>
-                Set marker size to undefined
+            <button onClick={() => setMarkerSize(15)}>
+                Reset marker size
             </button>
             <button onClick={() => { setData([]) }}>
+                Remove data
+            </button>
+            <button onClick={() => { setData(chartData) }}>
                 Set data
+            </button>
+            <button onClick={() => { setTheme('pastel-dark') }}>
+                Use 'pastel-dark' theme
+            </button>
+            <button onClick={() => { setTheme(undefined) }}>
+                Use default theme
             </button>
         </div>
     );
