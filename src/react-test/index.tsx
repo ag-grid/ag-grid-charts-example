@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { CartesianChart } from "ag-charts-community";
 import { AgChart } from "../../charts/chart/agChart";
 import { AgChartOptions } from "../../charts/chart/agChartOptions";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
 
 const CounterExample = () => {
     const [count, setCount] = useState(0);

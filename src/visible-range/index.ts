@@ -1,13 +1,14 @@
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
-import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
 import { createRangeSlider, createButton, createSlider } from "../../lib/ui";
 import { makeChartResizeable } from "../../lib/chart";
-import { GroupedCategoryAxis } from "ag-charts-community/src/chart/axis/groupedCategoryAxis";
-import { AgChart } from "ag-charts-community/src/chart/agChart";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
+import { GroupedCategoryAxis } from "../../charts/chart/axis/groupedCategoryAxis";
+import { AgChart } from "../../charts/chart/agChart";
+import { AgCartesianChartOptions } from "../../charts/chart/agChartOptions";
 
 const data = [
     { name: "E", value: 0.12702 },

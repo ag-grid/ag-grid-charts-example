@@ -156,7 +156,9 @@ function test() {
             fills: ['lime']
         }],
         legend: {
-            itemPaddingY: 16
+            item: {
+                paddingY: 16
+            }
         }
     });
     AgChart.update(chart, {
