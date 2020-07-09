@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { AgChart } from "../../charts/chart/agChart";
-import { AgChartOptions } from "../../charts/chart/agChartOptions";
+import { AgCartesianChartOptions, AgChartOptions } from "../../charts/chart/agChartOptions";
 import { CartesianChart } from "../../charts/chart/cartesianChart";
 
 const CounterExample = () => {
@@ -126,9 +126,7 @@ class AgChartReact extends React.Component<AgChartProps, AgChartState> {
     private chart: CartesianChart;
 
     componentDidMount() {
-        const props = this.props;
-
-        this.chart = AgChart.create(props.options);
+        this.chart = AgChart.create(this.props.options as AgCartesianChartOptions);
     }
 
     processPropsChanges(prevProps: Readonly<AgChartProps> & Readonly<{ children?: React.ReactNode }>, nextProps: Readonly<AgChartProps>) {
