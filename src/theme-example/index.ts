@@ -8,13 +8,14 @@ import { AgChart } from "../../charts/chart/agChart";
 import { createSlider } from "../../lib/ui";
 import { MaterialDark } from "../../charts/chart/themes/materialDark";
 import { PastelDark } from "../../charts/chart/themes/pastelDark";
-import { SolarDark } from "../../../../charts-packages/ag-charts-community/src/chart/themes/solarDark";
 import { VividDark } from "../../charts/chart/themes/vividDark";
 import { MaterialLight } from "../../charts/chart/themes/materialLight";
 import { PastelLight } from "../../charts/chart/themes/pastelLight";
 import { SolarLight } from "../../charts/chart/themes/solarLight";
 import { VividLight } from "../../charts/chart/themes/vividLight";
-import { AgCartesianChartOptions, AgChartTheme } from "../../charts/chart/agChartOptions";
+import { AgCartesianChartOptions, IAgChartTheme } from "../../charts/chart/agChartOptions";
+import { SolarDark } from "../../charts/chart/themes/solarDark";
+import { AgChartTheme } from "../../charts/chart/themes/agChartTheme";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -137,7 +138,7 @@ const groupedCategoryData = [
     return d;
 });
 
-const themes = [
+const themes: (string | AgChartTheme | IAgChartTheme)[] = [
     'light',
     {
         palette: {
@@ -165,7 +166,7 @@ const themes = [
                 }
             }
         }
-    },
+    } as IAgChartTheme,
     new MaterialLight(),
     new PastelLight(),
     new SolarLight(),
