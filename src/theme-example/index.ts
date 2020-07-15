@@ -13,7 +13,7 @@ import { MaterialLight } from "../../charts/chart/themes/materialLight";
 import { PastelLight } from "../../charts/chart/themes/pastelLight";
 import { SolarLight } from "../../charts/chart/themes/solarLight";
 import { VividLight } from "../../charts/chart/themes/vividLight";
-import { AgCartesianChartOptions, IAgChartTheme } from "../../charts/chart/agChartOptions";
+import { AgCartesianChartOptions, AgChartOptions, IAgChartTheme } from "../../charts/chart/agChartOptions";
 import { SolarDark } from "../../charts/chart/themes/solarDark";
 import { AgChartTheme } from "../../charts/chart/themes/agChartTheme";
 
@@ -182,12 +182,52 @@ function createColumnChart() {
     const div = document.createElement('div');
     document.body.appendChild(div);
 
-    const options: AgCartesianChartOptions = {
+    const options: AgChartOptions = {
         autoSize: false,
         tooltipTracking: false,
         data,
-        title: {},
-        subtitle: {},
+        theme: {
+            // baseTheme: 'dark',
+            palette: {
+                fills: [
+                    '#5C2983',
+                    '#0076C5',
+                    '#21B372',
+                    '#FDDE02',
+                    '#F76700',
+                    '#D30018'
+                ],
+                strokes: ['black']
+            },
+            defaults: {
+                cartesian: {
+                    title: {
+                        text: 'Get Your Pot Of Gold Theme'
+                    },
+                    series: {
+                        line: {
+                            marker: {
+                                size: 16
+                            }
+                        }
+                    },
+                    axes: {
+                        category: {
+                            title: {
+                                text: 'Bottom'
+                            }
+                        },
+                        number: {
+                            title: {
+                                text: 'Left'
+                            }
+                        }
+                    }
+                }
+            }
+        } as IAgChartTheme,
+        // title: {},
+        // subtitle: {},
         axes: [{
             type: 'category',
             position: 'bottom',
@@ -221,7 +261,7 @@ function createColumnChart() {
             yKey: 'value6'
         }]
     };
-    const chart = AgChart.create(options, div);
+    const chart = AgChart.create(options, div, data);
 
     chart.scene.canvas.element.style.border = '1px solid black';
 
