@@ -389,9 +389,22 @@ function createPieChart() {
     return chart;
 }
 
+function createDeprecatedChart() {
+    const chart = new CartesianChart();
+    chart.legend.itemSpacing = 15;
+    chart.legend.layoutHorizontalSpacing = 5;
+
+    const chart2 = AgChart.create({
+        legend: {
+            itemSpacing: 15
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
     createPieChart();
+    createDeprecatedChart();
     // createGroupedColumnChart();
     // createZoomedColumnChartUsingFactory();
 });
