@@ -1,26 +1,19 @@
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
-import { Caption } from "ag-charts-community/src/caption";
-import { Path } from "ag-charts-community/src/scene/shape/path";
-import { Group } from "ag-charts-community/src/scene/group";
-import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
-import borneo, {
-    bright,
-    flat,
-    material,
-    pastel,
-} from "ag-charts-community/src/chart/palettes";
-
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
-import { BandScale } from "ag-charts-community/src/scale/bandScale";
-import { find } from "ag-charts-community/src/util/array";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { makeChartResizeable } from "../../lib/chart";
 import { LegendPosition } from "ag-charts-community";
-import { Circle } from "ag-charts-community/dist/cjs/chart/marker/circle";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { BandScale } from "../../charts/scale/bandScale";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { Caption } from "../../charts/caption";
+import { AreaSeries } from "../../charts/chart/series/cartesian/areaSeries";
+import { find } from "../../charts/util/array";
+import { Path } from "../../charts/scene/shape/path";
+import { DropShadow } from "../../charts/scene/dropShadow";
+import { Group } from "../../charts/scene/group";
+import borneo, { bright, flat, material, pastel } from "../../charts/chart/palettes";
 
 type Datum = {
     category: string,

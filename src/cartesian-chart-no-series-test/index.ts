@@ -1,8 +1,8 @@
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
 
 type CategoryDatum = {
     category: string,

@@ -1,7 +1,7 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {BandScale} from "ag-charts-community/src/scale/bandScale";
-import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
-import {CanvasAxis} from "ag-charts-community/src/canvasAxis";
+import { LinearScale } from "../../../../charts-packages/ag-charts-community/src/scale/linearScale";
+import { BandScale } from "../../charts/scale/bandScale";
+import { createHdpiCanvas } from "../../charts/canvas/canvas";
+import { CanvasAxis } from "../../charts/canvasAxis";
 
 const data = [
     {
@@ -97,7 +97,7 @@ function renderChart(isTopStroke = true, isBlackStroke = true, fillOpacity = 0.7
     const seriesWidth = canvasWidth - padding.left - padding.right;
     const seriesHeight = canvasHeight - padding.top - padding.bottom;
 
-    const yScale = scaleLinear();
+    const yScale = new LinearScale();
     // Get the height of each stack and find the highest one.
     yScale.domain = [0, isFullStack ? stackTotal : Math.max(...yData.map(d => d[d.length - 1]))];
     yScale.range = [seriesHeight, 0];

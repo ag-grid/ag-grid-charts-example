@@ -1,10 +1,9 @@
-import { Chart } from "ag-charts-community/src/chart/chart";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { AreaSeries } from "ag-charts-community/src/chart/series/cartesian/areaSeries";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { AreaSeries } from "../../charts/chart/series/cartesian/areaSeries";
 import { createButton } from "../../lib/ui";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
 import { makeChartResizeable } from "../../lib/chart";
 
 const data = [

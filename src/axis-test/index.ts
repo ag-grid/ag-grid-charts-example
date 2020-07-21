@@ -1,11 +1,11 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {BandScale} from "ag-charts-community/src/scale/bandScale";
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Axis} from "ag-charts-community/src/axis";
-import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
-import {Text} from "ag-charts-community/src/scene/shape/text";
-import { Caption } from "ag-charts-community/src/caption";
+import { Scene } from "../../charts/scene/scene";
+import { Group } from "../../charts/scene/group";
+import { Arc, ArcType } from "../../charts/scene/shape/arc";
+import { Text } from "../../charts/scene/shape/text";
+import { BandScale } from "../../charts/scale/bandScale";
+import { Axis } from "../../charts/axis";
+import { Caption } from "../../charts/caption";
+import { LinearScale } from "../../charts/scale/linearScale";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -462,7 +462,7 @@ function testRadialGrid() {
 }
 
 function leftAxisBottomUp(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
@@ -477,7 +477,7 @@ function leftAxisBottomUp(root: Group) {
 }
 
 function leftAxisTopDown(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [0, 400];
 
@@ -492,7 +492,7 @@ function leftAxisTopDown(root: Group) {
 }
 
 function rightAxisBottomUp(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
@@ -508,7 +508,7 @@ function rightAxisBottomUp(root: Group) {
 }
 
 function rightAxisTopDown(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [0, 400];
 
@@ -524,7 +524,7 @@ function rightAxisTopDown(root: Group) {
 }
 
 function leftAxisRotatedLabels45(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
@@ -548,7 +548,7 @@ function leftAxisRotatedLabels45(root: Group) {
 }
 
 function leftAxisRotatedLabelsMinus45(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
@@ -572,7 +572,7 @@ function leftAxisRotatedLabelsMinus45(root: Group) {
 }
 
 function rightAxisRotatedLabels45(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [400, 0];
 
@@ -597,7 +597,7 @@ function rightAxisRotatedLabels45(root: Group) {
 }
 
 function rightAxisRotatedLabelsMinus45(root: Group) {
-    const scale = scaleLinear();
+    const scale = new LinearScale();
     scale.domain = [0, 700];
     scale.range = [400, 0];
 

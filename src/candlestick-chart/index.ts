@@ -1,18 +1,18 @@
 import { data } from './data';
-import { TimeAxis } from 'ag-charts-community/src/chart/axis/timeAxis';
-import { CartesianChart } from 'ag-charts-community/src/chart/cartesianChart';
-import month from 'ag-charts-community/src/util/time/month';
-import { NumberAxis } from 'ag-charts-community/src/chart/axis/numberAxis';
-import { OHLCSeries } from "ag-charts-community/src/chart/series/cartesian/ohlc/ohlcSeries";
 import { makeChartResizeable } from '../../lib/chart';
-import { LineSeries } from 'ag-charts-community/src/chart/series/cartesian/lineSeries';
 import { createButton } from '../../lib/ui';
-import { Square } from 'ag-charts-community/src/chart/marker/square';
-import { locale } from 'ag-charts-community/src/util/time/format/defaultLocale';
-import { CategoryAxis } from 'ag-charts-community/src/chart/axis/categoryAxis';
-import { BarSeries } from 'ag-charts-community/src/chart/series/cartesian/barSeries';
-import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
 import { Chart } from "ag-charts-community";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { TimeAxis } from "../../charts/chart/axis/timeAxis";
+import month from "../../charts/util/time/month";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { locale } from "../../charts/util/time/format/defaultLocale";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
+import { OHLCSeries } from "../../charts/chart/series/cartesian/ohlc/ohlcSeries";
+import { Square } from "../../charts/chart/marker/square";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
 
 function createChart() {
     const xAxis = new TimeAxis();

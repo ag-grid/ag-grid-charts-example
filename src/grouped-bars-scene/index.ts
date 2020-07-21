@@ -1,11 +1,11 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {BandScale} from "ag-charts-community/src/scale/bandScale";
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Text} from "ag-charts-community/src/scene/shape/text";
-import {Rect} from "ag-charts-community/src/scene/shape/rect";
-import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
-import {Axis} from "ag-charts-community/src/axis";
+import { LinearScale } from "../../charts/scale/linearScale";
+import { BandScale } from "../../charts/scale/bandScale";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Rect } from "../../charts/scene/shape/rect";
+import { Text } from "../../charts/scene/shape/text";
+import { DropShadow } from "../../charts/scene/dropShadow";
+import { Axis } from "../../charts/axis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -83,7 +83,7 @@ function renderChart() {
     const seriesWidth = chartWidth - padding.left - padding.right;
     const seriesHeight = chartHeight - padding.top - padding.bottom;
 
-    const yScale = scaleLinear();
+    const yScale = new LinearScale();
     // Find the tallest bar in each group, then the tallest bar overall.
     yScale.domain = [0, Math.max(...yData.map(values => Math.max(...values)))];
     yScale.range = [seriesHeight, 0];

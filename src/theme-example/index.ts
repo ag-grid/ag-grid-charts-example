@@ -13,7 +13,7 @@ import { MaterialLight } from "../../charts/chart/themes/materialLight";
 import { PastelLight } from "../../charts/chart/themes/pastelLight";
 import { SolarLight } from "../../charts/chart/themes/solarLight";
 import { VividLight } from "../../charts/chart/themes/vividLight";
-import { AgCartesianChartOptions, AgChartOptions, IAgChartTheme } from "../../charts/chart/agChartOptions";
+import { AgCartesianChartOptions, AgChartOptions, AgChartThemeOptions } from "../../charts/chart/agChartOptions";
 import { SolarDark } from "../../charts/chart/themes/solarDark";
 import { AgChartTheme } from "../../charts/chart/themes/agChartTheme";
 
@@ -138,7 +138,7 @@ const groupedCategoryData = [
     return d;
 });
 
-const themes: (string | AgChartTheme | IAgChartTheme)[] = [
+const themes: (string | AgChartTheme | AgChartThemeOptions)[] = [
     'light',
     {
         palette: {
@@ -166,7 +166,7 @@ const themes: (string | AgChartTheme | IAgChartTheme)[] = [
                 }
             }
         }
-    } as IAgChartTheme,
+    } as AgChartThemeOptions,
     new MaterialLight(),
     new PastelLight(),
     new SolarLight(),
@@ -225,7 +225,7 @@ function createColumnChart() {
                     }
                 }
             }
-        } as IAgChartTheme,
+        } as AgChartThemeOptions,
         // title: {},
         // subtitle: {},
         axes: [{
@@ -389,22 +389,9 @@ function createPieChart() {
     return chart;
 }
 
-function createDeprecatedChart() {
-    const chart = new CartesianChart();
-    chart.legend.itemSpacing = 15;
-    chart.legend.layoutHorizontalSpacing = 5;
-
-    const chart2 = AgChart.create({
-        legend: {
-            itemSpacing: 15
-        }
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     createColumnChart();
     createPieChart();
-    createDeprecatedChart();
     // createGroupedColumnChart();
     // createZoomedColumnChartUsingFactory();
 });

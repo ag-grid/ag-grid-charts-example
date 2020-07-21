@@ -1,7 +1,7 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {BandScale} from "ag-charts-community/src/scale/bandScale";
-import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
-import {CanvasAxis} from "ag-charts-community/src/canvasAxis";
+import { LinearScale } from "../../charts/scale/linearScale";
+import { BandScale } from "../../charts/scale/bandScale";
+import { createHdpiCanvas } from "../../charts/canvas/canvas";
+import { CanvasAxis } from "../../charts/canvasAxis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -79,7 +79,7 @@ function renderChart() {
     const seriesWidth = canvasWidth - padding.left - padding.right;
     const seriesHeight = canvasHeight - padding.top - padding.bottom;
 
-    const yScale = scaleLinear();
+    const yScale = new LinearScale();
     // Find the tallest bar in each group, then the tallest bar overall.
     yScale.domain = [0, Math.max(...yData.map(values => Math.max(...values)))];
     yScale.range = [seriesHeight, 0];

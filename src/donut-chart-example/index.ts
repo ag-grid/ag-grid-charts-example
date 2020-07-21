@@ -1,7 +1,7 @@
-import {PolarChart} from "ag-charts-community/src/chart/polarChart";
-import {PieSeries} from "ag-charts-community/src/chart/series/polar/pieSeries";
-import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
 import { makeChartResizeable } from "../../lib/chart";
+import { PolarChart } from "../../charts/chart/polarChart";
+import { DropShadow } from "../../charts/scene/dropShadow";
+import { PieSeries } from "../../charts/chart/series/polar/pieSeries";
 
 const data = [
     { label: 'John', value1: 3, value2: 7, value3: 5 },
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries1.labelKey = 'label';
     pieSeries1.shadow = shadow;
     pieSeries1.strokeWidth = 1;
-    pieSeries1.calloutStrokeWidth = 1;
+    pieSeries1.callout.strokeWidth = 1;
 
     const pieSeries2 = new PieSeries();
     chart.addSeries(pieSeries2);
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries2.labelKey = 'label';
     pieSeries2.shadow = shadow;
     pieSeries2.strokeWidth = 1;
-    pieSeries2.calloutStrokeWidth = 1;
+    pieSeries2.callout.strokeWidth = 1;
     pieSeries2.showInLegend = false;
 
     const pieSeries3 = new PieSeries();
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pieSeries3.labelKey = 'label';
     pieSeries3.shadow = shadow;
     pieSeries3.strokeWidth = 1;
-    pieSeries3.calloutStrokeWidth = 1;
+    pieSeries3.callout.strokeWidth = 1;
     pieSeries3.showInLegend = false;
 
     const series = chart.series as PieSeries[];

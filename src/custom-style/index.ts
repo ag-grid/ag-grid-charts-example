@@ -1,9 +1,9 @@
-import { PolarChart } from "ag-charts-community/src/chart/polarChart";
-import { PieSeries } from "ag-charts-community/src/chart/series/polar/pieSeries";
-import { Caption } from "ag-charts-community/src/caption";
 import { createButton } from "../../lib/ui";
-import { toDegrees } from "ag-charts-community/src/util/angle";
 import { LegendPosition } from "ag-charts-community";
+import { PolarChart } from "../../charts/chart/polarChart";
+import { PieSeries } from "../../charts/chart/series/polar/pieSeries";
+import { Caption } from "../../charts/caption";
+import { toDegrees } from "../../charts/util/angle";
 
 const data = [
     {

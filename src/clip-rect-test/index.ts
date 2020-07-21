@@ -1,10 +1,10 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Text} from "ag-charts-community/src/scene/shape/text";
-import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
-import {Line} from "ag-charts-community/src/scene/shape/line";
-import {ClipRect} from "ag-charts-community/src/scene/clipRect";
-import {Selection} from "ag-charts-community/src/scene/selection";
+import { Scene } from "../../charts/scene/scene";
+import { Group } from "../../charts/scene/group";
+import { ClipRect } from "../../charts/scene/clipRect";
+import { Arc, ArcType } from "../../charts/scene/shape/arc";
+import { Text } from "../../charts/scene/shape/text";
+import { Line } from "../../charts/scene/shape/line";
+import { Selection } from "../../charts/scene/selection";
 
 function nextFrame() {
     return new Promise(resolve => {

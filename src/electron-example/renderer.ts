@@ -1,15 +1,15 @@
 import { remote } from 'electron';
-import borneo from "ag-charts-community/src/chart/palettes";
-import { BarSeries } from "ag-charts-community/src/chart/series/cartesian/barSeries";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
 
 import './app.css';
 import { createButton } from "../../lib/ui";
-import { Caption } from "ag-charts-community/src/caption";
-import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
 import { makeChartResizeable } from "../../lib/chart";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { Caption } from "../../charts/caption";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
+import borneo from "../../charts/chart/palettes";
 
 const { BrowserWindow } = remote;
 
