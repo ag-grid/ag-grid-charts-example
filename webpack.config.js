@@ -54,7 +54,7 @@ const moduleExports = env => {
             entry: join(example.path, example.name, 'index'),
             mode: 'development',
             target: 'web',
-            devtool: 'inline-source-map',
+            devtool: 'eval-source-map',
             output: {
                 path: join(distPath, example.name),
                 filename: 'app.bundle.js'

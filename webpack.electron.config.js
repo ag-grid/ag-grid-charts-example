@@ -14,7 +14,7 @@ const moduleExports = existsSync(join(srcPath, '_'))
             entry: join(srcPath, '_', 'main'),
             mode: 'development',
             target: 'electron-main',
-            devtool: 'inline-source-map',
+            devtool: 'eval-source-map',
             output: {
                 path: join(distPath, '_'),
                 filename: 'main.js'
@@ -49,7 +49,7 @@ const moduleExports = existsSync(join(srcPath, '_'))
             entry: join(srcPath, '_', 'renderer'),
             mode: 'development',
             target: 'electron-renderer',
-            devtool: 'inline-source-map',
+            devtool: 'eval-source-map',
             output: {
                 path: join(distPath, '_'),
                 filename: 'renderer.js'
