@@ -138,7 +138,7 @@ const groupedCategoryData = [
     return d;
 });
 
-const themes: (string | AgChartTheme | AgChartThemeOptions)[] = [
+const themes: (string | AgChartThemeOptions)[] = [
     'light',
     {
         palette: {
@@ -167,15 +167,15 @@ const themes: (string | AgChartTheme | AgChartThemeOptions)[] = [
             }
         }
     } as AgChartThemeOptions,
-    new MaterialLight(),
-    new PastelLight(),
-    new SolarLight(),
-    new VividLight(),
+    'material-light', // new MaterialLight(),
+    'pastel-light', // new PastelLight(),
+    'solar-light', // new SolarLight(),
+    'vivid-light', // new VividLight(),
     'dark',
-    new MaterialDark(),
-    new PastelDark(),
-    new SolarDark(),
-    new VividDark()
+    'material-dark', // new MaterialDark(),
+    'pastel-dark', // new PastelDark(),
+    'solar-dark', // new SolarDark(),
+    'vivid-dark', // new VividDark()
 ];
 
 function createColumnChart() {
@@ -269,7 +269,7 @@ function createColumnChart() {
 
     document.body.appendChild(document.createElement('br'));
 
-    createSlider('Theme', themes, (value: AgChartTheme) => {
+    createSlider('Theme', themes, (value: string | AgChartThemeOptions) => {
         options.theme = value;
         AgChart.update(chart, options, div);
     });
