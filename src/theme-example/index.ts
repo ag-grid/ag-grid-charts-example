@@ -13,9 +13,9 @@ import { MaterialLight } from "../../charts/chart/themes/materialLight";
 import { PastelLight } from "../../charts/chart/themes/pastelLight";
 import { SolarLight } from "../../charts/chart/themes/solarLight";
 import { VividLight } from "../../charts/chart/themes/vividLight";
-import { AgCartesianChartOptions, AgChartOptions, AgChartThemeOptions } from "../../charts/chart/agChartOptions";
+import { AgCartesianChartOptions, AgChartOptions, AgChartTheme } from "../../charts/chart/agChartOptions";
 import { SolarDark } from "../../charts/chart/themes/solarDark";
-import { AgChartTheme } from "../../charts/chart/themes/agChartTheme";
+import { ChartTheme } from "../../charts/chart/themes/chartTheme";
 
 const data = [
     { name: "E", value: 0.12702 },
@@ -138,7 +138,7 @@ const groupedCategoryData = [
     return d;
 });
 
-const themes: (string | AgChartThemeOptions)[] = [
+const themes: (string | AgChartTheme)[] = [
     'light',
     {
         palette: {
@@ -166,7 +166,7 @@ const themes: (string | AgChartThemeOptions)[] = [
                 }
             }
         }
-    } as AgChartThemeOptions,
+    } as AgChartTheme,
     'material-light', // new MaterialLight(),
     'pastel-light', // new PastelLight(),
     'solar-light', // new SolarLight(),
@@ -225,7 +225,7 @@ function createColumnChart() {
                     }
                 }
             }
-        } as AgChartThemeOptions,
+        } as AgChartTheme,
         // title: {},
         // subtitle: {},
         axes: [{
@@ -269,7 +269,7 @@ function createColumnChart() {
 
     document.body.appendChild(document.createElement('br'));
 
-    createSlider('Theme', themes, (value: string | AgChartThemeOptions) => {
+    createSlider('Theme', themes, (value: string | ChartTheme) => {
         options.theme = value;
         AgChart.update(chart, options, div);
     });
