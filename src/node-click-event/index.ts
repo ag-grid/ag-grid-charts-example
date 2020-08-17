@@ -1,26 +1,28 @@
 import { createButton } from "../../lib/ui";
-import { AgChart } from "ag-charts-community";
 import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
 import { ChartAxisPosition } from "../../charts/chart/chartAxis";
 import { NumberAxis } from "../../charts/chart/axis/numberAxis";
 import { CartesianChart } from "../../charts/chart/cartesianChart";
 import { AreaSeries } from "../../charts/chart/series/cartesian/areaSeries";
-import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
+import { LineSeries, LineSeriesNodeClickEvent } from "../../charts/chart/series/cartesian/lineSeries";
 import { Circle } from "../../charts/chart/marker/circle";
 import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
 import { Caption } from "../../charts/caption";
+import { AgChart } from "../../charts/chart/agChart";
 
 type MultiValue = {
     category: string,
     value1: number,
     value2: number,
-    value3: number
+    value3: number,
+    selected: boolean;
 };
 
 function generateMultiValueData(n = 50): MultiValue[] {
     const data: MultiValue[] = [];
     for (let i = 0; i < n; i++) {
         const datum: MultiValue = {
+            selected: false,
             category: 'A' + (i + 1),
             value1: Math.random() * 10,
             value2: Math.random() * 20,
@@ -78,6 +80,15 @@ function createMultiLineChart() {
     lineSeries3.marker.fill = '#57b757';
     lineSeries3.xKey = 'category';
     lineSeries3.yKey = 'value3';
+    lineSeries3.marker.formatter = params => {
+        if (params.datum.selected) {
+            return { fill: 'red' };
+        }
+    };
+    lineSeries3.addEventListener('nodeClick', event => {
+        const e = event as unknown as LineSeriesNodeClickEvent;
+        e.datum.selected = !e.datum.selected;
+    });
 
     const barSeries = new BarSeries();
     // barSeries.fills = ['#41a9c9'];

@@ -1,16 +1,16 @@
-import { Scene } from "ag-charts-community/src/scene/scene";
-import { Group } from "ag-charts-community/src/scene/group";
-import { Sector } from "ag-charts-community/src/scene/shape/sector";
-import { palettes, ChartPalette } from "ag-charts-community/src/chart/palettes";
-import { toRadians } from "ag-charts-community/src/util/angle";
-import { Path } from "ag-charts-community/src/scene/shape/path";
-import { Line } from "ag-charts-community/src/scene/shape/line";
-import linearScale from "ag-charts-community/src/scale/linearScale";
-import { BandScale } from "ag-charts-community/src/scale/bandScale";
-import { Rect } from "ag-charts-community/src/scene/shape/rect";
-import { ClipRect } from "ag-charts-community/src/scene/clipRect";
-import { Arc } from "ag-charts-community/src/scene/shape/arc";
-import { Shape } from "ag-charts-community/src/scene/shape/shape";
+import { Scene } from "../../charts/scene/scene";
+import { Group } from "../../charts/scene/group";
+import { Sector } from "../../charts/scene/shape/sector";
+import { toRadians } from "../../charts/util/angle";
+import { Path } from "../../charts/scene/shape/path";
+import { Line } from "../../charts/scene/shape/line";
+import { LinearScale } from "../../charts/scale/linearScale";
+import { BandScale } from "../../charts/scale/bandScale";
+import { Rect } from "../../charts/scene/shape/rect";
+import { ClipRect } from "../../charts/scene/clipRect";
+import { Arc } from "../../charts/scene/shape/arc";
+import { Shape } from "../../charts/scene/shape/shape";
+import { AgChartThemePalette } from "../../charts/main";
 
 function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
     const button = document.createElement('button');
@@ -120,11 +120,11 @@ class MiniLine extends MiniChart {
         const size = this.size;
         const padding = this.padding;
 
-        const xScale = linearScale();
+        const xScale = new LinearScale();
         xScale.domain = [0, 4];
         xScale.range = [padding, size - padding];
 
-        const yScale = linearScale();
+        const yScale = new LinearScale();
         yScale.domain = [0, 10];
         yScale.range = [size - padding, padding];
 
@@ -202,11 +202,11 @@ class MiniScatter extends MiniChart {
             [[0, 0.3], [1, 2], [2.4, 1.4], [3, 0]]
         ];
 
-        const xScale = linearScale();
+        const xScale = new LinearScale();
         xScale.domain = [-0.5, 4];
         xScale.range = [padding * 2, size - padding];
 
-        const yScale = linearScale();
+        const yScale = new LinearScale();
         yScale.domain = [-0.5, 3.5];
         yScale.range = [size - padding, padding];
 
@@ -284,7 +284,7 @@ class MiniBar extends MiniChart {
         xScale.paddingInner = 0.3;
         xScale.paddingOuter = 0.3;
 
-        const yScale = linearScale();
+        const yScale = new LinearScale();
         yScale.domain = [0, 4];
         yScale.range = [size - padding, padding];
 
@@ -363,7 +363,7 @@ class MiniStackedBar extends MiniChart {
         xScale.paddingInner = 0.3;
         xScale.paddingOuter = 0.3;
 
-        const yScale = linearScale();
+        const yScale = new LinearScale();
         yScale.domain = [0, 16];
         yScale.range = [size - padding, padding];
 
@@ -445,7 +445,7 @@ class MiniNormalizedBar extends MiniChart {
         xScale.paddingInner = 0.3;
         xScale.paddingOuter = 0.3;
 
-        const yScale = linearScale();
+        const yScale = new LinearScale();
         yScale.domain = [0, 10];
         yScale.range = [size - padding, padding];
 
@@ -527,7 +527,7 @@ class MiniArea extends MiniChart {
         xScale.domain = [0, 1, 2];
         xScale.range = [padding, size - padding];
 
-        const yScale = linearScale();
+        const yScale = new LinearScale();
         yScale.domain = [0, 16];
         yScale.range = [size - padding, padding];
 
@@ -622,9 +622,9 @@ class MiniNormalizedArea extends MiniArea {
     }
 }
 
-const palettesArray: ChartPalette[] = [];
+const palettesArray: AgChartThemePalette[] = [];
 
-palettes.forEach(p => palettesArray.push(p));
+// palettes.forEach(p => palettesArray.push(p)); // TODO: update this
 
 const { fills, strokes } = palettesArray[0];
 
