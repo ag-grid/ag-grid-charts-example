@@ -1,0 +1,125 @@
+Canvas
+
+Hardware: Intel Core i7-4850HQ, NVIDIA GeForce GT 750M 2GB GDDR5
+Software: macOS 10.14.2
+
+Chrome 71, Device Pixel Ratio: 1
+FPS: 49
+Avg: 53.34
+Min: 45
+Max: 57
+
+Chrome 71, Device Pixel Ratio: 2
+FPS: 27
+Avg: 29.38
+Min: 26
+Max: 30
+
+Firefox 64, Device Pixel Ratio: 1
+FPS: 59
+Avg: 59.79
+Min: 50
+Max: 60
+
+Firefox 64, Device Pixel Ratio: 2
+FPS: 46
+Avg: 48.30
+Min: 39
+Max: 51
+
+Software: Windows 10 1809 (Parallels 14.1 VM, macOS 10.14.2 host)
+
+Chrome 71, Device Pixel Ratio: 1
+FPS: 46
+Min: 29
+Max: 47
+
+Chrome 71, Device Pixel Ratio: 2
+FPS: 20
+Min: 13
+Max: 23
+
+Firefox 64, Device Pixel Ratio: 1
+FPS: 45
+Avg: 44.70
+Min: 26
+Max: 47
+
+Firefox 64, Device Pixel Ratio: 2
+FPS: 37
+Min: 18
+Max: 39
+
+-------------------------------------------
+
+Hardware: iPad Air 2
+Software: iOS 12.1.1, Safari:
+FPS: 60
+Min: 59
+Max: 60
+
+
+========================================================================================
+
+SVG
+
+Hardware: Intel Core i7-4850HQ, NVIDIA GeForce GT 750M 2GB GDDR5
+Software: macOS Mojave 10.14.2
+
+Chrome 71, Device Pixel Ratio: 1
+FPS: 60
+Avg: 58.40
+Min: 54
+Max: 60
+
+Chrome 71, Device Pixel Ratio: 2
+FPS: 58
+Avg: 58.75
+Min: 53
+Max: 60
+
+Firefox 64, Device Pixel Ratio: 1
+FPS: 48
+Avg: 48.52
+Min: 39
+Max: 60
+
+Firefox 64, Device Pixel Ratio: 2
+FPS: 40
+Avg: 40.70
+Min: 38
+Max: 40
+
+Software: Windows 10 1809 (Parallels 14.1 VM, macOS 10.14.2 host)
+
+Chrome 71, Device Pixel Ratio: 1
+FPS: 36
+Avg: 37.19
+Min: 30
+Max: 39
+
+Chrome 71, Device Pixel Ratio: 2
+FPS: 22
+Avg: 21.70
+Min: 18
+Max: 23
+
+Firefox 64, Device Pixel Ratio: 1
+FPS: 40
+Avg: 39.90
+Min: 35
+Max: 40
+
+Firefox 64, Device Pixel Ratio: 2
+FPS: 37
+Avg: 37.79
+Min: 32
+Max: 39
+
+-------------------------------------------
+
+Hardware: iPad Air 2
+Software: iOS 12.1.1, Safari:
+FPS: 23
+Min: 19
+Max: 23
