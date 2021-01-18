@@ -7,7 +7,7 @@ import { Rect } from "../../charts/scene/shape/rect";
 import { Text, FontWeight } from "../../charts/scene/shape/text";
 import { DropShadow } from "../../charts/scene/dropShadow";
 import { convertGridTreeData, rowData } from "./convert";
-import { createButton } from "../../lib/ui";
+import { createButton, createSlider } from "../../lib/ui";
 
 import * as d3 from "d3";
 import { HdpiCanvas } from "../../charts/canvas/hdpiCanvas";
@@ -21,6 +21,9 @@ import { LegendDatum } from "../../charts/chart/legend";
 import { createId } from "../../charts/util/id";
 import makeColorInterpolator from "../../charts/interpolate/color";
 import { makeChartResizeable } from "../../lib/chart";
+import { Caption, LinearScale } from "../../charts/main";
+import { Label } from "../../charts/chart/label";
+import { lab } from "d3";
 
 export class HierarchyChart extends Chart {
     static className = 'HierarchyChart';
@@ -157,6 +160,10 @@ export class TreemapSeriesTooltip extends SeriesTooltip {
     @reactive('change') renderer?: (params: TreemapTooltipRendererParams) => string | TooltipRendererResult;
 }
 
+export class TreemapSeriesLabel extends Label {
+    @reactive('change') padding = 10;
+}
+
 export class TreemapSeries extends HierarchySeries {
 
     static className = 'TreemapSeries';
@@ -169,39 +176,45 @@ export class TreemapSeries extends HierarchySeries {
     private layout = d3.treemap().round(true);
     private dataRoot?: d3.HierarchyNode<any>;
 
-    protected fonts = {
-        title: {
-            fontWeight: 'bold',
-            fontSize: 12,
-            fontFamily: 'Verdana, sans-serif',
-            padding: 15
-        },
-        subtitle: {
-            fontWeight: '',
-            fontSize: 9,
-            fontFamily: 'Verdana, sans-serif',
-            padding: 13
-        },
-        label: {
-            big: {
-                fontWeight: 'bold',
-                fontSize: 18,
-                fontFamily: 'Verdana, sans-serif'
-            },
-            medium: {
-                fontWeight: 'bold',
-                fontSize: 14,
-                fontFamily: 'Verdana, sans-serif'
-            },
-            small: {
-                fontWeight: 'bold',
-                fontSize: 10,
-                fontFamily: 'Verdana, sans-serif'
-            }
-        }
-    };
+    readonly title: TreemapSeriesLabel = (() => {
+        const label = new TreemapSeriesLabel();
+        label.fontWeight = 'bold';
+        label.fontSize = 12;
+        label.fontFamily = 'Verdana, sans-serif';
+        label.padding = 15;
+        return label;
+    })();
 
-    private _nodePadding = 2;
+    readonly subtitle: TreemapSeriesLabel = (() => {
+        const label = new TreemapSeriesLabel();
+        label.fontSize = 9;
+        label.fontFamily = 'Verdana, sans-serif';
+        label.padding = 13;
+        return label;
+    })();
+
+    readonly labels = {
+        large: (() => {
+            const label = new Label();
+            label.fontWeight = 'bold';
+            label.fontSize = 18;
+            return label;
+        })(),
+        medium: (() => {
+            const label = new Label();
+            label.fontWeight = 'bold';
+            label.fontSize = 14;
+            return label;
+        })(),
+        small: (() => {
+            const label = new Label();
+            label.fontWeight = 'bold';
+            label.fontSize = 10;
+            return label;
+        })()
+    }
+
+    protected _nodePadding = 2;
     set nodePadding(value: number) {
         if (this._nodePadding !== value) {
             this._nodePadding = value;
@@ -212,6 +225,8 @@ export class TreemapSeries extends HierarchySeries {
     get nodePadding(): number {
         return this._nodePadding;
     }
+
+    @reactive('dataChange') sizeKey: string = 'size';
 
     private _shadow?: DropShadow = (() => {
         const shadow = new DropShadow();
@@ -230,16 +245,18 @@ export class TreemapSeries extends HierarchySeries {
         return this._shadow;
     }
 
-    // constructor() {
-    //     super();
+    constructor() {
+        super();
 
-    //     // this.layout = d3.treemap().round(true);
-    // }
+        this.shadow.addEventListener('change', this.update, this);
+        this.title.addEventListener('change', this.update, this);
+        this.subtitle.addEventListener('change', this.update, this);
+    }
 
     readonly tooltip = new TreemapSeriesTooltip();
 
     private updateLayoutPadding() {
-        const { fonts, nodePadding } = this;
+        const { title, subtitle, nodePadding } = this;
 
         this.layout
             .paddingRight(nodePadding)
@@ -250,7 +267,7 @@ export class TreemapSeries extends HierarchySeries {
                 if (node.children) {
                     name = name.toUpperCase();
                 }
-                const font = node.depth > 1 ? fonts.subtitle : fonts.title;
+                const font = node.depth > 1 ? subtitle : title;
                 const textSize = HdpiCanvas.getTextSize(
                     name, [font.fontWeight, font.fontSize + 'px', font.fontFamily].join(' ').trim()
                 );
@@ -258,17 +275,25 @@ export class TreemapSeries extends HierarchySeries {
                 const hasTitle = node.depth > 0 && node.children && textSize.width <= innerNodeWidth;
                 (node as any).hasTitle = hasTitle;
 
-                return hasTitle ? font.padding : nodePadding;
+                return hasTitle ? textSize.height + nodePadding * 2 : nodePadding;
             });
     }
 
     processData(): boolean {
-        this.dataRoot = d3.hierarchy(this.data).sum(datum => datum.children ? 1 : datum.size);
+        this.dataRoot = d3.hierarchy(this.data).sum(datum => datum.children ? 1 : datum[this.sizeKey]);
         return true;
     }
 
+    protected getLabelCenterX(datum: any): number {
+        return (datum.x0 + datum.x1) / 2;
+    }
+
+    protected getLabelCenterY(datum: any): number {
+        return (datum.y0 + datum.y1) / 2 + 2;
+    }
+
     update(): void {
-        const { colorMap, tickerMap, nodePadding, fonts, shadow } = this;
+        const { colorMap, tickerMap, nodePadding, title, subtitle, labels, shadow } = this;
         const seriesRect = this.chart.getSeriesRect();
 
         this.layout = this.layout.size([seriesRect.width, seriesRect.height]).round(true);
@@ -285,20 +310,22 @@ export class TreemapSeries extends HierarchySeries {
 
         const enterGroups = updateGroups.enter.append(Group);
         enterGroups.append(Rect);
-        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Name);
-        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Change);
+        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Title);
+        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Value);
 
         this.groupSelection = updateGroups.merge(enterGroups);
 
-        const colorScale = d3.scaleLinear().domain([-5, 5]).range([0, 1]);
+        const colorScale = new LinearScale();
+        colorScale.domain = [-5, 5];
+        colorScale.range = [0, 1];
         const colorInterpolator = makeColorInterpolator('#cb4b3f', '#6acb64');
 
-        this.groupSelection.selectByClass(Rect).each((rect, datum, index) => {
+        this.groupSelection.selectByClass(Rect).each((rect, datum) => {
             const isParent = !!datum.children;
 
             let fill = colorMap.get(rect);
             if (!fill) {
-                fill = isParent ? '#272931' : colorInterpolator(colorScale(-5 + Math.random() * 10));
+                fill = isParent ? '#272931' : colorInterpolator(colorScale.convert(-5 + Math.random() * 10));
                 colorMap.set(rect, fill);
             }
             rect.fill = fill;
@@ -310,22 +337,40 @@ export class TreemapSeries extends HierarchySeries {
             rect.y = datum.y0;
             rect.width = datum.x1 - datum.x0;
             rect.height = datum.y1 - datum.y0;
+
+            // if (datum.hasTitle && datum.data && datum.data.name === 'Money Center Banks') {
+            //     rect.fill = 'gold';
+            // }
         });
 
-        this.groupSelection.selectByTag<Text>(TextNodeTag.Name).each((text, datum, index) => {
+        this.groupSelection.selectByTag<Text>(TextNodeTag.Title).each((text, datum, index) => {
             const isLeaf = !datum.children;
             const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
             const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
             const hasTitle = datum.hasTitle;
-            const font = isLeaf
-                ? innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20 && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
-                : (datum.depth > 1 ? fonts.subtitle : fonts.title);
             const isParent = !!datum.children;
             const name = datum.data.name;
 
-            text.fontWeight = font.fontWeight as FontWeight;
-            text.fontSize = font.fontSize;
-            text.fontFamily = font.fontFamily;
+            let label;
+            if (isLeaf) {
+                if (innerNodeHeight > 40 && innerNodeWidth > 40) {
+                    label = labels.large;
+                } else if (innerNodeHeight > 20 && innerNodeHeight > 20) {
+                    label = labels.medium;
+                } else {
+                    label = labels.small;
+                }
+            } else {
+                if (datum.depth > 1) {
+                    label = subtitle;
+                } else {
+                    label = title;
+                }
+            }
+
+            text.fontWeight = label.fontWeight;
+            text.fontSize = label.fontSize;
+            text.fontFamily = label.fontFamily;
             text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');
             text.textAlign = hasTitle ? 'left' : 'center';
             text.text = isParent ? name.toUpperCase() : name;
@@ -334,23 +379,24 @@ export class TreemapSeries extends HierarchySeries {
 
             const hasLabel = isLeaf && textBBox
                 && textBBox.width <= innerNodeWidth
-                && textBBox.height * 2 + 4 <= innerNodeHeight;
+                && textBBox.height * 2 + 8 <= innerNodeHeight;
 
             tickerMap.set(name, hasLabel ? text : undefined);
 
             text.fill = 'white';
             text.fillShadow = hasLabel ? shadow : undefined;
             text.visible = hasTitle || hasLabel;
+
             if (hasTitle) {
                 text.x = datum.x0 + 3;
-                text.y = datum.y0 + 2;
+                text.y = datum.y0 + nodePadding;
             } else {
-                text.x = (datum.x0 + datum.x1) / 2;
-                text.y = (datum.y0 + datum.y1) / 2;
+                text.x = this.getLabelCenterX(datum);
+                text.y = this.getLabelCenterY(datum);
             }
         });
 
-        this.groupSelection.selectByTag<Text>(TextNodeTag.Change).each((text, datum, index) => {
+        this.groupSelection.selectByTag<Text>(TextNodeTag.Value).each((text, datum) => {
             const isLeaf = !datum.children;
             const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
             // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
@@ -364,7 +410,6 @@ export class TreemapSeries extends HierarchySeries {
 
             const textBBox = text.computeBBox();
             const tickerNode = tickerMap.get(datum.data.name);
-
             const hasLabel = !!tickerNode || false;
 
             text.fill = 'white';
@@ -372,19 +417,19 @@ export class TreemapSeries extends HierarchySeries {
             const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
             text.visible = isVisible;
             if (isVisible) {
-                text.x = (datum.x0 + datum.x1) / 2;
-                text.y = (datum.y0 + datum.y1) / 2;
+                text.x = this.getLabelCenterX(datum);
+                text.y = this.getLabelCenterY(datum);
             } else {
                 if (tickerNode) {
                     tickerNode.textBaseline = 'middle';
-                    tickerNode.y = (datum.y0 + datum.y1) / 2;
+                    tickerNode.y = this.getLabelCenterY(datum);
                 }
             }
         });
     }
 
     getDomain(direction: ChartAxisDirection): any[] {
-        return [];
+        return [0, 1];
     }
 
     getTooltipHtml(seriesDatum: any): string {
@@ -439,8 +484,8 @@ function makeResizeable(scene: Scene, update: () => void) {
 }
 
 enum TextNodeTag {
-    Name,
-    Change
+    Title,
+    Value
 }
 
 function createOrgTreeMap() {
@@ -459,8 +504,6 @@ function createOrgTreeMap() {
     scene.root = rootGroup;
 
     let groupSelection: Selection<Group, Group, any, any> = Selection.select(rootGroup).selectAll<Group>();
-
-    const colorMap = new Map<Rect, string>();
 
     function update() {
         const { width, height } = scene;
@@ -489,10 +532,12 @@ function createOrgTreeMap() {
         groupSelection = updateGroups.merge(enterGroups);
 
         // @ts-ignore
-        const colorScale = d3.scaleLinear().domain([0, 2, 4]).range(['#d73027', '#fee08b', '#1a9850']);
+        const colorScale = new LinearScale();
+        colorScale.domain = [0, 2, 4];
+        colorScale.range = ['#d73027', '#fee08b', '#1a9850'];
 
         groupSelection.selectByClass(Rect).each((rect, datum, index) => {
-            rect.fill = colorScale(datum.depth) as any;
+            rect.fill = colorScale.convert(datum.depth) as any;
             rect.stroke = 'black';
             rect.strokeWidth = 1;
             rect.crisp = true;
@@ -503,13 +548,12 @@ function createOrgTreeMap() {
             rect.height = datum.y1 - datum.y0;
         });
 
-        groupSelection.selectByClass(Text).each((text, datum, index) => {
+        groupSelection.selectByClass(Text).each((text, datum) => {
             text.fontSize = fontSize;
             text.fontFamily = fontFamily;
             text.textBaseline = 'top';
 
             const isRoot = !datum.depth;
-            const isParent = !!datum.children;
 
             text.text = datum.data.orgHierarchy;
             const bbox = text.computeBBox();
@@ -529,6 +573,19 @@ function createStockTreeMapChart() {
     const chart = new HierarchyChart();
     const series = new TreemapSeries();
 
+    chart.title = new Caption();
+    chart.title.text = 'Standard and Poor\'s 500 index stocks categorized by sectors and industries.';
+    chart.title.color = 'rgb(50, 50, 50)';
+    chart.title.fontSize = 18;
+    chart.title.fontWeight = 'bold';
+    chart.title.fontFamily = 'Verdana, sans-serif';
+
+    chart.subtitle = new Caption();
+    chart.subtitle.text = 'Size represents market cap.';
+    chart.title.color = 'rgb(50, 50, 50)';
+    chart.subtitle.fontSize = 14;
+    chart.subtitle.fontFamily = 'Verdana, sans-serif';
+
     chart.width = 800;
     chart.height = 600;
     chart.series = [series];
@@ -544,6 +601,32 @@ function createStockTreeMapChart() {
         }
         traverse(data);
         chart.data = data;
+    });
+
+    createButton('Alter data 2', () => {
+        function traverse(root: any, index = 0) {
+            root.size = Math.random() * 1000;
+            root.test = Math.log(index + 1) * 1000 * Math.random();
+            if (root.children) {
+                root.children.forEach((child: any, index: number) => traverse(child, index));
+            }
+        }
+        traverse(data);
+        chart.data = data;
+        series.sizeKey = 'test';
+    });
+
+    createSlider('Shadow Blur', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], value => {
+        series.shadow.blur = value;
+    });
+    createSlider('Title Size', [8, 10, 12, 14, 16, 18, 20, 22, 24], value => {
+        series.title.fontSize = value;
+    });
+    createSlider('Subtitle Size', [5, 6, 7, 8, 9, 10, 11, 12], value => {
+        series.subtitle.fontSize = value;
+    });
+    createSlider('Node padding', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], value => {
+        series.nodePadding = value;
     });
 
     makeChartResizeable(chart);
