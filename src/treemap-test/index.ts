@@ -15,7 +15,7 @@ import { Observable, reactive } from "../../charts/util/observable";
 import { Chart, TooltipRendererResult, toTooltipHtml } from "../../charts/chart/chart";
 import { ClipRect } from "../../charts/scene/clipRect";
 import { BBox } from "../../charts/scene/bbox";
-import { Series, SeriesTooltip } from "../../charts/chart/series/series";
+import { HighlightStyle, Series, SeriesTooltip } from "../../charts/chart/series/series";
 import { ChartAxisDirection } from "../../charts/chart/chartAxis";
 import { LegendDatum } from "../../charts/chart/legend";
 import { createId } from "../../charts/util/id";
@@ -176,6 +176,14 @@ export class TreemapSeries extends HierarchySeries {
     private layout = d3.treemap().round(true);
     private dataRoot?: d3.HierarchyNode<any>;
 
+    constructor() {
+        super();
+
+        this.shadow.addEventListener('change', this.update, this);
+        this.title.addEventListener('change', this.update, this);
+        this.subtitle.addEventListener('change', this.update, this);
+    }
+
     readonly title: TreemapSeriesLabel = (() => {
         const label = new TreemapSeriesLabel();
         label.fontWeight = 'bold';
@@ -245,15 +253,13 @@ export class TreemapSeries extends HierarchySeries {
         return this._shadow;
     }
 
-    constructor() {
-        super();
-
-        this.shadow.addEventListener('change', this.update, this);
-        this.title.addEventListener('change', this.update, this);
-        this.subtitle.addEventListener('change', this.update, this);
-    }
+    highlightStyle: HighlightStyle = { fill: 'yellow' };
 
     readonly tooltip = new TreemapSeriesTooltip();
+
+    onHighlightChange() {
+        this.updateNodes();
+    }
 
     private updateLayoutPadding() {
         const { title, subtitle, nodePadding } = this;
@@ -280,7 +286,29 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     processData(): boolean {
-        this.dataRoot = d3.hierarchy(this.data).sum(datum => datum.children ? 1 : datum[this.sizeKey]);
+        this.dataRoot = d3.hierarchy(this.data)
+            .sum(datum => datum.children ? 1 : datum[this.sizeKey]);
+
+        const colorScale = new LinearScale();
+        colorScale.domain = [-5, 5];
+        colorScale.range = [0, 1];
+        const colorInterpolator = makeColorInterpolator('#cb4b3f', '#6acb64');
+
+        const series = this;
+        function traverse(root: any) {
+            const { children } = root;
+            const value = -5 + Math.random() * 10;
+            root.series = series;
+            root.fill = children ? '#272931' : colorInterpolator(colorScale.convert(value));
+            root.title = children ? root.data.name.toUpperCase() : root.data.name;
+            root.subtitle = value;
+
+            if (children) {
+                children.forEach((child: any) => traverse(child));
+            }
+        }
+        traverse(this.dataRoot);
+
         return true;
     }
 
@@ -293,17 +321,15 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     update(): void {
-        const { colorMap, tickerMap, nodePadding, title, subtitle, labels, shadow } = this;
+        const { tickerMap, nodePadding, title, subtitle, labels, shadow } = this;
+        const { highlightedDatum } = this.chart;
+        const { fill: highlightFill, stroke: highlightStroke } = this.highlightStyle;
         const seriesRect = this.chart.getSeriesRect();
 
         this.layout = this.layout.size([seriesRect.width, seriesRect.height]).round(true);
         this.updateLayoutPadding();
 
         const descendants = this.layout(this.dataRoot).descendants();
-
-        descendants.forEach((datum: any) => {
-            datum.series = this;
-        });
 
         const updateGroups = this.groupSelection.setData(descendants);
         updateGroups.exit.remove();
@@ -315,21 +341,137 @@ export class TreemapSeries extends HierarchySeries {
 
         this.groupSelection = updateGroups.merge(enterGroups);
 
-        const colorScale = new LinearScale();
-        colorScale.domain = [-5, 5];
-        colorScale.range = [0, 1];
-        const colorInterpolator = makeColorInterpolator('#cb4b3f', '#6acb64');
+        // this.groupSelection.selectByClass(Rect).each((rect, datum) => {
+        //     const highlighted = datum === highlightedDatum;
+        //     const fill = highlighted && highlightFill !== undefined ? highlightFill : datum.fill;
+        //     const stroke = highlighted && highlightStroke !== undefined ? highlightStroke : datum.depth < 2 ? undefined : 'black';
+
+        //     // let fill = colorMap.get(rect);
+        //     // if (!fill) {
+        //     //     fill = isParent ? '#272931' : colorInterpolator(colorScale.convert(-5 + Math.random() * 10));
+        //     //     colorMap.set(rect, fill);
+        //     // }
+
+        //     rect.fill = fill;
+        //     rect.stroke = stroke;
+        //     rect.strokeWidth = 1;
+        //     rect.crisp = true;
+
+        //     rect.x = datum.x0;
+        //     rect.y = datum.y0;
+        //     rect.width = datum.x1 - datum.x0;
+        //     rect.height = datum.y1 - datum.y0;
+
+        //     // if (datum.hasTitle && datum.data && datum.data.name === 'Money Center Banks') {
+        //     //     rect.fill = 'gold';
+        //     // }
+        // });
+
+        // this.groupSelection.selectByTag<Text>(TextNodeTag.Title).each((text, datum, index) => {
+        //     const isLeaf = !datum.children;
+        //     const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
+        //     const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
+        //     const hasTitle = datum.hasTitle;
+        //     const isParent = !!datum.children;
+        //     const name = datum.data.name;
+
+        //     let label;
+        //     if (isLeaf) {
+        //         if (innerNodeHeight > 40 && innerNodeWidth > 40) {
+        //             label = labels.large;
+        //         } else if (innerNodeHeight > 20 && innerNodeHeight > 20) {
+        //             label = labels.medium;
+        //         } else {
+        //             label = labels.small;
+        //         }
+        //     } else {
+        //         if (datum.depth > 1) {
+        //             label = subtitle;
+        //         } else {
+        //             label = title;
+        //         }
+        //     }
+
+        //     text.fontWeight = label.fontWeight;
+        //     text.fontSize = label.fontSize;
+        //     text.fontFamily = label.fontFamily;
+        //     text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');
+        //     text.textAlign = hasTitle ? 'left' : 'center';
+        //     text.text = datum.title;
+
+        //     const textBBox = text.computeBBox();
+
+        //     const hasLabel = isLeaf && textBBox
+        //         && textBBox.width <= innerNodeWidth
+        //         && textBBox.height * 2 + 8 <= innerNodeHeight;
+
+        //     tickerMap.set(name, hasLabel ? text : undefined);
+
+        //     text.fill = 'white';
+        //     text.fillShadow = hasLabel ? shadow : undefined;
+        //     text.visible = hasTitle || hasLabel;
+
+        //     if (hasTitle) {
+        //         text.x = datum.x0 + 3;
+        //         text.y = datum.y0 + nodePadding;
+        //     } else {
+        //         text.x = this.getLabelCenterX(datum);
+        //         text.y = this.getLabelCenterY(datum);
+        //     }
+        // });
+
+        // this.groupSelection.selectByTag<Text>(TextNodeTag.Value).each((text, datum) => {
+        //     const isLeaf = !datum.children;
+        //     const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
+        //     // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
+        //     // const font = innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
+
+        //     text.fontSize = 12;
+        //     text.fontFamily = 'Verdana, sans-serif';
+        //     text.textBaseline = 'top';
+        //     text.textAlign = 'center';
+        //     text.text = String(datum.subtitle.toFixed(2)) + '%';
+
+        //     const textBBox = text.computeBBox();
+        //     const tickerNode = tickerMap.get(datum.data.name);
+        //     const hasLabel = !!tickerNode || false;
+
+        //     text.fill = 'white';
+        //     text.fillShadow = shadow;
+        //     const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
+        //     text.visible = isVisible;
+        //     if (isVisible) {
+        //         text.x = this.getLabelCenterX(datum);
+        //         text.y = this.getLabelCenterY(datum);
+        //     } else {
+        //         if (tickerNode) {
+        //             tickerNode.textBaseline = 'middle';
+        //             tickerNode.y = this.getLabelCenterY(datum);
+        //         }
+        //     }
+        // });
+
+        this.updateNodes();
+    }
+
+    updateNodes() {
+        const { highlightedDatum } = this.chart;
+        const { fill: highlightFill, stroke: highlightStroke } = this.highlightStyle;
+        const { tickerMap, nodePadding, title, subtitle, labels, shadow } = this;
 
         this.groupSelection.selectByClass(Rect).each((rect, datum) => {
-            const isParent = !!datum.children;
+            const highlighted = datum === highlightedDatum;
+            const fill = highlighted && highlightFill !== undefined ? highlightFill : datum.fill;
+            const stroke = highlighted && highlightStroke !== undefined ? highlightStroke : datum.depth < 2 ? undefined : 'black';
 
-            let fill = colorMap.get(rect);
-            if (!fill) {
-                fill = isParent ? '#272931' : colorInterpolator(colorScale.convert(-5 + Math.random() * 10));
-                colorMap.set(rect, fill);
-            }
+            // let fill = colorMap.get(rect);
+            // if (!fill) {
+            //     fill = isParent ? '#272931' : colorInterpolator(colorScale.convert(-5 + Math.random() * 10));
+            //     colorMap.set(rect, fill);
+            // }
+
             rect.fill = fill;
-            rect.stroke = datum.depth < 2 ? undefined : 'black';
+            rect.stroke = stroke;
             rect.strokeWidth = 1;
             rect.crisp = true;
 
@@ -350,6 +492,7 @@ export class TreemapSeries extends HierarchySeries {
             const hasTitle = datum.hasTitle;
             const isParent = !!datum.children;
             const name = datum.data.name;
+            const highlighted = datum === highlightedDatum;
 
             let label;
             if (isLeaf) {
@@ -373,7 +516,7 @@ export class TreemapSeries extends HierarchySeries {
             text.fontFamily = label.fontFamily;
             text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');
             text.textAlign = hasTitle ? 'left' : 'center';
-            text.text = isParent ? name.toUpperCase() : name;
+            text.text = datum.title;
 
             const textBBox = text.computeBBox();
 
@@ -383,7 +526,7 @@ export class TreemapSeries extends HierarchySeries {
 
             tickerMap.set(name, hasLabel ? text : undefined);
 
-            text.fill = 'white';
+            text.fill = highlighted ? 'black' : 'white';
             text.fillShadow = hasLabel ? shadow : undefined;
             text.visible = hasTitle || hasLabel;
 
@@ -399,6 +542,7 @@ export class TreemapSeries extends HierarchySeries {
         this.groupSelection.selectByTag<Text>(TextNodeTag.Value).each((text, datum) => {
             const isLeaf = !datum.children;
             const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
+            const highlighted = datum === highlightedDatum;
             // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
             // const font = innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
 
@@ -406,13 +550,13 @@ export class TreemapSeries extends HierarchySeries {
             text.fontFamily = 'Verdana, sans-serif';
             text.textBaseline = 'top';
             text.textAlign = 'center';
-            text.text = '+1.43%';
+            text.text = String(datum.subtitle.toFixed(2)) + '%';
 
             const textBBox = text.computeBBox();
             const tickerNode = tickerMap.get(datum.data.name);
             const hasLabel = !!tickerNode || false;
 
-            text.fill = 'white';
+            text.fill = highlighted ? 'black' : 'white';
             text.fillShadow = shadow;
             const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
             text.visible = isVisible;
@@ -432,11 +576,29 @@ export class TreemapSeries extends HierarchySeries {
         return [0, 1];
     }
 
-    getTooltipHtml(seriesDatum: any): string {
-        return toTooltipHtml({
-            title: 'Tooltip',
-            content: String(seriesDatum.value)
-        });
+    getTooltipHtml(datum: any): string {
+        const { tooltip, sizeKey } = this;
+
+        const { renderer: tooltipRenderer } = tooltip;
+        const title: string | undefined = undefined;
+        const content: string | undefined = undefined;
+        const color = datum.fill || 'gray';
+
+        const defaults: TooltipRendererResult = {
+            title,
+            backgroundColor: color,
+            content
+        };
+
+        if (tooltipRenderer) {
+            return toTooltipHtml(tooltipRenderer({
+                datum,
+                sizeKey,
+                color
+            }), defaults);
+        }
+
+        return toTooltipHtml(defaults);
     }
 
     listSeriesItems(legendData: LegendDatum[]): void {
@@ -572,6 +734,30 @@ function createOrgTreeMap() {
 function createStockTreeMapChart() {
     const chart = new HierarchyChart();
     const series = new TreemapSeries();
+
+    series.tooltip.renderer = (params: any) => {
+        const { datum } = params;
+        const title = datum.parent ? datum.parent.data.name || datum.parent.title : undefined;
+        // debugger;
+        let content = '<div>';
+        let ellipsis = false;
+        if (datum.parent) {
+            const maxCount = 5;
+            ellipsis = datum.parent.children.length > maxCount;
+            datum.parent.children.slice(0, maxCount).forEach((child: any, index: number) => {
+                content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.title}</strong>: ${String(child.subtitle.toFixed(2))}%</div>`;
+            });
+        }
+        if (ellipsis) {
+            content += `<div style="text-align: center;">...</div>`;
+        }
+        content += '</div>';
+        return {
+            title,
+            content,
+            backgroundColor: 'gray'
+        };
+    };
 
     chart.title = new Caption();
     chart.title.text = 'Standard and Poor\'s 500 index stocks categorized by sectors and industries.';
