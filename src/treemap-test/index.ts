@@ -113,44 +113,9 @@ export class HierarchyChart extends Chart {
 }
 
 export abstract class HierarchySeries extends Series {
-    // readonly id = createId(this);
-
-    // get type(): string {
-    //     return (this.constructor as any).type || '';
-    // }
-
-    /**
-     * The group node that contains all the nodes used to render this series.
-     */
-    // readonly group: Group = new Group();
-
-    // Package-level visibility, not meant to be set by the user.
     chart?: HierarchyChart;
 
-    // tooltip: SeriesTooltip;
-
     @reactive('dataChange') data: any = undefined;
-    // @reactive('dataChange') visible = true;
-    // @reactive('layoutChange') showInLegend = true;
-
-    // setColors(fills: string[], strokes: string[]) { }
-
-    // abstract processData(): boolean;
-    // abstract update(): void;
-
-    // abstract getTooltipHtml(seriesDatum: any): string;
-
-    // fireNodeClickEvent(event: MouseEvent, datum: SeriesNodeDatum): void { }
-
-    /**
-     * @private
-     * Populates the given {@param data} array with the items of this series
-     * that should be shown in the legend. It's up to the series to determine
-     * what is considered an item. An item could be the series itself or some
-     * part of the series.
-     * @param data
-     */
-    // abstract listSeriesItems(data: LegendDatum[]): void;
 }
 
 export interface TreemapTooltipRendererParams {
@@ -321,9 +286,6 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     update(): void {
-        const { tickerMap, nodePadding, title, subtitle, labels, shadow } = this;
-        const { highlightedDatum } = this.chart;
-        const { fill: highlightFill, stroke: highlightStroke } = this.highlightStyle;
         const seriesRect = this.chart.getSeriesRect();
 
         this.layout = this.layout.size([seriesRect.width, seriesRect.height]).round(true);
@@ -340,116 +302,6 @@ export class TreemapSeries extends HierarchySeries {
         enterGroups.append(Text).each(node => node.tag = TextNodeTag.Value);
 
         this.groupSelection = updateGroups.merge(enterGroups);
-
-        // this.groupSelection.selectByClass(Rect).each((rect, datum) => {
-        //     const highlighted = datum === highlightedDatum;
-        //     const fill = highlighted && highlightFill !== undefined ? highlightFill : datum.fill;
-        //     const stroke = highlighted && highlightStroke !== undefined ? highlightStroke : datum.depth < 2 ? undefined : 'black';
-
-        //     // let fill = colorMap.get(rect);
-        //     // if (!fill) {
-        //     //     fill = isParent ? '#272931' : colorInterpolator(colorScale.convert(-5 + Math.random() * 10));
-        //     //     colorMap.set(rect, fill);
-        //     // }
-
-        //     rect.fill = fill;
-        //     rect.stroke = stroke;
-        //     rect.strokeWidth = 1;
-        //     rect.crisp = true;
-
-        //     rect.x = datum.x0;
-        //     rect.y = datum.y0;
-        //     rect.width = datum.x1 - datum.x0;
-        //     rect.height = datum.y1 - datum.y0;
-
-        //     // if (datum.hasTitle && datum.data && datum.data.name === 'Money Center Banks') {
-        //     //     rect.fill = 'gold';
-        //     // }
-        // });
-
-        // this.groupSelection.selectByTag<Text>(TextNodeTag.Title).each((text, datum, index) => {
-        //     const isLeaf = !datum.children;
-        //     const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
-        //     const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
-        //     const hasTitle = datum.hasTitle;
-        //     const isParent = !!datum.children;
-        //     const name = datum.data.name;
-
-        //     let label;
-        //     if (isLeaf) {
-        //         if (innerNodeHeight > 40 && innerNodeWidth > 40) {
-        //             label = labels.large;
-        //         } else if (innerNodeHeight > 20 && innerNodeHeight > 20) {
-        //             label = labels.medium;
-        //         } else {
-        //             label = labels.small;
-        //         }
-        //     } else {
-        //         if (datum.depth > 1) {
-        //             label = subtitle;
-        //         } else {
-        //             label = title;
-        //         }
-        //     }
-
-        //     text.fontWeight = label.fontWeight;
-        //     text.fontSize = label.fontSize;
-        //     text.fontFamily = label.fontFamily;
-        //     text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');
-        //     text.textAlign = hasTitle ? 'left' : 'center';
-        //     text.text = datum.title;
-
-        //     const textBBox = text.computeBBox();
-
-        //     const hasLabel = isLeaf && textBBox
-        //         && textBBox.width <= innerNodeWidth
-        //         && textBBox.height * 2 + 8 <= innerNodeHeight;
-
-        //     tickerMap.set(name, hasLabel ? text : undefined);
-
-        //     text.fill = 'white';
-        //     text.fillShadow = hasLabel ? shadow : undefined;
-        //     text.visible = hasTitle || hasLabel;
-
-        //     if (hasTitle) {
-        //         text.x = datum.x0 + 3;
-        //         text.y = datum.y0 + nodePadding;
-        //     } else {
-        //         text.x = this.getLabelCenterX(datum);
-        //         text.y = this.getLabelCenterY(datum);
-        //     }
-        // });
-
-        // this.groupSelection.selectByTag<Text>(TextNodeTag.Value).each((text, datum) => {
-        //     const isLeaf = !datum.children;
-        //     const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
-        //     // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
-        //     // const font = innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
-
-        //     text.fontSize = 12;
-        //     text.fontFamily = 'Verdana, sans-serif';
-        //     text.textBaseline = 'top';
-        //     text.textAlign = 'center';
-        //     text.text = String(datum.subtitle.toFixed(2)) + '%';
-
-        //     const textBBox = text.computeBBox();
-        //     const tickerNode = tickerMap.get(datum.data.name);
-        //     const hasLabel = !!tickerNode || false;
-
-        //     text.fill = 'white';
-        //     text.fillShadow = shadow;
-        //     const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
-        //     text.visible = isVisible;
-        //     if (isVisible) {
-        //         text.x = this.getLabelCenterX(datum);
-        //         text.y = this.getLabelCenterY(datum);
-        //     } else {
-        //         if (tickerNode) {
-        //             tickerNode.textBaseline = 'middle';
-        //             tickerNode.y = this.getLabelCenterY(datum);
-        //         }
-        //     }
-        // });
 
         this.updateNodes();
     }
@@ -531,7 +383,7 @@ export class TreemapSeries extends HierarchySeries {
             text.visible = hasTitle || hasLabel;
 
             if (hasTitle) {
-                text.x = datum.x0 + 3;
+                text.x = datum.x0 + nodePadding;
                 text.y = datum.y0 + nodePadding;
             } else {
                 text.x = this.getLabelCenterX(datum);
@@ -735,29 +587,29 @@ function createStockTreeMapChart() {
     const chart = new HierarchyChart();
     const series = new TreemapSeries();
 
-    series.tooltip.renderer = (params: any) => {
-        const { datum } = params;
-        const title = datum.parent ? datum.parent.data.name || datum.parent.title : undefined;
-        // debugger;
-        let content = '<div>';
-        let ellipsis = false;
-        if (datum.parent) {
-            const maxCount = 5;
-            ellipsis = datum.parent.children.length > maxCount;
-            datum.parent.children.slice(0, maxCount).forEach((child: any, index: number) => {
-                content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.title}</strong>: ${String(child.subtitle.toFixed(2))}%</div>`;
-            });
-        }
-        if (ellipsis) {
-            content += `<div style="text-align: center;">...</div>`;
-        }
-        content += '</div>';
-        return {
-            title,
-            content,
-            backgroundColor: 'gray'
-        };
-    };
+    // series.tooltip.renderer = (params: any) => {
+    //     const { datum } = params;
+    //     const title = datum.parent ? datum.parent.data.name || datum.parent.title : undefined;
+    //     // debugger;
+    //     let content = '<div>';
+    //     let ellipsis = false;
+    //     if (datum.parent) {
+    //         const maxCount = 5;
+    //         ellipsis = datum.parent.children.length > maxCount;
+    //         datum.parent.children.slice(0, maxCount).forEach((child: any, index: number) => {
+    //             content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.title}</strong>: ${String(child.subtitle.toFixed(2))}%</div>`;
+    //         });
+    //     }
+    //     if (ellipsis) {
+    //         content += `<div style="text-align: center;">...</div>`;
+    //     }
+    //     content += '</div>';
+    //     return {
+    //         title,
+    //         content,
+    //         backgroundColor: 'gray'
+    //     };
+    // };
 
     chart.title = new Caption();
     chart.title.text = 'Standard and Poor\'s 500 index stocks categorized by sectors and industries.';
