@@ -15,7 +15,7 @@ import { Observable, reactive } from "../../charts/util/observable";
 import { Chart, TooltipRendererResult, toTooltipHtml } from "../../charts/chart/chart";
 import { ClipRect } from "../../charts/scene/clipRect";
 import { BBox } from "../../charts/scene/bbox";
-import { HighlightStyle, Series, SeriesTooltip } from "../../charts/chart/series/series";
+import { HighlightStyle, Series, SeriesNodeDatum, SeriesTooltip } from "../../charts/chart/series/series";
 import { ChartAxisDirection } from "../../charts/chart/chartAxis";
 import { LegendDatum } from "../../charts/chart/legend";
 import { createId } from "../../charts/util/id";
@@ -118,7 +118,30 @@ export abstract class HierarchySeries extends Series {
     @reactive('dataChange') data: any = undefined;
 }
 
+interface TreemapNodeDatum extends SeriesNodeDatum {
+    data: any;
+    parent?: TreemapNodeDatum;
+    children?: TreemapNodeDatum[];
+    value: number;
+    x0: number;
+    x1: number;
+    y0: number;
+    y1: number;
+    depth: number;
+
+    series: TreemapSeries;
+    fill: string;
+    label: string;
+    hasTitle: boolean;
+    $value: number;
+}
+
 export interface TreemapTooltipRendererParams {
+    datum: TreemapNodeDatum;
+    sizeKey: string;
+    labelKey: string;
+    valueKey: string;
+    color: string;
 }
 
 export class TreemapSeriesTooltip extends SeriesTooltip {
@@ -134,7 +157,7 @@ export class TreemapSeries extends HierarchySeries {
     static className = 'TreemapSeries';
     static type = 'treemap';
 
-    private groupSelection: Selection<Group, Group, any, any> = Selection.select(this.group).selectAll<Group>();
+    private groupSelection: Selection<Group, Group, TreemapNodeDatum, any> = Selection.select(this.group).selectAll<Group>();
 
     private colorMap = new Map<Rect, string>();
     private tickerMap = new Map<string, Text | undefined>();
@@ -273,8 +296,8 @@ export class TreemapSeries extends HierarchySeries {
 
             root.series = series;
             root.fill = children ? '#272931' : colorInterpolator(colorScale.convert(data[valueKey]));
-            root.title = children ? data[labelKey].toUpperCase() : data[labelKey];
-            root.subtitle = data[valueKey];
+            root.label = children ? data[labelKey].toUpperCase() : data[labelKey];
+            root.$value = data[valueKey];
 
             if (children) {
                 children.forEach((child: any) => traverse(child));
@@ -309,7 +332,7 @@ export class TreemapSeries extends HierarchySeries {
         enterGroups.append(Text).each(node => node.tag = TextNodeTag.Label);
         enterGroups.append(Text).each(node => node.tag = TextNodeTag.Value);
 
-        this.groupSelection = updateGroups.merge(enterGroups);
+        this.groupSelection = updateGroups.merge(enterGroups) as any;
 
         this.updateNodes();
     }
@@ -335,14 +358,11 @@ export class TreemapSeries extends HierarchySeries {
             rect.strokeWidth = 1;
             rect.crisp = true;
 
+            debugger;
             rect.x = datum.x0;
             rect.y = datum.y0;
             rect.width = datum.x1 - datum.x0;
             rect.height = datum.y1 - datum.y0;
-
-            // if (datum.hasTitle && datum.data && datum.data.name === 'Money Center Banks') {
-            //     rect.fill = 'gold';
-            // }
         });
 
         this.groupSelection.selectByTag<Text>(TextNodeTag.Label).each((text, datum, index) => {
@@ -376,7 +396,7 @@ export class TreemapSeries extends HierarchySeries {
             text.fontFamily = label.fontFamily;
             text.textBaseline = isLeaf ? 'bottom' : (hasTitle ? 'top' : 'middle');
             text.textAlign = hasTitle ? 'left' : 'center';
-            text.text = datum.title;
+            text.text = datum.label;
 
             const textBBox = text.computeBBox();
 
@@ -410,7 +430,7 @@ export class TreemapSeries extends HierarchySeries {
             text.fontFamily = 'Verdana, sans-serif';
             text.textBaseline = 'top';
             text.textAlign = 'center';
-            text.text = String(datum.subtitle.toFixed(2)) + '%';
+            text.text = String(datum.$value.toFixed(2)) + '%';
 
             const textBBox = text.computeBBox();
             const tickerNode = tickerMap.get(datum.data.name);
@@ -436,7 +456,7 @@ export class TreemapSeries extends HierarchySeries {
         return [0, 1];
     }
 
-    getTooltipHtml(datum: any): string {
+    getTooltipHtml(datum: TreemapNodeDatum): string {
         const { tooltip, sizeKey, labelKey, valueKey, valueName } = this;
         const { data } = datum;
         const { renderer: tooltipRenderer } = tooltip;
@@ -459,6 +479,8 @@ export class TreemapSeries extends HierarchySeries {
             return toTooltipHtml(tooltipRenderer({
                 datum,
                 sizeKey,
+                labelKey,
+                valueKey,
                 color
             }), defaults);
         }
@@ -601,29 +623,29 @@ function createStockTreeMapChart() {
     const series = new TreemapSeries();
     series.labelKey = 'name';
 
-    // series.tooltip.renderer = (params: any) => {
-    //     const { datum } = params;
-    //     const title = datum.parent ? datum.parent.data.name || datum.parent.title : undefined;
-    //     // debugger;
-    //     let content = '<div>';
-    //     let ellipsis = false;
-    //     if (datum.parent) {
-    //         const maxCount = 5;
-    //         ellipsis = datum.parent.children.length > maxCount;
-    //         datum.parent.children.slice(0, maxCount).forEach((child: any, index: number) => {
-    //             content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.title}</strong>: ${String(child.subtitle.toFixed(2))}%</div>`;
-    //         });
-    //     }
-    //     if (ellipsis) {
-    //         content += `<div style="text-align: center;">...</div>`;
-    //     }
-    //     content += '</div>';
-    //     return {
-    //         title,
-    //         content,
-    //         backgroundColor: 'gray'
-    //     };
-    // };
+    series.tooltip.renderer = params => {
+        const { datum } = params;
+        const title = datum.parent ? datum.parent.data[params.labelKey] || datum.parent.label : undefined;
+        let content = '<div>';
+        let ellipsis = false;
+
+        if (datum.parent) {
+            const maxCount = 5;
+            ellipsis = datum.parent.children.length > maxCount;
+            datum.parent.children.slice(0, maxCount).forEach(child => {
+                content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.label}</strong>: ${String(child.$value.toFixed(2))}%</div>`;
+            });
+        }
+        if (ellipsis) {
+            content += `<div style="text-align: center;">...</div>`;
+        }
+        content += '</div>';
+        return {
+            title,
+            content,
+            backgroundColor: 'gray'
+        };
+    };
 
     function traverse(root: any) {
         const { children } = root;
