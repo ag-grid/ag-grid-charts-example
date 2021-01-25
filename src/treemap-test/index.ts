@@ -264,7 +264,7 @@ export class TreemapSeries extends HierarchySeries {
             .paddingBottom(nodePadding)
             .paddingLeft(nodePadding)
             .paddingTop(node => {
-                let name = (node.data as any).name;
+                let name = (node.data as any).name || '';
                 if (node.children) {
                     name = name.toUpperCase();
                 }
@@ -281,10 +281,13 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     processData(): boolean {
-        const { labelKey, valueKey, valueDomain, valueRange } = this;
+        const { data, sizeKey, labelKey, valueKey, valueDomain, valueRange } = this;
 
-        this.dataRoot = d3.hierarchy(this.data)
-            .sum(datum => datum.children ? 1 : datum[this.sizeKey]);
+        if (sizeKey) {
+            this.dataRoot = d3.hierarchy(data).sum(datum => datum.children ? 1 : datum[sizeKey]);
+        } else {
+            this.dataRoot = d3.hierarchy(data).sum(datum => datum.children ? 0 : 1);
+        }
 
         const colorScale = new LinearScale();
         colorScale.domain = valueDomain;
@@ -292,16 +295,21 @@ export class TreemapSeries extends HierarchySeries {
         const colorInterpolator = makeColorInterpolator(valueRange[0], valueRange[1]);
 
         const series = this;
-        function traverse(root: any) {
+        function traverse(root: any, depth = 0) {
             const { children, data } = root;
+            const label = data[labelKey];
 
             root.series = series;
             root.fill = children ? '#272931' : colorInterpolator(colorScale.convert(data[valueKey]));
-            root.label = children ? data[labelKey].toUpperCase() : data[labelKey];
+            if (label) {
+                root.label = children ? label.toUpperCase() : label;
+            } else {
+                root.label = '';
+            }
             root.$value = data[valueKey];
 
             if (children) {
-                children.forEach((child: any) => traverse(child));
+                children.forEach((child: any) => traverse(child, depth + 1));
             }
         }
         traverse(this.dataRoot);
@@ -423,6 +431,7 @@ export class TreemapSeries extends HierarchySeries {
             const isLeaf = !datum.children;
             const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
             const highlighted = datum === highlightedDatum;
+            const value = datum.$value;
             // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
             // const font = innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
 
@@ -430,7 +439,9 @@ export class TreemapSeries extends HierarchySeries {
             text.fontFamily = 'Verdana, sans-serif';
             text.textBaseline = 'top';
             text.textAlign = 'center';
-            text.text = String(datum.$value.toFixed(2)) + '%';
+            text.text = typeof value === 'number' && isFinite(value)
+                ? String(datum.$value.toFixed(2)) + '%'
+                : '';
 
             const textBBox = text.computeBBox();
             const tickerNode = tickerMap.get(datum.data.name);
@@ -467,7 +478,10 @@ export class TreemapSeries extends HierarchySeries {
         const color = datum.fill || 'gray';
 
         if (valueKey && valueName) {
-            content = `<b>${valueName}</b>: ${data[valueKey].toFixed(2)}`;
+            const value = data[valueKey];
+            if (typeof value === 'number' && isFinite(value)) {
+                content = `<b>${valueName}</b>: ${data[valueKey].toFixed(2)}`;
+            }
         }
 
         const defaults: TooltipRendererResult = {
@@ -637,7 +651,7 @@ function createStockTreeMapChart() {
             const maxCount = 5;
             ellipsis = datum.parent.children.length > maxCount;
             datum.parent.children.slice(0, maxCount).forEach(child => {
-                content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.label}</strong>: ${String(child.$value.toFixed(2))}%</div>`;
+                content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.label}</strong>: ${String(isFinite(child.$value) ? child.$value.toFixed(2) : '')}%</div>`;
             });
         }
         if (ellipsis) {
@@ -703,6 +717,17 @@ function createStockTreeMapChart() {
         traverse(data);
         chart.data = data;
         series.sizeKey = 'test';
+    });
+
+    createButton('Org Data', () => {
+        const data = convertGridTreeData(rowData);
+
+        chart.title.text = 'Organizational Chart';
+        chart.subtitle.text = 'of yet another big company';
+        chart.data = data;
+
+        series.labelKey = 'orgHierarchy';
+        series.sizeKey = '';
     });
 
     createSlider('Shadow Blur', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], value => {
