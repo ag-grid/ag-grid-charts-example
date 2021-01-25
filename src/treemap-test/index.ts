@@ -229,6 +229,7 @@ export class TreemapSeries extends HierarchySeries {
     @reactive('dataChange') valueRange: [string, string] = ['#cb4b3f', '#6acb64'];
 
     valueName: string = 'Value';
+    rootName: string = 'Root';
 
     private _shadow?: DropShadow = (() => {
         const shadow = new DropShadow();
@@ -457,11 +458,11 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     getTooltipHtml(datum: TreemapNodeDatum): string {
-        const { tooltip, sizeKey, labelKey, valueKey, valueName } = this;
+        const { tooltip, sizeKey, labelKey, valueKey, valueName, rootName } = this;
         const { data } = datum;
         const { renderer: tooltipRenderer } = tooltip;
 
-        const title: string | undefined = data[labelKey];
+        const title: string | undefined = datum.depth ? data[labelKey] : (rootName || data[labelKey]);
         let content: string | undefined = undefined;
         const color = datum.fill || 'gray';
 
@@ -625,7 +626,10 @@ function createStockTreeMapChart() {
 
     series.tooltip.renderer = params => {
         const { datum } = params;
-        const title = datum.parent ? datum.parent.data[params.labelKey] || datum.parent.label : undefined;
+        const customRootText = 'Custom Root Text';
+        const title = datum.parent ?
+            datum.parent.depth ? datum.parent.data[params.labelKey] : customRootText
+            : customRootText;
         let content = '<div>';
         let ellipsis = false;
 
