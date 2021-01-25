@@ -358,7 +358,6 @@ export class TreemapSeries extends HierarchySeries {
             rect.strokeWidth = 1;
             rect.crisp = true;
 
-            debugger;
             rect.x = datum.x0;
             rect.y = datum.y0;
             rect.width = datum.x1 - datum.x0;
@@ -407,7 +406,7 @@ export class TreemapSeries extends HierarchySeries {
             tickerMap.set(name, hasLabel ? text : undefined);
 
             text.fill = highlighted ? 'black' : 'white';
-            text.fillShadow = hasLabel ? shadow : undefined;
+            text.fillShadow = hasLabel && !highlighted ? shadow : undefined;
             text.visible = hasTitle || hasLabel;
 
             if (hasTitle) {
@@ -435,10 +434,11 @@ export class TreemapSeries extends HierarchySeries {
             const textBBox = text.computeBBox();
             const tickerNode = tickerMap.get(datum.data.name);
             const hasLabel = !!tickerNode || false;
+            const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
 
             text.fill = highlighted ? 'black' : 'white';
-            text.fillShadow = shadow;
-            const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
+            text.fillShadow = highlighted ? undefined : shadow;
+
             text.visible = isVisible;
             if (isVisible) {
                 text.x = this.getLabelCenterX(datum);
