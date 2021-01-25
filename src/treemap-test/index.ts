@@ -199,7 +199,13 @@ export class TreemapSeries extends HierarchySeries {
         return this._nodePadding;
     }
 
+    @reactive('dataChange') labelKey: string = 'label';
     @reactive('dataChange') sizeKey: string = 'size';
+    @reactive('dataChange') valueKey: string = 'value';
+    @reactive('dataChange') valueDomain: [number, number] = [-5, 5];
+    @reactive('dataChange') valueRange: [string, string] = ['#cb4b3f', '#6acb64'];
+
+    valueName: string = 'Value';
 
     private _shadow?: DropShadow = (() => {
         const shadow = new DropShadow();
@@ -251,22 +257,24 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     processData(): boolean {
+        const { labelKey, valueKey, valueDomain, valueRange } = this;
+
         this.dataRoot = d3.hierarchy(this.data)
             .sum(datum => datum.children ? 1 : datum[this.sizeKey]);
 
         const colorScale = new LinearScale();
-        colorScale.domain = [-5, 5];
+        colorScale.domain = valueDomain;
         colorScale.range = [0, 1];
-        const colorInterpolator = makeColorInterpolator('#cb4b3f', '#6acb64');
+        const colorInterpolator = makeColorInterpolator(valueRange[0], valueRange[1]);
 
         const series = this;
         function traverse(root: any) {
-            const { children } = root;
-            const value = -5 + Math.random() * 10;
+            const { children, data } = root;
+
             root.series = series;
-            root.fill = children ? '#272931' : colorInterpolator(colorScale.convert(value));
-            root.title = children ? root.data.name.toUpperCase() : root.data.name;
-            root.subtitle = value;
+            root.fill = children ? '#272931' : colorInterpolator(colorScale.convert(data[valueKey]));
+            root.title = children ? data[labelKey].toUpperCase() : data[labelKey];
+            root.subtitle = data[valueKey];
 
             if (children) {
                 children.forEach((child: any) => traverse(child));
@@ -298,7 +306,7 @@ export class TreemapSeries extends HierarchySeries {
 
         const enterGroups = updateGroups.enter.append(Group);
         enterGroups.append(Rect);
-        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Title);
+        enterGroups.append(Text).each(node => node.tag = TextNodeTag.Label);
         enterGroups.append(Text).each(node => node.tag = TextNodeTag.Value);
 
         this.groupSelection = updateGroups.merge(enterGroups);
@@ -337,7 +345,7 @@ export class TreemapSeries extends HierarchySeries {
             // }
         });
 
-        this.groupSelection.selectByTag<Text>(TextNodeTag.Title).each((text, datum, index) => {
+        this.groupSelection.selectByTag<Text>(TextNodeTag.Label).each((text, datum, index) => {
             const isLeaf = !datum.children;
             const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
             const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
@@ -429,12 +437,17 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     getTooltipHtml(datum: any): string {
-        const { tooltip, sizeKey } = this;
-
+        const { tooltip, sizeKey, labelKey, valueKey, valueName } = this;
+        const { data } = datum;
         const { renderer: tooltipRenderer } = tooltip;
-        const title: string | undefined = undefined;
-        const content: string | undefined = undefined;
+
+        const title: string | undefined = data[labelKey];
+        let content: string | undefined = undefined;
         const color = datum.fill || 'gray';
+
+        if (valueKey && valueName) {
+            content = `<b>${valueName}</b>: ${data[valueKey].toFixed(2)}`;
+        }
 
         const defaults: TooltipRendererResult = {
             title,
@@ -498,7 +511,7 @@ function makeResizeable(scene: Scene, update: () => void) {
 }
 
 enum TextNodeTag {
-    Title,
+    Label,
     Value
 }
 
@@ -586,6 +599,7 @@ function createOrgTreeMap() {
 function createStockTreeMapChart() {
     const chart = new HierarchyChart();
     const series = new TreemapSeries();
+    series.labelKey = 'name';
 
     // series.tooltip.renderer = (params: any) => {
     //     const { datum } = params;
@@ -610,6 +624,17 @@ function createStockTreeMapChart() {
     //         backgroundColor: 'gray'
     //     };
     // };
+
+    function traverse(root: any) {
+        const { children } = root;
+
+        root.value = -5 + Math.random() * 10;
+
+        if (children) {
+            children.forEach((child: any) => traverse(child));
+        }
+    }
+    traverse(data);
 
     chart.title = new Caption();
     chart.title.text = 'Standard and Poor\'s 500 index stocks categorized by sectors and industries.';
