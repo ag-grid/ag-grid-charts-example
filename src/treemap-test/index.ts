@@ -170,6 +170,10 @@ export class TreemapSeries extends HierarchySeries {
         this.shadow.addEventListener('change', this.update, this);
         this.title.addEventListener('change', this.update, this);
         this.subtitle.addEventListener('change', this.update, this);
+        this.labels.small.addEventListener('change', this.update, this);
+        this.labels.medium.addEventListener('change', this.update, this);
+        this.labels.large.addEventListener('change', this.update, this);
+        this.labels.value.addEventListener('change', this.update, this);
     }
 
     readonly title: TreemapSeriesLabel = (() => {
@@ -206,6 +210,11 @@ export class TreemapSeries extends HierarchySeries {
             const label = new Label();
             label.fontWeight = 'bold';
             label.fontSize = 10;
+            return label;
+        })(),
+        value: (() => {
+            const label = new Label();
+            label.color = 'white';
             return label;
         })()
     }
@@ -432,11 +441,14 @@ export class TreemapSeries extends HierarchySeries {
             const innerNodeWidth = datum.x1 - datum.x0 - nodePadding * 2;
             const highlighted = datum === highlightedDatum;
             const value = datum.$value;
+            const label = labels.value;
             // const innerNodeHeight = datum.y1 - datum.y0 - nodePadding * 2;
             // const font = innerNodeHeight > 40 && innerNodeWidth > 40 ? fonts.label.big : innerNodeHeight > 20  && innerNodeHeight > 20 ? fonts.label.medium : fonts.label.small
 
-            text.fontSize = 12;
-            text.fontFamily = 'Verdana, sans-serif';
+            text.fontSize = label.fontSize;
+            text.fontFamily = label.fontFamily;
+            text.fontStyle = label.fontStyle;
+            text.fontWeight = label.fontWeight;
             text.textBaseline = 'top';
             text.textAlign = 'center';
             text.text = typeof value === 'number' && isFinite(value)
@@ -448,7 +460,7 @@ export class TreemapSeries extends HierarchySeries {
             const hasLabel = !!tickerNode || false;
             const isVisible = hasLabel && !!textBBox && textBBox.width < innerNodeWidth;
 
-            text.fill = highlighted ? 'black' : 'white';
+            text.fill = highlighted ? 'black' : label.color;
             text.fillShadow = highlighted ? undefined : shadow;
 
             text.visible = isVisible;
@@ -728,6 +740,7 @@ function createStockTreeMapChart() {
 
         series.labelKey = 'orgHierarchy';
         series.sizeKey = '';
+        series.tooltip.renderer = undefined;
     });
 
     createSlider('Shadow Blur', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], value => {
@@ -735,6 +748,9 @@ function createStockTreeMapChart() {
     });
     createSlider('Title Size', [8, 10, 12, 14, 16, 18, 20, 22, 24], value => {
         series.title.fontSize = value;
+    });
+    createSlider('Value label size', [8, 10, 12, 14, 16, 18, 20, 22, 24], value => {
+        series.labels.value.fontSize = value;
     });
     createSlider('Subtitle Size', [5, 6, 7, 8, 9, 10, 11, 12], value => {
         series.subtitle.fontSize = value;
