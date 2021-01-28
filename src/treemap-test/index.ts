@@ -19,7 +19,6 @@ import { HighlightStyle, Series, SeriesNodeDatum, SeriesTooltip } from "../../ch
 import { ChartAxisDirection } from "../../charts/chart/chartAxis";
 import { LegendDatum } from "../../charts/chart/legend";
 import { createId } from "../../charts/util/id";
-import makeColorInterpolator from "../../charts/interpolate/color";
 import { makeChartResizeable } from "../../lib/chart";
 import { Caption, LinearScale } from "../../charts/main";
 import { Label } from "../../charts/chart/label";
@@ -234,8 +233,10 @@ export class TreemapSeries extends HierarchySeries {
     @reactive('dataChange') labelKey: string = 'label';
     @reactive('dataChange') sizeKey: string = 'size';
     @reactive('dataChange') valueKey: string = 'value';
-    @reactive('dataChange') valueDomain: [number, number] = [-5, 5];
-    @reactive('dataChange') valueRange: [string, string] = ['#cb4b3f', '#6acb64'];
+    @reactive('dataChange') valueDomain: number[] = [-5, 5];
+    @reactive('dataChange') valueRange: string[] = ['#cb4b3f', '#6acb64'];
+    @reactive('dataChange') colorParents: boolean = true;
+    @reactive('update') gradient: boolean = true;
 
     valueName: string = 'Value';
     rootName: string = 'Root';
@@ -266,14 +267,14 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     private updateLayoutPadding() {
-        const { title, subtitle, nodePadding } = this;
+        const { title, subtitle, nodePadding, labelKey } = this;
 
         this.layout
             .paddingRight(nodePadding)
             .paddingBottom(nodePadding)
             .paddingLeft(nodePadding)
             .paddingTop(node => {
-                let name = (node.data as any).name || '';
+                let name = (node.data as any)[labelKey] || '';
                 if (node.children) {
                     name = name.toUpperCase();
                 }
@@ -290,7 +291,7 @@ export class TreemapSeries extends HierarchySeries {
     }
 
     processData(): boolean {
-        const { data, sizeKey, labelKey, valueKey, valueDomain, valueRange } = this;
+        const { data, sizeKey, labelKey, valueKey, valueDomain, valueRange, colorParents } = this;
 
         if (sizeKey) {
             this.dataRoot = d3.hierarchy(data).sum(datum => datum.children ? 1 : datum[sizeKey]);
@@ -300,22 +301,23 @@ export class TreemapSeries extends HierarchySeries {
 
         const colorScale = new LinearScale();
         colorScale.domain = valueDomain;
-        colorScale.range = [0, 1];
-        const colorInterpolator = makeColorInterpolator(valueRange[0], valueRange[1]);
+        colorScale.range = valueRange;
 
         const series = this;
         function traverse(root: any, depth = 0) {
             const { children, data } = root;
             const label = data[labelKey];
+            const value = valueKey ? data[valueKey] : depth;
 
             root.series = series;
-            root.fill = children ? '#272931' : colorInterpolator(colorScale.convert(data[valueKey]));
+            root.fill = !children || colorParents ? colorScale.convert(value) : '#272931';
+            root.$value = value;
+
             if (label) {
                 root.label = children ? label.toUpperCase() : label;
             } else {
                 root.label = '';
             }
-            root.$value = data[valueKey];
 
             if (children) {
                 children.forEach((child: any) => traverse(child, depth + 1));
@@ -358,7 +360,7 @@ export class TreemapSeries extends HierarchySeries {
     updateNodes() {
         const { highlightedDatum } = this.chart;
         const { fill: highlightFill, stroke: highlightStroke } = this.highlightStyle;
-        const { tickerMap, nodePadding, title, subtitle, labels, shadow } = this;
+        const { tickerMap, nodePadding, title, subtitle, labels, shadow, gradient } = this;
 
         this.groupSelection.selectByClass(Rect).each((rect, datum) => {
             const highlighted = datum === highlightedDatum;
@@ -375,6 +377,7 @@ export class TreemapSeries extends HierarchySeries {
             rect.stroke = stroke;
             rect.strokeWidth = 1;
             rect.crisp = true;
+            rect.gradient = gradient;
 
             rect.x = datum.x0;
             rect.y = datum.y0;
@@ -648,34 +651,40 @@ function createOrgTreeMap() {
 function createStockTreeMapChart() {
     const chart = new HierarchyChart();
     const series = new TreemapSeries();
-    series.labelKey = 'name';
 
-    series.tooltip.renderer = params => {
-        const { datum } = params;
-        const customRootText = 'Custom Root Text';
-        const title = datum.parent ?
-            datum.parent.depth ? datum.parent.data[params.labelKey] : customRootText
-            : customRootText;
-        let content = '<div>';
-        let ellipsis = false;
+    function setupStockTreemap() {
+        series.labelKey = 'name';
+        series.colorParents = false;
+        series.gradient = true;
+        series.tooltip.renderer = params => {
+            const { datum } = params;
+            const customRootText = 'Custom Root Text';
+            const title = datum.parent ?
+                datum.parent.depth ? datum.parent.data[params.labelKey] : customRootText
+                : customRootText;
+            let content = '<div>';
+            let ellipsis = false;
 
-        if (datum.parent) {
-            const maxCount = 5;
-            ellipsis = datum.parent.children.length > maxCount;
-            datum.parent.children.slice(0, maxCount).forEach(child => {
-                content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.label}</strong>: ${String(isFinite(child.$value) ? child.$value.toFixed(2) : '')}%</div>`;
-            });
-        }
-        if (ellipsis) {
-            content += `<div style="text-align: center;">...</div>`;
-        }
-        content += '</div>';
-        return {
-            title,
-            content,
-            backgroundColor: 'gray'
+            if (datum.parent) {
+                const maxCount = 5;
+                ellipsis = datum.parent.children.length > maxCount;
+                datum.parent.children.slice(0, maxCount).forEach(child => {
+                    content += `<div style="font-weight: bold; color: white; background-color: ${child.fill}; padding: 5px;"><strong>${child.data.name || child.label}</strong>: ${String(isFinite(child.$value) ? child.$value.toFixed(2) : '')}%</div>`;
+                });
+            }
+            if (ellipsis) {
+                content += `<div style="text-align: center;">...</div>`;
+            }
+            content += '</div>';
+            return {
+                title,
+                content,
+                backgroundColor: 'gray'
+            };
         };
-    };
+    }
+
+    setupStockTreemap();
 
     function traverse(root: any) {
         const { children } = root;
@@ -716,6 +725,7 @@ function createStockTreeMapChart() {
         }
         traverse(data);
         chart.data = data;
+        setupStockTreemap();
     });
 
     createButton('Alter data 2', () => {
@@ -729,6 +739,7 @@ function createStockTreeMapChart() {
         traverse(data);
         chart.data = data;
         series.sizeKey = 'test';
+        setupStockTreemap();
     });
 
     createButton('Org Data', () => {
@@ -740,7 +751,13 @@ function createStockTreeMapChart() {
 
         series.labelKey = 'orgHierarchy';
         series.sizeKey = '';
+        series.valueKey = ''; // if empty, depth will be used an the value, where root has 0 depth
+        series.valueDomain = [0, 2, 4];
+        series.valueRange = ['#d73027', '#fee08b', '#1a9850'];
         series.tooltip.renderer = undefined;
+        series.nodePadding = 3;
+        series.colorParents = true;
+        series.gradient = false;
     });
 
     createSlider('Shadow Blur', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], value => {
