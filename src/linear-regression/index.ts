@@ -1,15 +1,14 @@
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { Caption } from "ag-charts-community/src/caption";
-import borneo from "ag-charts-community/src/chart/palettes";
-import { linearRegression } from "ag-charts-community/src/util/stat";
 import { data as timeData } from './data';
 
 import { createButton } from "../../lib/ui";
 import * as d3 from 'd3';
-import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { NumberAxis } from '../../charts/chart/axis/numberAxis';
+import { ChartAxisPosition } from '../../charts/chart/chartAxis';
+import { CartesianChart } from '../../charts/chart/cartesianChart';
+import { Caption } from '../../charts/caption';
+import { ScatterSeries } from '../../charts/chart/series/cartesian/scatterSeries';
+import { linearRegression } from '../../charts/util/stat';
+import { LineSeries } from '../../charts/chart/series/cartesian/lineSeries';
 
 type Datum = {
     x: number,
@@ -39,9 +38,10 @@ function createChart(data: Datum[]) {
     const scatterSeries = new ScatterSeries();
     scatterSeries.title = 'Price Data';
     // scatterSeries.marker = true;
-    scatterSeries.strokeWidth = 0;
+    scatterSeries.stroke = undefined;
     // scatterSeries.showInLegend = false;
-    scatterSeries.marker.size = 2;
+    scatterSeries.marker.size = 3;
+    scatterSeries.marker.stroke = undefined;
     scatterSeries.data = data;
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';
@@ -102,8 +102,7 @@ function createChart(data: Datum[]) {
 
             const slopeSeries = new LineSeries();
             slopeSeries.title = 'Linear Regression';
-            slopeSeries.fill = borneo.fills[2];
-            slopeSeries.stroke = borneo.strokes[2];
+            slopeSeries.stroke = 'red';
             slopeSeries.marker.enabled = false;
             slopeSeries.strokeWidth = 2;
             // slopeSeries.showInLegend = false;
@@ -137,7 +136,9 @@ function createTimeChart() {
 
     const scatterSeries = new ScatterSeries();
     scatterSeries.strokeWidth = 0;
-    scatterSeries.marker.size = 2;
+    scatterSeries.marker.size = 3;
+    scatterSeries.stroke = undefined;
+    scatterSeries.marker.stroke = undefined;
     scatterSeries.data = timeData.map(v => ({ x: v[0], y: v[1] }));
     scatterSeries.xKey = 'x';
     scatterSeries.yKey = 'y';

@@ -350,6 +350,18 @@ function createNumericLineChart() {
         lineSeries.marker.enabled = true;
     });
 
+    createButton('Hide labels', () => {
+        lineSeries.label.enabled = false;
+    });
+
+    createButton('Show labels', () => {
+        lineSeries.label.enabled = true;
+    });
+
+    createButton('Use label formatter', () => {
+        lineSeries.label.formatter = params => params.value.toFixed(2) + '😛';
+    });
+
     createButton('Animate Math.sin data', () => {
         const data: NumericDatum[] = [];
         const step = 0.02;
@@ -424,6 +436,7 @@ function createNumericLineChart() {
     createSlider('stroke width', [0, 2, 4, 6, 8], value => lineSeries.strokeWidth = value);
     createSlider('marker stroke width', [0, 2, 4, 6, 8], value => lineSeries.marker.strokeWidth = value);
     createSlider('marker size', [0, 2, 4, 6, 8], value => lineSeries.marker.size = value);
+    createSlider('label font size', [8, 10, 12, 14, 16, 18, 20, 22, 24], value => lineSeries.label.fontSize = value);
 }
 
 function createMultiLineChart() {
@@ -477,7 +490,7 @@ function createMultiLineChart() {
     const barSeries = new BarSeries();
     barSeries.fills = ['#41a9c9'];
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['value3'];
+    barSeries.yKeys = [['value3']];
 
     // Both approaches are valid here:
     // chart.addSeries(barSeries);
@@ -943,10 +956,10 @@ function createRealTimeChart() {
 function createAllCategoryLineChart() {
     document.body.appendChild(document.createElement('br'));
 
-    const xAxis = new NumberAxis();
+    const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     xAxis.label.rotation = 45;
-    const yAxis = new NumberAxis();
+    const yAxis = new CategoryAxis();
     yAxis.position = ChartAxisPosition.Left;
 
     const chart = new CartesianChart();
@@ -963,11 +976,11 @@ function createAllCategoryLineChart() {
     chart.addSeries(lineSeries);
     lineSeries.data = [
         {
-            x: 'Rob',
-            y: 'Paris'
+            x: 'John',
+            y: 'Berlin'
         },
         {
-            x: 'Vitaly',
+            x: 'Sarah',
             y: 'London'
         },
         {
@@ -979,14 +992,14 @@ function createAllCategoryLineChart() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // createBasicLineChartUsingFactory();
-    // createGapChart();
-    // createTwoVerticalAxesLineChart();
+    createBasicLineChartUsingFactory();
+    createGapChart();
+    createTwoVerticalAxesLineChart();
     createCategoryLineChart();
     createLeftCategoryLineChart();
-    // createAllCategoryLineChart();
-    // createNumericLineChart();
-    // createTimeLineChart();
-    // createRealTimeChart();
-    // createMultiLineChart();
+    createAllCategoryLineChart();
+    createNumericLineChart();
+    createTimeLineChart();
+    createRealTimeChart();
+    createMultiLineChart();
 });

@@ -219,6 +219,12 @@ function createPieChart() {
         changeTheme('rgb(221, 221, 221)', '#1e1e1e');
     });
 
+    createButton('Use label formatter', () => {
+        pieSeries.label.formatter = params => {
+            return String(params.value) + '!'
+        };
+    });
+
     document.body.appendChild(document.createElement('br'));
 
     createSlider('innerRadiusOffset', [-120, 0], v => {

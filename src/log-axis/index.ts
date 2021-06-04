@@ -1,12 +1,7 @@
-import * as d3 from "d3";
-import { LogScale } from "ag-charts-community/src/scale/logScale";
-import { Axis } from "ag-charts-community/src/axis";
-import { Scene } from "ag-charts-community/src/scene/scene";
-import { Group } from "ag-charts-community/src/scene/group";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { Axis } from "../../charts/axis";
+import { LogScale } from "../../charts/scale/logScale";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
 
 document.addEventListener('DOMContentLoaded', () => {
     // testConvert();
@@ -106,7 +101,8 @@ function testNiceAxis(root: Group) {
     const scale = new LogScale();
     scale.domain = [10, 10000];
     scale.range = [1000, 0];
-    const axis = new Axis(scale);
+    const axis = new Axis();
+    axis.scale = scale;
 
     axis.translation.x = 250;
     axis.translation.y = 50;

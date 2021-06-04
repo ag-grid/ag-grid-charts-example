@@ -1,4 +1,3 @@
-import { pie } from "d3";
 import { Circle } from "../../charts/chart/marker/circle";
 import { Diamond } from "../../charts/chart/marker/diamond";
 import { Plus } from "../../charts/chart/marker/plus";
@@ -121,7 +120,7 @@ function createBarChart() {
 
     const barSeries = new BarSeries();
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['value1', 'value2'];
+    barSeries.yKeys = [['value1', 'value2']];
     barSeries.formatter = params => {
         return {
             fill: params.highlighted ? 'red' : params.fill,
@@ -236,10 +235,10 @@ function createLineChart() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    createLineChart();
+    // createLineChart();
     // createBarChart();
     // createPieChart();
-    // createChart();
+    createChart();
 });
 
 function generateData(params: {

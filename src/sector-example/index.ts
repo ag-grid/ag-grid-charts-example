@@ -1,7 +1,4 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Sector} from "ag-charts-community/src/scene/shape/sector";
-import borneo from "ag-charts-community/src/chart/palettes";
+import { ChartTheme, DropShadow, Group, Scene, Sector } from "../../charts/main";
 
 document.addEventListener('DOMContentLoaded', () => {
     testSector();
@@ -13,40 +10,60 @@ function testSector() {
     scene.container = document.body;
     const rootGroup = new Group();
 
+    const theme = new ChartTheme();
+
+    const shadow = new DropShadow();
+    shadow.blur = 10;
+
     const sector1 = new Sector();
-    sector1.fill = borneo.fills[0];
-    sector1.stroke = borneo.strokes[0];
+    sector1.fill = '#DE5145';
+    sector1.stroke = undefined;
     sector1.strokeWidth = 2;
     sector1.centerX = 200;
     sector1.centerY = 200;
     sector1.innerRadius = 50;
     sector1.outerRadius = 100;
     sector1.endAngle = Math.PI * 3 / 4;
+    sector1.fillShadow = shadow;
 
     const sector2 = new Sector();
+    sector2.fill = '#FFCD41';
+    sector2.stroke = undefined;
     sector2.centerX = 200;
     sector2.centerY = 200;
     sector2.innerRadius = 50;
     sector2.outerRadius = 100;
     sector2.startAngle = Math.PI * 3 / 4;
     sector2.endAngle = Math.PI * 4 / 3;
-    sector2.fill = borneo.fills[1];
-    sector2.stroke = borneo.strokes[1];
     sector2.strokeWidth = 2;
+    sector2.fillShadow = shadow;
 
     const sector3 = new Sector();
-    sector3.fill = borneo.fills[2];
-    sector3.stroke = borneo.strokes[2];
+    sector3.fill = '#1DA261';
+    sector3.stroke = undefined;
     sector3.strokeWidth = 2;
     sector3.centerX = 200;
     sector3.centerY = 200;
     sector3.innerRadius = 50;
     sector3.outerRadius = 100;
     sector3.startAngle = Math.PI * 4 / 3;
+    sector3.fillShadow = shadow;
+
+    const sector4 = new Sector();
+    sector4.fill = '#4D8CF5';
+    sector4.stroke = undefined;
+    sector4.strokeWidth = 2;
+    sector4.centerX = 200;
+    sector4.centerY = 200;
+    sector4.innerRadius = 0;
+    sector4.outerRadius = 40;
+    sector4.startAngle = Number.EPSILON;
+    sector4.endAngle = Math.PI * 2;
 
     rootGroup.append(sector1);
     rootGroup.append(sector2);
     rootGroup.append(sector3);
+    rootGroup.append(sector4);
 
     scene.root = rootGroup;
 
@@ -96,5 +113,14 @@ function testSector() {
         sector1.angleOffset = value;
         sector2.angleOffset = value;
         sector3.angleOffset = value;
+    });
+
+    scene.canvas.element.addEventListener('click', event => {
+        const node = rootGroup.pickNode(event.offsetX, event.offsetY);
+        if (node) {
+            window.alert(node.id);
+        } else {
+            window.alert('No node was clicked.');
+        }
     });
 }

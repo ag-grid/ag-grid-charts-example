@@ -198,7 +198,7 @@ function makeNuclearChart() {
     usaArea.data = data;
     usaArea.fills = ['red'];
     usaArea.strokes = ['maroon'];
-    usaArea.tooltipEnabled = true;
+    usaArea.tooltip.enabled = true;
 
     const ussrArea = new AreaSeries();
     ussrArea.yNames = ['USSR/Russia'];
@@ -207,7 +207,7 @@ function makeNuclearChart() {
     ussrArea.data = data;
     ussrArea.fills = ['blue'];
     ussrArea.strokes = ['darkblue'];
-    ussrArea.tooltipEnabled = true;
+    ussrArea.tooltip.enabled = true;
 
     chart.addSeries(usaArea);
     chart.addSeries(ussrArea);
@@ -415,7 +415,8 @@ document.addEventListener('DOMContentLoaded', () => {
     areaSeries.xKey = 'category';
     areaSeries.yKeys = ['q1Actual'];
     areaSeries.data = data;
-    areaSeries.tooltipEnabled = true;
+    areaSeries.tooltip.enabled = true;
+    areaSeries.cursor = 'wait';
 
     document.body.appendChild(document.createElement('br'));
 
@@ -486,23 +487,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     createButton('Show tooltips', () => {
-        areaSeries.tooltipEnabled = true;
+        areaSeries.tooltip.enabled = true;
     });
     createButton('Hide tooltips', () => {
-        areaSeries.tooltipEnabled = false;
+        areaSeries.tooltip.enabled = false;
     });
     createButton('Custom tooltip class', () => {
-        chart.tooltipClass = 'my-tooltip';
+        chart.tooltip.class = 'my-tooltip';
     });
     createButton('Use tooltip renderer', () => {
-        areaSeries.tooltipRenderer = params => {
+        areaSeries.tooltip.renderer = params => {
             return `<div style="background-color: #d4d1d6; padding: 5px;">
                 X: ${params.datum[params.xKey]}<br>Y: ${params.datum[params.yKey]}
             </div>`;
         };
     });
     createButton('Use alt tooltip renderer', () => {
-        areaSeries.tooltipRenderer = params => {
+        areaSeries.tooltip.renderer = params => {
             return {
                 title: 'I want to believe',
                 content: `X: ${params.datum[params.xKey]}<br>Y: ${params.datum[params.yKey]}`,
@@ -515,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     createButton('Remove tooltip renderer', () => {
         areaSeries.tooltip.renderer = undefined;
-        areaSeries.tooltipRenderer = undefined;
+        areaSeries.tooltip.renderer = undefined;
     });
     createButton('Remove all series', () => {
         chart.removeAllSeries();
@@ -579,7 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         chart.background.fill = '#1e1e1e';
-        chart.legend.color = labelColor;
+        chart.legend.item.label.color = labelColor;
 
         if (chart.title) {
             chart.title.color = labelColor;
@@ -607,7 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.legend.position = v;
     });
     createSlider('legend font family', ['sans-serif', 'serif', 'Snell Roundhand'], v => {
-        chart.legend.fontFamily = v;
+        chart.legend.item.label.fontFamily = v;
     });
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {
         if (v && chart.title) {

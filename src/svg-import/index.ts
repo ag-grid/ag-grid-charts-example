@@ -1,11 +1,11 @@
 import { tiger } from "./tiger";
-import { Scene } from "ag-charts-community/src/scene/scene";
-import { Path } from "ag-charts-community/src/scene/shape/path";
-import { Group } from "ag-charts-community/src/scene/group";
-import { Node } from "ag-charts-community/src/scene/node";
-import { Shape } from "ag-charts-community/src/scene/shape/shape";
-import { Text } from "ag-charts-community/src/scene/shape/text";
 import { createButton } from "../../lib/ui";
+import { Scene } from "../../charts/scene/scene";
+import { Group } from "../../charts/scene/group";
+import { Text } from "../../charts/scene/shape/text";
+import { Shape } from "../../charts/scene/shape/shape";
+import { Path } from "../../charts/scene/shape/path";
+import { Node } from "../../charts/scene/node";
 
 function importSvg(scene: Scene, svg: string) {
     const parser = new DOMParser();
