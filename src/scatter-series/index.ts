@@ -1,27 +1,29 @@
 import { createButton, createSlider } from "../../lib/ui";
 import * as d3 from "d3";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { Caption } from "ag-charts-community/src/caption";
-import { ScatterSeries } from "ag-charts-community/src/chart/series/cartesian/scatterSeries";
-import { Circle } from "ag-charts-community/src/chart/marker/circle";
-import { Square } from "ag-charts-community/src/chart/marker/square";
-import { Diamond } from "ag-charts-community/src/chart/marker/diamond";
-import { Cross } from "ag-charts-community/src/chart/marker/cross";
-import { Plus } from "ag-charts-community/src/chart/marker/plus";
-import { Triangle } from "ag-charts-community/src/chart/marker/triangle";
-import { Color } from 'ag-charts-community/src/util/color';
-import { makeChartResizeable } from "../../lib/chart";
-import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
-import { AgChart } from "ag-charts-community";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
 import { axisBottom } from "d3";
+import { data } from "./data";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { makeChartResizeable } from "../../lib/chart";
+import { ScatterSeries } from "../../charts/chart/series/cartesian/scatterSeries";
+import { Caption } from "../../charts/caption";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { Square } from "../../charts/chart/marker/square";
+import { Color } from "../../charts/util/color";
+import { Circle } from "../../charts/chart/marker/circle";
+import { Diamond } from "../../charts/chart/marker/diamond";
+import { Cross } from "../../charts/chart/marker/cross";
+import { Plus } from "../../charts/chart/marker/plus";
+import { Triangle } from "../../charts/chart/marker/triangle";
+import { AgChart } from "../../charts/chart/agChart";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
 
 type Datum = {
     gender: number,
     height: number,
     weight: number,
-    age: number
+    age: number,
+    name: string
 };
 
 /**
@@ -95,66 +97,59 @@ function createHeightWeightGenderChart() {
     chart.subtitle.text = 'by gender';
     chart.subtitle.color = 'gray';
     chart.subtitle.fontSize = 14;
-    chart.legend.markerSize = 12;
-    chart.legend.strokeWidth = 2;
-    chart.legend.layoutVerticalSpacing = 15;
+    chart.legend.item.marker.size = 12;
+    chart.legend.item.marker.strokeWidth = 2;
+    chart.legend.item.paddingY = 15;
     chart.axes = [xAxis, yAxis];
 
     const maleSeries = new ScatterSeries();
     const femaleSeries = new ScatterSeries();
 
-    d3.csv("../../data/body-data.csv").then(rawData => {
-        const maleData: any[] = [];
-        const femaleData: any[] = [];
-        rawData.forEach((rawDatum: any) => {
-            const datum = {
-                gender: +rawDatum.Gender,
-                height: +rawDatum.Height,
-                weight: +rawDatum.Weight,
-                age: +rawDatum.Age
-            } as Datum;
-
-            if (datum.gender) {
-                maleData.push(datum);
-            } else {
-                femaleData.push(datum);
-            }
-        });
-
-        maleSeries.data = maleData;
-        maleSeries.xKey = 'height';
-        maleSeries.xName = 'Height';
-        maleSeries.yKey = 'weight';
-        maleSeries.yName = 'Weight';
-        maleSeries.sizeKey = 'age';
-        maleSeries.sizeName = 'Age';
-        maleSeries.marker.shape = Square;
-        maleSeries.marker.size = 30;
-        maleSeries.fill = 'rgb(227,111,106)';
-        maleSeries.fillOpacity = 0.61;
-        maleSeries.stroke = Color.fromString(maleSeries.fill).darker().toHexString();
-        console.log(maleSeries.stroke);
-        maleSeries.strokeWidth = 0.5;
-        maleSeries.title = 'Male';
-        maleSeries.tooltipEnabled = true;
-
-        femaleSeries.data = femaleData;
-        femaleSeries.xKey = 'height';
-        femaleSeries.yKey = 'weight';
-        femaleSeries.sizeKey = 'age';
-        femaleSeries.marker.shape = Circle;
-        femaleSeries.marker.size = 30;
-        femaleSeries.fill = 'rgb(123,145,222)';
-        femaleSeries.fillOpacity = 0.61;
-        femaleSeries.stroke = Color.fromString(femaleSeries.fill).darker().toHexString();
-        console.log(femaleSeries.stroke);
-        femaleSeries.title = 'Female';
-        femaleSeries.tooltipEnabled = true;
-        femaleSeries.strokeWidth = 0.5;
-
-        chart.addSeries(maleSeries);
-        chart.addSeries(femaleSeries);
+    const maleData: any[] = [];
+    const femaleData: any[] = [];
+    data.forEach((datum: any) => {
+        if (datum.gender) {
+            maleData.push(datum);
+        } else {
+            femaleData.push(datum);
+        }
     });
+
+    maleSeries.data = maleData;
+    maleSeries.xKey = 'height';
+    maleSeries.xName = 'Height';
+    maleSeries.yKey = 'weight';
+    maleSeries.yName = 'Weight';
+    maleSeries.sizeKey = 'age';
+    maleSeries.sizeName = 'Age';
+    maleSeries.labelKey = 'name';
+    maleSeries.marker.shape = Square;
+    maleSeries.marker.maxSize = 30;
+    maleSeries.fill = 'rgb(227,111,106)';
+    maleSeries.fillOpacity = 0.61;
+    maleSeries.stroke = Color.fromString(maleSeries.fill).darker().toHexString();
+    console.log(maleSeries.stroke);
+    maleSeries.strokeWidth = 0.5;
+    maleSeries.title = 'Male';
+    maleSeries.tooltip.enabled = true;
+
+    femaleSeries.data = femaleData;
+    femaleSeries.xKey = 'height';
+    femaleSeries.yKey = 'weight';
+    femaleSeries.sizeKey = 'age';
+    femaleSeries.labelKey = 'name';
+    femaleSeries.marker.shape = Circle;
+    femaleSeries.marker.maxSize = 30;
+    femaleSeries.fill = 'rgb(123,145,222)';
+    femaleSeries.fillOpacity = 0.61;
+    femaleSeries.stroke = Color.fromString(femaleSeries.fill).darker().toHexString();
+    console.log(femaleSeries.stroke);
+    femaleSeries.title = 'Female';
+    femaleSeries.tooltip.enabled = true;
+    femaleSeries.strokeWidth = 0.5;
+
+    chart.addSeries(maleSeries);
+    chart.addSeries(femaleSeries);
 
     document.body.appendChild(document.createElement('br'));
 
@@ -182,8 +177,9 @@ function createHeightWeightGenderChart() {
         console.log(`Changed 'size' from ${event.oldValue} to ${event.value}.`);
     });
 
-    createSlider('Marker size', [4, 8, 12, 16, 20, 30, 40, 50, 60, 70, 80], v => {
-        maleSeries.marker.size = v;
+    createSlider('Max marker size', [4, 8, 12, 16, 20, 30, 40, 50, 60, 70, 80], v => {
+        femaleSeries.marker.maxSize = v;
+        maleSeries.marker.maxSize = v;
     });
 
     createSlider('Marker enabled', [true, false], v => {
@@ -226,50 +222,38 @@ function createAgeWeightGenderChart() {
     chart.subtitle.fontSize = 14;
     chart.subtitle.color = 'gray';
 
-    d3.csv("../../data/body-data.csv").then(rawData => {
-        const maleData: any[] = [];
-        const femaleData: any[] = [];
-        rawData.forEach((rawDatum: any) => {
-            const datum = {
-                // gender: +rawDatum.Gender,
-                height: +rawDatum.Height,
-                weight: +rawDatum.Weight,
-                age: +rawDatum.Age
-            } as Datum;
-
-            if (+rawDatum.Gender) {
-                maleData.push(datum);
-            } else {
-                femaleData.push(datum);
-            }
-        });
-
-        console.log(JSON.stringify(maleData, null, 4));
-        console.log(JSON.stringify(femaleData, null, 4));
-
-        const maleSeries = new ScatterSeries();
-        maleSeries.data = maleData;
-        maleSeries.xKey = 'age';
-        maleSeries.yKey = 'weight';
-        maleSeries.title = 'Male';
-        maleSeries.tooltipEnabled = true;
-        maleSeries.marker.shape = Diamond;
-        maleSeries.fill = 'rgba(227,111,106,0.71)';
-        maleSeries.strokeWidth = 0.5;
-
-        const femaleSeries = new ScatterSeries();
-        femaleSeries.data = femaleData;
-        femaleSeries.xKey = 'age';
-        femaleSeries.yKey = 'weight';
-        femaleSeries.title = 'Female';
-        femaleSeries.tooltipEnabled = true;
-        femaleSeries.marker.shape = Cross;
-        femaleSeries.fill = 'rgba(123,145,222,0.71)';
-        femaleSeries.strokeWidth = 0.5;
-
-        chart.addSeries(maleSeries);
-        chart.addSeries(femaleSeries);
+    const maleData: any[] = [];
+    const femaleData: any[] = [];
+    data.forEach((datum: any) => {
+        if (datum.gender) {
+            maleData.push(datum);
+        } else {
+            femaleData.push(datum);
+        }
     });
+
+    const maleSeries = new ScatterSeries();
+    maleSeries.data = maleData;
+    maleSeries.xKey = 'age';
+    maleSeries.yKey = 'weight';
+    maleSeries.title = 'Male';
+    maleSeries.tooltip.enabled = true;
+    maleSeries.marker.shape = Diamond;
+    maleSeries.fill = 'rgba(227,111,106,0.71)';
+    maleSeries.strokeWidth = 0.5;
+
+    const femaleSeries = new ScatterSeries();
+    femaleSeries.data = femaleData;
+    femaleSeries.xKey = 'age';
+    femaleSeries.yKey = 'weight';
+    femaleSeries.title = 'Female';
+    femaleSeries.tooltip.enabled = true;
+    femaleSeries.marker.shape = Cross;
+    femaleSeries.fill = 'rgba(123,145,222,0.71)';
+    femaleSeries.strokeWidth = 0.5;
+
+    chart.addSeries(maleSeries);
+    chart.addSeries(femaleSeries);
 
     document.body.appendChild(document.createElement('br'));
 
@@ -331,7 +315,7 @@ function createCategoryScatterChart() {
     scatterSeries.marker.shape = Circle;
     scatterSeries.marker.enabled = true;
     chart.addSeries(scatterSeries);
-    scatterSeries.tooltipEnabled = true;
+    scatterSeries.tooltip.enabled = true;
     scatterSeries.data = [{
         x: 'Tea',
         y: 'John'
@@ -396,7 +380,7 @@ function createLeftCategoryScatterChart() {
     lineSeries.marker.shape = Circle;
     lineSeries.marker.enabled = true;
     chart.addSeries(lineSeries);
-    lineSeries.tooltipEnabled = true;
+    lineSeries.tooltip.enabled = true;
     lineSeries.data = [{
         x: 5,
         y: 'John'
@@ -458,10 +442,10 @@ function createPunchCardChart() {
     scatterSeries.marker.fill = '#cc5b58dd';
     scatterSeries.marker.stroke = 'rgba(0,0,0,0)';
     scatterSeries.marker.enabled = true;
-    scatterSeries.marker.minSize = 0;
-    scatterSeries.marker.size = 30;
+    scatterSeries.marker.size = 0;
+    scatterSeries.marker.maxSize = 30;
 
-    scatterSeries.tooltipEnabled = true;
+    scatterSeries.tooltip.enabled = true;
     scatterSeries.data = data;
     scatterSeries.xKey = 'hour';
     scatterSeries.yKey = 'day';
@@ -480,3 +464,119 @@ document.addEventListener('DOMContentLoaded', () => {
     createCategoryScatterChart();
     createLeftCategoryScatterChart();
 });
+
+interface Rect {
+    readonly x: number;
+    readonly y: number;
+    readonly width: number;
+    readonly height: number;
+}
+
+interface Label extends Rect {
+
+}
+
+interface Point {
+    readonly x: number;
+    readonly y: number;
+    readonly size: number;
+}
+
+function placeMyLabels(labels: Label, points: Point[], bounds: { x: number, y: number, width: number, height: number }) {
+
+}
+
+interface Vector {
+    readonly x: number;
+    readonly y: number;
+}
+
+interface Interval {
+    readonly a: number;
+    readonly b: number;
+}
+
+function generateUnitVectors(count = 128): Vector[] {
+    const fullPie = Math.PI * 2;
+    const step = fullPie / count;
+    const out: Vector[] = [];
+    for (let angle = 0; angle < fullPie; angle += step) {
+        const x = Math.cos(angle);
+        const y = Math.sin(angle);
+        out.push({ x, y });
+    }
+    return out;
+}
+
+const unitVectors = generateUnitVectors();
+
+// i - current point index
+// j - ray index for point i
+// k - other point index, k != i
+
+function findBestRay(P: Point[]) {
+    let integral_p_min = Number.MAX_SAFE_INTEGER;
+    let r_best = undefined;
+    let V_best = [];
+
+   P. forEach(p_i => {
+        // Set of best rays r_ij in R, whose closest free position d_ij is minimal.
+        const R: number[] = [];
+        R.forEach(r_ij => {
+            // V_ij contains a measure for each point p_k, representing the remaining label space,
+            // after label l_i is placed on ray r_ij.
+        });
+    });
+}
+
+function labelPointIntersection(l_i: Label, p_k: Point) {
+    // I_ij - set of intervals representing free label positions.
+    let a = 0;
+    let b = Infinity;
+
+}
+
+function labelRectangleIntersection() {
+
+}
+
+function rayIntersection(P: Point[], rays: Vector[]): Point[] {
+    const N: Point[] = [];
+    while (P.length) {
+        const r_ij = findBestRay(P);
+
+    }
+    return N;
+}
+
+function placeLabels(P: Point[]) {
+    let n = 1;
+    let breakAtLocalOpt = false;
+    while (true) {
+        let i = n - 1;
+        let promoted = false;
+        while (i >= 0) {
+            // P_0 - the set of all points which need to be labeled.
+            // P_i - a queue of point sets. Initially all points are in P_0.
+            // const N = rayIntersection(P_i);
+            // if (N.length) {
+
+            // }
+        }
+        if (promoted) {
+            breakAtLocalOpt = true;
+            // Find label with longest connector p in P_i_prime.
+            // if (p) {
+
+            // } else {
+            //     break;
+            // }
+        }
+        if (true) {
+
+        } else if (breakAtLocalOpt) {
+            break; // We had a complete solution already.
+        }
+
+    }
+}

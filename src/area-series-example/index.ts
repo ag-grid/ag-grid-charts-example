@@ -12,8 +12,8 @@ import { find } from "../../charts/util/array";
 import { Path } from "../../charts/scene/shape/path";
 import { DropShadow } from "../../charts/scene/dropShadow";
 import { Group } from "../../charts/scene/group";
-import {LegendPosition} from "../../charts/chart/legend";
-import { AgChart } from '../../charts/main';
+import { LegendPosition } from "../../charts/chart/legend";
+import { AgChart, Arc } from '../../charts/main';
 
 type Datum = {
     category: string,
@@ -353,55 +353,114 @@ document.addEventListener('DOMContentLoaded', () => {
 
     chart.scene.canvas.element.style.border = '1px solid black';
 
-    const saucer = new Path();
-    const fillShadow = new DropShadow();
-    fillShadow.color = 'rgba(0,0,0,0.5)';
-    fillShadow.xOffset = 5;
-    fillShadow.yOffset = 5;
-    fillShadow.blur = 10;
-    saucer.fillShadow = fillShadow;
-    saucer.svgPath = 'M90,31.5c0,-8.7 -12.4,-16 -29.8,-18.8c-1.3,-7.2 -7.6,-12.7 -15.2,-12.7c-7.6,0 -13.9,5.5 -15.2,12.7c-17.4,2.8 -29.8,10.1 -29.8,18.8c0,6.2 6.3,11.7 16.3,15.4l-4,6.6c-0.3,0.8 0.1,1.6 1.1,1.9c1,0.3 2,-0.1 2.3,-0.9l4,-6.5c6.8,2.1 14.8,3.3 23.6,3.5l0,9.5c0,0.8 0.7,1.5 1.5,1.5l0.6,0c0.8,0 1.5,-0.7 1.5,-1.5l0,-9.5c8.7,-0.2 16.8,-1.4 23.6,-3.5l4,6.5c0.3,0.8 1.4,1.2 2.3,0.9c0.9,-0.3 1.4,-1.2 1.1,-1.9l-4.1,-6.6c9.9,-3.7 16.2,-9.2 16.2,-15.4Zm-65,5c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm20,0c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm0,-15.3c-7.2,0 -14.5,-2 -14.5,-5.7c0,-8 6.5,-14.5 14.5,-14.5c8,0 14.5,6.5 14.5,14.5c0,3.8 -7.3,5.7 -14.5,5.7Zm15,10.3c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5c-2.8,0 -5,-2.2 -5,-5Z';
+    function aliens() {
+        const saucer = new Path();
+        const fillShadow = new DropShadow();
+        fillShadow.color = 'rgba(0,0,0,0.5)';
+        fillShadow.xOffset = 5;
+        fillShadow.yOffset = 5;
+        fillShadow.blur = 10;
+        saucer.fill = 'rgb(50, 50, 50)';
+        saucer.translationY = 20;
+        saucer.fillShadow = fillShadow;
+        saucer.svgPath = 'M90,31.5c0,-8.7 -12.4,-16 -29.8,-18.8c-1.3,-7.2 -7.6,-12.7 -15.2,-12.7c-7.6,0 -13.9,5.5 -15.2,12.7c-17.4,2.8 -29.8,10.1 -29.8,18.8c0,6.2 6.3,11.7 16.3,15.4l-4,6.6c-0.3,0.8 0.1,1.6 1.1,1.9c1,0.3 2,-0.1 2.3,-0.9l4,-6.5c6.8,2.1 14.8,3.3 23.6,3.5l0,9.5c0,0.8 0.7,1.5 1.5,1.5l0.6,0c0.8,0 1.5,-0.7 1.5,-1.5l0,-9.5c8.7,-0.2 16.8,-1.4 23.6,-3.5l4,6.5c0.3,0.8 1.4,1.2 2.3,0.9c0.9,-0.3 1.4,-1.2 1.1,-1.9l-4.1,-6.6c9.9,-3.7 16.2,-9.2 16.2,-15.4Zm-65,5c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm20,0c-2.8,0 -5,-2.2 -5,-5c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5Zm0,-15.3c-7.2,0 -14.5,-2 -14.5,-5.7c0,-8 6.5,-14.5 14.5,-14.5c8,0 14.5,6.5 14.5,14.5c0,3.8 -7.3,5.7 -14.5,5.7Zm15,10.3c0,-2.8 2.2,-5 5,-5c2.8,0 5,2.2 5,5c0,2.8 -2.2,5 -5,5c-2.8,0 -5,-2.2 -5,-5Z';
 
-    let flying = true;
-    chart.scene.canvas.element.addEventListener('click', (e: MouseEvent) => {
-        const node = chart.scene.root!.pickNode(e.offsetX, e.offsetY);
-        if (node === saucer) {
-            const acceleration = 0.01;
-            let speed = 1;
-            function flyDownStep() {
-                saucer.translationY += speed;
-                speed += acceleration;
-                if (saucer.translationY > 1000) {
-                    flying = false;
+        let flyRight = true;
+
+        let flying = true;
+        chart.scene.canvas.element.addEventListener('click', (e: MouseEvent) => {
+            const node = chart.scene.root!.pickNode(e.offsetX, e.offsetY);
+            if (node === saucer) {
+                const acceleration = 0.01;
+                let speed = 1;
+                function flyDownStep() {
+                    saucer.translationY += speed;
+                    speed += acceleration;
+                    if (saucer.translationY > 1000) {
+                        flying = false;
+                    }
+                    if (flying) {
+                        requestAnimationFrame(flyDownStep);
+                    }
                 }
-                if (flying) {
-                    requestAnimationFrame(flyDownStep);
+                flyDownStep();
+            }
+        });
+
+        let lastShot = Date.now();
+
+        function shootBeam(count = 5) {
+            const arc = new Arc();
+            arc.centerX = saucer.translationX + 50;
+            arc.centerY = saucer.translationY + 46;
+            arc.startAngle = Math.PI / 8;
+            arc.endAngle = Math.PI - Math.PI / 8;
+            arc.strokeWidth = 2;
+            arc.lineCap = 'round';
+            arc.fill = undefined;
+            arc.strokeOpacity = 0.5;
+            arc.stroke = 'skyblue';
+            const shadow = new DropShadow();
+            shadow.blur = 7;
+            shadow.color = 'cyan';
+            arc.strokeShadow = shadow;
+
+            function animate() {
+                arc.centerY += 7;
+                arc.radiusX += 1;
+                arc.radiusY += 1;
+                arc.strokeOpacity -= 0.01;
+                if (arc.strokeOpacity > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    arc.parent.removeChild(arc);
                 }
             }
-            flyDownStep();
-        }
-    });
+            requestAnimationFrame(animate);
 
-    (chart.scene.root as Group)!.appendChild(saucer);
+            const now = Date.now();
+            if (now - lastShot >= 1000 + Math.random() * 2000) {
+                lastShot = now;
 
-    let flyRight = true;
-    function step() {
-        if (flyRight) {
-            saucer.translationX += 1;
-            if (saucer.translationX === 700) {
-                flyRight = false;
             }
-        } else {
-            saucer.translationX -= 1;
-            if (saucer.translationX === 0) {
-                flyRight = true;
+
+            (chart.scene.root as Group)!.appendChild(arc);
+
+            if (count > 1) {
+                requestAnimationFrame(
+                    () => requestAnimationFrame(
+                        () => requestAnimationFrame(
+                            () => requestAnimationFrame(
+                                () => requestAnimationFrame(
+                                    () => shootBeam(count - 1))))));
             }
         }
-        if (flying) {
-            requestAnimationFrame(step);
+
+        setInterval(shootBeam, 1000);
+
+        function step() {
+            if (flyRight) {
+                saucer.translationX += 1;
+                if (saucer.translationX === 700) {
+                    flyRight = false;
+                }
+            } else {
+                saucer.translationX -= 1;
+                if (saucer.translationX === 0) {
+                    flyRight = true;
+                }
+            }
+            saucer.translationY += Math.random() * 0.5 * (Math.random() > 0.5 ? 1 : -1);
+            if (flying) {
+                requestAnimationFrame(step);
+            }
         }
+        step();
+
+        (chart.scene.root as Group)!.appendChild(saucer);
     }
-    step();
+
+    // aliens();
 
     function addSeriesIf() {
         if (!chart.series.length) {
@@ -417,6 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
     areaSeries.data = data;
     areaSeries.tooltip.enabled = true;
     areaSeries.cursor = 'wait';
+    areaSeries.label.enabled = true;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -553,7 +613,6 @@ document.addEventListener('DOMContentLoaded', () => {
             chart.subtitle.color = labelColor;
         }
 
-        saucer.fill = labelColor;
         document.body.style.backgroundColor = 'white';
     });
     createButton('Dark theme', () => {
@@ -589,7 +648,6 @@ document.addEventListener('DOMContentLoaded', () => {
             chart.subtitle.color = labelColor;
         }
 
-        saucer.fill = labelColor;
         document.body.style.backgroundColor = '#1e1e1e';
     });
     createButton('No y-keys', () => {
