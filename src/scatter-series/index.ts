@@ -105,6 +105,7 @@ function createHeightWeightGenderChart() {
     chart.axes = [xAxis, yAxis];
 
     createButton('Benchmark', () => {
+        // 555 layouts in 10000 without using webworkers, 8.6% self-time for placeLabels
         console.profile();
         function changeHeight() {
             const { height } = chart;
