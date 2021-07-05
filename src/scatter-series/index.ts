@@ -17,6 +17,7 @@ import { Plus } from "../../charts/chart/marker/plus";
 import { Triangle } from "../../charts/chart/marker/triangle";
 import { AgChart } from "../../charts/chart/agChart";
 import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { result } from "lodash";
 
 type Datum = {
     gender: number,
@@ -100,7 +101,34 @@ function createHeightWeightGenderChart() {
     chart.legend.item.marker.size = 12;
     chart.legend.item.marker.strokeWidth = 2;
     chart.legend.item.paddingY = 15;
+    chart.tooltip.tracking = false;
     chart.axes = [xAxis, yAxis];
+
+    createButton('Benchmark', () => {
+        console.profile();
+        function changeHeight() {
+            const { height } = chart;
+            if (height > 600) {
+                chart.height = height - 1;
+            } else {
+                chart.height = height + 1;
+            }
+        }
+        let counter = 0;
+        const startTime = Date.now();
+        const duration = 10000;
+        chart.addEventListener('layoutDone', () => {
+            counter++;
+            const now = Date.now();
+            if (now - startTime < duration) {
+                changeHeight();
+            } else {
+                console.profileEnd();
+                console.log(`Performed ${counter} layouts in ${duration} milliseconds.`);
+            }
+        });
+        changeHeight();
+    });
 
     const maleSeries = new ScatterSeries();
     const femaleSeries = new ScatterSeries();
@@ -125,6 +153,7 @@ function createHeightWeightGenderChart() {
     maleSeries.labelKey = 'name';
     maleSeries.marker.shape = Square;
     maleSeries.marker.maxSize = 30;
+    maleSeries.label.enabled = true;
     maleSeries.fill = 'rgb(227,111,106)';
     maleSeries.fillOpacity = 0.61;
     maleSeries.stroke = Color.fromString(maleSeries.fill).darker().toHexString();
@@ -140,6 +169,7 @@ function createHeightWeightGenderChart() {
     femaleSeries.labelKey = 'name';
     femaleSeries.marker.shape = Circle;
     femaleSeries.marker.maxSize = 30;
+    femaleSeries.label.enabled = true;
     femaleSeries.fill = 'rgb(123,145,222)';
     femaleSeries.fillOpacity = 0.61;
     femaleSeries.stroke = Color.fromString(femaleSeries.fill).darker().toHexString();
@@ -180,6 +210,11 @@ function createHeightWeightGenderChart() {
     createSlider('Max marker size', [4, 8, 12, 16, 20, 30, 40, 50, 60, 70, 80], v => {
         femaleSeries.marker.maxSize = v;
         maleSeries.marker.maxSize = v;
+    });
+
+    createSlider('Label font size', [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30], v => {
+        femaleSeries.label.fontSize = v;
+        maleSeries.label.fontSize = v;
     });
 
     createSlider('Marker enabled', [true, false], v => {
@@ -268,7 +303,7 @@ function createFakeScatterChart() {
     var start = 1998;
     for (var x = start; x < 2013; x += 0.05) {
         var distance = Math.random() > 0.8 ? 20 : 10;
-        var y = (4 + Math.random()) * (x - start) - 15 + (-distance/2 + Math.random() * distance);
+        var y = (4 + Math.random()) * (x - start) - 15 + (-distance / 2 + Math.random() * distance);
         data.push({
             time: x,
             mm: y
@@ -422,13 +457,13 @@ function createPunchCardChart() {
     chart.background.fill = '#f3f3f3';
 
     var hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a',
-        '7a', '8a', '9a','10a','11a',
+        '7a', '8a', '9a', '10a', '11a',
         '12p', '1p', '2p', '3p', '4p', '5p',
         '6p', '7p', '8p', '9p', '10p', '11p'];
     var days = ['Saturday', 'Friday', 'Thursday',
-            'Wednesday', 'Tuesday', 'Monday', 'Sunday'];
+        'Wednesday', 'Tuesday', 'Monday', 'Sunday'];
 
-    var rawData = [[0,0,5],[0,1,1],[0,2,0],[0,3,0],[0,4,0],[0,5,0],[0,6,0],[0,7,0],[0,8,0],[0,9,0],[0,10,0],[0,11,2],[0,12,4],[0,13,1],[0,14,1],[0,15,3],[0,16,4],[0,17,6],[0,18,4],[0,19,4],[0,20,3],[0,21,3],[0,22,2],[0,23,5],[1,0,7],[1,1,0],[1,2,0],[1,3,0],[1,4,0],[1,5,0],[1,6,0],[1,7,0],[1,8,0],[1,9,0],[1,10,5],[1,11,2],[1,12,2],[1,13,6],[1,14,9],[1,15,11],[1,16,6],[1,17,7],[1,18,8],[1,19,12],[1,20,5],[1,21,5],[1,22,7],[1,23,2],[2,0,1],[2,1,1],[2,2,0],[2,3,0],[2,4,0],[2,5,0],[2,6,0],[2,7,0],[2,8,0],[2,9,0],[2,10,3],[2,11,2],[2,12,1],[2,13,9],[2,14,8],[2,15,10],[2,16,6],[2,17,5],[2,18,5],[2,19,5],[2,20,7],[2,21,4],[2,22,2],[2,23,4],[3,0,7],[3,1,3],[3,2,0],[3,3,0],[3,4,0],[3,5,0],[3,6,0],[3,7,0],[3,8,1],[3,9,0],[3,10,5],[3,11,4],[3,12,7],[3,13,14],[3,14,13],[3,15,12],[3,16,9],[3,17,5],[3,18,5],[3,19,10],[3,20,6],[3,21,4],[3,22,4],[3,23,1],[4,0,1],[4,1,3],[4,2,0],[4,3,0],[4,4,0],[4,5,1],[4,6,0],[4,7,0],[4,8,0],[4,9,2],[4,10,4],[4,11,4],[4,12,2],[4,13,4],[4,14,4],[4,15,14],[4,16,12],[4,17,1],[4,18,8],[4,19,5],[4,20,3],[4,21,7],[4,22,3],[4,23,0],[5,0,2],[5,1,1],[5,2,0],[5,3,3],[5,4,0],[5,5,0],[5,6,0],[5,7,0],[5,8,2],[5,9,0],[5,10,4],[5,11,1],[5,12,5],[5,13,10],[5,14,5],[5,15,7],[5,16,11],[5,17,6],[5,18,0],[5,19,5],[5,20,3],[5,21,4],[5,22,2],[5,23,0],[6,0,1],[6,1,0],[6,2,0],[6,3,0],[6,4,0],[6,5,0],[6,6,0],[6,7,0],[6,8,0],[6,9,0],[6,10,1],[6,11,0],[6,12,2],[6,13,1],[6,14,3],[6,15,4],[6,16,0],[6,17,0],[6,18,0],[6,19,0],[6,20,1],[6,21,2],[6,22,2],[6,23,6]];
+    var rawData = [[0, 0, 5], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [0, 7, 0], [0, 8, 0], [0, 9, 0], [0, 10, 0], [0, 11, 2], [0, 12, 4], [0, 13, 1], [0, 14, 1], [0, 15, 3], [0, 16, 4], [0, 17, 6], [0, 18, 4], [0, 19, 4], [0, 20, 3], [0, 21, 3], [0, 22, 2], [0, 23, 5], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [1, 7, 0], [1, 8, 0], [1, 9, 0], [1, 10, 5], [1, 11, 2], [1, 12, 2], [1, 13, 6], [1, 14, 9], [1, 15, 11], [1, 16, 6], [1, 17, 7], [1, 18, 8], [1, 19, 12], [1, 20, 5], [1, 21, 5], [1, 22, 7], [1, 23, 2], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [2, 7, 0], [2, 8, 0], [2, 9, 0], [2, 10, 3], [2, 11, 2], [2, 12, 1], [2, 13, 9], [2, 14, 8], [2, 15, 10], [2, 16, 6], [2, 17, 5], [2, 18, 5], [2, 19, 5], [2, 20, 7], [2, 21, 4], [2, 22, 2], [2, 23, 4], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [3, 7, 0], [3, 8, 1], [3, 9, 0], [3, 10, 5], [3, 11, 4], [3, 12, 7], [3, 13, 14], [3, 14, 13], [3, 15, 12], [3, 16, 9], [3, 17, 5], [3, 18, 5], [3, 19, 10], [3, 20, 6], [3, 21, 4], [3, 22, 4], [3, 23, 1], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [4, 7, 0], [4, 8, 0], [4, 9, 2], [4, 10, 4], [4, 11, 4], [4, 12, 2], [4, 13, 4], [4, 14, 4], [4, 15, 14], [4, 16, 12], [4, 17, 1], [4, 18, 8], [4, 19, 5], [4, 20, 3], [4, 21, 7], [4, 22, 3], [4, 23, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [5, 7, 0], [5, 8, 2], [5, 9, 0], [5, 10, 4], [5, 11, 1], [5, 12, 5], [5, 13, 10], [5, 14, 5], [5, 15, 7], [5, 16, 11], [5, 17, 6], [5, 18, 0], [5, 19, 5], [5, 20, 3], [5, 21, 4], [5, 22, 2], [5, 23, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0], [6, 7, 0], [6, 8, 0], [6, 9, 0], [6, 10, 1], [6, 11, 0], [6, 12, 2], [6, 13, 1], [6, 14, 3], [6, 15, 4], [6, 16, 0], [6, 17, 0], [6, 18, 0], [6, 19, 0], [6, 20, 1], [6, 21, 2], [6, 22, 2], [6, 23, 6]];
     var data = rawData.map(item => {
         return {
             hour: hours[item[1]],
@@ -457,126 +492,10 @@ function createPunchCardChart() {
 
 document.addEventListener('DOMContentLoaded', () => {
     createHeightWeightGenderChart();
-    createAgeWeightGenderChart();
-    createFakeScatterChart();
+    // createAgeWeightGenderChart();
+    // createFakeScatterChart();
 
-    createPunchCardChart();
-    createCategoryScatterChart();
-    createLeftCategoryScatterChart();
+    // createPunchCardChart();
+    // createCategoryScatterChart();
+    // createLeftCategoryScatterChart();
 });
-
-interface Rect {
-    readonly x: number;
-    readonly y: number;
-    readonly width: number;
-    readonly height: number;
-}
-
-interface Label extends Rect {
-
-}
-
-interface Point {
-    readonly x: number;
-    readonly y: number;
-    readonly size: number;
-}
-
-function placeMyLabels(labels: Label, points: Point[], bounds: { x: number, y: number, width: number, height: number }) {
-
-}
-
-interface Vector {
-    readonly x: number;
-    readonly y: number;
-}
-
-interface Interval {
-    readonly a: number;
-    readonly b: number;
-}
-
-function generateUnitVectors(count = 128): Vector[] {
-    const fullPie = Math.PI * 2;
-    const step = fullPie / count;
-    const out: Vector[] = [];
-    for (let angle = 0; angle < fullPie; angle += step) {
-        const x = Math.cos(angle);
-        const y = Math.sin(angle);
-        out.push({ x, y });
-    }
-    return out;
-}
-
-const unitVectors = generateUnitVectors();
-
-// i - current point index
-// j - ray index for point i
-// k - other point index, k != i
-
-function findBestRay(P: Point[]) {
-    let integral_p_min = Number.MAX_SAFE_INTEGER;
-    let r_best = undefined;
-    let V_best = [];
-
-   P. forEach(p_i => {
-        // Set of best rays r_ij in R, whose closest free position d_ij is minimal.
-        const R: number[] = [];
-        R.forEach(r_ij => {
-            // V_ij contains a measure for each point p_k, representing the remaining label space,
-            // after label l_i is placed on ray r_ij.
-        });
-    });
-}
-
-function labelPointIntersection(l_i: Label, p_k: Point) {
-    // I_ij - set of intervals representing free label positions.
-    let a = 0;
-    let b = Infinity;
-
-}
-
-function labelRectangleIntersection() {
-
-}
-
-function rayIntersection(P: Point[], rays: Vector[]): Point[] {
-    const N: Point[] = [];
-    while (P.length) {
-        const r_ij = findBestRay(P);
-
-    }
-    return N;
-}
-
-function placeLabels(P: Point[]) {
-    let n = 1;
-    let breakAtLocalOpt = false;
-    while (true) {
-        let i = n - 1;
-        let promoted = false;
-        while (i >= 0) {
-            // P_0 - the set of all points which need to be labeled.
-            // P_i - a queue of point sets. Initially all points are in P_0.
-            // const N = rayIntersection(P_i);
-            // if (N.length) {
-
-            // }
-        }
-        if (promoted) {
-            breakAtLocalOpt = true;
-            // Find label with longest connector p in P_i_prime.
-            // if (p) {
-
-            // } else {
-            //     break;
-            // }
-        }
-        if (true) {
-
-        } else if (breakAtLocalOpt) {
-            break; // We had a complete solution already.
-        }
-
-    }
-}
