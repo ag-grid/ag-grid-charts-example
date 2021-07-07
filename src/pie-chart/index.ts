@@ -1,6 +1,6 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
-import {normalizeAngle180} from "ag-charts-community/src/util/angle";
+import { HdpiCanvas } from "../../charts/canvas/hdpiCanvas";
+import { LinearScale } from "../../charts/scale/linearScale";
+import { normalizeAngle180 } from "../../charts/util/angle";
 
 // Q1'12 data
 const data = [
@@ -59,19 +59,19 @@ function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
     const centerY = seriesHeight / 2;
     const fullRadius = Math.min(seriesWidth, seriesHeight) / 2;
 
-    const xScale = scaleLinear(); // angle
+    const xScale = new LinearScale(); // angle
     xScale.domain = [0, 1];
     // Add 90 deg to start the first pie at 12 o'clock.
     xScale.range = [-Math.PI, Math.PI].map(angle => angle + Math.PI / 2);
 
-    const yScale = scaleLinear(); // radius
+    const yScale = new LinearScale(); // radius
     yScale.domain = [0, Math.max(...raduisData, 1)];
     yScale.range = [0, fullRadius];
 
-    const canvas = createHdpiCanvas(canvasWidth, canvasHeight);
-    document.body.appendChild(canvas);
+    const canvas = new HdpiCanvas(document, canvasWidth, canvasHeight);;
+    document.body.append(canvas.element);
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.element.getContext('2d')!;
     ctx.font = '14px Verdana';
 
     const calloutLength = 10;
@@ -82,7 +82,7 @@ function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
 
     let isDragging = false;
     let startAngle = 0;
-    canvas.addEventListener('mousedown', (e: any) => {
+    canvas.element.addEventListener('mousedown', (e: any) => {
         const x = e.offsetX;
         const y = e.offsetY;
 
@@ -93,7 +93,7 @@ function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
 
         isDragging = true;
     });
-    canvas.addEventListener('mousemove', (e: any) => {
+    canvas.element.addEventListener('mousemove', (e: any) => {
         if (isDragging) {
             const x = e.offsetX;
             const y = e.offsetY;
@@ -108,7 +108,7 @@ function renderChart(angleKey: string, labelKey?: string, radiusKey?: string) {
             draw();
         }
     });
-    canvas.addEventListener('mouseup', (e: any) => {
+    canvas.element.addEventListener('mouseup', (e: any) => {
         isDragging = false;
     });
 

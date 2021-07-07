@@ -1,7 +1,7 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Path} from "ag-charts-community/src/scene/shape/path";
-import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
+import { FpsCounter } from "../../charts/scene/fpsCounter";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Path } from "../../charts/scene/shape/path";
 
 function delay() {
     return new Promise(resolve => {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             function step() {
                 path.lineDashOffset += 0.25;
                 if (path.lineDashOffset > 50) {
-                    resolve();
+                    resolve(true);
                     return;
                 }
                 requestAnimationFrame(step);
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     path.lineDash = [a += 1 + (inc += 0.01), b];
                     //console.log(svgPath.lineDash);
                     if (a > 1400) {
-                        resolve();
+                        resolve(true);
                         return;
                     }
                     requestAnimationFrame(step);

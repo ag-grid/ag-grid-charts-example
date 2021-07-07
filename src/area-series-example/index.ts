@@ -460,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
         (chart.scene.root as Group)!.appendChild(saucer);
     }
 
-    // aliens();
+    aliens();
 
     function addSeriesIf() {
         if (!chart.series.length) {

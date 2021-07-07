@@ -499,4 +499,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // createPunchCardChart();
     // createCategoryScatterChart();
     // createLeftCategoryScatterChart();
+
+    const chart = AgChart.create({
+        axes: [
+            {
+                type: 'category',
+                position: 'bottom'
+            },
+            {
+                type: 'number',
+                position: 'left'
+            }
+        ],
+        series: [{
+            type: 'column'
+        }]
+    });
 });
