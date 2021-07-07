@@ -1,6 +1,7 @@
-import { Arc, DropShadow, Group } from "../../charts/main";
+import { Arc, DropShadow, Group, Rect } from "../../charts/main";
 import { Scene } from "../../charts/scene/scene";
 import { Text } from "../../charts/scene/shape/text";
+import { Selection } from "../../charts/scene/selection";
 
 const scene = new Scene(document, 800, 600);
 scene.canvas.element.style.border = '1px solid black';
@@ -38,10 +39,45 @@ scene.root = group;
 
 scene.container = document.body;
 
-let angle = 0;
+const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const data2 = [10, 9, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20];
+const data3 = [4, 5, 6];
 
-function next() {
-    text.rotation = (angle++ % 360) / 360 * Math.PI * 2;
-    window.requestAnimationFrame(next);
+let selection: Selection<Rect, Group, number, any> = Selection.select(group).selectAll<Rect>();
+
+function update(data: number[]) {
+    const update = selection.setData(data);
+
+    console.log(`Update size: ${update.size}`);
+    console.log(`Enter size: ${update.enter.size}`);
+    console.log(`Exit size: ${update.exit.size}`);
+
+    const enter = update.enter.append(Rect);
+    update.exit.remove();
+    selection = update.merge(enter);
+    selection.each((rect, datum, index) => {
+        rect.x = index * 50;
+        rect.y = datum * 10;
+        rect.width = 50;
+        rect.height = 50;
+        rect.fill = 'cyan';
+    });
 }
-window.requestAnimationFrame(next);
+
+update(data);
+
+
+setTimeout(function () {
+    update(data2);
+}, 2000);
+
+setTimeout(function () {
+    update(data3);
+}, 4000);
+
+// let angle = 0;
+// function next() {
+//     text.rotation = (angle++ % 360) / 360 * Math.PI * 2;
+//     window.requestAnimationFrame(next);
+// }
+// window.requestAnimationFrame(next);
