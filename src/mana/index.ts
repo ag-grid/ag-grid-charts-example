@@ -1,5 +1,7 @@
 import { Arc, Group, Scene } from "../../charts/main";
 import { Selection } from "../../charts/scene/selection"
+import { VanCleef } from "./vanCleef";
+import { Node } from "../../charts/scene/node"
 
 const scene = new Scene(document, 400, 400)
 
@@ -93,7 +95,7 @@ const update = (data: Coordinates[]): void => {
         arc.centerX = datum.x
         arc.centerY = datum.y
         arc.radiusX = arc.radiusY = 5
-        arc.fill = "red"
+        arc.fill = "rgb(212, 175, 55)"
     })
 
 
@@ -126,3 +128,76 @@ const startAnimation = () : void => {
 }
 
 startAnimation()
+
+
+// const clover = new VanCleef()
+
+// clover.x = 0
+// clover.y = 0
+
+// clover.size = 50
+// clover.fill = "rgb(1, 57, 12)"
+// clover.stroke = "rgb(212, 175, 55)"
+// clover.strokeWidth = 3
+// clover.lineDash = [3, 1]
+
+// group.append(clover)
+
+const chain = new Arc()
+
+chain.centerX = 0
+chain.centerY = 0
+chain.radiusY = chain.radiusX = 100
+chain.stroke = "rgb(212, 175, 55)"
+chain.fill = undefined
+chain.strokeWidth = 6
+chain.lineDash = [3, 1]
+
+
+group.append(chain)
+
+
+let cloverSelection = Selection.select(group).selectAll<VanCleef>()
+
+let cloverUpdate = cloverSelection.setData(generateCoordinates(100, 5))
+
+let cloverEnter = cloverUpdate.enter.append(VanCleef)
+
+cloverUpdate.exit.remove()
+
+cloverSelection = cloverUpdate.merge(cloverEnter)
+
+cloverSelection.each((clover, datum, index) => {
+    clover.x = datum.x
+    clover.y = datum.y
+
+    clover.size = 50
+    clover.fill = "rgb(1, 57, 12)"
+    clover.stroke = "rgb(212, 175, 55)"
+    clover.strokeWidth = 3
+    clover.lineDash = [3, 1]
+})
+
+
+const changeCloverColor = (event: MouseEvent): void => {
+    console.log(event)
+    for (let element of group.children) {
+        if (element instanceof VanCleef) {
+            if (element.isPointInPath(event.clientX, event.clientY)) {
+                console.log(element)
+                element.fill = element.fill === "rgb(1, 57, 12)" ? "rgb(3, 37, 76)" : "rgb(1, 57, 12)"
+            }
+        }
+    }
+}
+
+// scene.canvas.element.onclick = changeCloverColor
+
+scene.canvas.element.addEventListener("click", changeCloverColor)
+
+
+
+
+
+
+
