@@ -1,9 +1,9 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Text} from "ag-charts-community/src/scene/shape/text";
-import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
-import {toRadians} from "ag-charts-community/src/util/angle";
 import { areaRadial } from "d3";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Arc, ArcType } from "../../charts/scene/shape/arc";
+import { Text } from "../../charts/scene/shape/text";
+import { toRadians } from "../../charts/util/angle";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();

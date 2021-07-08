@@ -1,8 +1,8 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
-import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
-import { Text } from "ag-charts-community/src/scene/shape/text";
+import { FpsCounter } from "../../charts/scene/fpsCounter";
+import { Group } from "../../charts/scene/group";
+import { Text } from "../../charts/scene/shape/text";
+import { Scene } from "../../charts/scene/scene";
+import { Arc, ArcType } from "../../charts/scene/shape/arc";
 
 function createArcPathExample() {
     const scene = new Scene();
