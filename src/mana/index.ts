@@ -1,9 +1,10 @@
-import { Arc, Group, Scene } from "../../charts/main";
+import { Arc, BandScale, Group, Line, LinearScale, Scene } from "../../charts/main";
 import { Selection } from "../../charts/scene/selection"
+import { gemStones } from "./gemStonesData";
 import { VanCleef } from "./vanCleef";
-import { Node } from "../../charts/scene/node"
+import { Text } from "../../charts/scene/shape/text"
 
-const scene = new Scene(document, 400, 400)
+const scene = new Scene(document, 1000, 1000)
 
 const group = new Group()
 
@@ -71,7 +72,7 @@ const generateTransitionCoordinates = (t: number) : Coordinates[] => {
 
 let selection = Selection.select(group).selectAll<Arc>()
 
-console.log("selection", selection)
+// console.log("selection", selection)
 
 
 
@@ -80,16 +81,16 @@ console.log("selection", selection)
 const update = (data: Coordinates[]): void => {
     const update = selection.setData(data)
 
-    console.log("update", update)
+    // console.log("update", update)
 
     const enter = update.enter.append(Arc)
     update.exit.remove()
 
-    console.log("enter", enter)
+    // console.log("enter", enter)
 
     selection = update.merge(enter)
 
-    console.log("Updated Selection", selection)
+    // console.log("Updated Selection", selection)
 
     selection.each((arc, datum, index) => {
         arc.centerX = datum.x
@@ -127,7 +128,7 @@ const startAnimation = () : void => {
     next()
 }
 
-startAnimation()
+// startAnimation()
 
 
 // const clover = new VanCleef()
@@ -180,11 +181,10 @@ cloverSelection.each((clover, datum, index) => {
 
 
 const changeCloverColor = (event: MouseEvent): void => {
-    console.log(event)
     for (let element of group.children) {
         if (element instanceof VanCleef) {
             if (element.isPointInPath(event.clientX, event.clientY)) {
-                console.log(element)
+                // console.log(element)
                 element.fill = element.fill === "rgb(1, 57, 12)" ? "rgb(3, 37, 76)" : "rgb(1, 57, 12)"
             }
         }
@@ -194,6 +194,132 @@ const changeCloverColor = (event: MouseEvent): void => {
 // scene.canvas.element.onclick = changeCloverColor
 
 scene.canvas.element.addEventListener("click", changeCloverColor)
+
+
+
+/**
+ * chart with axes
+ */
+
+const cloverChart = new Group()
+
+group.append(cloverChart)
+
+/**
+ * x-axis
+ */
+
+const xAxis = new Group()
+cloverChart.append(xAxis)
+
+const bandScale = new BandScale()
+bandScale.domain = [...gemStones.map(gemStone => gemStone.name)]
+bandScale.range = [300, 700]
+bandScale.paddingOuter = 0.2
+
+const bandTicks = bandScale.ticks()
+console.log(bandTicks)
+
+let bandScaleSelection = Selection.select(xAxis).selectAll<Text>()
+
+let updateBandScaleSelection = bandScaleSelection.setData(bandTicks)
+
+updateBandScaleSelection.enter.append(Text).each((text, datum, index) => {
+    text.x = bandScale.convert(datum)
+    text.y = 300
+    text.textAlign = "center"
+    text.text = datum as string
+})
+
+// line for xAxis
+const xAxisLine = new Line()
+
+xAxisLine.x1 = bandScale.range[0] - 50
+xAxisLine.x2 = bandScale.range[1]
+xAxisLine.y1 = xAxisLine.y2 = 270
+xAxisLine.strokeWidth = 1
+xAxisLine.stroke = "black"
+
+xAxis.append(xAxisLine)
+
+/**
+ * y-axis
+ */
+
+
+const yAxis = new Group()
+cloverChart.append(yAxis)
+
+
+// const maxHardness: number = gemStones.reduce((prev, curr) => {
+//     return prev.hardness > curr.hardness ? prev : curr
+// }, {hardness: 0}).hardness
+const findMinAndMax = (): { min: number, max: number}  => {
+    let min: number = gemStones[0].hardness
+    let max: number = 0
+
+    for (let i = 0; i < gemStones.length; i++) {
+        if (gemStones[i].hardness < min) {
+            min = gemStones[i].hardness
+        }
+        if (gemStones[i].hardness > max) {
+            max = gemStones[i].hardness
+        }
+    }
+
+    return {
+        min,
+        max
+    }
+}
+
+const hardness : { min: number, max: number} = findMinAndMax()
+
+const linearScale = new LinearScale()
+linearScale.domain = [hardness.min, hardness.max]
+linearScale.range = [250, 0]
+const linearTicks = linearScale.ticks()
+
+let linearScaleSelection = Selection.select(yAxis).selectAll<Text>()
+let updateLinearScaleSelection = linearScaleSelection.setData(linearTicks)
+
+updateLinearScaleSelection.enter.append(Text).each((text, datum, index) => {
+    text.text = String(datum)
+    text.x = bandScale.range[0] - 60
+    text.y = linearScale.convert(datum)
+})
+
+// line for y-axis
+const yAxisLine = new Line()
+
+yAxisLine.x1 = yAxisLine.x2 = bandScale.range[0] - 40
+yAxisLine.y1 = linearScale.range[0] + 30
+yAxisLine.y2 = linearScale.range[1] - 10
+yAxisLine.stroke = "black"
+yAxisLine.strokeWidth = 1
+
+yAxis.append(yAxisLine)
+
+
+
+/**
+ * Data nodes
+ */
+
+let cloverChartSelection = Selection.select(cloverChart).selectAll<VanCleef>()
+
+let updateCloverChartSelection = cloverChartSelection.setData(gemStones)
+
+updateCloverChartSelection.enter.append(VanCleef).each((clover, datum, index) => {
+    clover.size = 15,
+    clover.fill = "green"
+    clover.x = bandScale.convert(datum.name)
+    clover.y = linearScale.convert(datum.hardness)
+})
+
+
+
+
 
 
 
