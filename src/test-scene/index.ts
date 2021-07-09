@@ -1,4 +1,4 @@
-import { Arc, BandScale, DropShadow, Group, Line, LinearScale, Rect } from "../../charts/main";
+import { Arc, BandScale, Chart, DropShadow, Group, Line, LinearScale, Rect } from "../../charts/main";
 import { Scene } from "../../charts/scene/scene";
 import { Text } from "../../charts/scene/shape/text";
 import { Selection } from "../../charts/scene/selection";
@@ -84,14 +84,14 @@ scene.container = document.body;
 //     update(data3);
 // }, 4000);
 
-// let angle = 0;
-// let offset = 0;
-// function next() {
-//     text.rotation = (angle++ % 360) / 360 * Math.PI * 2;
-//     text.lineDashOffset = ++offset;
-//     window.requestAnimationFrame(next);
-// }
-// window.requestAnimationFrame(next);
+let angle = 0;
+let offset = 0;
+function next() {
+    text.rotation = (angle++ % 360) / 360 * Math.PI * 2;
+    text.lineDashOffset = ++offset;
+    window.requestAnimationFrame(next);
+}
+window.requestAnimationFrame(next);
 
 // t [0, 1]
 // x0 x1 [200, 500]
@@ -154,3 +154,94 @@ updateBand.enter.append(Text).each((text, datum) => {
     text.y = 200;
     text.text = String(datum);
 });
+
+function makeSceneResizeable(scene: Scene, onResize: (width: number, height: number) => void) {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    let sceneSize: [number, number];
+
+    scene.canvas.element.addEventListener('mousedown', (e: MouseEvent) => {
+        startX = e.offsetX;
+        startY = e.offsetY;
+        sceneSize = [scene.width, scene.height];
+        isDragging = true;
+    });
+    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
+        if (isDragging) {
+            const dx = e.offsetX - startX;
+            const dy = e.offsetY - startY;
+            scene.resize(sceneSize[0] + dx, sceneSize[1] + dy);
+            onResize(scene.width, scene.height);
+        }
+    });
+    scene.canvas.element.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+}
+
+makeSceneResizeable(scene, (width, height) => {
+    text.x = width / 2;
+    text.y = height / 2;
+    text.rotationCenterX = width / 2;
+    text.rotationCenterY = height / 2;
+});
+
+class MyChart {
+
+    private scene: Scene;
+
+    private _data: any[] = [];
+    set data(data: any[]) {
+        this._data = data;
+        this.processData();
+    }
+    get data(): any[] {
+        return this._data;
+    }
+
+    private _size: [number, number] = [800, 600];
+    set size(size: [number, number]) {
+        this._size = size;
+        // resize the scene
+        this.updateSelections();
+    }
+    get size(): [number, number] {
+        return this._size;
+    }
+
+    constructor() {
+        this.scene = new Scene(document, this.size[0], this.size[1]);
+        makeSceneResizeable(this.scene, this.onResize);
+    }
+
+    private onResize(width: number, height: number) {
+        // resize logic
+    }
+
+    // private xAxisSelection
+    // private yAxisSelection
+    // private markerSelection
+
+    private processData() {
+        this.updateSelections();
+    }
+
+    private updateSelections() {
+        this.updateXAxisSelection();
+        this.updateYAxisSelection();
+        this.updateMarkerSelection();
+    }
+
+    private updateXAxisSelection() {
+        // this.updateXAxisSelection = merge result
+    }
+
+    private updateYAxisSelection() {
+
+    }
+
+    private updateMarkerSelection() {
+
+    }
+}
