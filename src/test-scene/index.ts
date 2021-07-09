@@ -1,4 +1,4 @@
-import { Arc, DropShadow, Group, Rect } from "../../charts/main";
+import { Arc, BandScale, DropShadow, Group, Line, LinearScale, Rect } from "../../charts/main";
 import { Scene } from "../../charts/scene/scene";
 import { Text } from "../../charts/scene/shape/text";
 import { Selection } from "../../charts/scene/selection";
@@ -84,11 +84,73 @@ scene.container = document.body;
 //     update(data3);
 // }, 4000);
 
-let angle = 0;
-let offset = 0;
-function next() {
-    text.rotation = (angle++ % 360) / 360 * Math.PI * 2;
-    text.lineDashOffset = ++offset;
-    window.requestAnimationFrame(next);
-}
-window.requestAnimationFrame(next);
+// let angle = 0;
+// let offset = 0;
+// function next() {
+//     text.rotation = (angle++ % 360) / 360 * Math.PI * 2;
+//     text.lineDashOffset = ++offset;
+//     window.requestAnimationFrame(next);
+// }
+// window.requestAnimationFrame(next);
+
+// t [0, 1]
+// x0 x1 [200, 500]
+// [-250, 200] [200, 500]
+const scale = new LinearScale();
+scale.domain = [-250, 200];
+scale.range = [200, 700];
+console.log(scale.convert(-250));
+console.log(scale.convert(200));
+console.log(scale.convert(0));
+
+console.log('linear ticks', scale.ticks());
+
+console.log('----------------');
+
+const bandScale = new BandScale();
+const categories = ['Rob', 'Niall', 'Gil'];
+bandScale.domain = categories;
+bandScale.range = [0, 300];
+bandScale.paddingInner = 0;
+bandScale.paddingOuter = 0.1;
+console.log(bandScale.bandwidth);
+console.log(bandScale.convert('Rob'));
+console.log(bandScale.convert('Niall'));
+console.log(bandScale.convert('Gil'));
+console.log('band scale ticks', bandScale.ticks());
+
+const linearSelection = Selection.select(group).selectAll();
+const updateLinear = linearSelection.setData(scale.ticks());
+updateLinear.enter.append(Text).each((text, datum) => {
+    text.textAlign = 'center';
+    text.x = scale.convert(datum);
+    text.y = 100;
+    text.text = String(datum);
+});
+
+const linearSelection2 = Selection.select(group).selectAll();
+const updateLinear2 = linearSelection2.setData(scale.ticks());
+updateLinear2.enter.append(Line).each((line, datum) => {
+    line.stroke = 'black';
+    line.strokeWidth = 1;
+    line.x1 = line.x2 = scale.convert(datum);
+    line.y1 = 110;
+    line.y2 = 115;
+});
+
+const axisLine = new Line();
+axisLine.stroke = 'black';
+axisLine.strokeWidth = 1;
+axisLine.y1 = axisLine.y2 = 110;
+axisLine.x1 = scale.range[0];
+axisLine.x2 = scale.range[1];
+group.append(axisLine);
+
+const bandSelection = Selection.select(group).selectAll();
+const updateBand = linearSelection.setData(bandScale.ticks());
+updateBand.enter.append(Text).each((text, datum) => {
+    text.textAlign = 'center';
+    text.x = bandScale.convert(datum);
+    text.y = 200;
+    text.text = String(datum);
+});
