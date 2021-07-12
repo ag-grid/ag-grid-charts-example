@@ -21,7 +21,7 @@ scene.container = document.body
 
 const generateCoordinates = (r: number = 100, steps: number = 30 ) : Coordinates[] => {
     let data: Coordinates[] = []
-    
+
     let alpha: number = 0
     const increment = ( (360 / steps) / 360) * 2 * Math.PI
     for (let i =0; i < steps ; i ++) {
@@ -30,7 +30,7 @@ const generateCoordinates = (r: number = 100, steps: number = 30 ) : Coordinates
             y: r * Math.sin(alpha),
         }
         data.push(coordinates)
-        
+
         alpha += increment
     }
     return data
@@ -105,11 +105,11 @@ let start: number
 const duration: number = 10000
 
 const next = (): void => {
-    
+
     const now: number = Date.now()
     const timeElapsed: number = now - start
 
-    const t: number = timeElapsed / duration 
+    const t: number = timeElapsed / duration
 
     // console.log(t)
 
@@ -201,7 +201,6 @@ scene.canvas.element.addEventListener("click", changeCloverColor)
  */
 
 const cloverChart = new Group()
-
 group.append(cloverChart)
 
 /**
@@ -224,8 +223,7 @@ let bandScaleSelection = Selection.select(xAxis).selectAll<Text>()
 let updateBandScaleSelection = bandScaleSelection.setData(bandTicks)
 
 updateBandScaleSelection.enter.append(Text).each((text, datum, index) => {
-    text.x = bandScale.convert(datum)
-    console.log("text.x", text.x)
+    text.x = bandScale.convert(datum) + bandScale.bandwidth / 2
     text.y = 300
     text.textAlign = "center"
     text.text = datum as string
@@ -236,7 +234,7 @@ const xAxisLine = new Line()
 
 xAxisLine.x1 = bandScale.range[0]
 xAxisLine.x2 = bandScale.range[1]
-xAxisLine.y1 = xAxisLine.y2 = 270
+xAxisLine.y1 = xAxisLine.y2 = 250
 xAxisLine.strokeWidth = 1
 xAxisLine.stroke = "black"
 
@@ -285,16 +283,18 @@ let updateLinearScaleSelection = linearScaleSelection.setData(linearTicks)
 
 updateLinearScaleSelection.enter.append(Text).each((text, datum, index) => {
     text.text = String(datum)
-    text.x = bandScale.range[0]
+    text.textAlign = 'end';
+    text.textBaseline = 'middle';
+    text.x = bandScale.range[0] - 10
     text.y = linearScale.convert(datum)
 })
 
 // line for y-axis
 const yAxisLine = new Line()
 
-yAxisLine.x1 = yAxisLine.x2 = bandScale.range[0] - 40
-yAxisLine.y1 = linearScale.range[0] + 30
-yAxisLine.y2 = linearScale.range[1] - 10
+yAxisLine.x1 = yAxisLine.x2 = bandScale.range[0]
+yAxisLine.y1 = linearScale.range[0]
+yAxisLine.y2 = linearScale.range[1]
 yAxisLine.stroke = "black"
 yAxisLine.strokeWidth = 1
 
@@ -313,7 +313,7 @@ let updateCloverChartSelection = cloverChartSelection.setData(gemStones)
 updateCloverChartSelection.enter.append(VanCleef).each((clover, datum, index) => {
     clover.size = 15,
     clover.fill = "green"
-    clover.x = bandScale.convert(datum.name)
+    clover.x = bandScale.convert(datum.name) + bandScale.bandwidth / 2
     clover.y = linearScale.convert(datum.hardness)
 })
 
