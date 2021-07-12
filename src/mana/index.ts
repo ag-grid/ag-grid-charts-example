@@ -3,6 +3,8 @@ import { Selection } from "../../charts/scene/selection"
 import { gemStones } from "./gemStonesData";
 import { VanCleef } from "./vanCleef";
 import { Text } from "../../charts/scene/shape/text"
+import { Coordinates } from "./types";
+import { VanCleefChart } from "./vanCleefChart";
 
 const scene = new Scene(document, 1000, 1000)
 
@@ -15,10 +17,7 @@ scene.root = group
 
 scene.container = document.body
 
-type Coordinates = {
-    x: number,
-    y: number
-}
+
 
 const generateCoordinates = (r: number = 100, steps: number = 30 ) : Coordinates[] => {
     let data: Coordinates[] = []
@@ -214,11 +213,11 @@ cloverChart.append(xAxis)
 
 const bandScale = new BandScale()
 bandScale.domain = [...gemStones.map(gemStone => gemStone.name)]
-bandScale.range = [300, 700]
+bandScale.range = [0, 400]
 bandScale.paddingOuter = 0.2
 
 const bandTicks = bandScale.ticks()
-console.log(bandTicks)
+// console.log(bandTicks)
 
 let bandScaleSelection = Selection.select(xAxis).selectAll<Text>()
 
@@ -226,6 +225,7 @@ let updateBandScaleSelection = bandScaleSelection.setData(bandTicks)
 
 updateBandScaleSelection.enter.append(Text).each((text, datum, index) => {
     text.x = bandScale.convert(datum)
+    console.log("text.x", text.x)
     text.y = 300
     text.textAlign = "center"
     text.text = datum as string
@@ -234,7 +234,7 @@ updateBandScaleSelection.enter.append(Text).each((text, datum, index) => {
 // line for xAxis
 const xAxisLine = new Line()
 
-xAxisLine.x1 = bandScale.range[0] - 50
+xAxisLine.x1 = bandScale.range[0]
 xAxisLine.x2 = bandScale.range[1]
 xAxisLine.y1 = xAxisLine.y2 = 270
 xAxisLine.strokeWidth = 1
@@ -285,7 +285,7 @@ let updateLinearScaleSelection = linearScaleSelection.setData(linearTicks)
 
 updateLinearScaleSelection.enter.append(Text).each((text, datum, index) => {
     text.text = String(datum)
-    text.x = bandScale.range[0] - 60
+    text.x = bandScale.range[0]
     text.y = linearScale.convert(datum)
 })
 
@@ -321,7 +321,13 @@ updateCloverChartSelection.enter.append(VanCleef).each((clover, datum, index) =>
 
 
 
+const vanCleefChart = new VanCleefChart()
 
+vanCleefChart.size = [800, 800]
+vanCleefChart.data = gemStones
+vanCleefChart.xKey = "name"
+vanCleefChart.yKey = "hardness"
+vanCleefChart.processData()
 
 
 
