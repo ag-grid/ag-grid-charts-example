@@ -2,74 +2,83 @@
  * Scatter plot with clover markers
  */
 
-import { text } from "d3"
 import { BandScale, Group, Line, LinearScale, Scene } from "../../charts/main"
 import { Selection } from "../../charts/scene/selection"
 import { Text } from "../../charts/scene/shape/text"
-import { OnResize, Padding } from "./types"
+import { Observable, reactive } from "../../charts/util/observable"
 import { VanCleef } from "./vanCleef"
 
+export class Padding extends Observable {
+    @reactive('update') top: number = 50
+    @reactive('update') right: number = 50
+    @reactive('update') bottom: number = 50
+    @reactive('update') left: number = 50
+}
 
+export class VanCleefChart extends Observable {
 
-export class VanCleefChart {
+    padding = new Padding()
 
     private _size: [number, number] = [800, 600]
     set size(value: [number, number]) {
         this._size = value
         this.scene.resize(this._size[0], this._size[1])  
-        // console.log(this.scene.width)
         this.processData()
     }
     get size(): [number, number] {
         return this._size
     }
 
-    private _data: any
-    set data(value: any) {
-        if (value !== this._data) {
-            this._data = value
-        }
-        this.processData()
-    }
-    get data(): any {
-        return this._data
-    }
+    // private _data: any
+    // set data(value: any) {
+    //     if (value !== this._data) {
+    //         this._data = value
+    //     }
+    //     this.processData()
+    // }
+    // get data(): any {
+    //     return this._data
+    // }
 
-    private _xKey: string
-    set xKey(value: string) {
-        if (value !== this._xKey) {
-            this._xKey = value
-            this.processData()
-        }
-    }
-    get xKey(): string {
-        return this._xKey
-    }
+    @reactive("change") data: any = []
+    @reactive("change") xKey: string
+    @reactive("change") yKey: string
 
-    private _yKey: string
-    set yKey(value: string) {
-        if(value !== this._yKey) {
-            this._yKey = value
-            this.processData()
-        }
-    }
-    get yKey(): string {
-        return this._yKey
-    }
+    // private _xKey: string
+    // set xKey(value: string) {
+    //     if (value !== this._xKey) {
+    //         this._xKey = value
+    //         this.processData()
+    //     }
+    // }
+    // get xKey(): string {
+    //     return this._xKey
+    // }
 
-    private _padding: Padding = { 
-        top: 50, 
-        right: 50, 
-        bottom: 50, 
-        left: 50 
-    }
-    set padding(value: Padding) {
-        this._padding = value
-        this.updateSelections()
-    }
-    get padding(): Padding {
-        return this._padding
-    }
+    // private _yKey: string
+    // set yKey(value: string) {
+    //     if(value !== this._yKey) {
+    //         this._yKey = value
+    //         this.processData()
+    //     }
+    // }
+    // get yKey(): string {
+    //     return this._yKey
+    // }
+
+    // private _padding: Padding = { 
+    //     top: 50, 
+    //     right: 50, 
+    //     bottom: 50, 
+    //     left: 50 
+    // }
+    // set padding(value: Padding) {
+    //     this._padding = value
+    //     this.updateSelections()
+    // }
+    // get padding(): Padding {
+    //     return this._padding
+    // }
 
     private _markerFill: string = "black"
     set markerFill(value: string) {
@@ -90,12 +99,13 @@ export class VanCleefChart {
     private xAxisLine: Line = new Line()
     private yAxisLine: Line = new Line()
     private bandScaleSelection: Selection<Text, Group, string, any> = Selection.select(this.xAxis).selectAll<Text>()
-    private linearScaleSelection: Selection<Text, Group, number, any> = Selection.select(this.yAxis).selectAll<Text>()
     private bandScaleGroupSelection: Selection<Group, Group, string, any> = Selection.select(this.xAxis).selectAll<Group>()
+    private linearScaleSelection: Selection<Text, Group, number, any> = Selection.select(this.yAxis).selectAll<Text>()
     private linearScaleGroupSelection: Selection<Group, Group, number, any> = Selection.select(this.yAxis).selectAll<Group>()
     private markersSelection: Selection<VanCleef, Group, any, any> = Selection.select(this.markers).selectAll<VanCleef>()
 
     constructor() {
+        super()
         this.scene = new Scene(document, this.size[0], this.size[1])
         this.scene.root = this.group
         this.scene.container = document.body
@@ -107,6 +117,9 @@ export class VanCleefChart {
 
 
         this.makeSceneResizable()
+
+        this.addEventListener("change", this.processData, this)
+        this.padding.addEventListener("update", this.processData, this)
     }
 
 
@@ -128,7 +141,7 @@ export class VanCleefChart {
     }
 
     makeBandScale = (): void => {
-        this.xBandScale.domain = [...this._data.map((datum: any )=> datum[this.xKey])]
+        this.xBandScale.domain = [...this.data.map((datum: any )=> datum[this.xKey])]
         this.xBandScale.range = [this.padding.left, this.size[0] - this.padding.right - this.padding.left]
         this.xBandScaleTicks = this.xBandScale.ticks()
     }
@@ -145,15 +158,15 @@ export class VanCleefChart {
         this.data.map((datum: any) => {
             return datum[this.yKey]
         })
-        let min: number = this._data[0][this.yKey]
+        let min: number = this.data[0][this.yKey]
         let max: number = 0
     
-        for (let i = 0; i < this._data.length; i++) {
-            if (this._data[i][this.yKey] < min) {
-                min = this._data[i][this.yKey]
+        for (let i = 0; i < this.data.length; i++) {
+            if (this.data[i][this.yKey] < min) {
+                min = this.data[i][this.yKey]
             }
-            if (this._data[i][this.yKey] > max) {
-                max = this._data[i][this.yKey]
+            if (this.data[i][this.yKey] > max) {
+                max = this.data[i][this.yKey]
             }
         }
     
@@ -167,7 +180,6 @@ export class VanCleefChart {
         if (!this.data) {
             return
         }
-        // console.log("updating chart")
         this.updateXAxisSelection()
         this.updateYAxisSelection()
         this.updateMarkerSelection()
@@ -178,12 +190,8 @@ export class VanCleefChart {
         // let enterBandScaleSelection = updateBandScaleSelection.enter.append(Text)
         // updateBandScaleSelection.exit.remove()
 
-        // // console.log("updateBandSelection", updateBandScaleSelection)
-        // // console.log("enterBandSelection", enterBandScaleSelection)
-        // // console.log("this.bandScaleSelection", this.bandScaleSelection)
 
         // this.bandScaleSelection = updateBandScaleSelection.merge(enterBandScaleSelection)
-        // // console.log(" this.bandScaleSelection",  this.bandScaleSelection)
 
         // this.bandScaleSelection.each((text, datum, index) => {
         //     text.x = this.xBandScale.convert(datum) + (this.xBandScale.bandwidth / 2)
@@ -198,13 +206,12 @@ export class VanCleefChart {
         
         // this.xAxisLine.x1 = this.padding.left
         // this.xAxisLine.x2 = this.size[0] - this.padding.right - this.padding.left
-        // console.log("this.xAxisLine.x2",this.xAxisLine.x2)
         // this.xAxisLine.y1 = this.xAxisLine.y2 = this.size[1] - this.padding.bottom - 20
         // this.xAxisLine.strokeWidth = 1
         // this.xAxisLine.stroke = "black"
 
 
-        // Redo axis with group selection
+        // Redo axis with group selection and position using translation
         let updateBandScaleGroupSelection = this.bandScaleGroupSelection.setData(this.xBandScaleTicks)
 
         let enterBandScaleGroupSelection = updateBandScaleGroupSelection.enter.append(Group)
@@ -241,25 +248,11 @@ export class VanCleefChart {
 
         this.xAxisLine.x1 = this.padding.left
         this.xAxisLine.x2 = this.size[0] - this.padding.right - this.padding.left
-        console.log("this.xAxisLine.x2",this.xAxisLine.x2)
         this.xAxisLine.y1 = 0
         this.xAxisLine.strokeWidth = 1
         this.xAxisLine.stroke = "black"
 
         this.xAxis.translationY = this.size[1] - this.padding.bottom
-
-
-
-        
-
-
-
-
-
-
-
-
-
 
 
     }
@@ -268,15 +261,9 @@ export class VanCleefChart {
         let updateLinearScaleSelection = this.linearScaleSelection.setData(this.yLinearScaleTicks)
         let enterLinearScaleSelection = updateLinearScaleSelection.enter.append(Text)
 
-        // console.log("updateLinearScaleSelection", updateLinearScaleSelection)
-        // console.log("enterLinearScaleSelection", enterLinearScaleSelection)
-        // console.log("this.linearScaleSelection", this.linearScaleSelection)
-
         updateLinearScaleSelection.exit.remove()
 
         this.linearScaleSelection = updateLinearScaleSelection.merge(enterLinearScaleSelection)
-        // console.log("this.linearScaleSelection", this.linearScaleSelection)
-
 
         this.linearScaleSelection.each((text, datum, index) => {
             text.text = String(datum)

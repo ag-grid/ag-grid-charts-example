@@ -5,6 +5,8 @@ import { VanCleef } from "./vanCleef";
 import { Text } from "../../charts/scene/shape/text"
 import { Coordinates } from "./types";
 import { VanCleefChart } from "./vanCleefChart";
+import { createButton, createSlider } from "../../lib/ui";
+import { randomInt } from "d3";
 
 const vanCleefChart = new VanCleefChart()
 
@@ -13,6 +15,21 @@ vanCleefChart.data = gemStones
 vanCleefChart.xKey = "name"
 vanCleefChart.yKey = "hardness"
 vanCleefChart.markerFill = "green"
+
+createSlider("change padding", [10, 20, 30, 40, 50, 60, 70, 80, 100], (value: number) => {
+
+    vanCleefChart.padding.right = value
+    vanCleefChart.padding.top = value
+    vanCleefChart.padding.bottom = value
+    vanCleefChart.padding.left = value
+
+    console.log(vanCleefChart.padding)
+})
+
+createButton("change data", () => {
+    const randomIndex = Math.floor(Math.random() * 6)
+    vanCleefChart.data = gemStones.slice(randomIndex)
+})
 
 
 const scene = new Scene(document, 1000, 1000)
