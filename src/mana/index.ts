@@ -6,7 +6,6 @@ import { Text } from "../../charts/scene/shape/text"
 import { Coordinates } from "./types";
 import { VanCleefChart } from "./vanCleefChart";
 import { createButton, createSlider } from "../../lib/ui";
-import { randomInt } from "d3";
 
 const vanCleefChart = new VanCleefChart()
 

@@ -1,15 +1,7 @@
 import { Path } from "../../charts/scene/shape/path";
 import { toRadians } from "../../charts/util/angle";
+import { Angles, Coordinates } from "./types";
 
-type Coordinates = {
-    x: number,
-    y: number
-}
-
-type angles = {
-    startAngle: number,
-    endAngle: number
-}
 
 /**
  * four leaf clover
@@ -57,28 +49,28 @@ export class VanCleef extends Path {
 
         const r = this._size / 4
 
-        const arc1: Coordinates & angles  = {
+        const arc1: Coordinates & Angles  = {
             x: this._x + r,
             y: this._y - r,
             startAngle: toRadians(180),
             endAngle: toRadians(90)
         }
 
-        const arc2: Coordinates & angles  = {
+        const arc2: Coordinates & Angles  = {
             x: this._x + r,
             y: this._y + r,
             startAngle: toRadians(270),
             endAngle: toRadians(180)
         }
 
-        const arc3 : Coordinates & angles = {
+        const arc3 : Coordinates & Angles = {
             x: this._x - r,
             y: this._y + r,
             startAngle: toRadians(0),
             endAngle: toRadians(270)
         }
         
-        const arc4: Coordinates & angles= {
+        const arc4: Coordinates & Angles= {
             x: this._x -r,
             y: this._y - r,
             startAngle: toRadians(90),

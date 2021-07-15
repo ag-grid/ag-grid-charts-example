@@ -1,7 +1,4 @@
-type GemStone = {
-    name: string,
-    hardness: number
-}
+import { GemStone } from "./types";
 
 export const gemStones: GemStone[] = [
     {

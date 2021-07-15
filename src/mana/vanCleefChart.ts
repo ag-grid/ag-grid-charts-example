@@ -6,14 +6,9 @@ import { BandScale, Group, Line, LinearScale, Scene } from "../../charts/main"
 import { Selection } from "../../charts/scene/selection"
 import { Text } from "../../charts/scene/shape/text"
 import { Observable, reactive } from "../../charts/util/observable"
+import { Padding } from "./padding"
 import { VanCleef } from "./vanCleef"
 
-export class Padding extends Observable {
-    @reactive('update') top: number = 50
-    @reactive('update') right: number = 50
-    @reactive('update') bottom: number = 50
-    @reactive('update') left: number = 50
-}
 
 export class VanCleefChart extends Observable {
 
