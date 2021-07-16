@@ -6,6 +6,7 @@ import { Text } from "../../charts/scene/shape/text"
 import { Coordinates } from "./types";
 import { VanCleefChart } from "./vanCleefChart";
 import { createButton, createSlider } from "../../lib/ui";
+import { Circle } from "../sparkline/circle";
 
 const vanCleefChart = new VanCleefChart()
 
@@ -349,7 +350,23 @@ scene.canvas.element.addEventListener("click", changeCloverColor)
 
 
 
+// checking isPointInPath
 
+// const circle = new Circle()
+
+// circle.centerY = 50
+// circle.centerX = 50
+// circle.radius = 25
+
+// group.append(circle)
+
+// const handleClick = (event: MouseEvent) => {
+//     const isInPath = circle.isPointInPath(event.offsetX, event.offsetY)
+//     if (isInPath) {
+//         circle.radius = 100
+//     }
+// }
+// scene.canvas.element.addEventListener("click", handleClick)
 
 
 
