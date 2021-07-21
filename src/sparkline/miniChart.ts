@@ -8,11 +8,13 @@ export abstract class MiniChart extends Observable {
 
     @reactive("dataChange") data?: number[] = undefined;
     @reactive() padding?: Padding = new Padding(3);
+    @reactive() markerHighlightSize = 3;
 
     constructor() {
         super();
-        this.addEventListener("dataChange", this.scheduleLayout, this);
+        this.addPropertyListener("data", this.processData, this);
         this.addPropertyListener("padding", this.scheduleLayout, this);
+        this.addPropertyListener("markerHighlightSize", this.scheduleLayout, this);
         this.scene.container = document.body;
         this.scene.root = this.rootGroup;
     }
@@ -21,26 +23,49 @@ export abstract class MiniChart extends Observable {
     set size(value: [number, number]) {
         this._size = value;
         this.scene.resize(this._size[0], this._size[1]);
-        this.updateYScaleRange();
         this.scheduleLayout();
     }
     get size(): [number, number] {
         return this._size;
     }
 
-    processData() { }
-    updateYScaleRange() { }
+    private _yData: number[] = [];
+    set yData(value: number[]) {
+        this._yData = value;
+    }
+    get yData() : number[] {
+        return this._yData;
+    }
 
+    private _xData: number[] = [];
+    set xData(value: number[]) {
+        this._xData = value;
+    }
+    get xData(): number[] {
+        return this._xData;
+    }
+
+    private _nodeData: { x: number, y: number}[] = [];
+    set nodeData(value: { x: number, y: number}[]) {
+        this._nodeData = value;
+    }
+    get nodeData(): { x: number, y: number}[] {
+        return this._nodeData;
+    }
+
+    processData() { }
+    update() { }
+    
     private layoutId: number = 0;
     get layoutScheduled(): boolean {
         return !!this.layoutId;
     }
     scheduleLayout() {
         if (this.layoutId) {
-            cancelAnimationFrame(this.layoutId);
+            cancelAnimationFrame(this.layoutId);    
         }
         this.layoutId = requestAnimationFrame(() => {
-            this.processData();
+            this.update();
             this.layoutId = 0;
         })
     }

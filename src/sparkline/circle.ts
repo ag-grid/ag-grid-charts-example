@@ -3,21 +3,6 @@ export class Circle extends Shape {
 
     static className = "Marker";
 
-    isPointInPath(x: number, y: number) {
-        // fix this
-        const transformedPoint = this.transformPoint(x, y);
-        // const transformedPoint = { x, y }
-        const { centerX, centerY, radius: r } = this;
-        
-        const dx = Math.abs(centerX - transformedPoint.x)
-        const dy = Math.abs(centerY - transformedPoint.y)
-        return dx <= r && dy <= r
-    }
-
-    isPointInStroke(x: number, y: number) {
-        return false;
-    }
-
     private _centerX: number = 0;
     set centerX(value: number) {
         if (this._centerX !== value) {
@@ -51,9 +36,26 @@ export class Circle extends Shape {
         return this._radius;
     }
 
+    isPointInPath(x: number, y: number) {
+        const transformedPoint = this.transformPoint(x, y);
+
+        const { centerX, centerY, radius: r } = this;
+
+        const dx = Math.abs(centerX - transformedPoint.x);
+        const dy = Math.abs(centerY - transformedPoint.y);
+        const R = Math.sqrt((dx ** 2) + (dy ** 2));
+
+        return R <= r;
+    }
+
+    isPointInStroke(x: number, y: number) {
+        return false;
+    }
+
     render(ctx: CanvasRenderingContext2D) {
+        const { centerX, centerY, radius } = this;
         ctx.beginPath();
-        ctx.arc(this.centerX, this.centerY, this.radius, 0, 2 * Math.PI, false);
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
         this.fillStroke(ctx);
     }
 }
