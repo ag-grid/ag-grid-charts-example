@@ -1,35 +1,56 @@
-import { Group, Padding, Scene } from "../../charts/main";
-import { Observable, reactive } from "../../charts/util/observable";
+import { Group, Padding, Scene } from '../../charts/main';
+import { Observable, reactive } from '../../charts/util/observable';
 
+class MiniChartAxis extends Observable {
+    @reactive('update') stroke: string = 'black'; 
+    @reactive('update') strokeWidth: number = 1;
+}
 export abstract class MiniChart extends Observable {
 
     protected scene: Scene = new Scene();
     protected rootGroup: Group = new Group();
 
-    @reactive("dataChange") data?: number[] = undefined;
+    @reactive() data?: number[] = undefined;
     @reactive() padding?: Padding = new Padding(3);
-    @reactive() markerHighlightSize = 3;
+
+    readonly axis = new MiniChartAxis();
 
     constructor() {
         super();
-        this.addPropertyListener("data", this.processData, this);
-        this.addPropertyListener("padding", this.scheduleLayout, this);
-        this.addPropertyListener("markerHighlightSize", this.scheduleLayout, this);
-        this.addHoverEventListener();
 
-        this.scene.canvas.element.style.border = "1px solid black";
+        this.scene.canvas.element.style.border = '1px solid black';
         this.scene.container = document.body;
         this.scene.root = this.rootGroup;
+
+        this.addPropertyListener('data', this.processData, this);
+        this.addPropertyListener('padding', this.scheduleLayout, this);
+        this.axis.addEventListener('update', this.scheduleLayout, this);
+
+        this.addHoverEventListener();
     }
 
-    private _size: [number, number] = [100, 100];
-    set size(value: [number, number]) {
-        this._size = value;
-        this.scene.resize(this._size[0], this._size[1]);
-        this.scheduleLayout();
+    private _width: number = 100;
+    set width(value: number) {
+        if (this._width !== value) {
+            this._width = value;
+            this.scene.resize(value, this.height);
+            this.scheduleLayout();
+        }
     }
-    get size(): [number, number] {
-        return this._size;
+    get width(): number {
+        return this._width;
+    }
+
+    private _height: number = 100;
+    set height(value: number) {
+        if (this._height !== value) {
+            this._height = value;
+            this.scene.resize(this.width, value);
+            this.scheduleLayout();
+        }
+    }
+    get height(): number {
+        return this._height;
     }
 
     private _yData: number[] = [];
@@ -56,6 +77,9 @@ export abstract class MiniChart extends Observable {
         return this._nodeData;
     }
 
+    update() { }
+    onHover(event: MouseEvent) { }
+
     processData() { 
         const { data, yData, xData } = this;
 
@@ -75,8 +99,11 @@ export abstract class MiniChart extends Observable {
         this.update();
     }
 
-    update() { }
-    onHover(event: MouseEvent) { }
+    findMinAndMax(data: number[]): [number, number] {
+        let min: number = Math.min(...data);
+        let max: number = Math.max(...data);
+        return [min, max];
+    }
     
     private layoutId: number = 0;
     get layoutScheduled(): boolean {
@@ -94,10 +121,9 @@ export abstract class MiniChart extends Observable {
 
     private _onHover = this.onHover.bind(this);
     addHoverEventListener(): void {
-        // this.scene.canvas.element.addEventListener("click", this._resizeMarker);
-        this.scene.canvas.element.addEventListener("mousemove", (e) => this.onHover(e));
+        this.scene.canvas.element.addEventListener('mousemove', (e) => this.onHover(e));
 
         // for clean up
-        // this.scene.canvas.element.removeEventListener("click", this._resizeMarker);
+        // this.scene.canvas.element.removeEventListener('click', this._resizeMarker);
     }
 }
