@@ -1,7 +1,7 @@
 import { Shape } from "../../charts/scene/shape/shape";
 export class Circle extends Shape {
 
-    static className = "Marker";
+    static className = "Circle Marker";
 
     private _centerX: number = 0;
     set centerX(value: number) {

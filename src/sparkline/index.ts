@@ -2,6 +2,7 @@ import { Padding } from "../../charts/main";
 import { createButton } from "../../lib/ui";
 import { gemStones } from "../mana/gemStonesData";
 import { Cardioid } from "./cardioid";
+import { MiniColumnChart } from "./miniColumnChart";
 import { MiniLineChart } from "./miniLineChart";
 
 
@@ -32,7 +33,17 @@ createButton("Animate", () => {
 })
 
 
+// mini column chart
+const miniColumnChart = new MiniColumnChart();
+miniColumnChart.size = [100, 50];
+miniColumnChart.data = [-10, 10, 20, -20, - 35, 50, 26, 40, -70, -15, 56, 23];
+miniColumnChart.fill = "blue";
+miniColumnChart.axisStroke = "blue";
 
+
+
+
+/**
 // Cardioid
 const generateCardioidData = () => {
 
@@ -112,4 +123,4 @@ FibonacciSpiral.size = [100, 80];
 FibonacciSpiral.data = generateFibonacciSpiralData();
 FibonacciSpiral.fill = undefined;
 
-
+*/

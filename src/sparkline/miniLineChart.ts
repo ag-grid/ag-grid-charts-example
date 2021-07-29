@@ -70,32 +70,9 @@ export class MiniLineChart extends MiniChart {
 
     constructor() {
         super();
-
-        this.scene.canvas.element.style.border = "1px solid black";
-
+        
         this.rootGroup.append(this.miniLineChartGroup);
-        this.miniLineChartGroup.append(this.markers);
-        this.miniLineChartGroup.append(this.linePath);
-        this.addHoverEventListener();
-    }
-
-    processData() {
-        const { data, yData, xData } = this;
-
-        if (!data) {
-            return;
-        };
-
-        yData.length = 0;
-        xData.length = 0;
-
-        for (let i = 0, n = data.length; i < n; i++) {
-            const y = data[i];
-            yData.push(y);
-            xData.push(i);
-        }
-
-        this.update();
+        this.miniLineChartGroup.append([this.markers, this.linePath]);
     }
 
     generateNodeData(): { x: number, y: number }[] {
@@ -137,7 +114,6 @@ export class MiniLineChart extends MiniChart {
     updateYScaleDomain(): void {
         const [minY, maxY] = this.findMinAndMax(this.yData);
         this.yScale.domain = [maxY, minY];
-
     }
 
     updateXScale(): void {
@@ -151,7 +127,6 @@ export class MiniLineChart extends MiniChart {
         let max: number = Math.max(...data);
         return [min, max];
     }
-
 
     updateMarkersSelection(): void {
         const { nodeData } = this;
@@ -203,19 +178,9 @@ export class MiniLineChart extends MiniChart {
         linePath.strokeWidth = lineStrokeWidth;
     }
 
-    private _resizeMarker = this.resizeMarker.bind(this);
-    addHoverEventListener(): void {
-        this.scene.canvas.element.addEventListener("click", this._resizeMarker);
-        this.scene.canvas.element.addEventListener("mousemove", (e) => this.resizeMarker(e));
-
-        // for clean up
-        // this.scene.canvas.element.removeEventListener("click", this._resizeMarker);
-    }
-
-    resizeMarker(event: MouseEvent): void {
+    onHover(event: MouseEvent): void {
         this.markersSelection.each((marker) => {
             const isInPath: boolean = marker.isPointInPath(event.offsetX, event.offsetY);
-            // console.log("Point", event.offsetX, event.offsetY);
             marker.radius = isInPath ? this.markerHighlightSize : 1.5;
         })
     }

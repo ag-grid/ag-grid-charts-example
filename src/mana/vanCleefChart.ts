@@ -114,7 +114,7 @@ export class VanCleefChart extends Observable {
         this.makeSceneResizable()
 
         this.addEventListener("change", this.processData, this)
-        this.padding.addEventListener("update", this.processData, this)
+        this.padding.addEventListener("paddingChange", this.processData, this)
     }
 
 
@@ -271,11 +271,10 @@ export class VanCleefChart extends Observable {
         // line for y-axis
 
         this.yAxisLine.x1 = this.yAxisLine.x2 = this.padding.left
-        this.yAxisLine.y1 = this.padding.bottom
-        this.yAxisLine.y2 = this.size[1] - this.padding.bottom - 20
+        this.yAxisLine.y1 = this.padding.top
+        this.yAxisLine.y2 = this.size[1] - this.padding.bottom
         this.yAxisLine.strokeWidth = 1
         this.yAxisLine.stroke = "black"
-
 
 
     }

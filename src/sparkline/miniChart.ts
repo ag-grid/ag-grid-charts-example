@@ -15,6 +15,9 @@ export abstract class MiniChart extends Observable {
         this.addPropertyListener("data", this.processData, this);
         this.addPropertyListener("padding", this.scheduleLayout, this);
         this.addPropertyListener("markerHighlightSize", this.scheduleLayout, this);
+        this.addHoverEventListener();
+
+        this.scene.canvas.element.style.border = "1px solid black";
         this.scene.container = document.body;
         this.scene.root = this.rootGroup;
     }
@@ -53,8 +56,27 @@ export abstract class MiniChart extends Observable {
         return this._nodeData;
     }
 
-    processData() { }
+    processData() { 
+        const { data, yData, xData } = this;
+
+        if (!data) {
+            return;
+        };
+
+        yData.length = 0;
+        xData.length = 0;
+
+        for (let i = 0, n = data.length; i < n; i++) {
+            const y = data[i];
+            yData.push(y);
+            xData.push(i);
+        }
+
+        this.update();
+    }
+
     update() { }
+    onHover(event: MouseEvent) { }
     
     private layoutId: number = 0;
     get layoutScheduled(): boolean {
@@ -70,4 +92,12 @@ export abstract class MiniChart extends Observable {
         })
     }
 
+    private _onHover = this.onHover.bind(this);
+    addHoverEventListener(): void {
+        // this.scene.canvas.element.addEventListener("click", this._resizeMarker);
+        this.scene.canvas.element.addEventListener("mousemove", (e) => this.onHover(e));
+
+        // for clean up
+        // this.scene.canvas.element.removeEventListener("click", this._resizeMarker);
+    }
 }
