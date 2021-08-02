@@ -2,17 +2,26 @@ import { BandScale, Group, LinearScale, Path } from '../../charts/main';
 import { Selection } from '../../charts/scene/selection'
 import { Observable, reactive } from '../../charts/util/observable';
 import { Circle } from './circle';
+import { Diamond } from './diamond';
+import { Marker } from './marker';
 import { MiniChart } from './miniChart';
+import { Square } from './square';
 
-class HighlightStyle {
-    size: number = 3;
+const HighlightStyle = {
+    size: 6,
+    fill: 'yellow',
+    stroke: 'yellow',
+    strokeWidth: 0
 }
 class MiniChartMarker extends Observable {
-    @reactive('update') fill: string = 'black';
-    @reactive('update') stroke: string = 'black';
-    @reactive('update') strokeWidth: number = 1;
+    @reactive() enabled: boolean = true;
+    @reactive() shape: string = 'circle';
+    @reactive('update') size: number = 3;
+    @reactive('update') fill?: string = 'black';
+    @reactive('update') stroke?: string = 'black';
+    @reactive('update') strokeWidth?: number = 1;
 
-    readonly highlightStyle = new HighlightStyle();
+    readonly highlightStyle = HighlightStyle;
 }
 class MiniChartLine extends Observable {
     @reactive('update') stroke: string = 'black';
@@ -21,11 +30,11 @@ class MiniChartLine extends Observable {
 export class MiniLineChart extends MiniChart {
 
     private miniLineChartGroup: Group = new Group();
-    private linePath: Path = new Path();
-    private yScale: LinearScale = new LinearScale();
-    private xScale: BandScale<number> = new BandScale<number>();
+    protected linePath: Path = new Path();
+    protected yScale: LinearScale = new LinearScale();
+    protected xScale: BandScale<number> = new BandScale<number>();
     private markers: Group = new Group();
-    private markersSelection: Selection<Circle, Group, { x: number; y: number; }, any> = Selection.select(this.markers).selectAll<Circle>();
+    private markersSelection: Selection<Marker, Group, { x: number; y: number; }, any> = Selection.select(this.markers).selectAll<Marker>();
 
     readonly marker = new MiniChartMarker();
     readonly line = new MiniChartLine();
@@ -34,10 +43,60 @@ export class MiniLineChart extends MiniChart {
         super();
         
         this.rootGroup.append(this.miniLineChartGroup);
-        this.miniLineChartGroup.append([this.markers, this.linePath]);
+        this.miniLineChartGroup.append([this.linePath, this.markers]);
 
         this.marker.addEventListener('update', this.updateMarkers, this);
+        this.marker.addPropertyListener('enabled', this.updateMarkers, this);
+        this.marker.addPropertyListener('shape', this.onMarkerShapeChange, this);
         this.line.addEventListener('update', this.updateLine, this);
+    }
+
+    getMarker(shape: string) {
+        switch (shape) {
+            case 'circle':
+                return Circle;
+            case 'square':
+                return Square;
+            case 'diamond':
+                return Diamond;
+            default:
+                return Circle;
+        }
+    }
+
+    onMarkerShapeChange() {
+        this.markersSelection = this.markersSelection.setData([]);
+        this.markersSelection.exit.remove();
+        this.scheduleLayout();
+    }
+
+    update(): void {
+        this.updateXScale();
+        this.updateYScaleRange();
+        this.updateYScaleDomain();
+
+        this.generateNodeData();
+
+        this.updateMarkersSelection();
+        this.updateMarkers();
+        this.updateLine();
+    }
+
+    updateYScaleRange(): void {
+        const { yScale, padding, height } = this;
+        yScale.range = [padding.top, height - padding.bottom];
+    }
+
+    updateYScaleDomain(): void {
+        const { yData, yScale } = this;
+        const [minY, maxY] = this.findMinAndMax(yData);
+        yScale.domain = [maxY, minY];
+    }
+
+    updateXScale(): void {
+        const {  xScale, padding, width, xData } = this;
+        xScale.range = [padding.left, width - padding.left - padding.right];
+        xScale.domain = xData;
     }
 
     generateNodeData(): { x: number, y: number }[] {
@@ -60,39 +119,13 @@ export class MiniLineChart extends MiniChart {
         }
     }
 
-    update(): void {
-        this.updateXScale();
-        this.updateYScaleRange();
-        this.updateYScaleDomain();
-
-        this.generateNodeData();
-
-        this.updateMarkersSelection();
-        this.updateMarkers();
-        this.updateLine();
-    }
-
-    updateYScaleRange(): void {
-        const { padding, height } = this;
-        this.yScale.range = [padding.top, height - padding.bottom];
-    }
-
-    updateYScaleDomain(): void {
-        const [minY, maxY] = this.findMinAndMax(this.yData);
-        this.yScale.domain = [maxY, minY];
-    }
-
-    updateXScale(): void {
-        const { padding, width, xData } = this;
-        this.xScale.range = [padding.left, width - padding.left - padding.right];
-        this.xScale.domain = xData;
-    }
-
     updateMarkersSelection(): void {
-        const { nodeData } = this;
+        const { nodeData, marker } = this;
         
+        const shape = this.getMarker(marker.shape);
+
         let updateMarkersSelection = this.markersSelection.setData(nodeData);
-        let enterMarkersSelection = updateMarkersSelection.enter.append(Circle);
+        let enterMarkersSelection = updateMarkersSelection.enter.append(shape);
 
         updateMarkersSelection.exit.remove();
 
@@ -102,27 +135,35 @@ export class MiniLineChart extends MiniChart {
     updateMarkers(): void {
         const { marker } = this;
 
-        this.markersSelection.each((circle, datum, index) => {
-            circle.centerX = datum.x;
-            circle.centerY = datum.y;
-            circle.fill = marker.fill;
-            circle.stroke = marker.stroke;
-            circle.strokeWidth = marker.strokeWidth;
+        this.markersSelection.each((node, datum, index) => {
+            node.size = marker.size;
+            
+            node.fill = marker.fill;
+            node.stroke = marker.stroke;
+            node.strokeWidth = marker.strokeWidth;
+            node.visible = marker.enabled;
+
+            node.translationX = datum.x;
+            node.translationY = datum.y;
         });
     }
 
     updateLine(): void {
-        const { linePath, data, xScale, yScale, line } = this;
+        const { linePath, yData, xData, xScale, yScale, line } = this;
+
+        if (yData.length < 2) {
+            return;
+        }
 
         const path = linePath.path;
-        const n = data.length;
+        const n = yData.length;
         const offsetX = xScale.bandwidth / 2;
 
         path.clear();
 
         for (let i = 0; i < n; i++) {
-            const x = xScale.convert(i) + offsetX;
-            const y = yScale.convert(data[i]);
+            const x = xScale.convert(xData[i]) + offsetX;
+            const y = yScale.convert(yData[i]);
 
             if (i === 0) {
                 path.moveTo(x, y);
@@ -137,9 +178,13 @@ export class MiniLineChart extends MiniChart {
     }
 
     onHover(event: MouseEvent): void {
+        const { size, fill, stroke, strokeWidth, highlightStyle } = this.marker;
         this.markersSelection.each((marker) => {
             const isInPath: boolean = marker.isPointInPath(event.offsetX, event.offsetY);
-            marker.radius = isInPath ? this.marker.highlightStyle.size : 1.5;
+            marker.size = isInPath ? highlightStyle.size : size;
+            marker.fill = isInPath ? highlightStyle.fill : fill;
+            marker.stroke = isInPath ? highlightStyle.stroke : stroke;
+            marker.strokeWidth = isInPath ? highlightStyle.strokeWidth : strokeWidth;
         })
     }
 }

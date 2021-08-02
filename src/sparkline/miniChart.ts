@@ -21,6 +21,7 @@ export abstract class MiniChart extends Observable {
         this.scene.canvas.element.style.border = '1px solid black';
         this.scene.container = document.body;
         this.scene.root = this.rootGroup;
+        this.scene.resize(this.width, this.height);
 
         this.addPropertyListener('data', this.processData, this);
         this.addPropertyListener('padding', this.scheduleLayout, this);
@@ -53,29 +54,9 @@ export abstract class MiniChart extends Observable {
         return this._height;
     }
 
-    private _yData: number[] = [];
-    set yData(value: number[]) {
-        this._yData = value;
-    }
-    get yData() : number[] {
-        return this._yData;
-    }
-
-    private _xData: number[] = [];
-    set xData(value: number[]) {
-        this._xData = value;
-    }
-    get xData(): number[] {
-        return this._xData;
-    }
-
-    private _nodeData: { x: number, y: number}[] = [];
-    set nodeData(value: { x: number, y: number}[]) {
-        this._nodeData = value;
-    }
-    get nodeData(): { x: number, y: number}[] {
-        return this._nodeData;
-    }
+    protected yData: number[] = [];
+    protected xData: number[] = [];
+    protected nodeData: { x: number, y: number}[] = [];
 
     update() { }
     onHover(event: MouseEvent) { }

@@ -1,8 +1,8 @@
-import { Shape } from "../../charts/main";
+import { Shape } from '../../charts/main';
 
 export class Rectangle extends Shape {
 
-    static className = "Column";
+    static className = 'Column';
 
     private _x: number;
     set x(value: number) {
@@ -53,18 +53,27 @@ export class Rectangle extends Shape {
     }
     
     isPointInPath(x: number, y: number): boolean {
+        const { x: tx, y: ty } = this.transformPoint(x, y);
+
         const x1 = this.x;
         const x2 = this.x + this.width;
         const y1 = this.y;
         const y2 = this.y + this.height;
 
-        return x >= x1 && x <= x2 && y >= y1 && y <= y2;
+        return tx >= x1 && tx <= x2 && ty >= y1 && ty <= y2;
     }
 
     render(ctx: CanvasRenderingContext2D) {
+        if (this.dirtyTransform) {
+            this.computeTransformMatrix();
+        }
+        this.matrix.toContext(ctx);
+
         const { x, y, width, height } = this;
         ctx.beginPath();
         ctx.rect(x, y, width, height);
         this.fillStroke(ctx);
+
+        this.dirty = false;
     }
 }

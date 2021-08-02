@@ -10,10 +10,11 @@ type RectangleDatum = {
     width: number,
     height: number
 }
-class HighlightStyle extends Observable {
-    fill: string = 'yellow';
-    stroke: string = 'yellow';
-    strokeWidth: number = 0;
+
+const HighlightStyle = {
+    fill: 'yellow',
+    stroke: 'yellow',
+    strokeWidth:  0
 }
 export class MiniColumnChart extends MiniChart {
     
@@ -25,7 +26,7 @@ export class MiniColumnChart extends MiniChart {
     private columns: Group = new Group();
     private columnsSelection: Selection<Rectangle, Group, RectangleDatum, RectangleDatum> = Selection.select(this.columns).selectAll<Rectangle>();
 
-    readonly highlightStyle = new HighlightStyle();
+    readonly highlightStyle = HighlightStyle;
 
     @reactive('update') fill: string = 'black';
     @reactive('update') stroke: string = 'black'; 
@@ -51,21 +52,21 @@ export class MiniColumnChart extends MiniChart {
     }
 
     updateYScale() {
-        const { padding, height, yData, domain } = this;
+        const { yScale, padding, height, yData, domain } = this;
         
-        this.yScale.range = [height - padding.bottom, padding.top];
+        yScale.range = [height - padding.bottom, padding.top];
 
         const [minY, maxY] = this.findMinAndMax(yData);
-        this.yScale.domain = domain ? domain : [minY, maxY];
+        yScale.domain = domain ? domain : [minY, maxY];
     }
 
     updateXScale() {
-        const { padding, width, xData } = this;
+        const { xScale, padding, width, xData } = this;
         
-        this.xScale.range = [padding.left, width - padding.right];
-        this.xScale.domain = xData;
-        this.xScale.paddingInner = 0.2;
-        this.xScale.paddingOuter = 0.1;
+        xScale.range = [padding.left, width - padding.right];
+        xScale.domain = xData;
+        xScale.paddingInner = 0.2;
+        xScale.paddingOuter = 0.1;
     }
 
     updateXAxisLine() {
