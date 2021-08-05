@@ -53,14 +53,7 @@ export class Rectangle extends Shape {
     }
     
     isPointInPath(x: number, y: number): boolean {
-        const { x: tx, y: ty } = this.transformPoint(x, y);
-
-        const x1 = this.x;
-        const x2 = this.x + this.width;
-        const y1 = this.y;
-        const y2 = this.y + this.height;
-
-        return tx >= x1 && tx <= x2 && ty >= y1 && ty <= y2;
+        return false;
     }
 
     render(ctx: CanvasRenderingContext2D) {

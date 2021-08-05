@@ -93,7 +93,8 @@ export class MiniLineChart extends MiniChart {
 
     updateYScaleDomain(): void {
         const { yData, yScale } = this;
-        const [minY, maxY] = this.findMinAndMax(yData);
+        let [minY, maxY] = this.findMinAndMax(yData);
+        //minY = minY < 0 ? minY : 0;
         yScale.domain = [minY, maxY];
     }
 
@@ -184,15 +185,28 @@ export class MiniLineChart extends MiniChart {
         linePath.strokeWidth = line.strokeWidth;
     }
 
-    onHover(event: MouseEvent): void {
+    highlightDatum(closestDatum: SeriesNodeDatum): void {
         const { size, fill, stroke, strokeWidth } = this.marker;
         const { highlightStyle } = this;
-        this.markerSelection.each((marker) => {
-            const isInPath: boolean = marker.isPointInPath(event.offsetX, event.offsetY);
-            marker.size = isInPath ? highlightStyle.size : size;
-            marker.fill = isInPath ? highlightStyle.fill : fill;
-            marker.stroke = isInPath ? highlightStyle.stroke : stroke;
-            marker.strokeWidth = isInPath ? highlightStyle.strokeWidth : strokeWidth;
+        this.markerSelection.each((node, datum) => {
+            if (closestDatum) {
+                const isClosest = datum.point.x === closestDatum.point.x && datum.point.y === closestDatum.point.y;
+                node.size = isClosest ? highlightStyle.size : size;
+                node.fill = isClosest ? highlightStyle.fill : fill;
+                node.stroke = isClosest ? highlightStyle.stroke : stroke;
+                node.strokeWidth = isClosest ? highlightStyle.strokeWidth : strokeWidth;
+            }
         })
+    }
+
+    dehighlightDatum() : void {
+        const { size, fill, stroke, strokeWidth } = this.marker;
+        this.markerSelection.each((node) => {
+                node.size = size;
+                node.fill = fill;
+                node.stroke = stroke;
+                node.strokeWidth = strokeWidth;
+            }
+        )
     }
 }

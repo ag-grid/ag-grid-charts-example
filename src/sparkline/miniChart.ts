@@ -55,7 +55,7 @@ export abstract class MiniChart extends Observable {
         this.addPropertyListener('padding', this.scheduleLayout, this);
         this.axis.addEventListener('update', this.scheduleLayout, this);
 
-        this.addHoverEventListener();
+        this.setupDomEventListeners(this.scene.canvas.element);
     }
 
     private _width: number = 100;
@@ -88,7 +88,17 @@ export abstract class MiniChart extends Observable {
     update() { }
     generateNodeData(): SeriesNodeDatum[]  { return []; }
     getNodeData(): readonly SeriesNodeDatum[] { return [];}
-    onHover(event: MouseEvent) { }
+    highlightDatum(closestDatum: SeriesNodeDatum) { }
+    dehighlightDatum() { }
+    
+    onMouseMove(event: MouseEvent) { 
+        const closestDatum: SeriesNodeDatum | undefined = this.pickClosestSeriesNodeDatum(event.offsetX, event.offsetY);
+        this.highlightDatum(closestDatum);
+    }
+    
+    onMouseOut(event: MouseEvent) { 
+        this.dehighlightDatum()
+    }
 
     processData() { 
         const { data, yData, xData } = this;
@@ -139,11 +149,48 @@ export abstract class MiniChart extends Observable {
         })
     }
 
-    private _onHover = this.onHover.bind(this);
-    addHoverEventListener(): void {
-        this.scene.canvas.element.addEventListener('mousemove', (e) => this.onHover(e));
+    pickClosestSeriesNodeDatum(x: number, y: number): SeriesNodeDatum | undefined {
+        type Point = {
+            x: number,
+            y: number
+        }
 
-        // for clean up
-        // this.scene.canvas.element.removeEventListener('click', this._resizeMarker);
+        function getDistance(p1: Point, p2: Point): number {
+            return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
+        }
+
+        let minDistance = Infinity;
+        let closestDatum: SeriesNodeDatum | undefined;
+        const hitPoint = this.rootGroup.transformPoint(x, y)
+
+        this.getNodeData().forEach(datum => {
+            if (!datum.point) {
+                return;
+            }
+            const distance = getDistance(datum.point, hitPoint);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestDatum = datum;
+            }
+        })
+
+        return closestDatum && closestDatum;
+    }
+
+    private _onMouseMove = this.onMouseMove.bind(this);
+    private _onMouseOut = this.onMouseOut.bind(this);
+    setupDomEventListeners(chartElement: HTMLCanvasElement): void {
+        chartElement.addEventListener('mousemove', this._onMouseMove);
+        chartElement.addEventListener('mouseout', this._onMouseOut);
+    }
+
+    cleanupDomEventListerners(chartElement: HTMLCanvasElement): void {
+        chartElement.removeEventListener('mousemove', this._onMouseMove);
+        chartElement.removeEventListener('mouseout', this._onMouseOut);
+    }
+
+    destroy() {
+        this.scene.container = undefined;
+        this.cleanupDomEventListerners(this.scene.canvas.element);
     }
 }

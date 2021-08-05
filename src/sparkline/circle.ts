@@ -4,15 +4,7 @@ export class Circle extends Marker {
     static className = 'Circle Marker';
 
     isPointInPath(x: number, y: number) {
-        const { x: tx, y: ty } = this.transformPoint(x, y);
-
-        const r = this.size / 2;
-
-        const dx = Math.abs(this.x - tx);
-        const dy = Math.abs(this.y - ty);
-        const R = Math.sqrt((dx ** 2) + (dy ** 2));
-
-        return R <= r;
+        return false;
     }
 
     isPointInStroke(x: number, y: number) {

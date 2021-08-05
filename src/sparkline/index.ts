@@ -65,6 +65,7 @@ const miniColumnChart = new MiniColumnChart();
 miniColumnChart.width = 100;
 miniColumnChart.height = 50;
 miniColumnChart.data = [-10, 10, 20, -20, -35, 50, 26, 40, -70, -15, 56, 23];
+// miniColumnChart.data = [5, 10, 20, 50, 26, 40, 56, 23];
 miniColumnChart.yScaleDomain = [-50, 50];
 miniColumnChart.fill = 'skyBlue';
 miniColumnChart.axis.stroke = 'skyBlue';
@@ -83,8 +84,8 @@ createButton('Animate bars', () => {
         return;
     }
     let i = 0;
-    let data: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0];
-    let endData: number[] = [-10, 10, 20, -20, -35, 50, 26, 40, -70, -15, 56, 23];
+    let data: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let endData: number[] = miniColumnChart.data;
     const incrementBy: number[] = endData.map(datum => datum / increments);
 
     function step() {
@@ -115,6 +116,19 @@ createButton('Animate bars', () => {
 
 })
 
+createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
+    miniColumnChart.fill = v;
+    miniColumnChart.stroke = v;
+    miniColumnChart.stroke = v;
+    miniColumnChart.axis.stroke = v;
+})
+
+createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
+    miniColumnChart.highlightStyle.fill = v;
+})
+
+
+
 
 const miniAreaChart = new MiniAreaChart();
 
@@ -141,6 +155,29 @@ createButton('Animate Area', () => {
     } else {
         clearInterval(areaIntervalId);
     }
+})
+
+
+createButton('toggle marker', () => {
+    miniAreaChart.marker.enabled = !miniAreaChart.marker.enabled;
+})
+
+createSlider('marker shape', ['circle', 'square', 'diamond'], v => {
+    miniAreaChart.marker.shape = v;
+});
+
+createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
+    miniAreaChart.marker.fill = v;
+    miniAreaChart.marker.stroke = v;
+    miniAreaChart.line.stroke = v;
+})
+
+createSlider('highlight size', [6, 7, 8, 9, 10], v => {
+    miniAreaChart.highlightStyle.size = v;
+})
+
+createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
+    miniAreaChart.highlightStyle.fill = v;
 })
 
 /**

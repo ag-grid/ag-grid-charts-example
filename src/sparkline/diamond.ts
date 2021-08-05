@@ -9,17 +9,7 @@ export class Diamond extends Marker {
     }
     
     isPointInPath(x: number, y: number): boolean {
-        // approximate to a circle
-        const { size } = this;
-
-        const { x: tx, y: ty } = this.transformPoint(x, y);
-        const hs = size / 2;
-
-        const dx = Math.abs(this.x - tx);
-        const dy = Math.abs(this.y - ty);
-        const R = Math.sqrt((dx ** 2) + (dy ** 2));
-
-        return R <= hs;
+        return false;
     }
 
     render(ctx: CanvasRenderingContext2D) {

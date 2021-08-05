@@ -62,7 +62,8 @@ export class MiniColumnChart extends MiniChart {
 
         yScale.range = [seriesRect.height, 0];
 
-        const [minY, maxY] = this.findMinAndMax(yData);
+        let [minY, maxY] = this.findMinAndMax(yData);
+        minY = minY < 0 ? minY : 0;
 
         if (yScaleDomain) {
             if (yScaleDomain[1] < maxY) {
@@ -89,13 +90,15 @@ export class MiniColumnChart extends MiniChart {
         const { xScale, yScale, axis, xAxisLine } = this;
 
         xAxisLine.x1 = xScale.range[0];
-        xAxisLine.x1 = xScale.range[0];
         xAxisLine.x2 = xScale.range[1];
         xAxisLine.y1 = xAxisLine.y2 = 0;
         xAxisLine.stroke = axis.stroke;
         xAxisLine.strokeWidth = axis.strokeWidth;
 
-        xAxisLine.translationY = yScale.convert(0);
+        const hasNegativeValue = yScale.convert(0) > yScale.range[0] ? false : true;
+        const yZero: number = hasNegativeValue ? yScale.convert(0) : yScale.range[0];
+
+        xAxisLine.translationY = yZero;
     }
 
     generateNodeData(): ColumnNodeDatum[] {
@@ -103,7 +106,9 @@ export class MiniColumnChart extends MiniChart {
 
         const nodeData: ColumnNodeDatum[] = [];
 
-        const yZero: number = yScale.convert(0);
+        const hasNegativeValue = yScale.convert(0) > yScale.range[0] ? false : true;
+        
+        const yZero: number = hasNegativeValue ? yScale.convert(0) : yScale.range[0];
         const width: number = xScale.bandwidth;
 
         for (let i = 0, n = yData.length; i < n; i++) {
@@ -115,6 +120,11 @@ export class MiniColumnChart extends MiniChart {
             const height: number = yBottom - y;
             const x: number = xScale.convert(xDatum);
 
+            const midPoint = {
+                x: x + (width / 2),
+                y: yZero
+            }
+
             nodeData.push({ 
                 x, 
                 y, 
@@ -123,10 +133,7 @@ export class MiniColumnChart extends MiniChart {
                 fill, 
                 stroke, 
                 strokeWidth,
-                point: {
-                    x: x + xScale.bandwidth / 2,
-                    y: y
-                }
+                point: midPoint
             });
         }
         return nodeData;
@@ -155,11 +162,20 @@ export class MiniColumnChart extends MiniChart {
         })
     }
 
-    onHover(event: MouseEvent) {
+    highlightDatum(closestDatum: SeriesNodeDatum): void {
         const { fill, highlightStyle } = this;
-        this.columnSelection.each((column, datum, index) => {
-            const isInPath = column.isPointInPath(event.offsetX, event.offsetY);
-            column.fill = isInPath ? highlightStyle.fill : fill;
+        this.columnSelection.each((node, datum) => {
+            if (closestDatum) {
+            const isClosest = datum.point.x === closestDatum.point.x && datum.point.y === closestDatum.point.y;
+            node.fill = isClosest ? highlightStyle.fill : fill;
+            }
+        })
+    }
+
+    dehighlightDatum() : void {
+        const { fill} = this;
+        this.columnSelection.each(node => {
+            node.fill =fill;
         })
     }
 }
