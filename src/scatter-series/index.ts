@@ -101,7 +101,7 @@ function createHeightWeightGenderChart() {
     chart.legend.item.marker.size = 12;
     chart.legend.item.marker.strokeWidth = 2;
     chart.legend.item.paddingY = 15;
-    chart.tooltip.tracking = false;
+    chart.tooltip.tracking = true;
     chart.axes = [xAxis, yAxis];
 
     createButton('Benchmark', () => {

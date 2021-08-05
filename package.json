@@ -28,6 +28,7 @@
   "homepage": "https://github.com/ag-grid/ag-grid-charts-example#readme",
   "dependencies": {
     "@types/electron": "^1.6.10",
+    "ag-grid-community": "^25.3.0",
     "d3": "^5.7.0",
     "lodash": "^4.17.11",
     "react": "^16.12.0",

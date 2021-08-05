@@ -132,7 +132,7 @@ function createColumnChart() {
 
     const barSeries = new BarSeries();
     barSeries.xKey = 'name';
-    barSeries.yKeys = ['value'];
+    barSeries.yKeys = [['value']];
     barSeries.fills = ['#f7bc09'];
     barSeries.data = data;
 
@@ -165,6 +165,7 @@ function createColumnChart() {
 
     createSlider('Pixel Ratio', [0.1, 0.25, 0.5, 1, 2, 4], value => {
         chart.scene.canvas.setPixelRatio(value);
+        chart.scene.dirty = true;
     });
 
     createButton('Pixelated: ON', () => {
@@ -196,7 +197,7 @@ function createGroupedColumnChart() {
 
     const barSeries = new BarSeries();
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['jan', 'feb', 'mar'];
+    barSeries.yKeys = [['jan', 'feb', 'mar']];
     barSeries.data = groupedCategoryData;
 
     chart.series = [barSeries];

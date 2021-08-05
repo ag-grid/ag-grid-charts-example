@@ -95,15 +95,15 @@ function createPieChart() {
         chart.legend.enabled = !chart.legend.enabled;
     });
     createButton('Show tooltips', () => {
-        pieSeries.tooltipEnabled = true;
-        pieSeries2.tooltipEnabled = true;
+        pieSeries.tooltip.enabled = true;
+        pieSeries2.tooltip.enabled = true;
     });
     createButton('Hide tooltips', () => {
-        pieSeries.tooltipEnabled = false;
-        pieSeries2.tooltipEnabled = false;
+        pieSeries.tooltip.enabled = false;
+        pieSeries2.tooltip.enabled = false;
     });
     createButton('Use tooltip renderer', () => {
-        pieSeries.tooltipRenderer = params => {
+        pieSeries.tooltip.renderer = params => {
             return `<em>Value</em>: <span style='color: red;'>${params.datum[params.angleKey]}</span>`;
         };
         // pieSeries.tooltipRenderer = params => ({
@@ -112,14 +112,14 @@ function createPieChart() {
         //     color: 'red'
         // });
 
-        pieSeries2.tooltipRenderer = params => {
+        pieSeries2.tooltip.renderer = params => {
             const radiusValue = params.radiusKey ? `<br>Radius: ${params.datum[params.radiusKey]}` : '';
             return `Angle: ${params.datum[params.angleKey]}${radiusValue}`;
         };
     });
     createButton('Remove tooltip renderer', () => {
-        pieSeries.tooltipRenderer = undefined;
-        pieSeries2.tooltipRenderer = undefined;
+        pieSeries.tooltip.renderer = undefined;
+        pieSeries2.tooltip.renderer = undefined;
     });
     createButton('Show labels', () => {
         pieSeries.label.enabled = true;
@@ -193,7 +193,7 @@ function createPieChart() {
     document.body.appendChild(document.createElement('br'));
 
     function changeTheme(labelColor: string, bgColor: string) {
-        chart.legend.color = labelColor;
+        chart.legend.item.label.color = labelColor;
         chart.background.fill = bgColor;
         pieSeries.label.color = labelColor;
         pieSeries2.label.color = labelColor;
@@ -309,35 +309,35 @@ function createPieChart() {
         chart.legend.spacing = v;
     });
     createSlider('legend strokeWidth', [1, 2, 3, 4, 5, 6], v => {
-        chart.legend.strokeWidth = v;
+        chart.legend.item.marker.strokeWidth = v;
     });
     createSlider('legend markerSize', [15, 20, 25, 30, 5, 10], v => {
-        chart.legend.markerSize = v;
+        chart.legend.item.marker.size = v;
     });
     createSlider('legend markerShape', ['square', 'circle', 'diamond', 'cross', 'plus', 'triangle'], v => {
-        chart.legend.markerShape = v;
+        chart.legend.item.marker.shape = v;
     });
     createSlider('legend layoutHorizontalSpacing', [4, 6, 8, 10, 12, 16], v => {
-        chart.legend.layoutHorizontalSpacing = v;
+        chart.legend.item.paddingX = v;
     });
     createSlider('legend layoutVerticalSpacing', [4, 6, 8, 10, 12, 16], v => {
-        chart.legend.layoutVerticalSpacing = v;
+        chart.legend.item.paddingY = v;
     });
     document.body.appendChild(document.createElement('hr'));
     createSlider('legend font size', [12, 14, 16, 18, 20, 22, 24, 30, 36], v => {
-        chart.legend.fontSize = v;
+        chart.legend.item.label.fontSize = v;
     });
     createSlider('legend fontWeight', ['normal', 'bold'], (v: FontWeight) => {
-        chart.legend.fontWeight = v;
+        chart.legend.item.label.fontWeight = v;
     });
     createSlider('legend fontFamily', ['Verdana', 'Papyrus', 'Comic Sans', 'Palatino'], v => {
-        chart.legend.fontFamily = v;
+        chart.legend.item.label.fontFamily = v;
     });
     createSlider('legend fontStyle', ['normal', 'italic'], (v: FontStyle) => {
-        chart.legend.fontStyle = v;
+        chart.legend.item.label.fontStyle = v;
     });
     createSlider('legend color', ['black', 'red', 'gold', 'green'], v => {
-        chart.legend.color = v;
+        chart.legend.item.label.color = v;
     });
     document.body.appendChild(document.createElement('hr'));
 
@@ -372,7 +372,7 @@ function createPieChart() {
         }
     });
     createSlider('legend itemSpacing', [8, 12, 16, 20, 24], v => {
-        chart.legend.itemSpacing = v;
+        chart.legend.item.marker.padding = v;
     });
 
     createSlider('stroke opacity', [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0], v => {
