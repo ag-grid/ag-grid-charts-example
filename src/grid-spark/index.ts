@@ -84,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     getQuotes(symbols).then(quotes => {
         console.log(quotes);
+        for (let i = 0; i < 5; i++) {
+            quotes.push(...quotes);
+        }
         const gridOptions: GridOptions = {
             columnDefs: columnDefs,
             defaultColDef: {
