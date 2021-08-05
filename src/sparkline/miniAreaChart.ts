@@ -41,7 +41,7 @@ export class MiniAreaChart extends MiniLineChart {
             }
         }
         
-        const yZero = hasNegativeValue ? yScale.convert(0) : yScale.range[1];
+        const yZero = hasNegativeValue ? yScale.convert(0) : yScale.range[0];
         const firstX = xScale.convert(xData[0]) + offsetX;
         const lastX = xScale.convert(xData[n-1]) + offsetX;
 

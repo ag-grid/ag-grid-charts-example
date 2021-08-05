@@ -9,16 +9,17 @@ export class Diamond extends Marker {
     }
     
     isPointInPath(x: number, y: number): boolean {
-        // needs fixing
+        // approximate to a circle
+        const { size } = this;
+
         const { x: tx, y: ty } = this.transformPoint(x, y);
-        console.log()
+        const hs = size / 2;
 
-        const x1 = this.x;
-        const x2 = this.x + this.size;
-        const y1 = this.y;
-        const y2 = this.y + this.size;
+        const dx = Math.abs(this.x - tx);
+        const dy = Math.abs(this.y - ty);
+        const R = Math.sqrt((dx ** 2) + (dy ** 2));
 
-        return tx >= x1 && tx <= x2 && ty >= y1 && ty <= y2;
+        return R <= hs;
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -40,7 +41,7 @@ export class Diamond extends Marker {
         ctx.lineTo(x += hs, y -= hs);
         
         ctx.closePath();
-        
+
         this.fillStroke(ctx);
 
         this.dirty = false;

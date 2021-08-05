@@ -15,10 +15,10 @@ miniLineChart.data = [7, 8.3, 6.5, 9, 9.2, 10, 5.5, 6.75, 11.9, -25, -3, 0, 2];
 miniLineChart.marker.fill = 'skyBlue';
 miniLineChart.marker.stroke = 'skyBlue';
 miniLineChart.line.stroke = 'skyBlue';
-miniLineChart.marker.highlightStyle.size = 7;
+miniLineChart.highlightStyle.size = 7;
 miniLineChart.marker.shape = 'diamond';
 miniLineChart.marker.enabled = false;
-// miniLineChart.padding = new Padding(10);
+miniLineChart.padding = new Padding(5);
 
 let animateLine: boolean = false;
 let lineIntervalId: number;
@@ -37,7 +37,7 @@ createButton('Animate line', () => {
     }
 })
 
-createButton('enable marker', () => {
+createButton('toggle marker', () => {
     miniLineChart.marker.enabled = !miniLineChart.marker.enabled;
 })
 
@@ -52,11 +52,11 @@ createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan
 })
 
 createSlider('highlight size', [6, 7, 8, 9, 10], v => {
-    miniLineChart.marker.highlightStyle.size = v;
+    miniLineChart.highlightStyle.size = v;
 })
 
 createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
-    miniLineChart.marker.highlightStyle.fill = v;
+    miniLineChart.highlightStyle.fill = v;
 })
 
 // mini column chart
@@ -65,7 +65,7 @@ const miniColumnChart = new MiniColumnChart();
 miniColumnChart.width = 100;
 miniColumnChart.height = 50;
 miniColumnChart.data = [-10, 10, 20, -20, -35, 50, 26, 40, -70, -15, 56, 23];
-miniColumnChart.domain = [50, -70];
+miniColumnChart.yScaleDomain = [-50, 50];
 miniColumnChart.fill = 'skyBlue';
 miniColumnChart.axis.stroke = 'skyBlue';
 miniColumnChart.highlightStyle.fill = 'orange';

@@ -1,69 +1,85 @@
 import { BandScale, Group, Line, LinearScale, Path } from '../../charts/main';
 import { Selection } from '../../charts/scene/selection'
-import { Observable, reactive } from '../../charts/util/observable';
-import { MiniChart } from './miniChart';
+import { reactive } from '../../charts/util/observable';
+import { MiniChart, SeriesNodeDatum } from './miniChart';
 import { Rectangle } from './rectangle';
 
-type RectangleDatum = {
+interface ColumnNodeDatum extends SeriesNodeDatum {
     x: number,
     y: number,
     width: number,
-    height: number
-}
-
-const HighlightStyle = {
-    fill: 'yellow',
-    stroke: 'yellow',
-    strokeWidth:  0
+    height: number,
+    fill?: string,
+    stroke?: string,
+    strokeWidth: number
 }
 export class MiniColumnChart extends MiniChart {
-    
-    private rectData: RectangleDatum[] = [];
+
     private miniColumnChartGroup: Group = new Group();
     private yScale: LinearScale = new LinearScale();
     private xScale: BandScale<number> = new BandScale<number>();
     private xAxisLine: Line = new Line();
     private columns: Group = new Group();
-    private columnsSelection: Selection<Rectangle, Group, RectangleDatum, RectangleDatum> = Selection.select(this.columns).selectAll<Rectangle>();
-
-    readonly highlightStyle = HighlightStyle;
-
+    private columnSelection: Selection<Rectangle, Group, ColumnNodeDatum, ColumnNodeDatum> = Selection.select(this.columns).selectAll<Rectangle>();
+    private columnSelectionData: ColumnNodeDatum[] = [];
     @reactive('update') fill: string = 'black';
-    @reactive('update') stroke: string = 'black'; 
+    @reactive('update') stroke: string = 'black';
     @reactive('update') strokeWidth: number = 0;
-    @reactive('update') domain: [number, number] = undefined; 
+    @reactive('update') yScaleDomain: [number, number] = undefined;
 
     constructor() {
         super();
-        
+
         this.rootGroup.append(this.miniColumnChartGroup);
         this.miniColumnChartGroup.append([this.columns, this.xAxisLine]);
 
         this.addEventListener('update', this.scheduleLayout, this);
     }
 
+    getNodeData() : ColumnNodeDatum[] {
+        return this.columnSelectionData;
+    }
+
     update() {
+        const { seriesRect } = this;
+
+        this.miniColumnChartGroup.translationX = seriesRect.x;
+        this.miniColumnChartGroup.translationY = seriesRect.y;
+
         this.updateYScale();
         this.updateXScale();
         this.updateXAxisLine();
-        this.generateNodeData();
-        this.updateRectNodesSelection();
+
+        const nodeData = this.generateNodeData();
+        this.columnSelectionData = nodeData;
+        
+        this.updateRectNodesSelection(nodeData);
         this.updateRectNodes();
     }
 
     updateYScale() {
-        const { yScale, padding, height, yData, domain } = this;
-        
-        yScale.range = [height - padding.bottom, padding.top];
+        const { yScale, seriesRect, yData, yScaleDomain } = this;
+
+        yScale.range = [seriesRect.height, 0];
 
         const [minY, maxY] = this.findMinAndMax(yData);
-        yScale.domain = domain ? domain : [minY, maxY];
+
+        if (yScaleDomain) {
+            if (yScaleDomain[1] < maxY) {
+                yScaleDomain[1] = maxY;
+            }
+            if (yScaleDomain[0] > minY) {
+                yScaleDomain[0] = minY;
+            }
+        }
+
+        yScale.domain = yScaleDomain ? yScaleDomain : [minY, maxY];
     }
 
     updateXScale() {
-        const { xScale, padding, width, xData } = this;
-        
-        xScale.range = [padding.left, width - padding.right];
+        const { xScale, seriesRect, xData } = this;
+
+        xScale.range = [0, seriesRect.width];
         xScale.domain = xData;
         xScale.paddingInner = 0.2;
         xScale.paddingOuter = 0.1;
@@ -72,52 +88,63 @@ export class MiniColumnChart extends MiniChart {
     updateXAxisLine() {
         const { xScale, yScale, axis, xAxisLine } = this;
 
-            xAxisLine.x1 = xScale.range[0];
-            xAxisLine.x1 = xScale.range[0];
-            xAxisLine.x2 = xScale.range[1];
-            xAxisLine.y1 = xAxisLine.y2 = 0;
-            xAxisLine.stroke = axis.stroke;
-            xAxisLine.strokeWidth = axis.strokeWidth;
-    
-            xAxisLine.translationY = yScale.convert(0);
+        xAxisLine.x1 = xScale.range[0];
+        xAxisLine.x1 = xScale.range[0];
+        xAxisLine.x2 = xScale.range[1];
+        xAxisLine.y1 = xAxisLine.y2 = 0;
+        xAxisLine.stroke = axis.stroke;
+        xAxisLine.strokeWidth = axis.strokeWidth;
+
+        xAxisLine.translationY = yScale.convert(0);
     }
 
-    generateNodeData() {
-        const { yData, xData, xScale, yScale } = this;
-        
-        this.rectData = [];
+    generateNodeData(): ColumnNodeDatum[] {
+        const { yData, xData, xScale, yScale, fill, stroke, strokeWidth } = this;
+
+        const nodeData: ColumnNodeDatum[] = [];
 
         const yZero: number = yScale.convert(0);
         const width: number = xScale.bandwidth;
 
-        for (let i = 0, n = yData.length ; i < n; i++) {
+        for (let i = 0, n = yData.length; i < n; i++) {
             const yDatum = yData[i];
             const xDatum = xData[i];
-            
+
             const y: number = Math.min(yScale.convert(yDatum), yZero);
             const yBottom: number = Math.max(yScale.convert(yDatum), yZero);
             const height: number = yBottom - y;
             const x: number = xScale.convert(xDatum);
 
-            this.rectData.push({ x, y, width, height});
+            nodeData.push({ 
+                x, 
+                y, 
+                width, 
+                height, 
+                fill, 
+                stroke, 
+                strokeWidth,
+                point: {
+                    x: x + xScale.bandwidth / 2,
+                    y: y
+                }
+            });
         }
+        return nodeData;
     }
 
-    updateRectNodesSelection() {
-        const updateColumnsSelection = this.columnsSelection.setData(this.rectData);
+    updateRectNodesSelection(selectionData: ColumnNodeDatum[]) {
+        const updateColumnsSelection = this.columnSelection.setData(selectionData);
 
         const enterColumnsSelection = updateColumnsSelection.enter.append(Rectangle);
 
         updateColumnsSelection.exit.remove();
 
-        this.columnsSelection = updateColumnsSelection.merge(enterColumnsSelection);
+        this.columnSelection = updateColumnsSelection.merge(enterColumnsSelection);
     }
 
     updateRectNodes() {
-        const { fill, stroke, strokeWidth } = this;
-
-        this.columnsSelection.each((column, datum, index) => {
-            const { x, y, width, height } = datum;
+        this.columnSelection.each((column, datum, index) => {
+            const { x, y, width, height, fill, stroke, strokeWidth } = datum;
             column.x = x;
             column.y = y;
             column.width = width;
@@ -130,7 +157,7 @@ export class MiniColumnChart extends MiniChart {
 
     onHover(event: MouseEvent) {
         const { fill, highlightStyle } = this;
-        this.columnsSelection.each((column, datum, index) => {
+        this.columnSelection.each((column, datum, index) => {
             const isInPath = column.isPointInPath(event.offsetX, event.offsetY);
             column.fill = isInPath ? highlightStyle.fill : fill;
         })
