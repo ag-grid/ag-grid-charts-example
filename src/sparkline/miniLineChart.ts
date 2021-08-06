@@ -94,7 +94,14 @@ export class MiniLineChart extends MiniChart {
     updateYScaleDomain(): void {
         const { yData, yScale } = this;
         let [minY, maxY] = this.findMinAndMax(yData);
-        //minY = minY < 0 ? minY : 0;
+
+        if(minY === maxY) {
+            // if all values in the data are the same, minY and maxY will be equal, need to adjust the domain with some padding.
+            const padding = Math.abs(minY * 0.01);
+            minY -= padding;
+            maxY += padding;
+        }
+
         yScale.domain = [minY, maxY];
     }
 

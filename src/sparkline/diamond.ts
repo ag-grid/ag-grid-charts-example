@@ -2,7 +2,7 @@ import { Marker } from './marker';
 
 export class Diamond extends Marker {
 
-    static className = 'Square Marker';
+    static className = 'Diamond';
     
     isPointInStroke(x: number, y: number): boolean {
         return false;

@@ -11,26 +11,39 @@ export class MiniAreaChart extends MiniLineChart {
         this.addEventListener('update', this.scheduleLayout, this);
     }
 
+    updateYScaleDomain(): void {
+        const { yData, yScale } = this;
+        let [minY, maxY] = this.findMinAndMax(yData);
+
+        if (yData.length > 1) {
+            // if minY is positive, set minY to 0.
+            minY = minY < 0 ? minY : 0;
+
+            // if minY and maxY are equal and negative, maxY should be set to 0?
+            if (minY === maxY) {
+                const padding = Math.abs(minY * 0.01);
+                maxY = 0 + padding;
+                minY -= padding;
+            }
+        }
+
+        yScale.domain = [minY, maxY];
+    }
+
     updateLine() {
         const { linePath, yData, xData, xScale, yScale, line, fill } = this;
+
+        const path = linePath.path;
+        const n = yData.length;
+        const offsetX = xScale.bandwidth / 2;
+
+        path.clear();
 
         if (yData.length < 2) {
             return;
         }
 
-        const path = linePath.path
-        const n = yData.length
-        const offsetX = xScale.bandwidth / 2
-
-        let hasNegativeValue = false;
-
-        path.clear();
-
         for (let i = 0; i < n; i++) {
-            if (yData[i] < 0) {
-                hasNegativeValue = true;
-            }
-
             const x = xScale.convert(xData[i]) + offsetX;
             const y = yScale.convert(yData[i]);
 
@@ -41,7 +54,7 @@ export class MiniAreaChart extends MiniLineChart {
             }
         }
         
-        const yZero = hasNegativeValue ? yScale.convert(0) : yScale.range[0];
+        const yZero = yScale.convert(0);
         const firstX = xScale.convert(xData[0]) + offsetX;
         const lastX = xScale.convert(xData[n-1]) + offsetX;
 

@@ -63,7 +63,15 @@ export class MiniColumnChart extends MiniChart {
         yScale.range = [seriesRect.height, 0];
 
         let [minY, maxY] = this.findMinAndMax(yData);
+        
         minY = minY < 0 ? minY : 0;
+
+        if (minY === maxY) {
+            // if minY and maxY are equal and negative, maxY should be set to 0?
+            const padding = Math.abs(minY * 0.01);
+            minY -= padding;
+            maxY = 0 + padding;
+        }
 
         if (yScaleDomain) {
             if (yScaleDomain[1] < maxY) {
@@ -95,9 +103,7 @@ export class MiniColumnChart extends MiniChart {
         xAxisLine.stroke = axis.stroke;
         xAxisLine.strokeWidth = axis.strokeWidth;
 
-        const hasNegativeValue = yScale.convert(0) > yScale.range[0] ? false : true;
-        const yZero: number = hasNegativeValue ? yScale.convert(0) : yScale.range[0];
-
+        const yZero: number = yScale.convert(0);
         xAxisLine.translationY = yZero;
     }
 
@@ -105,10 +111,8 @@ export class MiniColumnChart extends MiniChart {
         const { yData, xData, xScale, yScale, fill, stroke, strokeWidth } = this;
 
         const nodeData: ColumnNodeDatum[] = [];
-
-        const hasNegativeValue = yScale.convert(0) > yScale.range[0] ? false : true;
         
-        const yZero: number = hasNegativeValue ? yScale.convert(0) : yScale.range[0];
+        const yZero: number = yScale.convert(0);
         const width: number = xScale.bandwidth;
 
         for (let i = 0, n = yData.length; i < n; i++) {
