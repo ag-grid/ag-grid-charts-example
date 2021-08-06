@@ -1,7 +1,11 @@
-import { Grid, GridOptions } from 'ag-grid-community';
+import { Grid, GridOptions, ICellRendererParams } from 'ag-grid-community';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
+import { MiniAreaChart } from '../sparkline/miniAreaChart';
+import { MiniLineChart } from '../sparkline/miniLineChart';
+import { MiniColumnChart } from '../sparkline/miniColumnChart';
 
 const symbols: string[] = [
     'AAPL',
@@ -40,64 +44,176 @@ const symbols: string[] = [
 function getQuotes(symbols: string[]) {
     return Promise.all(symbols.map(s => fetch(`http://localhost:8081/quote/${s}`).then(response => response.json())));
 }
+function getHistory(symbols: string[]) {
+    return Promise.all(symbols.map(s => fetch(`http://localhost:8081/history/${s}`).then(response => response.json())));
+}
 
-class HistoryCellRenderer {
+class HistoryLineChartCellRenderer {
     constructor() { }
 
     // init method gets the details of the cell to be renderer
-    init(params: any) {
-        const canvas = document.createElement('canvas');
-        canvas.width = params.column.actualWidth;
-        canvas.height = 40;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'red';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'yellow';
-        ctx.beginPath();
-        ctx.arc(canvas.width / 2, canvas.height / 2, (canvas.height - 4) / 2, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.fill();
-        (this as any).eGui = canvas;
-        // sparkline.data = params.value;
+    init(params: ICellRendererParams) {
+
+        const sparkline = new MiniLineChart();
+
+        sparkline.width = params.column.getActualWidth() - 34;
+        sparkline.data = params.value;
+        sparkline.height = 40;
+        sparkline.marker.fill = '#7cb5ec';
+        sparkline.marker.stroke = '#7cb5ec';
+        sparkline.line.stroke = '#7cb5ec';
+
+        (this as any).eGui = sparkline.getCanvasElement();
+
+
+        params.api.addGlobalListener(function(type: any, event: any) {
+            if (type === 'columnResized' && event.finished) {
+                sparkline.width = event.column.actualWidth - 34;
+            }
+        });
     }
 
     getGui() {
         return (this as any).eGui;
     }
+
+    refresh(params: ICellRendererParams): boolean {
+        return true;
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+class HistoryAreaChartCellRenderer {
+    constructor() { }
+
+    // init method gets the details of the cell to be renderer
+    init(params: ICellRendererParams) {
+
+        const sparkline = new MiniAreaChart();
+        
+        sparkline.data = params.value;
+        sparkline.width = params.column.getActualWidth() - 34;
+        sparkline.height = 40;
+        sparkline.marker.fill = '#7cb5ec';
+        sparkline.marker.stroke = '#7cb5ec';
+        sparkline.marker.enabled = false;
+        sparkline.fill = 'rgba(124, 181, 236, 0.25)';
+        sparkline.line.stroke = '#7cb5ec';
+
+        (this as any).eGui = sparkline.getCanvasElement();
+
+        params.api.addGlobalListener(function(type: any, event: any) {
+            if (type === 'columnResized' && event.finished) {
+                sparkline.width = event.column.actualWidth - 34;
+            }
+        });
+    }
+
+    getGui() {
+        return (this as any).eGui;
+    }
+
+    refresh(params: ICellRendererParams): boolean {
+        return true;
+    }
+}
+
+class HistoryColumnChartCellRenderer {
+    constructor() { }
+
+        sparkline: MiniColumnChart = new MiniColumnChart();
+
+        // init method gets the details of the cell to be renderer
+        init(params: ICellRendererParams) {
+
+            const { sparkline } = this;
+
+            sparkline.width = params.column.getActualWidth() - 34;
+            sparkline.data = params.value;
+            sparkline.height = 40;
+            sparkline.fill = '#7cb5ec';
+            sparkline.stroke = '#7cb5ec';
+
+            (this as any).eGui = sparkline.getCanvasElement();
+
+            params.api.addGlobalListener(function(type: any, event: any) {
+                if (type === 'columnResized' && event.finished) {
+                    sparkline.width = event.column.actualWidth - 34;
+                }
+            });
+
+        }
+
+        updateSparkLine() {
+
+        }
+    
+        getGui() {
+            return (this as any).eGui;
+        }
+    
+        refresh(params: ICellRendererParams): boolean {
+            const { sparkline } = this;
+            sparkline.data = params.value;
+            return true;
+        }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
     const gridDiv = document.createElement('div');
-    gridDiv.style.height = '500px';
-    gridDiv.style.width = '1000px';
+    // gridDiv.classList.add('ag-theme-alpine-dark');
     gridDiv.classList.add('ag-theme-alpine');
-    gridDiv.style.height = '800px';
+    gridDiv.style.height = '100px';
     document.body.appendChild(gridDiv);
 
     const columnDefs = [
         { field: 'symbol' },
         { field: 'shortName' },
-        { field: 'bid' },
-        { field: 'ask' },
-        { field: 'history', cellRenderer: 'historyCellRenderer' }
+        { field: 'history', headerName: 'History Line Chart', cellRenderer: HistoryLineChartCellRenderer },
+        { field: 'history', headerName: 'History Area Chart', cellRenderer: HistoryAreaChartCellRenderer },
+        { field: 'history', headerName: 'History Column Chart', cellRenderer: HistoryColumnChartCellRenderer },
     ];
+    
+    const quotes = await getQuotes(symbols);
+    const history = await getHistory(symbols);
 
-    getQuotes(symbols).then(quotes => {
-        console.log(quotes);
-        for (let i = 0; i < 5; i++) {
-            quotes.push(...quotes);
-        }
-        const gridOptions: GridOptions = {
-            columnDefs: columnDefs,
-            defaultColDef: {
-                resizable: true
-            },
-            components: {
-                historyCellRenderer: HistoryCellRenderer
-            },
-            rowData: quotes
-        };
+    const mappedHistory =  history.map(eod => eod.map((d: any) => +d.Close));
 
-        new Grid(gridDiv, gridOptions);
-    });
+    quotes.forEach((q, i) => {
+        q.history = mappedHistory[i];
+    })
+
+    for (let i = 0; i < 5; i++) {
+        quotes.push(...quotes);
+    }
+
+    const gridOptions: GridOptions = {
+        columnDefs: columnDefs,
+        defaultColDef: {
+            resizable: true
+        },
+        // rowData: quotes,
+        // rowBuffer: 1000
+    };
+
+    new Grid(gridDiv, gridOptions);
+
+    gridOptions.api.setRowData(quotes.slice(0, 1));
+
+    const onDataChange = (event: MouseEvent) => {
+        console.log(event)
+        const randomNumber = Math.random();
+        const slicedQuotes = quotes.slice(0,1)
+        slicedQuotes.forEach(quote => {
+            quote.history = quote.history.map((h: any) => {
+                const randomNumber = (Math.random() + 0.8) * 100;
+                return h * randomNumber;
+            })
+        })
+        gridOptions.api.setRowData(slicedQuotes);
+    }
+    const changeDataButton = document.createElement('button');
+    changeDataButton.textContent = 'Change History';
+    changeDataButton.addEventListener('click', onDataChange);
+    document.body.appendChild(changeDataButton);
+
 });

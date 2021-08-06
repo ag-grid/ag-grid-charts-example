@@ -44,7 +44,6 @@ export abstract class MiniChart extends Observable {
     constructor() {
         super();
 
-        this.scene.canvas.element.style.border = '1px solid black';
         this.scene.container = document.body;
         this.scene.root = this.rootGroup;
         this.scene.resize(this.width, this.height);
@@ -192,5 +191,9 @@ export abstract class MiniChart extends Observable {
     destroy() {
         this.scene.container = undefined;
         this.cleanupDomEventListerners(this.scene.canvas.element);
+    }
+
+    getCanvasElement(): HTMLCanvasElement {
+        return this.scene.canvas.element;
     }
 }
