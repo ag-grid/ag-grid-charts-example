@@ -9,6 +9,7 @@ import { MiniLineChart } from './miniLineChart';
 
 
 const miniLineChart = new MiniLineChart();
+document.body.appendChild(miniLineChart.getCanvasElement());
 miniLineChart.width = 100;
 miniLineChart.height = 50;
 // miniLineChart.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2];
@@ -63,7 +64,7 @@ createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v =>
 
 // mini column chart
 const miniColumnChart = new MiniColumnChart();
-
+miniColumnChart.container = document.body;
 miniColumnChart.width = 100;
 miniColumnChart.height = 50;
 miniColumnChart.data = [-10, 10, 20, -20, -35, 50, 26, 40, -70, -15, 56, 23];
@@ -134,7 +135,7 @@ createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v =>
 
 
 const miniAreaChart = new MiniAreaChart();
-
+miniAreaChart.container = document.body;
 // miniAreaChart.data = [7, 8.3, 6.5, 9, 9.2, 10, 5.5, 6.75, 11.9, -10, -4, -9, 3, 18, 22, 5, -20, -19, -15, -4];
 miniAreaChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
 // miniAreaChart.data = [0, 0];

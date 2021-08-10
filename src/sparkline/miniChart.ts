@@ -21,14 +21,35 @@ class MiniChartAxis extends Observable {
 }
 export abstract class MiniChart extends Observable {
 
-    protected scene: Scene = new Scene();
-    protected rootGroup: Group = new Group();
+    readonly scene: Scene = new Scene();
+    readonly canvasElement: HTMLCanvasElement;
+    readonly rootGroup: Group;
     protected seriesRect: SeriesRect = {
         x: 0,
         y: 0,
         width: 0,
         height: 0
     };
+
+    private _container: HTMLElement | undefined | null = undefined;
+    set container(value: HTMLElement | undefined | null) {
+        if (this._container !== value) {
+            const { parentNode } = this.canvasElement;
+
+            if (parentNode != null) {
+                parentNode.removeChild(this.canvasElement);
+            }
+
+            if (value) {
+                value.appendChild(this.canvasElement);
+            }
+
+            this._container = value;
+        }
+    }
+    get container(): HTMLElement | undefined | null {
+        return this._container;
+    }
 
     @reactive() data?: number[] = undefined;
     @reactive() padding?: Padding = new Padding(3);
@@ -41,12 +62,22 @@ export abstract class MiniChart extends Observable {
         strokeWidth: 0
     }
 
-    constructor() {
+    protected constructor(document = window.document) {
         super();
 
-        this.scene.container = document.body;
-        this.scene.root = this.rootGroup;
-        this.scene.resize(this.width, this.height);
+        const root = new Group();
+        this.rootGroup = root;
+
+        const element = document.createElement('div');
+        element.setAttribute('class', 'ag-sparkline-wrapper');
+
+        const scene = new Scene(document);
+        this.scene = scene;
+        this.canvasElement = scene.canvas.element;
+        scene.root = root;
+        scene.container = element;
+        scene.resize(this.width, this.height);
+        
         this.seriesRect.width = this.width;
         this.seriesRect.height = this.height;
 
@@ -56,6 +87,7 @@ export abstract class MiniChart extends Observable {
 
         this.setupDomEventListeners(this.scene.canvas.element);
     }
+
 
     private _width: number = 100;
     set width(value: number) {
@@ -230,6 +262,6 @@ export abstract class MiniChart extends Observable {
     }
 
     public getCanvasElement(): HTMLCanvasElement {
-        return this.scene.canvas.element;
+        return this.canvasElement;
     }
 }
