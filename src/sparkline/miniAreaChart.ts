@@ -44,8 +44,15 @@ export class MiniAreaChart extends MiniLineChart {
         }
 
         for (let i = 0; i < n; i++) {
-            const x = xScale.convert(xData[i]) + offsetX;
-            const y = yScale.convert(yData[i]);
+            let xDatum = xData[i];
+            let yDatum = yData[i];
+
+            if (yDatum == undefined) {
+                yDatum = 0;
+            }
+
+            const x = xScale.convert(xDatum) + offsetX;
+            const y = yScale.convert(yDatum);
 
             if (i > 0) {
                 path.lineTo(x, y);

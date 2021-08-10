@@ -7,11 +7,11 @@ import { Marker } from './marker';
 import { MiniChart, SeriesNodeDatum } from './miniChart';
 import { Square } from './square';
 
-interface MarkerSelectionDatum extends SeriesNodeDatum {}
+interface MarkerSelectionDatum extends SeriesNodeDatum { }
 class MiniChartMarker extends Observable {
     @reactive() enabled: boolean = true;
     @reactive() shape: string = 'circle';
-    @reactive('update') size: number = 3;
+    @reactive('update') size: number = 0;
     @reactive('update') fill?: string = 'black';
     @reactive('update') stroke?: string = 'black';
     @reactive('update') strokeWidth: number = 1;
@@ -32,10 +32,10 @@ export class MiniLineChart extends MiniChart {
 
     readonly marker = new MiniChartMarker();
     readonly line = new MiniChartLine();
-   
+
     constructor() {
         super();
-        
+
         this.rootGroup.append(this.miniLineChartGroup);
         this.miniLineChartGroup.append([this.linePath, this.markers]);
 
@@ -45,11 +45,11 @@ export class MiniLineChart extends MiniChart {
         this.line.addEventListener('update', this.updateLine, this);
     }
 
-    getNodeData() : MarkerSelectionDatum[] {
+    getNodeData(): MarkerSelectionDatum[] {
         return this.markerSelectionData;
     }
 
-    getMarkerShape(shape: string) { 
+    getMarkerShape(shape: string) {
         switch (shape) {
             case 'circle':
                 return Circle;
@@ -72,14 +72,14 @@ export class MiniLineChart extends MiniChart {
         const { seriesRect } = this;
         this.miniLineChartGroup.translationX = seriesRect.x;
         this.miniLineChartGroup.translationY = seriesRect.y;
-        
+
         this.updateXScale();
         this.updateYScaleRange();
         this.updateYScaleDomain();
 
         const nodeData = this.generateNodeData();
         this.markerSelectionData = nodeData;
-        
+
         this.updateMarkerSelection(nodeData);
         this.updateMarkers();
 
@@ -95,7 +95,7 @@ export class MiniLineChart extends MiniChart {
         const { yData, yScale } = this;
         let [minY, maxY] = this.findMinAndMax(yData);
 
-        if(minY === maxY) {
+        if (minY === maxY) {
             // if all values in the data are the same, minY and maxY will be equal, need to adjust the domain with some padding.
             const padding = Math.abs(minY * 0.01);
             minY -= padding;
@@ -106,7 +106,7 @@ export class MiniLineChart extends MiniChart {
     }
 
     updateXScale(): void {
-        const {  xScale, seriesRect, xData } = this;
+        const { xScale, seriesRect, xData } = this;
         xScale.range = [0, seriesRect.width];
         xScale.domain = xData;
     }
@@ -120,24 +120,29 @@ export class MiniLineChart extends MiniChart {
 
         const offsetX = xScale.bandwidth / 2;
 
-        const nodeData: MarkerSelectionDatum [] = [];
+        const nodeData: MarkerSelectionDatum[] = [];
 
         for (let i = 0; i < yData.length; i++) {
             const yDatum = yData[i];
+
+            if (yDatum == undefined) {
+                continue;
+            }
+
             const x = xScale.convert(i) + offsetX;
             const y = yScale.convert(yDatum);
 
-           nodeData.push({
+
+            nodeData.push({
                 point: { x, y }
             });
         }
-
         return nodeData
     }
 
     updateMarkerSelection(selectionData: MarkerSelectionDatum[]): void {
         const { marker } = this;
-        
+
         const shape = this.getMarkerShape(marker.shape);
 
         let updateMarkerSelection = this.markerSelection.setData(selectionData);
@@ -173,17 +178,26 @@ export class MiniLineChart extends MiniChart {
         const path = linePath.path;
         const n = yData.length;
         const offsetX = xScale.bandwidth / 2;
+        let moveTo = true;
 
         path.clear();
 
         for (let i = 0; i < n; i++) {
-            const x = xScale.convert(xData[i]) + offsetX;
-            const y = yScale.convert(yData[i]);
+            const xDatum = xData[i];
+            const yDatum = yData[i];
 
-            if (i === 0) {
-                path.moveTo(x, y);
+            const x = xScale.convert(xDatum) + offsetX;
+            const y = yScale.convert(yDatum);
+
+            if (yDatum == undefined) {
+                moveTo = true;
             } else {
-                path.lineTo(x, y);
+                if (moveTo) {
+                    path.moveTo(x, y);
+                    moveTo = false;
+                } else {
+                    path.lineTo(x, y);
+                }
             }
         }
 
@@ -206,14 +220,14 @@ export class MiniLineChart extends MiniChart {
         })
     }
 
-    dehighlightDatum() : void {
+    dehighlightDatum(): void {
         const { size, fill, stroke, strokeWidth } = this.marker;
         this.markerSelection.each((node) => {
-                node.size = size;
-                node.fill = fill;
-                node.stroke = stroke;
-                node.strokeWidth = strokeWidth;
-            }
+            node.size = size;
+            node.fill = fill;
+            node.stroke = stroke;
+            node.strokeWidth = strokeWidth;
+        }
         )
     }
 }

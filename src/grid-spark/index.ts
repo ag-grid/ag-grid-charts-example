@@ -1,4 +1,4 @@
-import { Grid, GridOptions, ICellRendererParams } from 'ag-grid-community';
+import { Component, Grid, GridOptions, ICellRendererParams } from 'ag-grid-community';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -48,8 +48,7 @@ function getHistory(symbols: string[]) {
     return Promise.all(symbols.map(s => fetch(`http://localhost:8081/history/${s}`).then(response => response.json())));
 }
 
-class HistoryLineChartCellRenderer {
-    constructor() { }
+class HistoryLineChartCellRenderer  {
 
     // init method gets the details of the cell to be renderer
     init(params: ICellRendererParams) {
@@ -85,6 +84,7 @@ class HistoryLineChartCellRenderer {
 class HistoryAreaChartCellRenderer {
     constructor() { }
 
+    private eGui: HTMLElement
     // init method gets the details of the cell to be renderer
     init(params: ICellRendererParams) {
 
@@ -95,11 +95,11 @@ class HistoryAreaChartCellRenderer {
         sparkline.height = 40;
         sparkline.marker.fill = '#7cb5ec';
         sparkline.marker.stroke = '#7cb5ec';
-        sparkline.marker.enabled = false;
+        // sparkline.marker.enabled = false;
         sparkline.fill = 'rgba(124, 181, 236, 0.25)';
         sparkline.line.stroke = '#7cb5ec';
 
-        (this as any).eGui = sparkline.getCanvasElement();
+        this.eGui = sparkline.getCanvasElement();
 
         params.api.addGlobalListener(function(type: any, event: any) {
             if (type === 'columnResized' && event.finished) {
@@ -109,7 +109,7 @@ class HistoryAreaChartCellRenderer {
     }
 
     getGui() {
-        return (this as any).eGui;
+        return this.eGui;
     }
 
     refresh(params: ICellRendererParams): boolean {
@@ -118,51 +118,52 @@ class HistoryAreaChartCellRenderer {
 }
 
 class HistoryColumnChartCellRenderer {
-    constructor() { }
 
-        sparkline: MiniColumnChart = new MiniColumnChart();
+    sparkline: MiniColumnChart = new MiniColumnChart();
 
-        // init method gets the details of the cell to be renderer
-        init(params: ICellRendererParams) {
+    // init method gets the details of the cell to be renderer
+    init(params: ICellRendererParams) {
 
-            const { sparkline } = this;
+        const { sparkline } = this;
 
-            sparkline.width = params.column.getActualWidth() - 34;
-            sparkline.data = params.value;
-            sparkline.height = 40;
-            sparkline.fill = '#7cb5ec';
-            sparkline.stroke = '#7cb5ec';
+        sparkline.width = params.column.getActualWidth() - 34;
+        sparkline.data = params.value;
+        sparkline.height = 40;
+        sparkline.fill = '#7cb5ec';
+        sparkline.stroke = '#7cb5ec';
 
-            (this as any).eGui = sparkline.getCanvasElement();
+        params.api.addGlobalListener(this.updateWidth.bind(this));
 
-            params.api.addGlobalListener(function(type: any, event: any) {
-                if (type === 'columnResized' && event.finished) {
-                    sparkline.width = event.column.actualWidth - 34;
-                }
-            });
+    }
 
+    // Return the DOM element in this function for the grid to use
+    getGui() {
+        return this.sparkline.getCanvasElement()
+    }
+
+    updateWidth(type: any, event: any) {
+        if (type === 'columnResized' && event.finished) {
+            this.sparkline.width = event.column.actualWidth - 34;
         }
+    }
 
-        updateSparkLine() {
+    updateSparkLine() {
 
-        }
-    
-        getGui() {
-            return (this as any).eGui;
-        }
-    
-        refresh(params: ICellRendererParams): boolean {
-            const { sparkline } = this;
-            sparkline.data = params.value;
-            return true;
-        }
+    }
+
+    refresh(params: ICellRendererParams): boolean {
+        // const { sparkline } = this;
+        // sparkline.data = params.value;
+        console.log('refresh called')
+        return true;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     const gridDiv = document.createElement('div');
-    // gridDiv.classList.add('ag-theme-alpine-dark');
-    gridDiv.classList.add('ag-theme-alpine');
-    gridDiv.style.height = '100px';
+    gridDiv.classList.add('ag-theme-alpine-dark');
+    // gridDiv.classList.add('ag-theme-alpine');
+    gridDiv.style.height = '800px';
     document.body.appendChild(gridDiv);
 
     const columnDefs = [
@@ -197,23 +198,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     new Grid(gridDiv, gridOptions);
 
-    gridOptions.api.setRowData(quotes.slice(0, 1));
+    gridOptions.api.setRowData(quotes);
 
     const onDataChange = (event: MouseEvent) => {
-        console.log(event)
-        const randomNumber = Math.random();
-        const slicedQuotes = quotes.slice(0,1)
-        slicedQuotes.forEach(quote => {
-            quote.history = quote.history.map((h: any) => {
-                const randomNumber = (Math.random() + 0.8) * 100;
-                return h * randomNumber;
-            })
+        quotes.forEach(quote => {
+            quote.history.shift();
+            quote.history.push(quote.history[quote.history.length -1] * (Math.random() + 0.5));
         })
-        gridOptions.api.setRowData(slicedQuotes);
+        gridOptions.api.setRowData(quotes);
     }
     const changeDataButton = document.createElement('button');
-    changeDataButton.textContent = 'Change History';
-    changeDataButton.addEventListener('click', onDataChange);
+    changeDataButton.textContent = 'Change History';    
     document.body.appendChild(changeDataButton);
-
+    changeDataButton.addEventListener('click', onDataChange);
 });

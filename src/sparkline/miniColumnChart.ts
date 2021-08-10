@@ -116,8 +116,12 @@ export class MiniColumnChart extends MiniChart {
         const width: number = xScale.bandwidth;
 
         for (let i = 0, n = yData.length; i < n; i++) {
-            const yDatum = yData[i];
-            const xDatum = xData[i];
+            let yDatum = yData[i];
+            let xDatum = xData[i];
+
+            if (yDatum == undefined) {
+                yDatum = 0;
+            }
 
             const y: number = Math.min(yScale.convert(yDatum), yZero);
             const yBottom: number = Math.max(yScale.convert(yDatum), yZero);

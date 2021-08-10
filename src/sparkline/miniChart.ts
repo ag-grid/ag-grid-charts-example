@@ -9,14 +9,14 @@ export interface SeriesNodeDatum {
 }
 
 interface SeriesRect {
-    x: number, 
-    y:number 
-    width: number, 
-    height: number, 
+    x: number,
+    y: number,
+    width: number,
+    height: number,
 }
 
 class MiniChartAxis extends Observable {
-    @reactive('update') stroke: string = 'black'; 
+    @reactive('update') stroke: string = 'black';
     @reactive('update') strokeWidth: number = 1;
 }
 export abstract class MiniChart extends Observable {
@@ -85,21 +85,21 @@ export abstract class MiniChart extends Observable {
     protected xData: number[] = [];
 
     update() { }
-    generateNodeData(): SeriesNodeDatum[]  { return []; }
-    getNodeData(): readonly SeriesNodeDatum[] { return [];}
+    generateNodeData(): SeriesNodeDatum[] { return []; }
+    getNodeData(): readonly SeriesNodeDatum[] { return []; }
     highlightDatum(closestDatum: SeriesNodeDatum) { }
     dehighlightDatum() { }
-    
-    onMouseMove(event: MouseEvent) { 
+
+    onMouseMove(event: MouseEvent) {
         const closestDatum: SeriesNodeDatum | undefined = this.pickClosestSeriesNodeDatum(event.offsetX, event.offsetY);
         this.highlightDatum(closestDatum);
     }
-    
-    onMouseOut(event: MouseEvent) { 
+
+    onMouseOut(event: MouseEvent) {
         this.dehighlightDatum()
     }
 
-    processData() { 
+    processData() {
         const { data, yData, xData } = this;
 
         if (!data) {
@@ -111,16 +111,50 @@ export abstract class MiniChart extends Observable {
 
         for (let i = 0, n = data.length; i < n; i++) {
             const y = data[i];
-            yData.push(y);
+            const yDatum = this.getYDatum(y);
+            yData.push(yDatum);
             xData.push(i);
         }
 
         this.update();
     }
 
-    findMinAndMax(data: number[]): [number, number] {
-        let min: number = Math.min(...data);
-        let max: number = Math.max(...data);
+    getYDatum(y: any): number | undefined {
+        const noDatum = !this.isNumber(y);
+        return noDatum ? undefined : y;
+    }
+
+    isNumber(value: any): boolean {
+        return value != undefined && !this.isString(value) && isFinite(value) && !isNaN(value);
+    }
+
+    isString(value: any) {
+        return typeof value === 'string';
+    }
+
+    findMinAndMax(values: number[]): [number, number] {
+        const n = values.length;
+        let value;
+        let i = -1;
+        let min;
+        let max;
+
+        while (++i < n) {
+            if ((value = values[i]) != undefined) {
+                min = max = value;
+                while (++i < n) {
+                    if ((value = values[i]) != undefined) {
+                        if (value < min) {
+                            min = value;
+                        }
+                        if (value > max) {
+                            max = value;
+                        }
+                    }
+                }
+            }
+
+        }
         return [min, max];
     }
 
@@ -130,20 +164,20 @@ export abstract class MiniChart extends Observable {
     }
     scheduleLayout() {
         if (this.layoutId) {
-            cancelAnimationFrame(this.layoutId);    
+            cancelAnimationFrame(this.layoutId);
         }
         this.layoutId = requestAnimationFrame(() => {
             const { width, height, padding } = this;
-            const  shrunkWidth = width - padding.left - padding.right;
+            const shrunkWidth = width - padding.left - padding.right;
             const shrunkHeight = height - padding.top - padding.bottom;
 
             this.seriesRect.width = shrunkWidth;
             this.seriesRect.height = shrunkHeight;
             this.seriesRect.x = padding.left;
             this.seriesRect.y = padding.top;
-           
+
             this.update();
-            
+
             this.layoutId = 0;
         })
     }
@@ -155,7 +189,7 @@ export abstract class MiniChart extends Observable {
         }
 
         function getDistance(p1: Point, p2: Point): number {
-            return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
+            return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
         }
 
         let minDistance = Infinity;
