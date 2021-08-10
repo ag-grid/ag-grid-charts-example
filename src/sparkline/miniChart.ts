@@ -3,16 +3,16 @@ import { Observable, reactive } from '../../charts/util/observable';
 
 export interface SeriesNodeDatum {
     readonly point?: {
-        readonly x: number,
-        readonly y: number
+        readonly x: number;
+        readonly y: number;
     }
 }
 
 interface SeriesRect {
-    x: number,
-    y: number,
-    width: number,
-    height: number,
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 }
 
 class MiniChartAxis extends Observable {
@@ -84,22 +84,22 @@ export abstract class MiniChart extends Observable {
     protected yData: number[] = [];
     protected xData: number[] = [];
 
-    update() { }
-    generateNodeData(): SeriesNodeDatum[] { return []; }
-    getNodeData(): readonly SeriesNodeDatum[] { return []; }
-    highlightDatum(closestDatum: SeriesNodeDatum) { }
-    dehighlightDatum() { }
+    protected update() { }
+    protected generateNodeData(): SeriesNodeDatum[] { return []; }
+    protected getNodeData(): readonly SeriesNodeDatum[] { return []; }
+    protected highlightDatum(closestDatum: SeriesNodeDatum) { }
+    protected dehighlightDatum() { }
 
-    onMouseMove(event: MouseEvent) {
+    private onMouseMove(event: MouseEvent) {
         const closestDatum: SeriesNodeDatum | undefined = this.pickClosestSeriesNodeDatum(event.offsetX, event.offsetY);
         this.highlightDatum(closestDatum);
     }
 
-    onMouseOut(event: MouseEvent) {
-        this.dehighlightDatum()
+    private onMouseOut(event: MouseEvent) {
+        this.dehighlightDatum();
     }
 
-    processData() {
+    private processData() {
         const { data, yData, xData } = this;
 
         if (!data) {
@@ -119,20 +119,20 @@ export abstract class MiniChart extends Observable {
         this.update();
     }
 
-    getYDatum(y: any): number | undefined {
+    private getYDatum(y: any): number | undefined {
         const noDatum = !this.isNumber(y);
         return noDatum ? undefined : y;
     }
 
-    isNumber(value: any): boolean {
+    private isNumber(value: any): boolean {
         return value != undefined && !this.isString(value) && isFinite(value) && !isNaN(value);
     }
 
-    isString(value: any) {
+    private isString(value: any) {
         return typeof value === 'string';
     }
 
-    findMinAndMax(values: number[]): [number, number] {
+    protected findMinAndMax(values: number[]): [number, number] {
         const n = values.length;
         let value;
         let i = -1;
@@ -162,7 +162,8 @@ export abstract class MiniChart extends Observable {
     get layoutScheduled(): boolean {
         return !!this.layoutId;
     }
-    scheduleLayout() {
+
+    protected scheduleLayout() {
         if (this.layoutId) {
             cancelAnimationFrame(this.layoutId);
         }
@@ -182,7 +183,7 @@ export abstract class MiniChart extends Observable {
         })
     }
 
-    pickClosestSeriesNodeDatum(x: number, y: number): SeriesNodeDatum | undefined {
+    private pickClosestSeriesNodeDatum(x: number, y: number): SeriesNodeDatum | undefined {
         type Point = {
             x: number,
             y: number
@@ -212,22 +213,23 @@ export abstract class MiniChart extends Observable {
 
     private _onMouseMove = this.onMouseMove.bind(this);
     private _onMouseOut = this.onMouseOut.bind(this);
-    setupDomEventListeners(chartElement: HTMLCanvasElement): void {
+    
+    private setupDomEventListeners(chartElement: HTMLCanvasElement): void {
         chartElement.addEventListener('mousemove', this._onMouseMove);
         chartElement.addEventListener('mouseout', this._onMouseOut);
     }
 
-    cleanupDomEventListerners(chartElement: HTMLCanvasElement): void {
+    private cleanupDomEventListerners(chartElement: HTMLCanvasElement): void {
         chartElement.removeEventListener('mousemove', this._onMouseMove);
         chartElement.removeEventListener('mouseout', this._onMouseOut);
     }
 
-    destroy() {
+    protected destroy() {
         this.scene.container = undefined;
         this.cleanupDomEventListerners(this.scene.canvas.element);
     }
 
-    getCanvasElement(): HTMLCanvasElement {
+    public getCanvasElement(): HTMLCanvasElement {
         return this.scene.canvas.element;
     }
 }

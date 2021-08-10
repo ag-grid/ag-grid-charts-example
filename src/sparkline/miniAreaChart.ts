@@ -1,6 +1,8 @@
 import { reactive } from '../../charts/util/observable';
+import { SeriesNodeDatum } from './miniChart';
 import { MiniLineChart } from './miniLineChart';
 
+interface AreaNodeDatum extends SeriesNodeDatum { }
 export class MiniAreaChart extends MiniLineChart {
 
     @reactive('update') fill: string = 'mistyRose';
@@ -11,7 +13,35 @@ export class MiniAreaChart extends MiniLineChart {
         this.addEventListener('update', this.scheduleLayout, this);
     }
 
-    updateYScaleDomain(): void {
+    protected generateNodeData(): AreaNodeDatum[] {
+        const { yData, data, xScale, yScale } = this;
+
+        if (!data) {
+            return [];
+        }
+
+        const offsetX = xScale.bandwidth / 2;
+
+        const nodeData: AreaNodeDatum[] = [];
+
+        for (let i = 0; i < yData.length; i++) {
+            let yDatum = yData[i];
+
+            if (yDatum == undefined) {
+                yDatum = 0;
+            }
+
+            const x = xScale.convert(i) + offsetX;
+            const y = yScale.convert(yDatum);
+
+            nodeData.push({
+                point: { x, y }
+            });
+        }
+        return nodeData;
+    }
+
+    protected updateYScaleDomain(): void {
         const { yData, yScale } = this;
         let [minY, maxY] = this.findMinAndMax(yData);
 
@@ -30,7 +60,7 @@ export class MiniAreaChart extends MiniLineChart {
         yScale.domain = [minY, maxY];
     }
 
-    updateLine() {
+    protected updateLine() {
         const { linePath, yData, xData, xScale, yScale, line, fill } = this;
 
         const path = linePath.path;

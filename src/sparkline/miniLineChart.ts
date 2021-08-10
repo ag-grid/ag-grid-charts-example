@@ -7,7 +7,7 @@ import { Marker } from './marker';
 import { MiniChart, SeriesNodeDatum } from './miniChart';
 import { Square } from './square';
 
-interface MarkerSelectionDatum extends SeriesNodeDatum { }
+interface LineNodeDatum extends SeriesNodeDatum { }
 class MiniChartMarker extends Observable {
     @reactive() enabled: boolean = true;
     @reactive() shape: string = 'circle';
@@ -27,8 +27,8 @@ export class MiniLineChart extends MiniChart {
     protected yScale: LinearScale = new LinearScale();
     protected xScale: BandScale<number> = new BandScale<number>();
     private markers: Group = new Group();
-    private markerSelection: Selection<Marker, Group, MarkerSelectionDatum, any> = Selection.select(this.markers).selectAll<Marker>();
-    private markerSelectionData: MarkerSelectionDatum[] = [];
+    private markerSelection: Selection<Marker, Group, LineNodeDatum, any> = Selection.select(this.markers).selectAll<Marker>();
+    private markerSelectionData: LineNodeDatum[] = [];
 
     readonly marker = new MiniChartMarker();
     readonly line = new MiniChartLine();
@@ -45,11 +45,11 @@ export class MiniLineChart extends MiniChart {
         this.line.addEventListener('update', this.updateLine, this);
     }
 
-    getNodeData(): MarkerSelectionDatum[] {
+    protected getNodeData(): LineNodeDatum[] {
         return this.markerSelectionData;
     }
 
-    getMarkerShape(shape: string) {
+    private getMarkerShape(shape: string) {
         switch (shape) {
             case 'circle':
                 return Circle;
@@ -62,13 +62,13 @@ export class MiniLineChart extends MiniChart {
         }
     }
 
-    onMarkerShapeChange() {
+    private onMarkerShapeChange() {
         this.markerSelection = this.markerSelection.setData([]);
         this.markerSelection.exit.remove();
         this.scheduleLayout();
     }
 
-    update(): void {
+    protected update(): void {
         const { seriesRect } = this;
         this.miniLineChartGroup.translationX = seriesRect.x;
         this.miniLineChartGroup.translationY = seriesRect.y;
@@ -86,12 +86,12 @@ export class MiniLineChart extends MiniChart {
         this.updateLine();
     }
 
-    updateYScaleRange(): void {
+    protected updateYScaleRange(): void {
         const { yScale, seriesRect } = this;
         yScale.range = [seriesRect.height, 0];
     }
 
-    updateYScaleDomain(): void {
+    protected updateYScaleDomain(): void {
         const { yData, yScale } = this;
         let [minY, maxY] = this.findMinAndMax(yData);
 
@@ -105,13 +105,13 @@ export class MiniLineChart extends MiniChart {
         yScale.domain = [minY, maxY];
     }
 
-    updateXScale(): void {
+    protected updateXScale(): void {
         const { xScale, seriesRect, xData } = this;
         xScale.range = [0, seriesRect.width];
         xScale.domain = xData;
     }
 
-    generateNodeData(): MarkerSelectionDatum[] {
+    protected generateNodeData(): LineNodeDatum[] {
         const { yData, data, xScale, yScale } = this;
 
         if (!data) {
@@ -120,10 +120,10 @@ export class MiniLineChart extends MiniChart {
 
         const offsetX = xScale.bandwidth / 2;
 
-        const nodeData: MarkerSelectionDatum[] = [];
+        const nodeData: LineNodeDatum[] = [];
 
         for (let i = 0; i < yData.length; i++) {
-            const yDatum = yData[i];
+            let yDatum = yData[i];
 
             if (yDatum == undefined) {
                 continue;
@@ -132,15 +132,14 @@ export class MiniLineChart extends MiniChart {
             const x = xScale.convert(i) + offsetX;
             const y = yScale.convert(yDatum);
 
-
             nodeData.push({
                 point: { x, y }
             });
         }
-        return nodeData
+        return nodeData;
     }
 
-    updateMarkerSelection(selectionData: MarkerSelectionDatum[]): void {
+    private updateMarkerSelection(selectionData: LineNodeDatum[]): void {
         const { marker } = this;
 
         const shape = this.getMarkerShape(marker.shape);
@@ -153,7 +152,7 @@ export class MiniLineChart extends MiniChart {
         this.markerSelection = updateMarkerSelection.merge(enterMarkerSelection);
     }
 
-    updateMarkers(): void {
+    private updateMarkers(): void {
         const { marker } = this;
 
         this.markerSelection.each((node, datum, index) => {
@@ -168,7 +167,7 @@ export class MiniLineChart extends MiniChart {
         });
     }
 
-    updateLine(): void {
+    protected updateLine(): void {
         const { linePath, yData, xData, xScale, yScale, line } = this;
 
         if (yData.length < 2) {
@@ -206,7 +205,7 @@ export class MiniLineChart extends MiniChart {
         linePath.strokeWidth = line.strokeWidth;
     }
 
-    highlightDatum(closestDatum: SeriesNodeDatum): void {
+    protected highlightDatum(closestDatum: SeriesNodeDatum): void {
         const { size, fill, stroke, strokeWidth } = this.marker;
         const { highlightStyle } = this;
         this.markerSelection.each((node, datum) => {
@@ -220,14 +219,13 @@ export class MiniLineChart extends MiniChart {
         })
     }
 
-    dehighlightDatum(): void {
+    protected dehighlightDatum(): void {
         const { size, fill, stroke, strokeWidth } = this.marker;
         this.markerSelection.each((node) => {
             node.size = size;
             node.fill = fill;
             node.stroke = stroke;
             node.strokeWidth = strokeWidth;
-        }
-        )
+        })
     }
 }

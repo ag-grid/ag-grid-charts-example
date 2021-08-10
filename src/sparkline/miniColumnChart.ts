@@ -36,11 +36,11 @@ export class MiniColumnChart extends MiniChart {
         this.addEventListener('update', this.scheduleLayout, this);
     }
 
-    getNodeData() : ColumnNodeDatum[] {
+    protected getNodeData() : ColumnNodeDatum[] {
         return this.columnSelectionData;
     }
 
-    update() {
+    protected update() {
         const { seriesRect } = this;
 
         this.miniColumnChartGroup.translationX = seriesRect.x;
@@ -57,7 +57,7 @@ export class MiniColumnChart extends MiniChart {
         this.updateRectNodes();
     }
 
-    updateYScale() {
+    private updateYScale() {
         const { yScale, seriesRect, yData, yScaleDomain } = this;
 
         yScale.range = [seriesRect.height, 0];
@@ -85,7 +85,7 @@ export class MiniColumnChart extends MiniChart {
         yScale.domain = yScaleDomain ? yScaleDomain : [minY, maxY];
     }
 
-    updateXScale() {
+    private updateXScale() {
         const { xScale, seriesRect, xData } = this;
 
         xScale.range = [0, seriesRect.width];
@@ -94,7 +94,7 @@ export class MiniColumnChart extends MiniChart {
         xScale.paddingOuter = 0.1;
     }
 
-    updateXAxisLine() {
+    private updateXAxisLine() {
         const { xScale, yScale, axis, xAxisLine } = this;
 
         xAxisLine.x1 = xScale.range[0];
@@ -107,7 +107,7 @@ export class MiniColumnChart extends MiniChart {
         xAxisLine.translationY = yZero;
     }
 
-    generateNodeData(): ColumnNodeDatum[] {
+    protected generateNodeData(): ColumnNodeDatum[] {
         const { yData, xData, xScale, yScale, fill, stroke, strokeWidth } = this;
 
         const nodeData: ColumnNodeDatum[] = [];
@@ -147,7 +147,7 @@ export class MiniColumnChart extends MiniChart {
         return nodeData;
     }
 
-    updateRectNodesSelection(selectionData: ColumnNodeDatum[]) {
+    private updateRectNodesSelection(selectionData: ColumnNodeDatum[]) {
         const updateColumnsSelection = this.columnSelection.setData(selectionData);
 
         const enterColumnsSelection = updateColumnsSelection.enter.append(Rectangle);
@@ -157,7 +157,7 @@ export class MiniColumnChart extends MiniChart {
         this.columnSelection = updateColumnsSelection.merge(enterColumnsSelection);
     }
 
-    updateRectNodes() {
+    private updateRectNodes() {
         this.columnSelection.each((column, datum, index) => {
             const { x, y, width, height, fill, stroke, strokeWidth } = datum;
             column.x = x;
@@ -170,7 +170,7 @@ export class MiniColumnChart extends MiniChart {
         })
     }
 
-    highlightDatum(closestDatum: SeriesNodeDatum): void {
+    protected highlightDatum(closestDatum: SeriesNodeDatum): void {
         const { fill, highlightStyle } = this;
         this.columnSelection.each((node, datum) => {
             if (closestDatum) {
@@ -180,7 +180,7 @@ export class MiniColumnChart extends MiniChart {
         })
     }
 
-    dehighlightDatum() : void {
+    protected dehighlightDatum() : void {
         const { fill} = this;
         this.columnSelection.each(node => {
             node.fill =fill;
