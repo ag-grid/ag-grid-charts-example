@@ -7,21 +7,29 @@ import { MiniAreaChart } from './miniAreaChart';
 import { MiniColumnChart } from './miniColumnChart';
 import { MiniLineChart } from './miniLineChart';
 
-
 const miniLineChart = new MiniLineChart();
 document.body.appendChild(miniLineChart.getCanvasElement());
 miniLineChart.width = 100;
 miniLineChart.height = 50;
 // miniLineChart.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2];
 miniLineChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
-miniLineChart.marker.fill = 'skyBlue';
-miniLineChart.marker.stroke = 'skyBlue';
-miniLineChart.line.stroke = 'skyBlue';
+miniLineChart.marker.fill = 'skyblue';
+miniLineChart.marker.stroke = 'skyblue';
+miniLineChart.line.stroke = 'skyblue';
 miniLineChart.highlightStyle.size = 7;
 miniLineChart.marker.shape = 'diamond';
 miniLineChart.marker.size = 3;
+miniLineChart.title = 'mana'
 // miniLineChart.marker.enabled = false;
-miniLineChart.padding = new Padding(5);
+// miniLineChart.padding = new Padding(5);
+// miniLineChart.tooltip.renderer = (params) => {
+//     return {
+//         content: params.yValue,
+//         color: 'black',
+//         backgroundColor: params.color,
+//         opacity: 0.5
+//     }
+// }
 
 let animateLine: boolean = false;
 let lineIntervalId: number;
@@ -67,9 +75,10 @@ const miniColumnChart = new MiniColumnChart();
 miniColumnChart.container = document.body;
 miniColumnChart.width = 100;
 miniColumnChart.height = 50;
-miniColumnChart.data = [-10, 10, 20, -20, -35, 50, 26, 40, -70, -15, 56, 23];
+miniColumnChart.data = [-10, 10, 20, -20, -35, 50, 26, 40, -70, 0, 56, 23];
 // miniColumnChart.data = [7, 8.3, undefined, -9, '9.2', null, 5.5, Infinity, 6.75, -11.9, NaN, -Infinity, 5, 4, null, {}, 6, []] as any;
 // miniColumnChart.data = [5, 10, 20, 50, 26, 40, 56, 23];
+miniColumnChart.axis.strokeWidth = 4;
 miniColumnChart.yScaleDomain = [0, 50];
 miniColumnChart.fill = 'skyBlue';
 miniColumnChart.axis.stroke = 'skyBlue';

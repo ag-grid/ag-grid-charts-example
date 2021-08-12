@@ -1,7 +1,7 @@
 import { BandScale, Group, Line, LinearScale, Path } from '../../charts/main';
 import { Selection } from '../../charts/scene/selection'
 import { reactive } from '../../charts/util/observable';
-import { MiniChart, SeriesNodeDatum } from './miniChart';
+import { MiniChart, SeriesNodeDatum, toTooltipHtml } from './miniChart';
 import { Rectangle } from './rectangle';
 
 interface ColumnNodeDatum extends SeriesNodeDatum {
@@ -14,6 +14,8 @@ interface ColumnNodeDatum extends SeriesNodeDatum {
     strokeWidth: number
 }
 export class MiniColumnChart extends MiniChart {
+    
+    static className = 'MiniColumnChart';
 
     private miniColumnChartGroup: Group = new Group();
     private yScale: LinearScale = new LinearScale();
@@ -24,7 +26,7 @@ export class MiniColumnChart extends MiniChart {
     private columnSelectionData: ColumnNodeDatum[] = [];
     @reactive('update') fill: string = 'black';
     @reactive('update') stroke: string = 'black';
-    @reactive('update') strokeWidth: number = 0;
+    @reactive('update') strokeWidth: number = 4;
     @reactive('update') yScaleDomain: [number, number] = undefined;
 
     constructor() {
@@ -34,6 +36,9 @@ export class MiniColumnChart extends MiniChart {
         this.miniColumnChartGroup.append([this.columns, this.xAxisLine]);
 
         this.addEventListener('update', this.scheduleLayout, this);
+
+        this.xAxisLine.lineCap = 'square';
+        // this.xAxisLine.crisp = true;
     }
 
     protected getNodeData() : ColumnNodeDatum[] {
@@ -42,9 +47,8 @@ export class MiniColumnChart extends MiniChart {
 
     protected update() {
         const { seriesRect } = this;
-
-        this.miniColumnChartGroup.translationX = seriesRect.x;
-        this.miniColumnChartGroup.translationY = seriesRect.y;
+        this.rootGroup.translationX = seriesRect.x;
+        this.rootGroup.translationY = seriesRect.y;
 
         this.updateYScale();
         this.updateXScale();
@@ -141,6 +145,7 @@ export class MiniColumnChart extends MiniChart {
                 fill, 
                 stroke, 
                 strokeWidth,
+                seriesDatum: { x: xDatum, y: yDatum },
                 point: midPoint
             });
         }
@@ -167,7 +172,8 @@ export class MiniColumnChart extends MiniChart {
             column.fill = fill;
             column.stroke = stroke;
             column.strokeWidth = strokeWidth;
-        })
+            column.visible = column.height > 0;
+        });
     }
 
     protected highlightDatum(closestDatum: SeriesNodeDatum): void {
@@ -185,5 +191,32 @@ export class MiniColumnChart extends MiniChart {
         this.columnSelection.each(node => {
             node.fill =fill;
         })
+    }
+
+    getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
+        const { title, fill } = this;
+        const seriesDatum = datum.seriesDatum;
+        const yValue = datum.seriesDatum.y;
+        const xValue = datum.seriesDatum.x;
+        const backgroundColor = fill;
+        const content = typeof xValue !== 'number' ? `${this.formatDatum(seriesDatum.x)}: ${this.formatDatum(seriesDatum.y)}` : `${this.formatDatum(seriesDatum.y)}`;
+
+        const defaults = {
+            backgroundColor,
+            title,
+            content
+        }
+
+        if (this.tooltip.renderer) {
+            return toTooltipHtml(this.tooltip.renderer({
+                datum: seriesDatum,
+                title,
+                backgroundColor,
+                yValue,
+                xValue,
+            }), defaults);
+        }
+
+        return toTooltipHtml(defaults);
     }
 }

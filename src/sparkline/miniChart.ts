@@ -1,7 +1,119 @@
 import { Group, Padding, Scene } from '../../charts/main';
+import { Color } from '../../charts/util/color';
+import { createId } from '../../charts/util/id';
 import { Observable, reactive } from '../../charts/util/observable';
+import { defaultTooltipCss } from './defaultTooltipCss';
+
+export interface TooltipMeta {
+    pageX: number;
+    pageY: number;
+}
+
+export interface TooltipRendererResult {
+    content: string;
+    title?: string;
+    color?: string;
+    backgroundColor?: string;
+    opacity?: number;
+}
+
+export interface TooltipRendererParams {
+    readonly datum: any;
+    readonly title?: string;
+    readonly backgroundColor?: string;
+    readonly xValue: any;
+    readonly yValue: any;
+}
+
+export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: TooltipRendererResult) : string {
+    if (typeof input === 'string') {
+        return input;
+    }
+
+    const { content = defaults?.content || '', title = defaults?.title || undefined, color = defaults?.color || 'black', backgroundColor = defaults?.backgroundColor || 'rgb(136, 136, 136)', opacity = defaults?.opacity || 0.2} = input;
+
+    const titleBgColor = Color.fromString(backgroundColor.toLowerCase());
+    const { r, g, b, a } = titleBgColor;
+
+    // TODO: combine a and opacity for alpha?
+    const alpha = opacity
+    
+    const titleBgColorWithAlpha = Color.fromArray([r, g, b, alpha]);
+    const titleBgColorRgbaString = titleBgColorWithAlpha.toRgbaString();
+
+
+    const contentBgColor = `rgba(244, 244, 244, ${opacity})`
+
+    const titleHtml = title ? `<div class="${MiniChart.defaultTooltipClass}-title"
+    style="color: ${color}; background-color: ${titleBgColorRgbaString}">${title}</div>` : '';
+
+    return `${titleHtml}<div class="${MiniChart.defaultTooltipClass}-content" style="background-color: ${contentBgColor}">${content}</div>`;
+
+}
+
+export class MiniChartTooltip extends Observable {
+    chart: MiniChart;
+    element: HTMLElement = document.createElement('div');
+
+    @reactive() class: string = MiniChart.defaultTooltipClass;
+    @reactive() enabled: boolean = true;
+    @reactive('change') renderer?: (params: TooltipRendererParams) => string | TooltipRendererResult;
+
+    constructor(chart: MiniChart) {
+        super();
+
+        this.chart = chart;
+
+        const tooltipRoot = document.body;
+        tooltipRoot.appendChild(this.element);
+    }
+
+    updateClass(visible?: boolean) {
+        const classList = [MiniChart.defaultTooltipClass];
+
+        if (visible !== true) {
+            classList.push(`${MiniChart.defaultTooltipClass}-hidden`);
+        }
+
+        classList.push(`${MiniChart.defaultTooltipClass}-arrow`);
+
+        this.element.setAttribute('class', classList.join(' '));
+    }
+    show(meta: TooltipMeta, html?: string) {
+        const { element } = this;
+        
+        if (html !== undefined) {
+            element.innerHTML = html
+        } else if (!element.innerHTML) {
+            return;
+        }
+
+        let left = meta.pageX - element.clientWidth / 2;
+        let top = meta.pageY - element.clientHeight - 6;
+        
+        element.style.left = `${left}px`;
+        element.style.top = `${top}px`;
+
+        this.toggle(true);
+    }
+
+    toggle(visible?: boolean) {
+        this.updateClass(visible);
+    }
+
+    destroy() {
+        const { parentNode } = this.element;
+
+        if (parentNode) {
+            parentNode.removeChild(this.element);
+        }
+
+    }
+}
+
 
 export interface SeriesNodeDatum {
+    readonly seriesDatum: any;
     readonly point?: {
         readonly x: number;
         readonly y: number;
@@ -21,9 +133,18 @@ class MiniChartAxis extends Observable {
 }
 export abstract class MiniChart extends Observable {
 
-    readonly scene: Scene = new Scene();
+    readonly id: string = createId(this);
+    
+    readonly scene: Scene;
     readonly canvasElement: HTMLCanvasElement;
     readonly rootGroup: Group;
+
+    readonly tooltip: MiniChartTooltip;
+    static readonly defaultTooltipClass = 'ag-sparkline-tooltip';
+
+    private static tooltipDocuments: Document[] = [];
+    private static tooltipInstances: Map<Document, MiniChartTooltip> = new Map();
+
     protected seriesRect: SeriesRect = {
         x: 0,
         y: 0,
@@ -52,6 +173,7 @@ export abstract class MiniChart extends Observable {
     }
 
     @reactive() data?: number[] = undefined;
+    @reactive() title?: string = undefined;
     @reactive() padding?: Padding = new Padding(3);
 
     readonly axis = new MiniChartAxis();
@@ -81,9 +203,26 @@ export abstract class MiniChart extends Observable {
         this.seriesRect.width = this.width;
         this.seriesRect.height = this.height;
 
+        // one tooltip instance per document
+        if (MiniChart.tooltipDocuments.indexOf(document) === -1) {
+            const styleElement = document.createElement('style');
+            styleElement.innerHTML = defaultTooltipCss;
+        
+            document.head.insertBefore(styleElement, document.head.querySelector('style'));
+            MiniChart.tooltipDocuments.push(document);
+        
+            this.tooltip = new MiniChartTooltip(this);
+            this.tooltip.addEventListener('class', () => this.tooltip.toggle());
+        
+            MiniChart.tooltipInstances.set(document, this.tooltip);
+        } else {
+            this.tooltip = MiniChart.tooltipInstances.get(document);
+        }
+
         this.addPropertyListener('data', this.processData, this);
         this.addPropertyListener('padding', this.scheduleLayout, this);
         this.axis.addEventListener('update', this.scheduleLayout, this);
+        this.tooltip.addEventListener('change', this.update, this);
 
         this.setupDomEventListeners(this.scene.canvas.element);
     }
@@ -125,10 +264,15 @@ export abstract class MiniChart extends Observable {
     private onMouseMove(event: MouseEvent) {
         const closestDatum: SeriesNodeDatum | undefined = this.pickClosestSeriesNodeDatum(event.offsetX, event.offsetY);
         this.highlightDatum(closestDatum);
+
+        if (this.tooltip.enabled) {
+            this.handleTooltip(event, closestDatum);
+        }
     }
 
     private onMouseOut(event: MouseEvent) {
         this.dehighlightDatum();
+        this.tooltip.toggle(false);
     }
 
     private processData() {
@@ -227,7 +371,7 @@ export abstract class MiniChart extends Observable {
 
         let minDistance = Infinity;
         let closestDatum: SeriesNodeDatum | undefined;
-        const hitPoint = this.rootGroup.transformPoint(x, y)
+        const hitPoint = this.rootGroup.transformPoint(x, y);
 
         this.getNodeData().forEach(datum => {
             if (!datum.point) {
@@ -241,6 +385,50 @@ export abstract class MiniChart extends Observable {
         })
 
         return closestDatum && closestDatum;
+    }
+
+    private handleTooltip(event: MouseEvent, datum: SeriesNodeDatum): void {
+        const { canvasElement } = this;
+        const canvasRect = canvasElement.getBoundingClientRect();
+        const { pageXOffset, pageYOffset } = window;
+        const point = this.rootGroup.inverseTransformPoint(datum.point.x, datum.point.y);
+
+        const meta = {
+            pageX: (point.x + canvasRect.x + pageXOffset),
+            pageY: (point.y + canvasRect.y + pageYOffset)
+        }
+
+        const html = this.tooltip.enabled && this.getTooltipHtml(datum);
+        
+        if (html) {
+            this.tooltip.show(meta, html);
+        }
+    }
+
+    getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
+        const { title} = this; 
+        const seriesDatum = datum.seriesDatum;
+        const yValue = datum.seriesDatum.y;
+        const xValue = datum.seriesDatum.x;
+
+        const defaults = {
+            content: this.formatDatum(seriesDatum.y)
+        }
+
+        if (this.tooltip.renderer) {
+            return toTooltipHtml(this.tooltip.renderer({
+                datum: seriesDatum,
+                title,
+                yValue,
+                xValue,
+            }), defaults);
+        }
+    
+        return toTooltipHtml(defaults);
+    }
+
+    protected formatDatum(datum: any) : string {
+        return datum.toFixed(1);
     }
 
     private _onMouseMove = this.onMouseMove.bind(this);
@@ -257,6 +445,11 @@ export abstract class MiniChart extends Observable {
     }
 
     protected destroy() {
+        this.tooltip.destroy();
+        // remove tooltip instance
+        MiniChart.tooltipInstances.delete(document);
+        // remove document from documents list
+        MiniChart.tooltipDocuments = MiniChart.tooltipDocuments.filter(d => d !== document);
         this.scene.container = undefined;
         this.cleanupDomEventListerners(this.scene.canvas.element);
     }

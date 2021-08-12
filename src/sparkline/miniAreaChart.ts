@@ -4,6 +4,8 @@ import { MiniLineChart } from './miniLineChart';
 
 interface AreaNodeDatum extends SeriesNodeDatum { }
 export class MiniAreaChart extends MiniLineChart {
+    
+    static className = 'MiniAreaChart';
 
     @reactive('update') fill: string = 'mistyRose';
     
@@ -14,7 +16,7 @@ export class MiniAreaChart extends MiniLineChart {
     }
 
     protected generateNodeData(): AreaNodeDatum[] {
-        const { yData, data, xScale, yScale } = this;
+        const { yData, xData, data, xScale, yScale } = this;
 
         if (!data) {
             return [];
@@ -26,15 +28,17 @@ export class MiniAreaChart extends MiniLineChart {
 
         for (let i = 0; i < yData.length; i++) {
             let yDatum = yData[i];
+            let xDatum = xData[i];
 
             if (yDatum == undefined) {
                 yDatum = 0;
             }
 
-            const x = xScale.convert(i) + offsetX;
+            const x = xScale.convert(xDatum) + offsetX;
             const y = yScale.convert(yDatum);
 
             nodeData.push({
+                seriesDatum: { x: xDatum, y: yDatum },
                 point: { x, y }
             });
         }

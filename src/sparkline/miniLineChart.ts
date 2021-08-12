@@ -4,7 +4,7 @@ import { Observable, reactive } from '../../charts/util/observable';
 import { Circle } from './circle';
 import { Diamond } from './diamond';
 import { Marker } from './marker';
-import { MiniChart, SeriesNodeDatum } from './miniChart';
+import { MiniChart, SeriesNodeDatum, toTooltipHtml } from './miniChart';
 import { Square } from './square';
 
 interface LineNodeDatum extends SeriesNodeDatum { }
@@ -21,6 +21,8 @@ class MiniChartLine extends Observable {
     @reactive('update') strokeWidth: number = 1;
 }
 export class MiniLineChart extends MiniChart {
+
+    static className = 'MiniLineChart';
 
     private miniLineChartGroup: Group = new Group();
     protected linePath: Path = new Path();
@@ -70,8 +72,8 @@ export class MiniLineChart extends MiniChart {
 
     protected update(): void {
         const { seriesRect } = this;
-        this.miniLineChartGroup.translationX = seriesRect.x;
-        this.miniLineChartGroup.translationY = seriesRect.y;
+        this.rootGroup.translationX = seriesRect.x;
+        this.rootGroup.translationY = seriesRect.y;
 
         this.updateXScale();
         this.updateYScaleRange();
@@ -112,7 +114,7 @@ export class MiniLineChart extends MiniChart {
     }
 
     protected generateNodeData(): LineNodeDatum[] {
-        const { yData, data, xScale, yScale } = this;
+        const { yData, xData, data, xScale, yScale } = this;
 
         if (!data) {
             return [];
@@ -124,6 +126,7 @@ export class MiniLineChart extends MiniChart {
 
         for (let i = 0; i < yData.length; i++) {
             let yDatum = yData[i];
+            let xDatum = xData[i];
 
             if (yDatum == undefined) {
                 continue;
@@ -133,6 +136,7 @@ export class MiniLineChart extends MiniChart {
             const y = yScale.convert(yDatum);
 
             nodeData.push({
+                seriesDatum: { x: xDatum, y: yDatum },
                 point: { x, y }
             });
         }
@@ -227,5 +231,32 @@ export class MiniLineChart extends MiniChart {
             node.stroke = stroke;
             node.strokeWidth = strokeWidth;
         })
+    }
+
+    getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
+        const { title, marker } = this;
+        const seriesDatum = datum.seriesDatum;
+        const yValue = datum.seriesDatum.y;
+        const xValue = datum.seriesDatum.x;
+        const backgroundColor = marker.fill;
+        const content = typeof xValue !== 'number' ? `${this.formatDatum(seriesDatum.x)}: ${this.formatDatum(seriesDatum.y)}` : `${this.formatDatum(seriesDatum.y)}`;
+
+        const defaults = {
+            backgroundColor,
+            title,
+            content
+        }
+
+        if (this.tooltip.renderer) {
+            return toTooltipHtml(this.tooltip.renderer({
+                datum: seriesDatum,
+                title,
+                backgroundColor,
+                yValue,
+                xValue,
+            }), defaults);
+        }
+
+        return toTooltipHtml(defaults);
     }
 }
