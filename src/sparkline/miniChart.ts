@@ -280,6 +280,7 @@ export abstract class MiniChart extends Observable {
     }
 
     private handleTooltip(datum: SeriesNodeDatum): void {
+        const { seriesDatum } = datum;
         const { canvasElement } = this;
         const canvasRect = canvasElement.getBoundingClientRect();
         const { pageXOffset, pageYOffset } = window;
@@ -290,7 +291,7 @@ export abstract class MiniChart extends Observable {
             pageY: (point.y + canvasRect.y + pageYOffset)
         }
 
-        const html = this.tooltip.enabled && this.getTooltipHtml(datum);
+        const html = this.tooltip.enabled && seriesDatum.y !== undefined && this.getTooltipHtml(datum);
         
         if (html) {
             this.tooltip.show(meta, html);

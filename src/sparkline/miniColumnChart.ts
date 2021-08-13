@@ -124,7 +124,9 @@ export class MiniColumnChart extends MiniChart {
             let yDatum = yData[i];
             let xDatum = xData[i];
 
-            if (yDatum == undefined) {
+            let invalidDatum = yDatum === undefined;
+            
+            if (invalidDatum) {
                 yDatum = 0;
             }
 
@@ -146,7 +148,7 @@ export class MiniColumnChart extends MiniChart {
                 fill, 
                 stroke, 
                 strokeWidth,
-                seriesDatum: { x: xDatum, y: yDatum },
+                seriesDatum: { x: xDatum, y: invalidDatum ? undefined : yDatum },
                 point: midPoint
             });
         }

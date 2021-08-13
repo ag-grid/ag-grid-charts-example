@@ -30,7 +30,9 @@ export class MiniAreaChart extends MiniLineChart {
             let yDatum = yData[i];
             let xDatum = xData[i];
 
-            if (yDatum == undefined) {
+            let invalidDatum = yDatum === undefined;
+            
+            if (invalidDatum) {
                 yDatum = 0;
             }
 
@@ -38,7 +40,7 @@ export class MiniAreaChart extends MiniLineChart {
             const y = yScale.convert(yDatum);
 
             nodeData.push({
-                seriesDatum: { x: xDatum, y: yDatum },
+                seriesDatum: { x: xDatum, y: invalidDatum ? undefined : yDatum },
                 point: { x, y }
             });
         }
