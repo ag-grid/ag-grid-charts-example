@@ -8,7 +8,16 @@ import { MiniColumnChart } from './miniColumnChart';
 import { MiniLineChart } from './miniLineChart';
 
 const miniLineChart = new MiniLineChart();
-document.body.appendChild(miniLineChart.getCanvasElement());
+const chartContainer = document.createElement('div');
+chartContainer.style.width = '200px';
+chartContainer.style.height = '200px';
+chartContainer.style.border = '1px solid black';
+chartContainer.style.padding = '20px 0px 0px 10px '
+
+document.body.appendChild(chartContainer)
+
+chartContainer.appendChild(miniLineChart.getCanvasElement());
+// document.body.appendChild(miniLineChart.getCanvasElement());
 miniLineChart.width = 100;
 miniLineChart.height = 50;
 // miniLineChart.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2];
@@ -19,7 +28,8 @@ miniLineChart.line.stroke = 'skyblue';
 miniLineChart.highlightStyle.size = 7;
 miniLineChart.marker.shape = 'diamond';
 miniLineChart.marker.size = 3;
-miniLineChart.title = 'mana'
+miniLineChart.title = 'mana';
+miniLineChart.tooltip.container = chartContainer;
 // miniLineChart.marker.enabled = false;
 // miniLineChart.padding = new Padding(5);
 // miniLineChart.tooltip.renderer = (params) => {

@@ -1,7 +1,8 @@
 import { BandScale, Group, Line, LinearScale, Path } from '../../charts/main';
 import { Selection } from '../../charts/scene/selection'
 import { reactive } from '../../charts/util/observable';
-import { MiniChart, SeriesNodeDatum, toTooltipHtml } from './miniChart';
+import { MiniChart, SeriesNodeDatum } from './miniChart';
+import { toTooltipHtml } from './miniChartTooltip';
 import { Rectangle } from './rectangle';
 
 interface ColumnNodeDatum extends SeriesNodeDatum {

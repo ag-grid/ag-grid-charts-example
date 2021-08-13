@@ -1,116 +1,8 @@
 import { Group, Padding, Scene } from '../../charts/main';
-import { Color } from '../../charts/util/color';
 import { createId } from '../../charts/util/id';
 import { Observable, reactive } from '../../charts/util/observable';
 import { defaultTooltipCss } from './defaultTooltipCss';
-
-export interface TooltipMeta {
-    pageX: number;
-    pageY: number;
-}
-
-export interface TooltipRendererResult {
-    content: string;
-    title?: string;
-    color?: string;
-    backgroundColor?: string;
-    opacity?: number;
-}
-
-export interface TooltipRendererParams {
-    readonly datum: any;
-    readonly title?: string;
-    readonly backgroundColor?: string;
-    readonly xValue: any;
-    readonly yValue: any;
-}
-
-export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: TooltipRendererResult) : string {
-    if (typeof input === 'string') {
-        return input;
-    }
-
-    const { content = defaults?.content || '', title = defaults?.title || undefined, color = defaults?.color || 'black', backgroundColor = defaults?.backgroundColor || 'rgb(136, 136, 136)', opacity = defaults?.opacity || 0.2} = input;
-
-    const titleBgColor = Color.fromString(backgroundColor.toLowerCase());
-    const { r, g, b, a } = titleBgColor;
-
-    // TODO: combine a and opacity for alpha?
-    const alpha = opacity
-    
-    const titleBgColorWithAlpha = Color.fromArray([r, g, b, alpha]);
-    const titleBgColorRgbaString = titleBgColorWithAlpha.toRgbaString();
-
-
-    const contentBgColor = `rgba(244, 244, 244, ${opacity})`
-
-    const titleHtml = title ? `<div class="${MiniChart.defaultTooltipClass}-title"
-    style="color: ${color}; background-color: ${titleBgColorRgbaString}">${title}</div>` : '';
-
-    return `${titleHtml}<div class="${MiniChart.defaultTooltipClass}-content" style="background-color: ${contentBgColor}">${content}</div>`;
-
-}
-
-export class MiniChartTooltip extends Observable {
-    chart: MiniChart;
-    element: HTMLElement = document.createElement('div');
-
-    @reactive() class: string = MiniChart.defaultTooltipClass;
-    @reactive() enabled: boolean = true;
-    @reactive('change') renderer?: (params: TooltipRendererParams) => string | TooltipRendererResult;
-
-    constructor(chart: MiniChart) {
-        super();
-
-        this.chart = chart;
-
-        const tooltipRoot = document.body;
-        tooltipRoot.appendChild(this.element);
-    }
-
-    updateClass(visible?: boolean) {
-        const classList = [MiniChart.defaultTooltipClass];
-
-        if (visible !== true) {
-            classList.push(`${MiniChart.defaultTooltipClass}-hidden`);
-        }
-
-        classList.push(`${MiniChart.defaultTooltipClass}-arrow`);
-
-        this.element.setAttribute('class', classList.join(' '));
-    }
-    show(meta: TooltipMeta, html?: string) {
-        const { element } = this;
-        
-        if (html !== undefined) {
-            element.innerHTML = html
-        } else if (!element.innerHTML) {
-            return;
-        }
-
-        let left = meta.pageX - element.clientWidth / 2;
-        let top = meta.pageY - element.clientHeight - 6;
-        
-        element.style.left = `${left}px`;
-        element.style.top = `${top}px`;
-
-        this.toggle(true);
-    }
-
-    toggle(visible?: boolean) {
-        this.updateClass(visible);
-    }
-
-    destroy() {
-        const { parentNode } = this.element;
-
-        if (parentNode) {
-            parentNode.removeChild(this.element);
-        }
-
-    }
-}
-
+import { MiniChartTooltip } from './miniChartTooltip';
 
 export interface SeriesNodeDatum {
     readonly seriesDatum: any;
@@ -119,14 +11,12 @@ export interface SeriesNodeDatum {
         readonly y: number;
     }
 }
-
 interface SeriesRect {
     x: number;
     y: number;
     width: number;
     height: number;
 }
-
 class MiniChartAxis extends Observable {
     @reactive('update') stroke: string = 'black';
     @reactive('update') strokeWidth: number = 1;
@@ -227,7 +117,6 @@ export abstract class MiniChart extends Observable {
         this.setupDomEventListeners(this.scene.canvas.element);
     }
 
-
     private _width: number = 100;
     set width(value: number) {
         if (this._width !== value) {
@@ -260,13 +149,16 @@ export abstract class MiniChart extends Observable {
     protected getNodeData(): readonly SeriesNodeDatum[] { return []; }
     protected highlightDatum(closestDatum: SeriesNodeDatum) { }
     protected dehighlightDatum() { }
+    abstract getTooltipHtml(datum: SeriesNodeDatum): string | undefined;
+
 
     private onMouseMove(event: MouseEvent) {
         const closestDatum: SeriesNodeDatum | undefined = this.pickClosestSeriesNodeDatum(event.offsetX, event.offsetY);
+        
         this.highlightDatum(closestDatum);
 
         if (this.tooltip.enabled) {
-            this.handleTooltip(event, closestDatum);
+            this.handleTooltip(closestDatum);
         }
     }
 
@@ -382,12 +274,12 @@ export abstract class MiniChart extends Observable {
                 minDistance = distance;
                 closestDatum = datum;
             }
-        })
+        });
 
         return closestDatum && closestDatum;
     }
 
-    private handleTooltip(event: MouseEvent, datum: SeriesNodeDatum): void {
+    private handleTooltip(datum: SeriesNodeDatum): void {
         const { canvasElement } = this;
         const canvasRect = canvasElement.getBoundingClientRect();
         const { pageXOffset, pageYOffset } = window;
@@ -403,28 +295,6 @@ export abstract class MiniChart extends Observable {
         if (html) {
             this.tooltip.show(meta, html);
         }
-    }
-
-    getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
-        const { title} = this; 
-        const seriesDatum = datum.seriesDatum;
-        const yValue = datum.seriesDatum.y;
-        const xValue = datum.seriesDatum.x;
-
-        const defaults = {
-            content: this.formatDatum(seriesDatum.y)
-        }
-
-        if (this.tooltip.renderer) {
-            return toTooltipHtml(this.tooltip.renderer({
-                datum: seriesDatum,
-                title,
-                yValue,
-                xValue,
-            }), defaults);
-        }
-    
-        return toTooltipHtml(defaults);
     }
 
     protected formatDatum(datum: any) : string {

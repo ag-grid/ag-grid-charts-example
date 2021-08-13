@@ -4,7 +4,8 @@ import { Observable, reactive } from '../../charts/util/observable';
 import { Circle } from './circle';
 import { Diamond } from './diamond';
 import { Marker } from './marker';
-import { MiniChart, SeriesNodeDatum, toTooltipHtml } from './miniChart';
+import { MiniChart, SeriesNodeDatum } from './miniChart';
+import { toTooltipHtml } from './miniChartTooltip';
 import { Square } from './square';
 
 interface LineNodeDatum extends SeriesNodeDatum { }
