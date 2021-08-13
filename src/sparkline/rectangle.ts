@@ -47,6 +47,20 @@ export class Rectangle extends Shape {
     get height(): number {
         return this._height;
     }
+
+    /**
+     * If `true`, the rect is aligned to the pixel grid for crisp looking lines.
+     */
+    private _crisp: boolean = false;
+    set crisp(value: boolean) {
+        if (this._crisp !== value) {
+            this._crisp = value;
+            this.dirty = true;
+        }
+    }
+    get crisp(): boolean {
+        return this._crisp;
+    }
     
     isPointInStroke(x: number, y: number): boolean {
         return false;
@@ -62,9 +76,17 @@ export class Rectangle extends Shape {
         }
         this.matrix.toContext(ctx);
 
-        const { x, y, width, height } = this;
+        const { x, y, width, height, crisp } = this;
         ctx.beginPath();
-        ctx.rect(x, y, width, height);
+        
+        if (crisp) {
+            // ensure stroke aligns to the pixel grid
+            const { alignment: a, align: al } = this;
+            ctx.rect(al(a, x), al(a, y), al(a, x, width), al(a, y , height));
+        } else {
+            ctx.rect(x, y, width, height);
+        }
+
         this.fillStroke(ctx);
 
         this.dirty = false;
