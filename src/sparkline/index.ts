@@ -157,13 +157,16 @@ const miniAreaChart = new MiniAreaChart();
 miniAreaChart.container = document.body;
 // miniAreaChart.data = [7, 8.3, 6.5, 9, 9.2, 10, 5.5, 6.75, 11.9, -10, -4, -9, 3, 18, 22, 5, -20, -19, -15, -4];
 miniAreaChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
+// miniAreaChart.data = [1, 1, -3 , 1, 1];
 // miniAreaChart.data = [0, 0];
 miniAreaChart.width = 100;
 miniAreaChart.height = 50;
-miniAreaChart.line.stroke = 'pink'
+miniAreaChart.line.stroke = 'pink';
+// miniAreaChart.line.strokeWidth = 2;
 miniAreaChart.marker.size = 2;
 miniAreaChart.marker.fill = 'pink';
 miniAreaChart.marker.stroke = 'pink';
+// miniAreaChart.fill = undefined;
 
 let animateArea: boolean = false;
 let areaIntervalId: number;

@@ -1,12 +1,10 @@
 import { BandScale, Group, LinearScale, Path } from '../../charts/main';
 import { Selection } from '../../charts/scene/selection'
 import { Observable, reactive } from '../../charts/util/observable';
-import { Circle } from './circle';
-import { Diamond } from './diamond';
 import { Marker } from './marker';
 import { MiniChart, SeriesNodeDatum } from './miniChart';
 import { toTooltipHtml } from './miniChartTooltip';
-import { Square } from './square';
+import { getMarkerShape } from './util';
 
 interface LineNodeDatum extends SeriesNodeDatum { }
 class MiniChartMarker extends Observable {
@@ -50,19 +48,6 @@ export class MiniLineChart extends MiniChart {
 
     protected getNodeData(): LineNodeDatum[] {
         return this.markerSelectionData;
-    }
-
-    private getMarkerShape(shape: string) {
-        switch (shape) {
-            case 'circle':
-                return Circle;
-            case 'square':
-                return Square;
-            case 'diamond':
-                return Diamond;
-            default:
-                return Circle;
-        }
     }
 
     private onMarkerShapeChange() {
@@ -147,7 +132,7 @@ export class MiniLineChart extends MiniChart {
     private updateMarkerSelection(selectionData: LineNodeDatum[]): void {
         const { marker } = this;
 
-        const shape = this.getMarkerShape(marker.shape);
+        const shape = getMarkerShape(marker.shape);
 
         let updateMarkerSelection = this.markerSelection.setData(selectionData);
         let enterMarkerSelection = updateMarkerSelection.enter.append(shape);

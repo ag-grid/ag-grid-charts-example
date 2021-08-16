@@ -176,6 +176,7 @@ export class MiniColumnChart extends MiniChart {
             column.stroke = stroke;
             column.strokeWidth = strokeWidth;
             column.visible = column.height > 0;
+            column.crisp = true;
         });
     }
 

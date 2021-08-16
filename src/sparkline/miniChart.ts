@@ -6,10 +6,12 @@ import { MiniChartTooltip } from './miniChartTooltip';
 
 export interface SeriesNodeDatum {
     readonly seriesDatum: any;
-    readonly point?: {
-        readonly x: number;
-        readonly y: number;
-    }
+    readonly point?: Point;
+}
+
+export interface Point {
+    readonly x: number;
+    readonly y: number;
 }
 interface SeriesRect {
     x: number;
@@ -145,12 +147,11 @@ export abstract class MiniChart extends Observable {
     protected xData: number[] = [];
 
     protected update() { }
-    protected generateNodeData(): SeriesNodeDatum[] { return []; }
+    protected generateNodeData(): { nodeData: SeriesNodeDatum[], areaData: SeriesNodeDatum[] } | SeriesNodeDatum[] { return []; }
     protected getNodeData(): readonly SeriesNodeDatum[] { return []; }
     protected highlightDatum(closestDatum: SeriesNodeDatum) { }
     protected dehighlightDatum() { }
     abstract getTooltipHtml(datum: SeriesNodeDatum): string | undefined;
-
 
     private onMouseMove(event: MouseEvent) {
         const closestDatum: SeriesNodeDatum | undefined = this.pickClosestSeriesNodeDatum(event.offsetX, event.offsetY);
