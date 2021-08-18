@@ -7,16 +7,38 @@ import { toTooltipHtml } from './miniChartTooltip';
 import { getMarkerShape } from './util';
 
 interface LineNodeDatum extends SeriesNodeDatum { }
+
+interface MarkerFormat {
+    enabled?: boolean;
+    shape?: string;
+    size?: number;
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number;
+}
+
+interface MarkerFormatterParams {
+    datum: any;
+    xValue: any;
+    yValue: any;
+    fill?: string;
+    stroke?: string;
+    strokeWidth: number;
+    size: number;
+    highlighted: boolean;
+}
+
 class MiniChartMarker extends Observable {
     @reactive() enabled: boolean = true;
     @reactive() shape: string = 'circle';
     @reactive('update') size: number = 0;
-    @reactive('update') fill?: string = 'black';
-    @reactive('update') stroke?: string = 'black';
+    @reactive('update') fill?: string = 'rgb(124, 181, 236)';
+    @reactive('update') stroke?: string = 'rgb(124, 181, 236)';
     @reactive('update') strokeWidth: number = 1;
+    @reactive('update') formatter?: (params: MarkerFormatterParams) => MarkerFormat;
 }
 class MiniChartLine extends Observable {
-    @reactive('update') stroke: string = 'black';
+    @reactive('update') stroke: string = 'rgb(124, 181, 236)';
     @reactive('update') strokeWidth: number = 1;
 }
 export class MiniLineChart extends MiniChart {
@@ -143,17 +165,42 @@ export class MiniLineChart extends MiniChart {
     }
 
     private updateMarkers(): void {
-        const { marker } = this;
+        const { highlightedDatum, highlightStyle, marker } = this;
+        const { size: highlightSize, fill: highlightFill, stroke: highlightStroke, strokeWidth: highlightStrokeWidth } = highlightStyle;
+        const markerFormatter = marker.formatter;
 
-        this.markerSelection.each((node, datum, index) => {
-            node.size = marker.size;
-            node.fill = marker.fill;
-            node.stroke = marker.stroke;
-            node.strokeWidth = marker.strokeWidth;
-            node.visible = marker.enabled;
+        this.markerSelection.each((node, datum) => {
+            const { seriesDatum, point } = datum;
 
-            node.translationX = datum.point.x;
-            node.translationY = datum.point.y;
+            const highlighted = point.x === highlightedDatum?.point.x && point.y === highlightedDatum?.point.y;
+            const markerFill = highlighted && highlightFill !== undefined ? highlightFill : marker.fill;
+            const markerStroke = highlighted && highlightStroke !== undefined ? highlightStroke : marker.stroke;
+            const markerStrokeWidth = highlighted && highlightStrokeWidth !== undefined ? highlightStrokeWidth : marker.strokeWidth;
+            const markerSize = highlighted && highlightSize !== undefined ? highlightSize : marker.size;
+            
+            let markerFormat: MarkerFormat | undefined = undefined;
+
+            if (markerFormatter) {
+                markerFormat = markerFormatter({
+                    datum, 
+                    xValue: seriesDatum.x, 
+                    yValue: seriesDatum.y,
+                    fill: markerFill,
+                    stroke: markerStroke,
+                    strokeWidth: markerStrokeWidth,
+                    size: markerSize,
+                    highlighted
+                });
+            }
+
+            node.size = markerFormat?.size || markerSize;
+            node.fill = markerFormat?.fill || markerFill;
+            node.stroke = markerFormat?.stroke || markerStroke;
+            node.strokeWidth = markerFormat?.strokeWidth || markerStrokeWidth;
+
+            node.translationX = point.x;
+            node.translationY = point.y;
+            node.visible = markerFormat?.enabled || marker.enabled && node.size > 0;
         });
     }
 
@@ -195,28 +242,15 @@ export class MiniLineChart extends MiniChart {
         linePath.strokeWidth = line.strokeWidth;
     }
 
+    private highlightedDatum?: SeriesNodeDatum;
     protected highlightDatum(closestDatum: SeriesNodeDatum): void {
-        const { size, fill, stroke, strokeWidth } = this.marker;
-        const { highlightStyle } = this;
-        this.markerSelection.each((node, datum) => {
-            if (closestDatum) {
-                const isClosest = datum.point.x === closestDatum.point.x && datum.point.y === closestDatum.point.y;
-                node.size = isClosest ? highlightStyle.size : size;
-                node.fill = isClosest ? highlightStyle.fill : fill;
-                node.stroke = isClosest ? highlightStyle.stroke : stroke;
-                node.strokeWidth = isClosest ? highlightStyle.strokeWidth : strokeWidth;
-            }
-        })
+        this.highlightedDatum = closestDatum;
+        this.updateMarkers();
     }
 
     protected dehighlightDatum(): void {
-        const { size, fill, stroke, strokeWidth } = this.marker;
-        this.markerSelection.each((node) => {
-            node.size = size;
-            node.fill = fill;
-            node.stroke = stroke;
-            node.strokeWidth = strokeWidth;
-        })
+        this.highlightedDatum = undefined;
+        this.updateMarkers();
     }
 
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {

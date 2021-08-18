@@ -3,12 +3,12 @@ import { createId } from '../../charts/util/id';
 import { Observable, reactive } from '../../charts/util/observable';
 import { defaultTooltipCss } from './defaultTooltipCss';
 import { MiniChartTooltip } from './miniChartTooltip';
+import { isNumber } from './util';
 
 export interface SeriesNodeDatum {
     readonly seriesDatum: any;
     readonly point?: Point;
 }
-
 export interface Point {
     readonly x: number;
     readonly y: number;
@@ -20,7 +20,7 @@ interface SeriesRect {
     height: number;
 }
 class MiniChartAxis extends Observable {
-    @reactive('update') stroke: string = 'black';
+    @reactive('update') stroke: string = 'rgb(204, 214, 235)';
     @reactive('update') strokeWidth: number = 1;
 }
 export abstract class MiniChart extends Observable {
@@ -189,16 +189,8 @@ export abstract class MiniChart extends Observable {
     }
 
     private getYDatum(y: any): number | undefined {
-        const noDatum = !this.isNumber(y);
+        const noDatum = !isNumber(y);
         return noDatum ? undefined : y;
-    }
-
-    private isNumber(value: any): boolean {
-        return value != undefined && !this.isString(value) && isFinite(value) && !isNaN(value);
-    }
-
-    private isString(value: any) {
-        return typeof value === 'string';
     }
 
     protected findMinAndMax(values: number[]): [number, number] {

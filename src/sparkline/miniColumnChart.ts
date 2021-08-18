@@ -14,6 +14,24 @@ interface ColumnNodeDatum extends SeriesNodeDatum {
     stroke?: string,
     strokeWidth: number
 }
+
+interface ColumnFormatterParams {
+    datum: any;
+    xValue: any;
+    yValue: any;
+    width: number;
+    height: number;
+    fill?: string;
+    stroke?: string;
+    strokeWidth: number;
+    highlighted: boolean;
+}
+
+interface ColumnFormat{
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number;
+}
 export class MiniColumnChart extends MiniChart {
     
     static className = 'MiniColumnChart';
@@ -25,10 +43,13 @@ export class MiniColumnChart extends MiniChart {
     private columns: Group = new Group();
     private columnSelection: Selection<Rectangle, Group, ColumnNodeDatum, ColumnNodeDatum> = Selection.select(this.columns).selectAll<Rectangle>();
     private columnSelectionData: ColumnNodeDatum[] = [];
-    @reactive('update') fill: string = 'black';
-    @reactive('update') stroke: string = 'black';
-    @reactive('update') strokeWidth: number = 4;
+    @reactive('update') fill: string = 'rgb(124, 181, 236)';
+    @reactive('update') stroke: string = 'silver';
+    @reactive('update') strokeWidth: number = 0;
+    @reactive('update') paddingInner: number = 0.5;
+    @reactive('update') paddingOuter: number = 0.2;
     @reactive('update') yScaleDomain: [number, number] = undefined;
+    @reactive('update') formatter: (params: ColumnFormatterParams) => ColumnFormat;
 
     constructor() {
         super();
@@ -38,8 +59,7 @@ export class MiniColumnChart extends MiniChart {
 
         this.addEventListener('update', this.scheduleLayout, this);
 
-        this.xAxisLine.lineCap = 'square';
-        // this.xAxisLine.crisp = true;
+        this.xAxisLine.lineCap = 'round';
     }
 
     protected getNodeData() : ColumnNodeDatum[] {
@@ -91,12 +111,12 @@ export class MiniColumnChart extends MiniChart {
     }
 
     private updateXScale() {
-        const { xScale, seriesRect, xData } = this;
+        const { xScale, seriesRect, xData, paddingOuter, paddingInner } = this;
 
         xScale.range = [0, seriesRect.width];
         xScale.domain = xData;
-        xScale.paddingInner = 0.2;
-        xScale.paddingOuter = 0.1;
+        xScale.paddingInner = paddingInner;
+        xScale.paddingOuter = paddingOuter;
     }
 
     private updateXAxisLine() {
@@ -166,35 +186,59 @@ export class MiniColumnChart extends MiniChart {
     }
 
     private updateRectNodes() {
-        this.columnSelection.each((column, datum, index) => {
-            const { x, y, width, height, fill, stroke, strokeWidth } = datum;
-            column.x = x;
-            column.y = y;
+        const { highlightedDatum, formatter: columnFormatter, fill, stroke, strokeWidth } = this;
+        const { fill: highlightFill, stroke: highlightStroke, strokeWidth: highlightStrokeWidth } = this.highlightStyle;
+        
+        this.columnSelection.each((column, datum) => {
+            const highlighted = datum.point.x === highlightedDatum?.point.x && datum.point.y === highlightedDatum?.point.y;
+            const columnFill = highlighted && highlightFill !== undefined ? highlightFill : fill;
+            const columnStroke = highlighted && highlightStroke !== undefined ? highlightStroke : stroke;
+            const columnStrokeWidth = highlighted && highlightStrokeWidth !== undefined ? highlightStrokeWidth : strokeWidth;
+
+            let columnFormat: ColumnFormat | undefined = undefined;
+
+            const { x, y, width, height, seriesDatum } = datum;
+
+            if (columnFormatter) {
+                columnFormat = columnFormatter({
+                    datum, 
+                    xValue: seriesDatum.x,
+                    yValue: seriesDatum.y,
+                    width: width,
+                    height: height,
+                    fill: columnFill,
+                    stroke: columnStroke,
+                    strokeWidth: columnStrokeWidth,
+                    highlighted
+                })
+            }
+
+            column.fill = columnFormat?.fill || columnFill;
+            column.stroke = columnFormat?.stroke || columnStroke;
+            column.strokeWidth = columnFormat?.strokeWidth || columnStrokeWidth;
+
+            column.x = column.y = 0;
             column.width = width;
             column.height = height;
-            column.fill = fill;
-            column.stroke = stroke;
-            column.strokeWidth = strokeWidth;
             column.visible = column.height > 0;
-            column.crisp = true;
+
+            column.translationX = x;
+            column.translationY = y;
+
+            // shifts bars upwards?
+            // column.crisp = true;
         });
     }
 
+    private highlightedDatum?: SeriesNodeDatum;
     protected highlightDatum(closestDatum: SeriesNodeDatum): void {
-        const { fill, highlightStyle } = this;
-        this.columnSelection.each((node, datum) => {
-            if (closestDatum) {
-            const isClosest = datum.point.x === closestDatum.point.x && datum.point.y === closestDatum.point.y;
-            node.fill = isClosest ? highlightStyle.fill : fill;
-            }
-        })
+        this.highlightedDatum = closestDatum;
+        this.updateRectNodes();
     }
 
-    protected dehighlightDatum() : void {
-        const { fill} = this;
-        this.columnSelection.each(node => {
-            node.fill =fill;
-        })
+    protected dehighlightDatum(): void {
+        this.highlightedDatum = undefined;
+        this.updateRectNodes();
     }
 
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {

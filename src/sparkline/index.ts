@@ -12,7 +12,7 @@ const chartContainer = document.createElement('div');
 chartContainer.style.width = '200px';
 chartContainer.style.height = '200px';
 chartContainer.style.border = '1px solid black';
-chartContainer.style.padding = '20px 0px 0px 10px '
+chartContainer.style.padding = '50px 0px 0px 50px '
 
 document.body.appendChild(chartContainer)
 
@@ -20,8 +20,8 @@ chartContainer.appendChild(miniLineChart.getCanvasElement());
 // document.body.appendChild(miniLineChart.getCanvasElement());
 miniLineChart.width = 100;
 miniLineChart.height = 50;
-// miniLineChart.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2];
-miniLineChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
+miniLineChart.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2, -8];
+// miniLineChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
 miniLineChart.marker.fill = 'skyblue';
 miniLineChart.marker.stroke = 'skyblue';
 miniLineChart.line.stroke = 'skyblue';
@@ -32,14 +32,21 @@ miniLineChart.title = 'mana';
 miniLineChart.tooltip.container = chartContainer;
 // miniLineChart.marker.enabled = false;
 // miniLineChart.padding = new Padding(5);
-// miniLineChart.tooltip.renderer = (params) => {
-//     return {
-//         content: params.yValue,
-//         color: 'black',
-//         backgroundColor: params.color,
-//         opacity: 0.5
-//     }
-// }
+miniLineChart.tooltip.renderer = (params) => {
+    return {
+        content: params.yValue,
+        color: 'black',
+        backgroundColor: params.backgroundColor,
+        opacity: 0.3
+    }
+}
+miniLineChart.marker.formatter = (params) => {
+    return {
+        size: !params.highlighted ? params.yValue < 0 ? 5 : 3 : undefined,
+        fill: !params.highlighted ? params.yValue < 0 ? 'red' : 'skyblue': undefined,
+        stroke: !params.highlighted ? params.yValue < 0 ? 'red' : 'skyblue' : undefined
+    }
+}
 
 let animateLine: boolean = false;
 let lineIntervalId: number;
@@ -88,17 +95,19 @@ miniColumnChart.height = 50;
 miniColumnChart.data = [-10, 10, 20, -20, -35, 50, 26, undefined, -70, undefined, 56, 23];
 // miniColumnChart.data = [7, 8.3, undefined, -9, '9.2', null, 5.5, Infinity, 6.75, -11.9, NaN, -Infinity, 5, 4, null, {}, 6, []] as any;
 // miniColumnChart.data = [5, 10, 20, 50, 26, 40, 56, 23];
-miniColumnChart.axis.strokeWidth = 4;
+miniColumnChart.axis.strokeWidth = 1;
 miniColumnChart.yScaleDomain = [0, 50];
-miniColumnChart.fill = 'skyBlue';
-miniColumnChart.axis.stroke = 'skyBlue';
-miniColumnChart.highlightStyle.fill = 'orange';
+miniColumnChart.formatter = (params) => {
+    return {
+        fill: params.yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)',
+    }
+}
 
 createButton('change fill', () => {
-    miniColumnChart.axis.stroke = miniColumnChart.fill === 'pink' ? 'lavender' : 'pink';
     miniColumnChart.stroke = miniColumnChart.fill === 'pink' ? 'lavender' : 'pink';
+    miniColumnChart.axis.stroke = miniColumnChart.fill === 'pink' ? 'lavender' : 'pink';
     miniColumnChart.fill = miniColumnChart.fill === 'pink' ? 'lavender' : 'pink';
-})
+});
 
 let barIntervalId: number;
 let increments: number = 100;
@@ -137,18 +146,35 @@ createButton('Animate bars', () => {
     //     }
     // }, 10)    
 
-})
+});
 
-createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
-    miniColumnChart.fill = v;
+createSlider('strokeWidth', [0, 1, 2, 3], v => {
+    miniColumnChart.strokeWidth = v;
+});
+
+createSlider('stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v => {
     miniColumnChart.stroke = v;
-    miniColumnChart.stroke = v;
+});
+
+createSlider('paddingInner', [0, 0.2, 0.4, 0.5, 0.6, 0.8], v => {
+    miniColumnChart.paddingInner = v;
+});
+
+createSlider('paddingOuter', [0, 0.2, 0.4, 0.5, 0.6, 0.8], v => {
+    miniColumnChart.paddingOuter = v;
+});
+
+createSlider('axis stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v => {
     miniColumnChart.axis.stroke = v;
-})
+});
+
+createSlider('column fill', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
+    miniColumnChart.fill = v;
+});
 
 createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
     miniColumnChart.highlightStyle.fill = v;
-})
+});
 
 
 
@@ -156,16 +182,16 @@ createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v =>
 const miniAreaChart = new MiniAreaChart();
 miniAreaChart.container = document.body;
 // miniAreaChart.data = [7, 8.3, 6.5, 9, 9.2, 10, 5.5, 6.75, 11.9, -10, -4, -9, 3, 18, 22, 5, -20, -19, -15, -4];
-miniAreaChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
-// miniAreaChart.data = [1, 1, -3 , 1, 1];
+// miniAreaChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
+miniAreaChart.data = [1, 1, -3 , 1, 1];
 // miniAreaChart.data = [0, 0];
 miniAreaChart.width = 100;
 miniAreaChart.height = 50;
-miniAreaChart.line.stroke = 'pink';
+// miniAreaChart.line.stroke = 'pink';
 // miniAreaChart.line.strokeWidth = 2;
 miniAreaChart.marker.size = 2;
-miniAreaChart.marker.fill = 'pink';
-miniAreaChart.marker.stroke = 'pink';
+// miniAreaChart.marker.fill = 'pink';
+// miniAreaChart.marker.stroke = 'pink';
 // miniAreaChart.fill = undefined;
 
 let animateArea: boolean = false;
@@ -182,12 +208,12 @@ createButton('Animate Area', () => {
     } else {
         clearInterval(areaIntervalId);
     }
-})
+});
 
 
 createButton('toggle marker', () => {
     miniAreaChart.marker.enabled = !miniAreaChart.marker.enabled;
-})
+});
 
 createSlider('marker shape', ['circle', 'square', 'diamond'], v => {
     miniAreaChart.marker.shape = v;
@@ -197,15 +223,23 @@ createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan
     miniAreaChart.marker.fill = v;
     miniAreaChart.marker.stroke = v;
     miniAreaChart.line.stroke = v;
-})
+});
 
 createSlider('highlight size', [6, 7, 8, 9, 10], v => {
     miniAreaChart.highlightStyle.size = v;
-})
+});
 
 createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
     miniAreaChart.highlightStyle.fill = v;
-})
+});
+
+miniAreaChart.marker.formatter = (params) => {
+    return {
+        size: !params.highlighted ? params.yValue < 0 ? 5 : 3 : undefined,
+        fill: !params.highlighted ? params.yValue < 0 ? 'red' : 'skyblue': undefined,
+        stroke: !params.highlighted ? params.yValue < 0 ? 'red' : 'skyblue' : undefined
+    }
+}
 
 /**
 // Cardioid
