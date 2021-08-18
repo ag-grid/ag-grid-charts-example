@@ -37,14 +37,14 @@ miniLineChart.tooltip.renderer = (params) => {
         content: params.yValue,
         color: 'black',
         backgroundColor: params.backgroundColor,
-        opacity: 0.3
+        opacity: 0.8
     }
 }
 miniLineChart.marker.formatter = (params) => {
     return {
         size: !params.highlighted ? params.yValue < 0 ? 5 : 3 : undefined,
-        fill: !params.highlighted ? params.yValue < 0 ? 'red' : 'skyblue': undefined,
-        stroke: !params.highlighted ? params.yValue < 0 ? 'red' : 'skyblue' : undefined
+        fill: !params.highlighted ? params.yValue < 0 ? 'green' : 'skyblue': undefined,
+        stroke: !params.highlighted ? params.yValue < 0 ? 'green' : 'skyblue' : undefined
     }
 }
 
@@ -99,7 +99,7 @@ miniColumnChart.axis.strokeWidth = 1;
 miniColumnChart.yScaleDomain = [0, 50];
 miniColumnChart.formatter = (params) => {
     return {
-        fill: params.yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)',
+        fill: !params.highlighted ? params.yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)' : undefined,
     }
 }
 
