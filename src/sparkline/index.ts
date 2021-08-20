@@ -9,10 +9,11 @@ import { MiniLineChart } from './miniLineChart';
 
 const miniLineChart = new MiniLineChart();
 const chartContainer = document.createElement('div');
-chartContainer.style.width = '200px';
-chartContainer.style.height = '200px';
+chartContainer.style.width = '100px';
+chartContainer.style.height = '50px';
 chartContainer.style.border = '1px solid black';
-chartContainer.style.padding = '50px 0px 0px 50px '
+chartContainer.style.padding = '50px';
+chartContainer.style.backgroundColor = '#343334';
 
 document.body.appendChild(chartContainer)
 

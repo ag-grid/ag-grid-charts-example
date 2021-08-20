@@ -222,15 +222,15 @@ export class MiniAreaChart extends MiniChart {
         const markerFormatter = marker.formatter;
 
         this.markerSelection.each((node, datum) => {
-            const { point, seriesDatum } = datum;
-
-            const highlighted = point.x === highlightedDatum?.point.x && point.y === highlightedDatum?.point.y;
+            const highlighted = datum === highlightedDatum;
             const markerFill = highlighted && highlightFill !== undefined ? highlightFill : marker.fill;
             const markerStroke = highlighted && highlightStroke !== undefined ? highlightStroke : marker.stroke;
             const markerStrokeWidth = highlighted && highlightStrokeWidth !== undefined ? highlightStrokeWidth : marker.strokeWidth;
             const markerSize = highlighted && highlightSize !== undefined ? highlightSize : marker.size;
             
             let markerFormat: MarkerFormat | undefined = undefined;
+
+            const { point, seriesDatum } = datum;
 
             if (markerFormatter) {
                 markerFormat = markerFormatter({
@@ -245,14 +245,14 @@ export class MiniAreaChart extends MiniChart {
                 });
             }
 
-            node.size = markerFormat?.size || markerSize;
-            node.fill = markerFormat?.fill || markerFill;
-            node.stroke = markerFormat?.stroke || markerStroke;
-            node.strokeWidth = markerFormat?.strokeWidth || markerStrokeWidth;
+            node.size = markerFormat && markerFormat.size || markerSize;
+            node.fill = markerFormat && markerFormat.fill || markerFill;
+            node.stroke = markerFormat && markerFormat.stroke || markerStroke;
+            node.strokeWidth = markerFormat && markerFormat.strokeWidth || markerStrokeWidth;
 
             node.translationX = point.x;
             node.translationY = point.y;
-            node.visible = markerFormat?.enabled || marker.enabled && node.size > 0;
+            node.visible = markerFormat && markerFormat.enabled || marker.enabled && node.size > 0;
         });
     }
 
@@ -327,9 +327,9 @@ export class MiniAreaChart extends MiniChart {
 
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
         const { title, marker } = this;
-        const seriesDatum = datum.seriesDatum;
-        const yValue = datum.seriesDatum.y;
-        const xValue = datum.seriesDatum.x;
+        const { seriesDatum } = datum;
+        const yValue = seriesDatum.y;
+        const xValue = seriesDatum.x;
         const backgroundColor = marker.fill;
         const content = typeof xValue !== 'number' ? `${this.formatDatum(seriesDatum.x)}: ${this.formatDatum(seriesDatum.y)}` : `${this.formatDatum(seriesDatum.y)}`;
 

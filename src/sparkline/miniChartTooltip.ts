@@ -8,7 +8,7 @@ export interface TooltipMeta {
 }
 
 export interface TooltipRendererResult {
-    content: string;
+    content?: string;
     title?: string;
     color?: string;
     backgroundColor?: string;
@@ -28,7 +28,15 @@ export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: 
         return input;
     }
 
-    const { content = defaults?.content || '', title = defaults?.title || undefined, color = defaults?.color || 'black', backgroundColor = defaults?.backgroundColor || 'rgb(136, 136, 136)', opacity = defaults?.opacity || 0.2} = input;
+    defaults = defaults || {};
+
+    const { 
+        content = defaults.content || '', 
+        title = defaults.title || undefined, 
+        color = defaults.color || 'black', 
+        backgroundColor = defaults.backgroundColor || 'rgb(136, 136, 136)', 
+        opacity = defaults.opacity || 0.2
+    } = input;
 
     const titleBgColor = Color.fromString(backgroundColor.toLowerCase());
     const { r, g, b, a } = titleBgColor;

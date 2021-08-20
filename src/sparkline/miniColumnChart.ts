@@ -190,7 +190,7 @@ export class MiniColumnChart extends MiniChart {
         const { fill: highlightFill, stroke: highlightStroke, strokeWidth: highlightStrokeWidth } = this.highlightStyle;
         
         this.columnSelection.each((column, datum) => {
-            const highlighted = datum.point.x === highlightedDatum?.point.x && datum.point.y === highlightedDatum?.point.y;
+            const highlighted = datum === highlightedDatum;
             const columnFill = highlighted && highlightFill !== undefined ? highlightFill : fill;
             const columnStroke = highlighted && highlightStroke !== undefined ? highlightStroke : stroke;
             const columnStrokeWidth = highlighted && highlightStrokeWidth !== undefined ? highlightStrokeWidth : strokeWidth;
@@ -213,9 +213,9 @@ export class MiniColumnChart extends MiniChart {
                 })
             }
 
-            column.fill = columnFormat?.fill || columnFill;
-            column.stroke = columnFormat?.stroke || columnStroke;
-            column.strokeWidth = columnFormat?.strokeWidth || columnStrokeWidth;
+            column.fill = columnFormat && columnFormat.fill || columnFill;
+            column.stroke = columnFormat && columnFormat.stroke || columnStroke;
+            column.strokeWidth = columnFormat && columnFormat.strokeWidth || columnStrokeWidth;
 
             column.x = column.y = 0;
             column.width = width;
@@ -243,9 +243,9 @@ export class MiniColumnChart extends MiniChart {
 
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
         const { title, fill } = this;
-        const seriesDatum = datum.seriesDatum;
-        const yValue = datum.seriesDatum.y;
-        const xValue = datum.seriesDatum.x;
+        const { seriesDatum } = datum;
+        const yValue = seriesDatum.y;
+        const xValue = seriesDatum.x;
         const backgroundColor = fill;
         const content = typeof xValue !== 'number' ? `${this.formatDatum(seriesDatum.x)}: ${this.formatDatum(seriesDatum.y)}` : `${this.formatDatum(seriesDatum.y)}`;
 
