@@ -1,10 +1,10 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Path} from "ag-charts-community/src/scene/shape/path";
-import { Color } from "ag-charts-community/src/util/color";
-import { Shape } from "ag-charts-community/src/scene/shape/shape";
-import { Rect } from "ag-charts-community/src/scene/shape/rect";
-import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
+import { FpsCounter } from "../../charts/scene/fpsCounter";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Path } from "../../charts/scene/shape/path";
+import { Rect } from "../../charts/scene/shape/rect";
+import { Shape } from "../../charts/scene/shape/shape";
+import { Color } from "../../charts/util/color";
 
 const fpsCounter = new FpsCounter(document.body);
 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const centerY = height / 2;
     const scene = new Scene();
     scene.resize(width, height);
-    scene.renderFrameIndex = true;
+    scene.debug.renderFrameIndex = true;
     scene.container = document.body;
     const rootGroup = new Group();
 

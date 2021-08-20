@@ -1,13 +1,14 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
-import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
 
 // This example uses translationX/Y properties to position arcs,
 // so that the arc paths are not recalculated on every frame.
 // Instead, the transformation matrix of each arc is recalculated
 // on every frame. This should result in a better performance,
 // especially in case of complex paths.
+
+import { FpsCounter } from "../../charts/scene/fpsCounter";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Arc, ArcType } from "../../charts/scene/shape/arc";
 
 document.addEventListener('DOMContentLoaded', () => {
     const width = 800;

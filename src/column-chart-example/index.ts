@@ -1,14 +1,12 @@
 import './app.css';
 import { createButton, createSlider } from "../../lib/ui";
 import { makeChartResizeable } from "../../lib/chart";
-import { LegendPosition } from "ag-charts-community";
 import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
 import { ChartAxisPosition } from "../../charts/chart/chartAxis";
 import { NumberAxis } from "../../charts/chart/axis/numberAxis";
 import { CartesianChart } from "../../charts/chart/cartesianChart";
 import { Caption } from "../../charts/caption";
 import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
-import borneo, { bright, flat, material, pastel } from "../../charts/chart/palettes";
 import { find } from "../../charts/util/array";
 
 type Datum = {

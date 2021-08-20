@@ -1,9 +1,9 @@
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { toReadableNumber } from "ag-charts-community/src/util/number";
-import { CategoryAxis } from "ag-charts-community/src/chart/axis/categoryAxis";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
+import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
+import { toReadableNumber } from "../../charts/util/number";
 
 const data1 = [
     { category: '1', value: 0.0001234 },
@@ -94,8 +94,8 @@ function createCategoryLineChart() {
 
     const lineSeries = new LineSeries();
     chart.addSeries(lineSeries);
-    lineSeries.tooltipEnabled = true;
-    lineSeries.tooltipRenderer = params => {
+    lineSeries.tooltip.enabled = true;
+    lineSeries.tooltip.renderer = (params: any) => {
         if (params.datum[params.xKey] === 'Rick') {
             return ''; // don't show tooltip for this guy
         }

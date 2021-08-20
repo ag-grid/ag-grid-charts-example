@@ -1,10 +1,10 @@
-import { Scene } from "ag-charts-community/src/scene/scene";
-import { Group } from "ag-charts-community/src/scene/group";
-import { Path } from "ag-charts-community/src/scene/shape/path";
-import { Arc } from "ag-charts-community/src/scene/shape/arc";
 import { createButton, createSlider, createSliderValues } from "../../lib/ui";
 
 import * as d3 from 'd3';
+import { Scene } from "../../charts/scene/scene";
+import { Group } from "../../charts/scene/group";
+import { Path } from "../../charts/scene/shape/path";
+import { Arc } from "../../charts/scene/shape/arc";
 
 export function basis(t1: number, v0: number, v1: number, v2: number, v3: number) {
     const t2 = t1 * t1;

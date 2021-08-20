@@ -1,8 +1,8 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
-import {Rect} from "ag-charts-community/src/scene/shape/rect";
 import * as d3 from "d3";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Arc, ArcType } from "../../charts/scene/shape/arc";
+import { Rect } from "../../charts/scene/shape/rect";
 
 document.addEventListener('DOMContentLoaded', () => {
 

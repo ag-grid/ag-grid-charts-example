@@ -1,7 +1,7 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Rect} from "ag-charts-community/src/scene/shape/rect";
-import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
+import { FpsCounter } from "../../charts/scene/fpsCounter";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Rect } from "../../charts/scene/shape/rect";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();

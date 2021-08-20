@@ -1,6 +1,6 @@
-import { Scene } from "ag-charts-community/src/scene/scene";
-import { Group } from "ag-charts-community/src/scene/group";
-import { Rect, RectSizing } from "ag-charts-community/src/scene/shape/rect";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Rect, RectSizing } from "../../charts/scene/shape/rect";
 import { createSlider } from "../../lib/ui";
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,9 +1,9 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {BandScale} from "ag-charts-community/src/scale/bandScale";
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Axis} from "ag-charts-community/src/axis";
-import {toDegrees} from "ag-charts-community/src/util/angle";
+import { Axis } from "../../charts/axis";
+import { BandScale } from "../../charts/scale/bandScale";
+import { LinearScale } from "../../charts/scale/linearScale";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { toDegrees } from "../../charts/util/angle";
 
 function nextFrame() {
     return new Promise(resolve => {
@@ -33,7 +33,7 @@ function renderAxes() {
     const seriesWidth = chartWidth - padding.left - padding.right;
     const seriesHeight = chartHeight - padding.top - padding.bottom;
 
-    const yScale = scaleLinear();
+    const yScale = new LinearScale();
     yScale.domain = [0, 700];
     yScale.range = [seriesHeight, 0];
 
@@ -46,17 +46,19 @@ function renderAxes() {
     const scene = new Scene();
     scene.resize(chartWidth, chartHeight);
     scene.container = document.body;
-    scene.renderFrameIndex = true;
+    scene.debug.renderFrameIndex = true;
     const rootGroup = new Group();
 
     // y-axis
-    const yAxis = new Axis(yScale);
+    const yAxis = new Axis();
+    yAxis.scale = yScale;
     yAxis.translation.x = padding.left;
     yAxis.translation.y = padding.top;
     yAxis.update();
 
     // x-axis
-    const xAxis = new Axis(xScale);
+    const xAxis = new Axis();
+    xAxis.scale = xScale;
     xAxis.rotation = -90;
     xAxis.translation.x = padding.left;
     xAxis.translation.y = padding.top + seriesHeight;

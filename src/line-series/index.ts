@@ -143,7 +143,7 @@ function createCategoryLineChart() {
     lineSeries.marker.shape = Circle;
     lineSeries.marker.enabled = true;
     chart.addSeries(lineSeries);
-    lineSeries.tooltipEnabled = true;
+    lineSeries.tooltip.enabled = true;
     lineSeries.data = [{
         x: 'Tea',
         y: 'John'
@@ -208,7 +208,7 @@ function createLeftCategoryLineChart() {
     lineSeries.marker.shape = Circle;
     lineSeries.marker.enabled = true;
     chart.addSeries(lineSeries);
-    lineSeries.tooltipEnabled = true;
+    lineSeries.tooltip.enabled = true;
     lineSeries.data = [{
         x: 5,
         y: 'John'
@@ -283,7 +283,7 @@ function createTwoVerticalAxesLineChart() {
     lineSeries1.title = 'Flashy Title';
     lineSeries1.marker.shape = Circle;
     lineSeries1.marker.enabled = true;
-    lineSeries1.tooltipEnabled = true;
+    lineSeries1.tooltip.enabled = true;
     lineSeries1.data = data;
     lineSeries1.xKey = 'category';
     lineSeries1.yKey = 'y1';
@@ -293,7 +293,7 @@ function createTwoVerticalAxesLineChart() {
     lineSeries2.stroke = '#3d803d';
     lineSeries2.marker.shape = Square;
     lineSeries2.marker.enabled = true;
-    lineSeries2.tooltipEnabled = true;
+    lineSeries2.tooltip.enabled = true;
     lineSeries2.data = data;
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'y2';
@@ -651,56 +651,62 @@ function createBasicLineChartUsingFactory() {
             xKey: 'quarter',
             yKey: 'spending'
         }],
-        // axes: [{
-        //     type: 'number',
-        //     position: 'left',
-        //     min: 0,
-        //     max: 50
-        //     // tick: {
-        //     //     count: 5
-        //     // }
-        // }, {
-        //     type: 'category',
-        //     position: 'bottom'
-        // }],
-        // legend: {
-        //     enabled: false
-        // }
+        axes: [{
+            type: 'number',
+            position: 'left',
+            // min: 0,
+            // max: 50
+            // tick: {
+            //     count: 5
+            // }
+            label: {
+                formatter: (params: any) => {
+                    debugger;
+                    return '';
+                }
+            }
+        }, {
+            type: 'category',
+            position: 'bottom'
+        }],
+        legend: {
+            enabled: false
+        }
     });
 
     document.body.appendChild(document.createElement('br'));
 
-    const chart = AgChart.create({
-        width: 400,
-        height: 300,
-        data: fuelSpending,
-        container: document.body,
-        title: {
-            text: 'Fuel Spending (2019)'
-        },
-        series: [{
-            xKey: 'quarter',
-            yKey: 'gas',
-            title: 'Gas',
-            marker: {
-                size: 16,
-                shape: 'heart'
-            }
-        }, {
-            xKey: 'quarter',
-            yKey: 'diesel',
-            title: 'Diesel',
-            stroke: 'black',
-            marker: {
-                shape: 'plus',
-                size: 16,
-                fill: 'gray',
-                stroke: 'black'
-            }
-        }]
-    });
-    makeChartResizeable(chart);
-    createButton('Download', () => chart.download());
+    // const chart = AgChart.create({
+    //     width: 400,
+    //     height: 300,
+    //     data: fuelSpending,
+    //     container: document.body,
+    //     title: {
+    //         text: 'Fuel Spending (2019)'
+    //     },
+    //     series: [{
+    //         xKey: 'quarter',
+    //         yKey: 'gas',
+    //         title: 'Gas',
+    //         marker: {
+    //             size: 16,
+    //             shape: 'heart'
+    //         }
+    //     }, {
+    //         xKey: 'quarter',
+    //         yKey: 'diesel',
+    //         title: 'Diesel',
+    //         stroke: 'black',
+    //         marker: {
+    //             shape: 'plus',
+    //             size: 16,
+    //             fill: 'gray',
+    //             stroke: 'black'
+    //         }
+    //     }]
+    // });
+    // makeChartResizeable(chart);
+    // createButton('Download', () => chart.download());
 }
 
 function test() {
@@ -993,13 +999,13 @@ function createAllCategoryLineChart() {
 
 document.addEventListener('DOMContentLoaded', () => {
     createBasicLineChartUsingFactory();
-    createGapChart();
-    createTwoVerticalAxesLineChart();
-    createCategoryLineChart();
-    createLeftCategoryLineChart();
-    createAllCategoryLineChart();
-    createNumericLineChart();
-    createTimeLineChart();
-    createRealTimeChart();
-    createMultiLineChart();
+    // createGapChart();
+    // createTwoVerticalAxesLineChart();
+    // createCategoryLineChart();
+    // createLeftCategoryLineChart();
+    // createAllCategoryLineChart();
+    // createNumericLineChart();
+    // createTimeLineChart();
+    // createRealTimeChart();
+    // createMultiLineChart();
 });

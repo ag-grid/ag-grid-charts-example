@@ -325,7 +325,7 @@ function makeNuclearChartWithNumericX() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function makeAlienChart() {
     const xAxis = new CategoryAxis();
     xAxis.position = ChartAxisPosition.Bottom;
     (xAxis.scale as BandScale<string>).paddingInner = 1;
@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis.update();
         }
 
-        chart.legend.color = labelColor;
+        chart.legend.item.label.color = labelColor;
 
         if (chart.title) {
             chart.title.color = labelColor;
@@ -684,7 +684,95 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     makeChartResizeable(chart);
+}
 
-    makeNuclearChart();
-    makeNuclearChartWithNumericX();
+function makeNumberYAxisArea() {
+    const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    const yAxis = new NumberAxis();
+    yAxis.position = ChartAxisPosition.Left;
+    yAxis.max = 3;
+
+    const chart = new CartesianChart();
+    chart.container = document.body;
+    chart.width = 600;
+    chart.height = 400;
+    chart.axes = [xAxis, yAxis];
+
+    chart.scene.canvas.element.style.border = '1px solid black';
+
+    const series = new AreaSeries();
+    series.xKey = 'x';
+    series.yKeys = ['y'];
+    series.data = [
+        {
+            x: 'A',
+            y: 2
+        }, {
+            x: 'B',
+            y: null
+        }, {
+            x: 'C',
+            y: 2
+        }, {
+            x: 'D',
+            y: 2
+        }, {
+            x: 'E',
+            y: 2
+        }];
+    series.fills = ['red'];
+    series.strokes = ['maroon'];
+    series.tooltip.enabled = true;
+
+    chart.addSeries(series);
+}
+
+function makeCategoryYAxisArea() {
+    const xAxis = new CategoryAxis();
+    xAxis.position = ChartAxisPosition.Bottom;
+    const yAxis = new CategoryAxis();
+    yAxis.position = ChartAxisPosition.Left;
+
+    const chart = new CartesianChart();
+    chart.container = document.body;
+    chart.width = 600;
+    chart.height = 400;
+    chart.axes = [xAxis, yAxis];
+
+    chart.scene.canvas.element.style.border = '1px solid black';
+
+    const series = new AreaSeries();
+    series.xKey = 'x';
+    series.yKeys = ['y'];
+    series.data = [
+        {
+            x: 'A',
+            y: 'X'
+        }, {
+            x: 'B',
+            y: null
+        }, {
+            x: 'C',
+            y: 'Y'
+        }, {
+            x: 'D',
+            y: 'Z'
+        }, {
+            x: 'E',
+            y: 'Y'
+        }];
+    series.fills = ['red'];
+    series.strokes = ['maroon'];
+    series.tooltip.enabled = true;
+
+    chart.addSeries(series);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // makeAlienChart();
+    // makeNuclearChart();
+    // makeNumberYAxisArea();
+    makeCategoryYAxisArea();
+    // makeNuclearChartWithNumericX();
 });

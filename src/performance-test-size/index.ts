@@ -1,8 +1,8 @@
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { LineSeries } from "ag-charts-community/src/chart/series/cartesian/lineSeries";
-import { Circle } from "ag-charts-community/src/chart/marker/circle";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { Circle } from "../../charts/chart/marker/circle";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
 
 type NumericDatum = {
   xValue: number,

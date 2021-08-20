@@ -1,7 +1,7 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Arc, ArcType} from "ag-charts-community/src/scene/shape/arc";
-import {Rect} from "ag-charts-community/src/scene/shape/rect";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Arc, ArcType } from "../../charts/scene/shape/arc";
+import { Rect } from "../../charts/scene/shape/rect";
 
 function nextFrame() {
     return new Promise(resolve => {

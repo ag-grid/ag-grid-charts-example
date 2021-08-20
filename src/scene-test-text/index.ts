@@ -1,14 +1,14 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Line} from "ag-charts-community/src/scene/shape/line";
-import {Text} from "ag-charts-community/src/scene/shape/text";
-import {Node} from "ag-charts-community/src/scene/node";
+import { Node } from "../../charts/scene/node";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Line } from "../../charts/scene/shape/line";
+import { Text } from "../../charts/scene/shape/text";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();
     scene.resize(800, 600);
     scene.container = document.body;
-    scene.renderFrameIndex = false;
+    scene.debug.renderFrameIndex = false;
     const group = new Group();
 
     const x = 200;

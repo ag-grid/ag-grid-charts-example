@@ -1,9 +1,9 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {FpsCounter} from "ag-charts-community/src/scene/fpsCounter";
-import { Shape } from "ag-charts-community/src/scene/shape/shape";
-import { isEqual } from "ag-charts-community/src/util/number";
-import { normalizeAngle360 } from "ag-charts-community/src/util/angle";
+import { FpsCounter } from "../../charts/scene/fpsCounter";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Shape } from "../../charts/scene/shape/shape";
+import { normalizeAngle360 } from "../../charts/util/angle";
+import { isEqual } from "../../charts/util/number";
 
 enum ArcType {
     Open,
@@ -177,7 +177,7 @@ class Arc extends Shape {
             ctx.globalAlpha = this.opacity;
         }
 
-        const pixelRatio = this.scene.canvas.pixelRatio || 1;
+        const pixelRatio = this.scene!.canvas.pixelRatio || 1;
 
         if (this.fill) {
             ctx.fillStyle = this.fill;

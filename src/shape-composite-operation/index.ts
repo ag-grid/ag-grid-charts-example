@@ -1,7 +1,7 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Text} from "ag-charts-community/src/scene/shape/text";
-import {Arc} from "ag-charts-community/src/scene/shape/arc";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Arc } from "../../charts/scene/shape/arc";
+import { Text } from "../../charts/scene/shape/text";
 
 function delay() {
     return new Promise(resolve => {

@@ -1,5 +1,3 @@
-import { } from "ag-charts-community";
-
 import { createButton, createSlider } from "../../lib/ui";
 import { makeChartResizeable } from "../../lib/chart";
 import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
@@ -8,7 +6,6 @@ import { Caption } from "../../charts/caption";
 import { NumberAxis } from "../../charts/chart/axis/numberAxis";
 import { CartesianChart } from "../../charts/chart/cartesianChart";
 import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
-import borneo from "../../charts/chart/palettes";
 
 type Datum = {
     category: string,
@@ -113,12 +110,17 @@ function createColumnChart() {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
+    barSeries.yNames = {
+        q1Actual: 'Q1',
+        q2Actual: 'Q2',
+        q3Actual: 'Q3',
+        q4Actual: 'Q4',
+    };
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    barSeries.yKeys = [['q1Actual'], ['q2Actual'], ['q3Actual'], ['q4Actual']];
     barSeries.data = data;
-    barSeries.fills = borneo.fills;
-    barSeries.tooltipEnabled = true;
+    // barSeries.fills = borneo.fills;
+    barSeries.tooltip.enabled = true;
     barSeries.label.enabled = false;
 
     document.body.appendChild(document.createElement('br'));
@@ -130,14 +132,14 @@ function createColumnChart() {
     createButton('Negative Data', () => {
         barSeries.data = negativeData;
         barSeries.xKey = 'xKey';
-        barSeries.yKeys = ['yKey1', 'yKey2', 'yKey3'];
+        barSeries.yKeys = [['yKey1'], ['yKey2'], ['yKey3']];
     });
 
     createButton('Grouped', () => {
-        barSeries.grouped = true;
+        barSeries.yKeys = [['q1Actual'], ['q2Actual'], ['q3Actual'], ['q4Actual']];
     });
     createButton('Stacked', () => {
-        barSeries.grouped = false;
+        barSeries.yKeys = [['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual']];
     });
 
     createButton('Enable labels', () => {
@@ -182,14 +184,23 @@ function createBarChart() {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
+    barSeries.yNames = {
+        q1Actual: 'Q1',
+        q2Actual: 'Q2',
+        q3Actual: 'Q3',
+        q4Actual: 'Q4',
+    };
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+    barSeries.yKeys = [['q1Actual'], ['q2Actual'], ['q3Actual'], ['q4Actual']];
     barSeries.data = data;
-    barSeries.fills = borneo.fills;
-    barSeries.tooltipEnabled = true;
+    // barSeries.fills = borneo.fills;
+    barSeries.tooltip.enabled = true;
     barSeries.label.enabled = false;
     barSeries.flipXY = true;
+    barSeries.highlightStyle.strokeWidth = 2;
+    barSeries.highlightStyle.series.enabled = false;
+    barSeries.highlightStyle.series.dimOpacity = 0.3;
+    barSeries.highlightStyle.series.strokeWidth = 4;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -200,14 +211,14 @@ function createBarChart() {
     createButton('Negative Data', () => {
         barSeries.data = negativeData;
         barSeries.xKey = 'xKey';
-        barSeries.yKeys = ['yKey1', 'yKey2', 'yKey3'];
+        barSeries.yKeys = [['yKey1'], ['yKey2'], ['yKey3']];
     });
 
     createButton('Grouped', () => {
-        barSeries.grouped = true;
+        barSeries.yKeys = [['q1Actual'], ['q2Actual'], ['q3Actual'], ['q4Actual']];
     });
     createButton('Stacked', () => {
-        barSeries.grouped = false;
+        barSeries.yKeys = [['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual']];
     });
 
     createButton('Enable labels', () => {
@@ -215,6 +226,14 @@ function createBarChart() {
     });
     createButton('Disable labels', () => {
         barSeries.label.enabled = false;
+    });
+
+    createButton('Toggle Series Highlighting', () => {
+        barSeries.highlightStyle.series.enabled = !barSeries.highlightStyle.series.enabled;
+    });
+
+    createSlider('dimOpacity', [0.3, 0.6, 1], v => {
+        barSeries.highlightStyle.series.dimOpacity = v;
     });
 
     createSlider('normalizeTo', [NaN, 100, 500, 1], v => {

@@ -1,9 +1,9 @@
 import { createButton } from "../../lib/ui";
-import { LegendPosition } from "ag-charts-community";
 import { PolarChart } from "../../charts/chart/polarChart";
 import { PieSeries } from "../../charts/chart/series/polar/pieSeries";
 import { Caption } from "../../charts/caption";
 import { toDegrees } from "../../charts/util/angle";
+import { LegendPosition } from "../../charts/chart/legend";
 
 const data = [
     {
@@ -30,10 +30,10 @@ function renderChart() {
     chart.height = 350;
     chart.container = document.body;
     chart.legend.position = LegendPosition.Bottom;
-    chart.legend.fontSize = 15;
-    chart.legend.fontFamily = 'Source Sans Pro';
-    chart.legend.color = 'rgb(124, 124, 124)';
-    chart.legend.itemSpacing = 6;
+    chart.legend.item.label.fontSize = 15;
+    chart.legend.item.label.fontFamily = 'Source Sans Pro';
+    chart.legend.item.label.color = 'rgb(124, 124, 124)';
+    chart.legend.item.marker.padding = 6;
 
     const series = new PieSeries();
     series.data = data;

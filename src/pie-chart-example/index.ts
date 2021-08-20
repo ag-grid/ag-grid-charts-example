@@ -1,7 +1,7 @@
 import { makeChartResizeable } from "../../lib/chart";
 import { createButton, createSlider } from "../../lib/ui";
 import { PolarChart } from "../../charts/chart/polarChart";
-import { PieSeries } from "../../charts/chart/series/polar/pieSeries";
+import { PieSeries, PieTitle } from "../../charts/chart/series/polar/pieSeries";
 import { Caption } from "../../charts/caption";
 import { DropShadow } from "../../charts/scene/dropShadow";
 import { Padding } from "../../charts/util/padding";
@@ -48,7 +48,7 @@ function createPieChart() {
     pieSeries.angleKey = 'value';
     pieSeries.labelKey = 'label';
     pieSeries.label.enabled = true;
-    pieSeries.title = new Caption();
+    pieSeries.title = new PieTitle();
     pieSeries.title.text = 'Mobile OSes';
     pieSeries.title.fontSize = 14;
     pieSeries.title.fontWeight = 'bold';
@@ -57,12 +57,15 @@ function createPieChart() {
     pieSeries.shadow = new DropShadow();
     pieSeries.shadow.color = 'rgba(0,0,0,0.2)';
     pieSeries.shadow.blur = 15;
+    pieSeries.highlightStyle.strokeWidth = 5;
+    pieSeries.highlightStyle.stroke = 'red';
+    pieSeries.highlightStyle.fill = 'orange';
 
     const pieSeries2 = new PieSeries();
     pieSeries2.data = data2;
     pieSeries2.outerRadiusOffset = -80;
     pieSeries2.innerRadiusOffset = -120;
-    pieSeries2.title = new Caption();
+    pieSeries2.title = new PieTitle();
     pieSeries2.title.text = 'Users';
     pieSeries2.title.fontSize = 14;
     pieSeries2.title.fontWeight = 'bold';
@@ -70,7 +73,7 @@ function createPieChart() {
     pieSeries2.labelKey = 'label';
     pieSeries2.label.enabled = true;
 
-    chart.series = [pieSeries, pieSeries2];
+    chart.series = [pieSeries]; //, pieSeries2];
 
     chart.title = new Caption();
     chart.title.text = 'Market Share of Mobile Operating Systems';
@@ -130,10 +133,10 @@ function createPieChart() {
         pieSeries2.label.enabled = false;
     });
     createButton('Set series name', () => {
-        pieSeries.title = new Caption();
+        pieSeries.title = new PieTitle();
         pieSeries.title.text = 'Super series';
 
-        pieSeries2.title = new Caption();
+        pieSeries2.title = new PieTitle();
         pieSeries2.title.text = 'Duper series';
     });
     createButton('Remove series name', () => {
@@ -288,9 +291,21 @@ function createPieChart() {
         }
     });
 
-    createSlider('series.title.enabled', [true, false], v => {
+    createSlider('series.title.enabled', [false, true], v => {
         if (pieSeries.title) {
             pieSeries.title.enabled = v;
+        }
+        if (pieSeries2.title) {
+            pieSeries2.title.enabled = v;
+        }
+    });
+
+    createSlider('series.title.showInLegend', [false, true], v => {
+        if (pieSeries.title) {
+            pieSeries.title.showInLegend = v;
+        }
+        if (pieSeries2.title) {
+            pieSeries2.title.showInLegend = v;
         }
     });
 

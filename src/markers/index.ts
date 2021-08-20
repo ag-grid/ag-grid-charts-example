@@ -1,13 +1,12 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Diamond} from "ag-charts-community/src/chart/marker/diamond";
-import {Triangle} from "ag-charts-community/src/chart/marker/triangle";
-import {Square} from "ag-charts-community/src/chart/marker/square";
-import {Circle} from "ag-charts-community/src/chart/marker/circle";
-import {Cross} from "ag-charts-community/src/chart/marker/cross";
-import {Plus} from "ag-charts-community/src/chart/marker/plus";
+import { Circle } from "../../charts/chart/marker/circle";
+import { Cross } from "../../charts/chart/marker/cross";
+import { Diamond } from "../../charts/chart/marker/diamond";
+import { Plus } from "../../charts/chart/marker/plus";
+import { Square } from "../../charts/chart/marker/square";
+import { Triangle } from "../../charts/chart/marker/triangle";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
 import { createSlider } from "../../lib/ui";
-import { pad } from "ag-charts-community/src/util/time/format/locale";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();

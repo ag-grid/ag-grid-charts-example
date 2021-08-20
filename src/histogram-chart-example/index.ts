@@ -1,12 +1,12 @@
 import { createButton, createSlider, createDropdown } from "../../lib/ui";
-import { CartesianChart } from "ag-charts-community/src/chart/cartesianChart";
-import { NumberAxis } from "ag-charts-community/src/chart/axis/numberAxis";
-import { Caption } from "ag-charts-community/src/caption";
-import { ChartAxisPosition } from "ag-charts-community/src/chart/chartAxis";
-import { HistogramSeries, HistogramBin } from "ag-charts-community/src/chart/series/cartesian/histogramSeries";
 import { makeChartResizeable } from "../../lib/chart";
-import { Padding } from "ag-charts-community";
 import Chance from "chance";
+import { HistogramBin, HistogramSeries } from "../../charts/chart/series/cartesian/histogramSeries";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { CartesianChart } from "../../charts/chart/cartesianChart";
+import { Padding } from "../../charts/util/padding";
+import { Caption } from "../../charts/caption";
 
 const numberOfAthletes = 1000;
 
@@ -19,15 +19,15 @@ const exampleBinRanges: {[k: string]: binsSpec} = {
     ageCategories: [[16,21], [21, 30], [30, 35], [35, 50], [50,60], [60,65]],
     evenlySpacedDecades: [[10, 20], [20, 30], [30,40], [40,50], [50,60], [60,70]],
     'undefined (use defaults)': undefined
-};
+} as any;
 
 const labelFormatters: { [key: string]: (b: HistogramBin) => string } = {
-    ageRange: b => `${b.domain[0]} to ${b.domain[1]}`,
+    ageRange: (b: any) => `${b.domain[0]} to ${b.domain[1]}`,
     'default (none given)': undefined,
-    medalCount: b => `${b.total} medals`,
-    athleteCount: b => `${b.frequency} athletes`,
-    both: b => `${b.frequency} athletes won ${b.total} medals`
-};
+    medalCount: (b: any) => `${b.total} medals`,
+    athleteCount: (b: any) => `${b.frequency} athletes`,
+    both: (b: any) => `${b.frequency} athletes won ${b.total} medals`
+} as any;
 
 type Palmares = {
     age: number,
@@ -87,27 +87,27 @@ function createHistogramChart() {
     histogramSeries.xKey = 'age';
     histogramSeries.yKey = 'gold';
 
-    histogramSeries.binDomains = exampleBinRanges.ageCategories;
-    histogramSeries.constantWidth = false;
+    // histogramSeries.binDomains = exampleBinRanges.ageCategories;
+    // histogramSeries.constantWidth = false;
 
     histogramSeries.data = data;
     histogramSeries.fill = medalColours.gold;
-    histogramSeries.tooltipEnabled = true;
+    histogramSeries.tooltip.enabled = true;
     histogramSeries.label.enabled = true;
-    histogramSeries.label.formatter = labelFormatters.ageRange;
+    // histogramSeries.label.formatter = labelFormatters.ageRange;
 
     chart.addSeries(histogramSeries);
 
     createDropdown('Bin domains', exampleBinRanges, (b) => {
         console.log('changing bins to', b);
-        histogramSeries.binDomains = b;
-        histogramSeries.constantWidth = !b;
+        // histogramSeries.binDomains = b;
+        // histogramSeries.constantWidth = !b;
     });
 
     newLine();
     createSlider('Bin count', [undefined, 2,3,4,5,6,7,8,9,10,12,14,16,20,30,50,100,200], number => {
         histogramSeries.binCount = number;
-        histogramSeries.constantWidth = !!number;
+        // histogramSeries.constantWidth = !!number;
     });
 
     newLine();
@@ -122,12 +122,12 @@ function createHistogramChart() {
     newLine();
     createDropdown('custom labels:', labelFormatters, formatter => {
         console.log('changing formatter to', formatter);
-        histogramSeries.label.formatter = formatter
+        // histogramSeries.label.formatter = formatter;
     });
 
     newLine();
     type medalCategories = keyof typeof medalColours;
-    createDropdown('yKey', ['gold', 'silver', 'bronze', undefined], (yKey: medalCategories) => {
+    createDropdown('yKey', ['gold', 'silver', 'bronze', undefined] as any, (yKey: medalCategories) => {
         histogramSeries.yKey = yKey;
         histogramSeries.fill = medalColours[yKey] || '#283';
     });

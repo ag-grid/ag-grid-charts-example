@@ -1,7 +1,7 @@
-import { Scene } from "ag-charts-community/src/scene/scene";
-import { Group } from "ag-charts-community/src/scene/group";
-import { Text } from "ag-charts-community/src/scene/shape/text";
-import { DropShadow } from "ag-charts-community/src/scene/dropShadow";
+import { DropShadow } from "../../charts/scene/dropShadow";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Text } from "../../charts/scene/shape/text";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();

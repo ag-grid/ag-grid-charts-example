@@ -1,14 +1,14 @@
-import { GroupedCategoryChart } from 'ag-charts-community/src/chart/groupedCategoryChart';
-import { GroupedCategoryAxis } from 'ag-charts-community/src/chart/axis/groupedCategoryAxis';
-import { Caption } from "ag-charts-community/src/caption";
-import { NumberAxis } from 'ag-charts-community/src/chart/axis/numberAxis';
-import { BarSeries } from 'ag-charts-community/src/chart/series/cartesian/barSeries';
-import { LineSeries } from 'ag-charts-community/src/chart/series/cartesian/lineSeries';
-import { createButton, createSlider } from '../../lib/ui';
-import { Circle } from "ag-charts-community/src/chart/marker/circle";
-import { Square } from "ag-charts-community/src/chart/marker/square";
-import { ChartAxisPosition } from 'ag-charts-community/src/chart/chartAxis';
+import { Caption } from "../../charts/caption";
+import { GroupedCategoryAxis } from "../../charts/chart/axis/groupedCategoryAxis";
+import { NumberAxis } from "../../charts/chart/axis/numberAxis";
+import { ChartAxisPosition } from "../../charts/chart/chartAxis";
+import { GroupedCategoryChart } from "../../charts/chart/groupedCategoryChart";
+import { Circle } from "../../charts/chart/marker/circle";
+import { Square } from "../../charts/chart/marker/square";
+import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
+import { LineSeries } from "../../charts/chart/series/cartesian/lineSeries";
 import { makeChartResizeable } from "../../lib/chart";
+import { createButton, createSlider } from "../../lib/ui";
 
 type CategoryDatum = {
     category: { labels: string[] },
@@ -75,20 +75,18 @@ function createCategoryColumnChart() {
     const barSeries = new BarSeries();
     barSeries.data = categoryData;
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['value', 'value2'];
+    barSeries.yKeys = [['value'], ['value2']];
     barSeries.grouped = true;
     barSeries.fillOpacity = 0.3;
 
     const lineSeries = new LineSeries();
     lineSeries.marker.shape = Circle;
-    lineSeries.fill = 'rgba(227,111,106,0.61)';
     lineSeries.data = categoryData;
     lineSeries.xKey = 'category';
     lineSeries.yKey = 'value';
 
     const lineSeries2 = new LineSeries();
     lineSeries2.marker.shape = Square;
-    lineSeries2.fill = 'rgba(123,145,222,0.61)';
     lineSeries2.data = categoryData;
     lineSeries2.xKey = 'category';
     lineSeries2.yKey = 'value2';
@@ -166,7 +164,7 @@ function createCategoryBarChart() {
     const barSeries = new BarSeries();
     barSeries.data = categoryData;
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['value', 'value2'];
+    barSeries.yKeys = [['value'], ['value2']];
     barSeries.grouped = true;
     barSeries.fillOpacity = 0.3;
 

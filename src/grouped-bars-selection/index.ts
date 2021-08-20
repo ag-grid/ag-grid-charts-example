@@ -1,15 +1,15 @@
-import {Selection} from "ag-charts-community/src/scene/selection";
-import {Node} from "ag-charts-community/src/scene/node";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Rect} from "ag-charts-community/src/scene/shape/rect";
-import {Scene} from "ag-charts-community/src/scene/scene";
-import Scale from "ag-charts-community/src/scale/scale";
-import {Line} from "ag-charts-community/src/scene/shape/line";
-import {Text} from "ag-charts-community/src/scene/shape/text";
-import {normalizeAngle360} from "ag-charts-community/src/util/angle";
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {BandScale} from "ag-charts-community/src/scale/bandScale";
-import {DropShadow} from "ag-charts-community/src/scene/dropShadow";
+import Scale from "../../charts/scale/scale";
+import { Selection } from "../../charts/scene/selection";
+import { Node } from "../../charts/scene/node";
+import { Group } from "../../charts/scene/group";
+import { Line } from "../../charts/scene/shape/line";
+import { Rect } from "../../charts/scene/shape/rect";
+import { Text } from "../../charts/scene/shape/text";
+import { normalizeAngle360 } from "../../charts/util/angle";
+import { LinearScale } from "../../charts/scale/linearScale";
+import { BandScale } from "../../charts/scale/bandScale";
+import { DropShadow } from "../../charts/scene/dropShadow";
+import { Scene } from "../../charts/scene/scene";
 
 document.addEventListener('DOMContentLoaded', () => {
     renderChart();
@@ -183,7 +183,7 @@ function renderChart() {
     const seriesWidth = chartWidth - padding.left - padding.right;
     const seriesHeight = chartHeight - padding.top - padding.bottom;
 
-    const yScale = scaleLinear();
+    const yScale = new LinearScale();
     // Find the tallest bar in each group, then the tallest bar overall.
     yScale.domain = [0, Math.max(...yData.map(values => Math.max(...values)))];
     yScale.range = [seriesHeight, 0];

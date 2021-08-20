@@ -1,7 +1,6 @@
 import { data } from './data';
 import { makeChartResizeable } from '../../lib/chart';
 import { createButton } from '../../lib/ui';
-import { Chart } from "ag-charts-community";
 import { ChartAxisPosition } from "../../charts/chart/chartAxis";
 import { TimeAxis } from "../../charts/chart/axis/timeAxis";
 import month from "../../charts/util/time/month";
@@ -13,6 +12,7 @@ import { OHLCSeries } from "../../charts/chart/series/cartesian/ohlc/ohlcSeries"
 import { Square } from "../../charts/chart/marker/square";
 import { CategoryAxis } from "../../charts/chart/axis/categoryAxis";
 import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
+import { Chart } from '../../charts/chart/chart';
 
 function createChart() {
     const xAxis = new TimeAxis();
@@ -35,9 +35,9 @@ function createChart() {
     lineSeries.yKey = 'high';
     lineSeries.stroke = 'black';
     lineSeries.strokeWidth = 1;
-    lineSeries.tooltipEnabled = true;
+    lineSeries.tooltip.enabled = true;
     lineSeries.visible = false;
-    lineSeries.tooltipRenderer = (params) => {
+    lineSeries.tooltip.renderer = (params) => {
         const { title, color } = params;
         const x = params.datum[params.xKey];
         const y = params.datum[params.yKey];
@@ -50,7 +50,7 @@ function createChart() {
     const ohlcSeries = new OHLCSeries();
     ohlcSeries.title = 'Microsoft';
     ohlcSeries.marker.strokeWidth = 1;
-    ohlcSeries.tooltipEnabled = true;
+    ohlcSeries.tooltip.enabled = true;
 
     chart.series = [ohlcSeries, lineSeries] as any;
 
@@ -91,8 +91,10 @@ function createVolumeChart() {
 
     const barSeries = new BarSeries();
     barSeries.xKey = 'date';
-    barSeries.yKeys = ['volume'];
-    barSeries.yNames = ['Volume'];
+    barSeries.yKeys = [['volume']];
+    barSeries.yNames = {
+        volume: 'Volume'
+    };
     barSeries.grouped = false;
 
     chart.series = [barSeries] as any;

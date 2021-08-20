@@ -1,6 +1,6 @@
-import {Scene} from "ag-charts-community/src/scene/scene";
-import {Group} from "ag-charts-community/src/scene/group";
-import {Path} from "ag-charts-community/src/scene/shape/path";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Path } from "../../charts/scene/shape/path";
 
 document.addEventListener('DOMContentLoaded', () => {
     const scene = new Scene();

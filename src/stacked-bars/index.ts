@@ -1,7 +1,7 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {BandScale} from "ag-charts-community/src/scale/bandScale";
-import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
-import {CanvasAxis} from "ag-charts-community/src/canvasAxis";
+import { HdpiCanvas } from "../../charts/canvas/hdpiCanvas";
+import { CanvasAxis } from "../../charts/canvasAxis";
+import { BandScale } from "../../charts/scale/bandScale";
+import { LinearScale } from "../../charts/scale/linearScale";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],
@@ -79,7 +79,7 @@ function renderChart() {
     const seriesWidth = canvasWidth - padding.left - padding.right;
     const seriesHeight = canvasHeight - padding.top - padding.bottom;
 
-    const yScale = scaleLinear();
+    const yScale = new LinearScale();
     // Get the height of each stack and find the highest one.
     yScale.domain = [0, Math.max(...yData.map(d => d[d.length - 1]))];
     yScale.range = [seriesHeight, 0];
@@ -91,10 +91,10 @@ function renderChart() {
     xScale.paddingOuter = 0.3;
     const barWidth = xScale.bandwidth;
 
-    const canvas = createHdpiCanvas(canvasWidth, canvasHeight);
-    document.body.appendChild(canvas);
+    const canvas = new HdpiCanvas(window.document, canvasWidth, canvasHeight);
+    document.body.appendChild(canvas.element);
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.element.getContext('2d')!;
     ctx.font = '14px Verdana';
 
     // bars

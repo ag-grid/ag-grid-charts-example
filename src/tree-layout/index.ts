@@ -1,8 +1,8 @@
-import { Scene } from "ag-charts-community/src/scene/scene";
-import { Group } from "ag-charts-community/src/scene/group";
-import { Selection } from "ag-charts-community/src/scene/selection";
-import { Text } from "ag-charts-community/src/scene/shape/text";
-import { Line } from "ag-charts-community/src/scene/shape/line";
+import { Group } from "../../charts/scene/group";
+import { Scene } from "../../charts/scene/scene";
+import { Selection } from "../../charts/scene/selection";
+import { Line } from "../../charts/scene/shape/line";
+import { Text } from "../../charts/scene/shape/text";
 import { createSlider } from "../../lib/ui";
 
 interface Tick {

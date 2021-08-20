@@ -1,6 +1,6 @@
-import scaleLinear from "ag-charts-community/src/scale/linearScale";
-import {createHdpiCanvas} from "ag-charts-community/src/canvas/canvas";
-import {CanvasAxis} from "ag-charts-community/src/canvasAxis";
+import { HdpiCanvas } from '../../charts/canvas/hdpiCanvas';
+import { CanvasAxis } from '../../charts/canvasAxis';
+import { LinearScale } from '../../charts/scale/linearScale';
 import carData, {ICarInfo} from './auto-mpg';
 
 const colors = [
@@ -87,22 +87,22 @@ function renderChart(data: any[][], configs: SeriesConfig[], minRadius = 2, maxR
     }
 
     // Find the x/y domains of each series, then x/y domains overall.
-    const xScale = scaleLinear();
+    const xScale = new LinearScale();
     xScale.domain = extent(xData);
     xScale.range = [0, seriesWidth];
 
-    const yScale = scaleLinear();
+    const yScale = new LinearScale();
     yScale.domain = extent(yData);
     yScale.range = [seriesHeight, 0];
 
-    const radiusScale = scaleLinear();
+    const radiusScale = new LinearScale();
     radiusScale.domain = extent(radiusData);
     radiusScale.range = [minRadius, maxRadius];
 
-    const canvas = createHdpiCanvas(canvasWidth, canvasHeight);
-    document.body.appendChild(canvas);
+    const canvas = new HdpiCanvas(window.document, canvasWidth, canvasHeight);
+    document.body.appendChild(canvas.element);
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.element.getContext('2d')!;
     ctx.font = '14px Verdana';
 
     function drawSeries(color: string, xData: number[], yData: number[], radiusData: number[]) {
