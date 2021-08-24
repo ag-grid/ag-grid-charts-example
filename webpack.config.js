@@ -61,6 +61,9 @@ const moduleExports = env => {
             },
             stats: 'errors-only',
             watch: hasActiveExample,
+            devServer: {
+                port: 9080
+            },
             resolve: {
                 extensions: ['.ts', '.tsx', '.js', '.json']
             },
