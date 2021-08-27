@@ -1,4 +1,3 @@
-import { extend } from "lodash";
 import { BarSeries } from "../../charts/main";
 import { Observable, reactive } from "../../charts/util/observable";
 
@@ -26,7 +25,7 @@ export type Padding = {
 
 class ReactivePadding {
     chart?: VanCleefChart;
-    series: BarSeries;
+    series?: BarSeries;
 
     private _top: number = 0;
     set top(value: number) {

@@ -1,22 +1,35 @@
-import { BandScale, Group, Line, LinearScale, Path } from '../../charts/main';
-import { Selection } from '../../charts/scene/selection'
-import { Observable, reactive } from '../../charts/util/observable';
-import { MiniChart, SeriesNodeDatum } from './miniChart';
+import { Sparkline, SeriesNodeDatum } from './sparkline';
 import { Marker } from './marker';
-import { toTooltipHtml } from './miniChartTooltip';
+import { toTooltipHtml } from './sparklineTooltip';
 import { getMarkerShape } from './util';
+import { Observable, reactive } from '../../charts/util/observable';
+import { Group } from '../../charts/scene/group';
+import { Path } from '../../charts/scene/shape/path';
+import { Line } from '../../charts/scene/shape/line';
+import { Selection } from '../../charts/scene/selection';
+import { LinearScale } from '../../charts/scale/linearScale';
+import { BandScale } from '../../charts/scale/bandScale';
 
 interface AreaNodeDatum extends SeriesNodeDatum { }
+
 interface AreaPathDatum extends SeriesNodeDatum { }
-interface MarkerFormat {
-    enabled?: boolean;
-    shape?: string;
-    size?: number;
-    fill?: string;
-    stroke?: string;
-    strokeWidth?: number;
+
+class SparklineMarker extends Observable {
+    @reactive() enabled: boolean = true;
+    @reactive() shape: string = 'circle';
+    @reactive('update') size: number = 0;
+    @reactive('update') fill?: string = 'rgb(124, 181, 236)';
+    @reactive('update') stroke?: string = 'rgb(124, 181, 236)';
+    @reactive('update') strokeWidth: number = 1;
+    @reactive('update') formatter?: (params: MarkerFormatterParams) => MarkerFormat;
 }
-interface MarkerFormatterParams {
+
+class SparklineLine extends Observable {
+    @reactive('update') stroke: string = 'rgb(124, 181, 236)';
+    @reactive('update') strokeWidth: number = 1;
+}
+
+export interface MarkerFormatterParams {
     datum: any;
     xValue: any;
     yValue: any;
@@ -26,45 +39,42 @@ interface MarkerFormatterParams {
     size: number;
     highlighted: boolean;
 }
-class MiniChartMarker extends Observable {
-    @reactive() enabled: boolean = true;
-    @reactive() shape: string = 'circle';
-    @reactive('update') size: number = 0;
-    @reactive('update') fill?: string = 'rgb(124, 181, 236)';
-    @reactive('update') stroke?: string = 'rgb(124, 181, 236)';
-    @reactive('update') strokeWidth: number = 1;
-    @reactive('update') formatter?: (params: MarkerFormatterParams) => MarkerFormat;
+
+export interface MarkerFormat {
+    enabled?: boolean;
+    shape?: string;
+    size?: number;
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number;
 }
-class MiniChartLine extends Observable {
-    @reactive('update') stroke: string = 'rgb(124, 181, 236)';
-    @reactive('update') strokeWidth: number = 1;
-}
-export class MiniAreaChart extends MiniChart {
-    
-    static className = 'MiniAreaChart';
+
+export class AreaSparkline extends Sparkline {
+
+    static className = 'AreaSparkline';
 
     @reactive('update') fill: string = 'rgba(124, 181, 236, 0.25)';
 
-    private miniAreaChartGroup: Group = new Group();
+    private areaSparklineGroup: Group = new Group();
     protected strokePath: Path = new Path();
     protected fillPath: Path = new Path();
-    private areaPathData: AreaPathDatum[];
+    private areaPathData: AreaPathDatum[] = [];
     private xAxisLine: Line = new Line();
     protected yScale: LinearScale = new LinearScale();
-    protected xScale: BandScale<number> = new BandScale<number>();
+    protected xScale: BandScale<number | undefined> = new BandScale<number | undefined>();
     private markers: Group = new Group();
     private markerSelection: Selection<Marker, Group, AreaNodeDatum, any> = Selection.select(this.markers).selectAll<Marker>();
     private markerSelectionData: AreaNodeDatum[] = [];
 
-    readonly marker = new MiniChartMarker();
-    readonly line = new MiniChartLine();
+    readonly marker = new SparklineMarker();
+    readonly line = new SparklineLine();
 
     constructor() {
         super();
 
         this.addEventListener('update', this.scheduleLayout, this);
-        this.rootGroup.append(this.miniAreaChartGroup);
-        this.miniAreaChartGroup.append([this.fillPath, this.xAxisLine, this.strokePath, this.markers]);
+        this.rootGroup.append(this.areaSparklineGroup);
+        this.areaSparklineGroup.append([this.fillPath, this.xAxisLine, this.strokePath, this.markers]);
 
         this.marker.addEventListener('update', this.updateMarkers, this);
         this.marker.addPropertyListener('enabled', this.updateMarkers, this);
@@ -83,10 +93,6 @@ export class MiniAreaChart extends MiniChart {
     }
 
     protected update(): void {
-        const { seriesRect } = this;
-        this.rootGroup.translationX = seriesRect.x;
-        this.rootGroup.translationY = seriesRect.y;
-
         this.updateXScale();
         this.updateYScaleRange();
         this.updateYScaleDomain();
@@ -117,7 +123,16 @@ export class MiniAreaChart extends MiniChart {
 
     protected updateYScaleDomain(): void {
         const { yData, yScale } = this;
-        let [minY, maxY] = this.findMinAndMax(yData);
+        let extent = this.findMinAndMax(yData);
+        let minY, maxY
+
+        if (!extent) {
+            minY = 0;
+            maxY = 1;
+        } else {
+            minY = extent[0]
+            maxY = extent[1]
+        }
 
         if (yData.length > 1) {
             // if minY is positive, set minY to 0.
@@ -157,22 +172,27 @@ export class MiniAreaChart extends MiniChart {
             let yDatum = yData[i];
             let xDatum = xData[i];
 
-            let invalidDatum = yDatum === undefined;
-            
-            if (invalidDatum) {
+            const invalidYDatum = yDatum === undefined;
+            const invalidXDatum = xDatum === undefined;
+
+            if (invalidYDatum) {
                 yDatum = 0;
+            }
+
+            if (invalidXDatum) {
+                xDatum = 0;
             }
 
             const x = xScale.convert(xDatum) + offsetX;
             const y = yScale.convert(yDatum);
 
             nodeData.push({
-                seriesDatum: { x: xDatum, y: invalidDatum ? undefined : yDatum },
+                seriesDatum: { x: invalidXDatum ? undefined : xDatum, y: invalidYDatum ? undefined : yDatum },
                 point: { x, y }
             });
 
             areaData.push({
-                seriesDatum: { x: xDatum, y: invalidDatum ? undefined : yDatum },
+                seriesDatum: { x: invalidXDatum ? undefined : xDatum, y: invalidYDatum ? undefined : yDatum },
                 point: { x, y }
             });
         }
@@ -222,20 +242,24 @@ export class MiniAreaChart extends MiniChart {
         const markerFormatter = marker.formatter;
 
         this.markerSelection.each((node, datum) => {
+            const { point, seriesDatum } = datum;
+
+            if (!point) {
+                return;
+            }
+
             const highlighted = datum === highlightedDatum;
             const markerFill = highlighted && highlightFill !== undefined ? highlightFill : marker.fill;
             const markerStroke = highlighted && highlightStroke !== undefined ? highlightStroke : marker.stroke;
             const markerStrokeWidth = highlighted && highlightStrokeWidth !== undefined ? highlightStrokeWidth : marker.strokeWidth;
             const markerSize = highlighted && highlightSize !== undefined ? highlightSize : marker.size;
-            
-            let markerFormat: MarkerFormat | undefined = undefined;
 
-            const { point, seriesDatum } = datum;
+            let markerFormat: MarkerFormat | undefined = undefined;
 
             if (markerFormatter) {
                 markerFormat = markerFormatter({
-                    datum, 
-                    xValue: seriesDatum.x, 
+                    datum,
+                    xValue: seriesDatum.x,
                     yValue: seriesDatum.y,
                     fill: markerFill,
                     stroke: markerStroke,
@@ -261,7 +285,7 @@ export class MiniAreaChart extends MiniChart {
 
         const path = strokePath.path;
         const n = yData.length;
-        
+
         path.clear();
 
         if (yData.length < 2) {
@@ -269,8 +293,14 @@ export class MiniAreaChart extends MiniChart {
         }
 
         for (let i = 0; i < n; i++) {
-            let x = nodeData[i].point.x;
-            let y = nodeData[i].point.y;
+            const { point } = nodeData[i];
+
+            if (!point) {
+                return;
+            }
+
+            let x = point.x;
+            let y = point.y;
 
             if (i > 0) {
                 path.lineTo(x, y);
@@ -298,8 +328,15 @@ export class MiniAreaChart extends MiniChart {
         }
 
         for (let i = 0; i < n; i++) {
-            const x = areaData[i].point.x;
-            const y = areaData[i].point.y;
+            const { point } = areaData[i];
+
+            if (!point) {
+                return;
+            }
+
+            const x = point.x;
+            const y = point.y;
+
             if (i > 0) {
                 path.lineTo(x, y);
             } else {

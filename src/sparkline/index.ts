@@ -1,13 +1,12 @@
-import { schemeBlues } from 'd3';
 import { Padding } from '../../charts/main';
 import { createButton, createSlider } from '../../lib/ui';
 import { gemStones } from '../mana/gemStonesData';
 import { Cardioid } from './cardioid';
-import { MiniAreaChart } from './miniAreaChart';
-import { MiniColumnChart } from './miniColumnChart';
-import { MiniLineChart } from './miniLineChart';
+import { AreaSparkline } from './areaSparkline';
+import { ColumnSparkline } from './columnSparkline';
+import { LineSparkline } from './lineSparkline';
 
-const miniLineChart = new MiniLineChart();
+const lineSparkline = new LineSparkline();
 const chartContainer = document.createElement('div');
 chartContainer.style.width = '100px';
 chartContainer.style.height = '50px';
@@ -17,23 +16,23 @@ chartContainer.style.backgroundColor = '#343334';
 
 document.body.appendChild(chartContainer)
 
-chartContainer.appendChild(miniLineChart.getCanvasElement());
-// document.body.appendChild(miniLineChart.getCanvasElement());
-miniLineChart.width = 100;
-miniLineChart.height = 50;
-miniLineChart.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2, -8];
-// miniLineChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
-miniLineChart.marker.fill = 'skyblue';
-miniLineChart.marker.stroke = 'skyblue';
-miniLineChart.line.stroke = 'skyblue';
-miniLineChart.highlightStyle.size = 7;
-miniLineChart.marker.shape = 'diamond';
-miniLineChart.marker.size = 3;
-miniLineChart.title = 'mana';
-miniLineChart.tooltip.container = chartContainer;
-// miniLineChart.marker.enabled = false;
-// miniLineChart.padding = new Padding(5);
-miniLineChart.tooltip.renderer = (params) => {
+chartContainer.appendChild(lineSparkline.getCanvasElement());
+// document.body.appendChild(lineSparkline.getCanvasElement());
+lineSparkline.width = 100;
+lineSparkline.height = 50;
+lineSparkline.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2, -8];
+// lineSparkline.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
+lineSparkline.marker.fill = 'skyblue';
+lineSparkline.marker.stroke = 'skyblue';
+lineSparkline.line.stroke = 'skyblue';
+lineSparkline.highlightStyle.size = 7;
+lineSparkline.marker.shape = 'diamond';
+lineSparkline.marker.size = 3;
+lineSparkline.title = 'mana';
+lineSparkline.tooltip.container = chartContainer;
+// lineSparkline.marker.enabled = false;
+// lineSparkline.padding = new Padding(5);
+lineSparkline.tooltip.renderer = (params) => {
     return {
         content: params.yValue,
         color: 'black',
@@ -41,7 +40,7 @@ miniLineChart.tooltip.renderer = (params) => {
         opacity: 0.8
     }
 }
-miniLineChart.marker.formatter = (params) => {
+lineSparkline.marker.formatter = (params) => {
     return {
         size: !params.highlighted ? params.yValue < 0 ? 5 : 3 : undefined,
         fill: !params.highlighted ? params.yValue < 0 ? 'green' : 'skyblue': undefined,
@@ -56,10 +55,10 @@ createButton('Animate line', () => {
     animateLine = !animateLine
     if (animateLine) {
         lineIntervalId = window.setInterval(() => {
-            const data = miniLineChart.data;
+            const data = lineSparkline.data || [];
             data.shift();
             data.push(Math.random() * 50);
-            miniLineChart.data = data;
+            lineSparkline.data = data;
         }, 1000)
     } else {
         clearInterval(lineIntervalId);
@@ -67,47 +66,47 @@ createButton('Animate line', () => {
 })
 
 createButton('toggle marker', () => {
-    miniLineChart.marker.enabled = !miniLineChart.marker.enabled;
+    lineSparkline.marker.enabled = !lineSparkline.marker.enabled;
 })
 
 createSlider('marker shape', ['circle', 'square', 'diamond'], v => {
-    miniLineChart.marker.shape = v;
+    lineSparkline.marker.shape = v;
 });
 
 createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
-    miniLineChart.marker.fill = v;
-    miniLineChart.marker.stroke = v;
-    miniLineChart.line.stroke = v;
+    lineSparkline.marker.fill = v;
+    lineSparkline.marker.stroke = v;
+    lineSparkline.line.stroke = v;
 })
 
 createSlider('highlight size', [6, 7, 8, 9, 10], v => {
-    miniLineChart.highlightStyle.size = v;
+    lineSparkline.highlightStyle.size = v;
 })
 
 createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
-    miniLineChart.highlightStyle.fill = v;
+    lineSparkline.highlightStyle.fill = v;
 })
 
 // mini column chart
-const miniColumnChart = new MiniColumnChart();
-miniColumnChart.container = document.body;
-miniColumnChart.width = 100;
-miniColumnChart.height = 50;
-miniColumnChart.data = [-10, 10, 20, -20, -35, 50, 26, undefined, -70, undefined, 56, 23];
-// miniColumnChart.data = [7, 8.3, undefined, -9, '9.2', null, 5.5, Infinity, 6.75, -11.9, NaN, -Infinity, 5, 4, null, {}, 6, []] as any;
-// miniColumnChart.data = [5, 10, 20, 50, 26, 40, 56, 23];
-miniColumnChart.axis.strokeWidth = 1;
-miniColumnChart.yScaleDomain = [0, 50];
-miniColumnChart.formatter = (params) => {
+const columnSparkline = new ColumnSparkline();
+columnSparkline.container = document.body;
+columnSparkline.width = 100;
+columnSparkline.height = 50;
+columnSparkline.data = [-10, 10, 20, -20, -35, 50, 26, undefined, -70, undefined, 56, 23] as any;
+// columnSparkline.data = [7, 8.3, undefined, -9, '9.2', null, 5.5, Infinity, 6.75, -11.9, NaN, -Infinity, 5, 4, null, {}, 6, []] as any;
+// columnSparkline.data = [5, 10, 20, 50, 26, 40, 56, 23];
+columnSparkline.axis.strokeWidth = 1;
+columnSparkline.yScaleDomain = [0, 50];
+columnSparkline.formatter = (params) => {
     return {
         fill: !params.highlighted ? params.yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)' : undefined,
     }
 }
 
 createButton('change fill', () => {
-    miniColumnChart.stroke = miniColumnChart.fill === 'pink' ? 'lavender' : 'pink';
-    miniColumnChart.axis.stroke = miniColumnChart.fill === 'pink' ? 'lavender' : 'pink';
-    miniColumnChart.fill = miniColumnChart.fill === 'pink' ? 'lavender' : 'pink';
+    columnSparkline.stroke = columnSparkline.fill === 'pink' ? 'lavender' : 'pink';
+    columnSparkline.axis.stroke = columnSparkline.fill === 'pink' ? 'lavender' : 'pink';
+    columnSparkline.fill = columnSparkline.fill === 'pink' ? 'lavender' : 'pink';
 });
 
 let barIntervalId: number;
@@ -118,15 +117,15 @@ createButton('Animate bars', () => {
     }
     let i = 0;
     let data: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    let endData: number[] = miniColumnChart.data;
+    let endData: number[] = columnSparkline.data || [];
     const incrementBy: number[] = endData.map(datum => datum / increments);
 
     function step() {
         for (let i=0; i< endData.length; i++ ) {
             data[i] += incrementBy[i];
         }
-        
-        miniColumnChart.data = data;
+
+        columnSparkline.data = data;
 
         if (i <= increments) {
             i++;
@@ -145,55 +144,55 @@ createButton('Animate bars', () => {
     //         barIntervalId = null;
     //         i = 0;
     //     }
-    // }, 10)    
+    // }, 10)
 
 });
 
 createSlider('strokeWidth', [0, 1, 2, 3], v => {
-    miniColumnChart.strokeWidth = v;
+    columnSparkline.strokeWidth = v;
 });
 
 createSlider('stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v => {
-    miniColumnChart.stroke = v;
+    columnSparkline.stroke = v;
 });
 
 createSlider('paddingInner', [0, 0.2, 0.4, 0.5, 0.6, 0.8], v => {
-    miniColumnChart.paddingInner = v;
+    columnSparkline.paddingInner = v;
 });
 
 createSlider('paddingOuter', [0, 0.2, 0.4, 0.5, 0.6, 0.8], v => {
-    miniColumnChart.paddingOuter = v;
+    columnSparkline.paddingOuter = v;
 });
 
 createSlider('axis stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v => {
-    miniColumnChart.axis.stroke = v;
+    columnSparkline.axis.stroke = v;
 });
 
 createSlider('column fill', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
-    miniColumnChart.fill = v;
+    columnSparkline.fill = v;
 });
 
 createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
-    miniColumnChart.highlightStyle.fill = v;
+    columnSparkline.highlightStyle.fill = v;
 });
 
 
 
 
-const miniAreaChart = new MiniAreaChart();
-miniAreaChart.container = document.body;
-// miniAreaChart.data = [7, 8.3, 6.5, 9, 9.2, 10, 5.5, 6.75, 11.9, -10, -4, -9, 3, 18, 22, 5, -20, -19, -15, -4];
-// miniAreaChart.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
-miniAreaChart.data = [1, 1, -3 , 1, 1];
-// miniAreaChart.data = [0, 0];
-miniAreaChart.width = 100;
-miniAreaChart.height = 50;
-// miniAreaChart.line.stroke = 'pink';
-// miniAreaChart.line.strokeWidth = 2;
-miniAreaChart.marker.size = 2;
-// miniAreaChart.marker.fill = 'pink';
-// miniAreaChart.marker.stroke = 'pink';
-// miniAreaChart.fill = undefined;
+const areaSparkline = new AreaSparkline();
+areaSparkline.container = document.body;
+// areaSparkline.data = [7, 8.3, 6.5, 9, 9.2, 10, 5.5, 6.75, 11.9, -10, -4, -9, 3, 18, 22, 5, -20, -19, -15, -4];
+// areaSparkline.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
+areaSparkline.data = [1, 1, -3 , 1, 1];
+// areaSparkline.data = [0, 0];
+areaSparkline.width = 100;
+areaSparkline.height = 50;
+// areaSparkline.line.stroke = 'pink';
+// areaSparkline.line.strokeWidth = 2;
+areaSparkline.marker.size = 2;
+// areaSparkline.marker.fill = 'pink';
+// areaSparkline.marker.stroke = 'pink';
+// areaSparkline.fill = undefined;
 
 let animateArea: boolean = false;
 let areaIntervalId: number;
@@ -201,10 +200,10 @@ createButton('Animate Area', () => {
     animateArea = animateArea ? false : true;
     if (animateArea) {
         areaIntervalId = window.setInterval(() => {
-            const data = miniAreaChart.data;
+            const data = areaSparkline.data || [];
             data.shift();
             data.push((Math.random() - 0.5) * 50);
-            miniAreaChart.data = data;
+            areaSparkline.data = data;
         }, 1000)
     } else {
         clearInterval(areaIntervalId);
@@ -213,28 +212,28 @@ createButton('Animate Area', () => {
 
 
 createButton('toggle marker', () => {
-    miniAreaChart.marker.enabled = !miniAreaChart.marker.enabled;
+    areaSparkline.marker.enabled = !areaSparkline.marker.enabled;
 });
 
 createSlider('marker shape', ['circle', 'square', 'diamond'], v => {
-    miniAreaChart.marker.shape = v;
+    areaSparkline.marker.shape = v;
 });
 
 createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
-    miniAreaChart.marker.fill = v;
-    miniAreaChart.marker.stroke = v;
-    miniAreaChart.line.stroke = v;
+    areaSparkline.marker.fill = v;
+    areaSparkline.marker.stroke = v;
+    areaSparkline.line.stroke = v;
 });
 
 createSlider('highlight size', [6, 7, 8, 9, 10], v => {
-    miniAreaChart.highlightStyle.size = v;
+    areaSparkline.highlightStyle.size = v;
 });
 
 createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v => {
-    miniAreaChart.highlightStyle.fill = v;
+    areaSparkline.highlightStyle.fill = v;
 });
 
-miniAreaChart.marker.formatter = (params) => {
+areaSparkline.marker.formatter = (params) => {
     return {
         size: !params.highlighted ? params.yValue < 0 ? 5 : 3 : undefined,
         fill: !params.highlighted ? params.yValue < 0 ? 'red' : 'skyblue': undefined,
@@ -251,7 +250,7 @@ let a = 1;
     for (let t = -Math.PI; t <= Math.PI; t += 0.001) {
         let x = a * (Math.cos(t) * (1 - Math.cos(t)));
         let y = a * (Math.sin(t) * (1- Math.cos(t)));
-    
+
         data.push({ x, y});
     }
     return data;

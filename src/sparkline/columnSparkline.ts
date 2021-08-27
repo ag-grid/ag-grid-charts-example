@@ -1,10 +1,12 @@
-import { BandScale, Group, Line, LinearScale, Path } from '../../charts/main';
-import { Selection } from '../../charts/scene/selection'
-import { reactive } from '../../charts/util/observable';
-import { MiniChart, SeriesNodeDatum } from './miniChart';
-import { toTooltipHtml } from './miniChartTooltip';
+import { BandScale } from '../../charts/scale/bandScale';
+import { LinearScale } from '../../charts/scale/linearScale';
+import { Group } from '../../charts/scene/group';
+import { Line } from '../../charts/scene/shape/line';
+import { Selection } from '../../charts/scene/selection';
+import { Sparkline, SeriesNodeDatum } from './sparkline';
+import { toTooltipHtml } from './sparklineTooltip';
 import { Rectangle } from './rectangle';
-
+import { reactive } from '../../charts/util/observable';
 interface ColumnNodeDatum extends SeriesNodeDatum {
     x: number,
     y: number,
@@ -14,8 +16,7 @@ interface ColumnNodeDatum extends SeriesNodeDatum {
     stroke?: string,
     strokeWidth: number
 }
-
-interface ColumnFormatterParams {
+export interface ColumnFormatterParams {
     datum: any;
     xValue: any;
     yValue: any;
@@ -26,19 +27,18 @@ interface ColumnFormatterParams {
     strokeWidth: number;
     highlighted: boolean;
 }
-
-interface ColumnFormat{
+export interface ColumnFormat {
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
 }
-export class MiniColumnChart extends MiniChart {
-    
-    static className = 'MiniColumnChart';
+export class ColumnSparkline extends Sparkline {
 
-    private miniColumnChartGroup: Group = new Group();
+    static className = 'ColumnSparkline';
+
+    private columnSparklineGroup: Group = new Group();
     private yScale: LinearScale = new LinearScale();
-    private xScale: BandScale<number> = new BandScale<number>();
+    private xScale: BandScale<number | undefined> = new BandScale<number | undefined>();
     private xAxisLine: Line = new Line();
     private columns: Group = new Group();
     private columnSelection: Selection<Rectangle, Group, ColumnNodeDatum, ColumnNodeDatum> = Selection.select(this.columns).selectAll<Rectangle>();
@@ -48,14 +48,14 @@ export class MiniColumnChart extends MiniChart {
     @reactive('update') strokeWidth: number = 0;
     @reactive('update') paddingInner: number = 0.5;
     @reactive('update') paddingOuter: number = 0.2;
-    @reactive('update') yScaleDomain: [number, number] = undefined;
-    @reactive('update') formatter: (params: ColumnFormatterParams) => ColumnFormat;
+    @reactive('update') yScaleDomain: [number, number] | undefined = undefined;
+    @reactive('update') formatter?: (params: ColumnFormatterParams) => ColumnFormat;
 
     constructor() {
         super();
 
-        this.rootGroup.append(this.miniColumnChartGroup);
-        this.miniColumnChartGroup.append([this.columns, this.xAxisLine]);
+        this.rootGroup.append(this.columnSparklineGroup);
+        this.columnSparklineGroup.append([this.columns, this.xAxisLine]);
 
         this.addEventListener('update', this.scheduleLayout, this);
 
@@ -67,17 +67,13 @@ export class MiniColumnChart extends MiniChart {
     }
 
     protected update() {
-        const { seriesRect } = this;
-        this.rootGroup.translationX = seriesRect.x;
-        this.rootGroup.translationY = seriesRect.y;
-
         this.updateYScale();
         this.updateXScale();
         this.updateXAxisLine();
 
         const nodeData = this.generateNodeData();
         this.columnSelectionData = nodeData;
-        
+
         this.updateRectNodesSelection(nodeData);
         this.updateRectNodes();
     }
@@ -87,8 +83,19 @@ export class MiniColumnChart extends MiniChart {
 
         yScale.range = [seriesRect.height, 0];
 
-        let [minY, maxY] = this.findMinAndMax(yData);
-        
+        // TODO: fix this up
+        const extent = this.findMinAndMax(yData);
+        let minY;
+        let maxY;
+
+        if (!extent) {
+            minY = 0;
+            maxY = 1;
+        } else {
+            minY = extent[0];
+            maxY = extent[1];
+        }
+
         minY = minY < 0 ? minY : 0;
 
         if (minY === maxY) {
@@ -136,7 +143,7 @@ export class MiniColumnChart extends MiniChart {
         const { yData, xData, xScale, yScale, fill, stroke, strokeWidth } = this;
 
         const nodeData: ColumnNodeDatum[] = [];
-        
+
         const yZero: number = yScale.convert(0);
         const width: number = xScale.bandwidth;
 
@@ -145,7 +152,7 @@ export class MiniColumnChart extends MiniChart {
             let xDatum = xData[i];
 
             let invalidDatum = yDatum === undefined;
-            
+
             if (invalidDatum) {
                 yDatum = 0;
             }
@@ -160,13 +167,13 @@ export class MiniColumnChart extends MiniChart {
                 y: yZero
             }
 
-            nodeData.push({ 
-                x, 
-                y, 
-                width, 
-                height, 
-                fill, 
-                stroke, 
+            nodeData.push({
+                x,
+                y,
+                width,
+                height,
+                fill,
+                stroke,
                 strokeWidth,
                 seriesDatum: { x: xDatum, y: invalidDatum ? undefined : yDatum },
                 point: midPoint
@@ -188,7 +195,7 @@ export class MiniColumnChart extends MiniChart {
     private updateRectNodes() {
         const { highlightedDatum, formatter: columnFormatter, fill, stroke, strokeWidth } = this;
         const { fill: highlightFill, stroke: highlightStroke, strokeWidth: highlightStrokeWidth } = this.highlightStyle;
-        
+
         this.columnSelection.each((column, datum) => {
             const highlighted = datum === highlightedDatum;
             const columnFill = highlighted && highlightFill !== undefined ? highlightFill : fill;
@@ -201,7 +208,7 @@ export class MiniColumnChart extends MiniChart {
 
             if (columnFormatter) {
                 columnFormat = columnFormatter({
-                    datum, 
+                    datum,
                     xValue: seriesDatum.x,
                     yValue: seriesDatum.y,
                     width: width,

@@ -1,41 +1,54 @@
-import { Group, Padding, Scene } from '../../charts/main';
+
+import { Group } from '../../charts/scene/group';
+import { Scene } from '../../charts/scene/scene';
 import { createId } from '../../charts/util/id';
 import { Observable, reactive } from '../../charts/util/observable';
+import { Padding } from '../../charts/util/padding';
 import { defaultTooltipCss } from './defaultTooltipCss';
-import { MiniChartTooltip } from './miniChartTooltip';
+import { SparklineTooltip } from './sparklineTooltip';
 import { isNumber } from './util';
 
 export interface SeriesNodeDatum {
     readonly seriesDatum: any;
     readonly point?: Point;
 }
+
 export interface Point {
     readonly x: number;
     readonly y: number;
 }
+
 interface SeriesRect {
     x: number;
     y: number;
     width: number;
     height: number;
 }
-class MiniChartAxis extends Observable {
+
+export interface HighlightStyle {
+    size?: number;
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number;
+}
+
+export class SparklineAxis extends Observable {
     @reactive('update') stroke: string = 'rgb(204, 214, 235)';
     @reactive('update') strokeWidth: number = 1;
 }
-export abstract class MiniChart extends Observable {
+export abstract class Sparkline extends Observable {
 
     readonly id: string = createId(this);
-    
+
     readonly scene: Scene;
     readonly canvasElement: HTMLCanvasElement;
     readonly rootGroup: Group;
 
-    readonly tooltip: MiniChartTooltip;
+    readonly tooltip: SparklineTooltip;
     static readonly defaultTooltipClass = 'ag-sparkline-tooltip';
 
     private static tooltipDocuments: Document[] = [];
-    private static tooltipInstances: Map<Document, MiniChartTooltip> = new Map();
+    private static tooltipInstances: Map<Document, SparklineTooltip> = new Map();
 
     protected seriesRect: SeriesRect = {
         x: 0,
@@ -66,10 +79,10 @@ export abstract class MiniChart extends Observable {
 
     @reactive() data?: number[] = undefined;
     @reactive() title?: string = undefined;
-    @reactive() padding?: Padding = new Padding(3);
+    @reactive() padding: Padding = new Padding(3);
 
-    readonly axis = new MiniChartAxis();
-    readonly highlightStyle = {
+    readonly axis = new SparklineAxis();
+    readonly highlightStyle: HighlightStyle = {
         size: 6,
         fill: 'yellow',
         stroke: 'yellow',
@@ -91,24 +104,24 @@ export abstract class MiniChart extends Observable {
         scene.root = root;
         scene.container = element;
         scene.resize(this.width, this.height);
-        
+
         this.seriesRect.width = this.width;
         this.seriesRect.height = this.height;
 
         // one tooltip instance per document
-        if (MiniChart.tooltipDocuments.indexOf(document) === -1) {
+        if (Sparkline.tooltipDocuments.indexOf(document) === -1) {
             const styleElement = document.createElement('style');
             styleElement.innerHTML = defaultTooltipCss;
-        
+
             document.head.insertBefore(styleElement, document.head.querySelector('style'));
-            MiniChart.tooltipDocuments.push(document);
-        
-            this.tooltip = new MiniChartTooltip(this);
+            Sparkline.tooltipDocuments.push(document);
+
+            this.tooltip = new SparklineTooltip(this);
             this.tooltip.addEventListener('class', () => this.tooltip.toggle());
-        
-            MiniChart.tooltipInstances.set(document, this.tooltip);
+
+            Sparkline.tooltipInstances.set(document, this.tooltip);
         } else {
-            this.tooltip = MiniChart.tooltipInstances.get(document);
+            this.tooltip = Sparkline.tooltipInstances.get(document)!;
         }
 
         this.addPropertyListener('data', this.processData, this);
@@ -143,11 +156,11 @@ export abstract class MiniChart extends Observable {
         return this._height;
     }
 
-    protected yData: number[] = [];
-    protected xData: number[] = [];
+    protected yData: (number | undefined)[] = [];
+    protected xData: (number | undefined)[] = [];
 
     protected update() { }
-    protected generateNodeData(): { nodeData: SeriesNodeDatum[], areaData: SeriesNodeDatum[] } | SeriesNodeDatum[] { return []; }
+    protected generateNodeData(): { nodeData: SeriesNodeDatum[], areaData: SeriesNodeDatum[] } | SeriesNodeDatum[] | undefined { return []; }
     protected getNodeData(): readonly SeriesNodeDatum[] { return []; }
     protected highlightDatum(closestDatum: SeriesNodeDatum) { }
     protected dehighlightDatum() { }
@@ -155,7 +168,11 @@ export abstract class MiniChart extends Observable {
 
     private onMouseMove(event: MouseEvent) {
         const closestDatum: SeriesNodeDatum | undefined = this.pickClosestSeriesNodeDatum(event.offsetX, event.offsetY);
-        
+
+        if (!closestDatum) {
+            return;
+        }
+
         this.highlightDatum(closestDatum);
 
         if (this.tooltip.enabled) {
@@ -193,7 +210,7 @@ export abstract class MiniChart extends Observable {
         return noDatum ? undefined : y;
     }
 
-    protected findMinAndMax(values: number[]): [number, number] {
+    protected findMinAndMax(values: (number | undefined)[]): [number, number] | undefined {
         const n = values.length;
         let value;
         let i = -1;
@@ -216,7 +233,8 @@ export abstract class MiniChart extends Observable {
             }
 
         }
-        return [min, max];
+
+        return typeof min === 'undefined' || typeof max === 'undefined' ? undefined : [min, max];
     }
 
     private layoutId: number = 0;
@@ -229,14 +247,18 @@ export abstract class MiniChart extends Observable {
             cancelAnimationFrame(this.layoutId);
         }
         this.layoutId = requestAnimationFrame(() => {
-            const { width, height, padding } = this;
+            const { width, height, padding, seriesRect, rootGroup } = this;
+
             const shrunkWidth = width - padding.left - padding.right;
             const shrunkHeight = height - padding.top - padding.bottom;
 
-            this.seriesRect.width = shrunkWidth;
-            this.seriesRect.height = shrunkHeight;
-            this.seriesRect.x = padding.left;
-            this.seriesRect.y = padding.top;
+            seriesRect.width = shrunkWidth;
+            seriesRect.height = shrunkHeight;
+            seriesRect.x = padding.left;
+            seriesRect.y = padding.top;
+
+            rootGroup.translationX = seriesRect.x;
+            rootGroup.translationY = seriesRect.y;
 
             this.update();
 
@@ -245,11 +267,6 @@ export abstract class MiniChart extends Observable {
     }
 
     private pickClosestSeriesNodeDatum(x: number, y: number): SeriesNodeDatum | undefined {
-        type Point = {
-            x: number,
-            y: number
-        }
-
         function getDistance(p1: Point, p2: Point): number {
             return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
         }
@@ -262,14 +279,14 @@ export abstract class MiniChart extends Observable {
             if (!datum.point) {
                 return;
             }
-            const distance = getDistance(datum.point, hitPoint);
+            const distance = getDistance(hitPoint, datum.point);
             if (distance < minDistance) {
                 minDistance = distance;
                 closestDatum = datum;
             }
         });
 
-        return closestDatum && closestDatum;
+        return closestDatum;
     }
 
     private handleTooltip(datum: SeriesNodeDatum): void {
@@ -277,15 +294,16 @@ export abstract class MiniChart extends Observable {
         const { canvasElement } = this;
         const canvasRect = canvasElement.getBoundingClientRect();
         const { pageXOffset, pageYOffset } = window;
-        const point = this.rootGroup.inverseTransformPoint(datum.point.x, datum.point.y);
+        // pickClosestSeriesNodeDatum only returns datum with point
+        const point = this.rootGroup.inverseTransformPoint(datum.point!.x, datum.point!.y);
 
         const meta = {
-            pageX: (point.x + canvasRect.x + pageXOffset),
-            pageY: (point.y + canvasRect.y + pageYOffset)
+            pageX: (point.x + canvasRect.left + pageXOffset),
+            pageY: (point.y + canvasRect.top + pageYOffset)
         }
 
         const html = this.tooltip.enabled && seriesDatum.y !== undefined && this.getTooltipHtml(datum);
-        
+
         if (html) {
             this.tooltip.show(meta, html);
         }
@@ -297,7 +315,7 @@ export abstract class MiniChart extends Observable {
 
     private _onMouseMove = this.onMouseMove.bind(this);
     private _onMouseOut = this.onMouseOut.bind(this);
-    
+
     private setupDomEventListeners(chartElement: HTMLCanvasElement): void {
         chartElement.addEventListener('mousemove', this._onMouseMove);
         chartElement.addEventListener('mouseout', this._onMouseOut);
@@ -311,9 +329,9 @@ export abstract class MiniChart extends Observable {
     protected destroy() {
         this.tooltip.destroy();
         // remove tooltip instance
-        MiniChart.tooltipInstances.delete(document);
+        Sparkline.tooltipInstances.delete(document);
         // remove document from documents list
-        MiniChart.tooltipDocuments = MiniChart.tooltipDocuments.filter(d => d !== document);
+        Sparkline.tooltipDocuments = Sparkline.tooltipDocuments.filter(d => d !== document);
         this.scene.container = undefined;
         this.cleanupDomEventListerners(this.scene.canvas.element);
     }

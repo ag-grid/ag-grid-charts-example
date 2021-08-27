@@ -1,4 +1,3 @@
-import { update } from "lodash";
 import { Group, LinearScale, Padding, Path, Scene } from "../../charts/main";
 import { Observable, reactive } from "../../charts/util/observable";
 
@@ -14,7 +13,7 @@ export class Cardioid extends Observable {
 
 
     @reactive("dataChange") data?: any[] = [];
-    @reactive() padding?: Padding = new Padding(3);
+    @reactive() padding: Padding = new Padding(3);
 
 
     private _size: [number, number] = [100, 100];
@@ -37,7 +36,7 @@ export class Cardioid extends Observable {
     get xKey(): string {
         return this._xKey;
     }
-    
+
     private _yKey: string = "y";
     set yKey(value: string) {
         if (this._yKey !== value) {
@@ -122,7 +121,7 @@ export class Cardioid extends Observable {
         this.scene.root = this.rootGroup;
 
         this.scene.canvas.element.style.border = "1px solid black";
-        
+
         this.rootGroup.append(this.miniLineChartGroup);
         this.miniLineChartGroup.append(this.linePath);
     }
@@ -189,7 +188,7 @@ export class Cardioid extends Observable {
     //     })
     //     let min: number = this.data[0][key]
     //     let max: number = 0
-    
+
     //     for (let i = 0; i < this.data.length; i++) {
     //         if (this.data[i][key] < min) {
     //             min = this.data[i][key]
@@ -198,7 +197,7 @@ export class Cardioid extends Observable {
     //             max = this.data[i][key]
     //         }
     //     }
-    
+
     //     return {
     //         min,
     //         max
@@ -228,7 +227,7 @@ export class Cardioid extends Observable {
         linePath.fill = fill;
         linePath.stroke = lineStroke;
         linePath.strokeWidth = lineStrokeWidth;
-        
+
         // linePath.path.closePath();
 
         // linePath.rotation = -Math.PI / 2;

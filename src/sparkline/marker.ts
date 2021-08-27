@@ -1,4 +1,4 @@
-import { Shape } from '../../charts/main';
+import { Shape } from "../../charts/scene/shape/shape";
 
 export abstract class Marker extends Shape {
     protected _x: number = 0;

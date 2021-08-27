@@ -1,23 +1,15 @@
-import { BandScale, Group, LinearScale, Path } from '../../charts/main';
-import { Selection } from '../../charts/scene/selection'
+import { BandScale } from '../../charts/scale/bandScale';
+import { LinearScale } from '../../charts/scale/linearScale';
+import { Group } from '../../charts/scene/group';
+import { Path } from '../../charts/scene/shape/path';
 import { Observable, reactive } from '../../charts/util/observable';
 import { Marker } from './marker';
-import { MiniChart, SeriesNodeDatum } from './miniChart';
-import { toTooltipHtml } from './miniChartTooltip';
+import { Sparkline, Point, SeriesNodeDatum } from './sparkline';
+import { Selection } from '../../charts/scene/selection';
+import { toTooltipHtml } from './sparklineTooltip';
 import { getMarkerShape } from './util';
 
-interface LineNodeDatum extends SeriesNodeDatum { }
-
-interface MarkerFormat {
-    enabled?: boolean;
-    shape?: string;
-    size?: number;
-    fill?: string;
-    stroke?: string;
-    strokeWidth?: number;
-}
-
-interface MarkerFormatterParams {
+export interface MarkerFormatterParams {
     datum: any;
     xValue: any;
     yValue: any;
@@ -27,8 +19,18 @@ interface MarkerFormatterParams {
     size: number;
     highlighted: boolean;
 }
-
-class MiniChartMarker extends Observable {
+export interface MarkerFormat {
+    enabled?: boolean;
+    shape?: string;
+    size?: number;
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number;
+}
+interface LineNodeDatum extends SeriesNodeDatum {
+    readonly point: Point;
+}
+class SparklineMarker extends Observable {
     @reactive() enabled: boolean = true;
     @reactive() shape: string = 'circle';
     @reactive('update') size: number = 0;
@@ -37,30 +39,30 @@ class MiniChartMarker extends Observable {
     @reactive('update') strokeWidth: number = 1;
     @reactive('update') formatter?: (params: MarkerFormatterParams) => MarkerFormat;
 }
-class MiniChartLine extends Observable {
+class SparklineLine extends Observable {
     @reactive('update') stroke: string = 'rgb(124, 181, 236)';
     @reactive('update') strokeWidth: number = 1;
 }
-export class MiniLineChart extends MiniChart {
+export class LineSparkline extends Sparkline {
 
-    static className = 'MiniLineChart';
+    static className = 'LineSparkline';
 
-    private miniLineChartGroup: Group = new Group();
+    private lineSparklineGroup: Group = new Group();
     protected linePath: Path = new Path();
     protected yScale: LinearScale = new LinearScale();
-    protected xScale: BandScale<number> = new BandScale<number>();
+    protected xScale: BandScale<number | undefined> = new BandScale<number | undefined>();
     private markers: Group = new Group();
     private markerSelection: Selection<Marker, Group, LineNodeDatum, any> = Selection.select(this.markers).selectAll<Marker>();
     private markerSelectionData: LineNodeDatum[] = [];
 
-    readonly marker = new MiniChartMarker();
-    readonly line = new MiniChartLine();
+    readonly marker = new SparklineMarker();
+    readonly line = new SparklineLine();
 
     constructor() {
         super();
 
-        this.rootGroup.append(this.miniLineChartGroup);
-        this.miniLineChartGroup.append([this.linePath, this.markers]);
+        this.rootGroup.append(this.lineSparklineGroup);
+        this.lineSparklineGroup.append([this.linePath, this.markers]);
 
         this.marker.addEventListener('update', this.updateMarkers, this);
         this.marker.addPropertyListener('enabled', this.updateMarkers, this);
@@ -79,10 +81,6 @@ export class MiniLineChart extends MiniChart {
     }
 
     protected update(): void {
-        const { seriesRect } = this;
-        this.rootGroup.translationX = seriesRect.x;
-        this.rootGroup.translationY = seriesRect.y;
-
         this.updateXScale();
         this.updateYScaleRange();
         this.updateYScaleDomain();
@@ -103,7 +101,18 @@ export class MiniLineChart extends MiniChart {
 
     protected updateYScaleDomain(): void {
         const { yData, yScale } = this;
-        let [minY, maxY] = this.findMinAndMax(yData);
+
+        const extent = this.findMinAndMax(yData);
+        let minY;
+        let maxY;
+
+        if (!extent) {
+            minY = 0;
+            maxY = 1;
+        } else {
+            minY = extent[0];
+            maxY = extent[1];
+        }
 
         if (minY === maxY) {
             // if all values in the data are the same, minY and maxY will be equal, need to adjust the domain with some padding.
@@ -175,15 +184,15 @@ export class MiniLineChart extends MiniChart {
             const markerStroke = highlighted && highlightStroke !== undefined ? highlightStroke : marker.stroke;
             const markerStrokeWidth = highlighted && highlightStrokeWidth !== undefined ? highlightStrokeWidth : marker.strokeWidth;
             const markerSize = highlighted && highlightSize !== undefined ? highlightSize : marker.size;
-            
+
             let markerFormat: MarkerFormat | undefined = undefined;
 
             const { seriesDatum, point } = datum;
 
             if (markerFormatter) {
                 markerFormat = markerFormatter({
-                    datum, 
-                    xValue: seriesDatum.x, 
+                    datum,
+                    xValue: seriesDatum.x,
                     yValue: seriesDatum.y,
                     fill: markerFill,
                     stroke: markerStroke,

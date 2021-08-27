@@ -3,9 +3,9 @@ import { Component, Grid, GridOptions, ICellRendererParams } from 'ag-grid-commu
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
-import { MiniAreaChart } from '../sparkline/miniAreaChart';
-import { MiniLineChart } from '../sparkline/miniLineChart';
-import { MiniColumnChart } from '../sparkline/miniColumnChart';
+import { AreaSparkline } from '../sparkline/areaSparkline';
+import { LineSparkline } from '../sparkline/lineSparkline';
+import { ColumnSparkline } from '../sparkline/columnSparkline';
 
 const symbols: string[] = [
     'AAPL',
@@ -53,9 +53,9 @@ class HistoryLineChartCellRenderer  {
     // init method gets the details of the cell to be renderer
     init(params: ICellRendererParams) {
 
-        const sparkline = new MiniLineChart();
+        const sparkline = new LineSparkline();
 
-        sparkline.width = params.column.getActualWidth() - 34;
+        sparkline.width = params.column!.getActualWidth() - 34;
         sparkline.data = params.value;
         sparkline.height = 40;
         sparkline.marker.fill = '#7cb5ec';
@@ -84,14 +84,14 @@ class HistoryLineChartCellRenderer  {
 class HistoryAreaChartCellRenderer {
     constructor() { }
 
-    private eGui: HTMLElement
+    private eGui?: HTMLElement;
     // init method gets the details of the cell to be renderer
     init(params: ICellRendererParams) {
 
-        const sparkline = new MiniAreaChart();
-        
+        const sparkline = new AreaSparkline();
+
         sparkline.data = params.value;
-        sparkline.width = params.column.getActualWidth() - 34;
+        sparkline.width = params!.column!.getActualWidth() - 34;
         sparkline.height = 40;
         sparkline.marker.fill = '#7cb5ec';
         sparkline.marker.stroke = '#7cb5ec';
@@ -119,14 +119,14 @@ class HistoryAreaChartCellRenderer {
 
 class HistoryColumnChartCellRenderer {
 
-    sparkline: MiniColumnChart = new MiniColumnChart();
+    sparkline: ColumnSparkline = new ColumnSparkline();
 
     // init method gets the details of the cell to be renderer
     init(params: ICellRendererParams) {
 
         const { sparkline } = this;
 
-        sparkline.width = params.column.getActualWidth() - 34;
+        sparkline.width = params.column!.getActualWidth() - 34;
         sparkline.data = params.value;
         sparkline.height = 40;
         sparkline.fill = '#7cb5ec';
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { field: 'history', headerName: 'History Area Chart', cellRenderer: HistoryAreaChartCellRenderer },
         { field: 'history', headerName: 'History Column Chart', cellRenderer: HistoryColumnChartCellRenderer },
     ];
-    
+
     const quotes = await getQuotes(symbols);
     const history = await getHistory(symbols);
 
@@ -198,17 +198,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     new Grid(gridDiv, gridOptions);
 
-    gridOptions.api.setRowData(quotes);
+    gridOptions.api!.setRowData(quotes);
 
     const onDataChange = (event: MouseEvent) => {
         quotes.forEach(quote => {
             quote.history.shift();
             quote.history.push(quote.history[quote.history.length -1] * (Math.random() + 0.5));
         })
-        gridOptions.api.setRowData(quotes);
+        gridOptions.api!.setRowData(quotes);
     }
     const changeDataButton = document.createElement('button');
-    changeDataButton.textContent = 'Change History';    
+    changeDataButton.textContent = 'Change History';
     document.body.appendChild(changeDataButton);
     changeDataButton.addEventListener('click', onDataChange);
 });

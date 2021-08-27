@@ -1,6 +1,7 @@
+
 import { Color } from "../../charts/util/color";
 import { Observable, reactive } from "../../charts/util/observable";
-import { MiniChart } from "./miniChart";
+import { Sparkline } from "./sparkline";
 
 export interface TooltipMeta {
     pageX: number;
@@ -30,11 +31,11 @@ export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: 
 
     defaults = defaults || {};
 
-    const { 
-        content = defaults.content || '', 
-        title = defaults.title || undefined, 
-        color = defaults.color || 'black', 
-        backgroundColor = defaults.backgroundColor || 'rgb(136, 136, 136)', 
+    const {
+        content = defaults.content || '',
+        title = defaults.title || undefined,
+        color = defaults.color || 'black',
+        backgroundColor = defaults.backgroundColor || 'rgb(136, 136, 136)',
         opacity = defaults.opacity || 0.2
     } = input;
 
@@ -43,30 +44,30 @@ export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: 
 
     // TODO: combine a and opacity for alpha?
     const alpha = opacity;
-    
+
     const titleBgColorWithAlpha = Color.fromArray([r, g, b, alpha]);
     const titleBgColorRgbaString = titleBgColorWithAlpha.toRgbaString();
 
 
     const contentBgColor = `rgba(244, 244, 244, ${opacity})`;
 
-    const titleHtml = title ? `<div class="${MiniChart.defaultTooltipClass}-title";
+    const titleHtml = title ? `<div class="${Sparkline.defaultTooltipClass}-title";
     style="color: ${color}; background-color: ${titleBgColorRgbaString}">${title}</div>` : '';
 
-    return `${titleHtml}<div class="${MiniChart.defaultTooltipClass}-content" style="background-color: ${contentBgColor}">${content}</div>`;
+    return `${titleHtml}<div class="${Sparkline.defaultTooltipClass}-content" style="background-color: ${contentBgColor}">${content}</div>`;
 
 }
 
-export class MiniChartTooltip extends Observable {
-    chart: MiniChart;
+export class SparklineTooltip extends Observable {
+    chart: Sparkline;
     element: HTMLElement = document.createElement('div');
 
-    @reactive() class: string = MiniChart.defaultTooltipClass;
+    @reactive() class: string = Sparkline.defaultTooltipClass;
     @reactive() enabled: boolean = true;
-    @reactive() container: HTMLElement;
+    @reactive() container?: HTMLElement;
     @reactive('change') renderer?: (params: TooltipRendererParams) => string | TooltipRendererResult;
 
-    constructor(chart: MiniChart) {
+    constructor(chart: Sparkline) {
         super();
 
         this.chart = chart;
@@ -78,26 +79,26 @@ export class MiniChartTooltip extends Observable {
     isVisible(): boolean {
         const { element } = this;
         if (element.classList) {
-            return !element.classList.contains(`${MiniChart.defaultTooltipClass}-hidden`);
+            return !element.classList.contains(`${Sparkline.defaultTooltipClass}-hidden`);
         }
 
         // IE11
         const classes = element.getAttribute('class');
         if (classes) {
-            return classes.split(' ').indexOf(`${MiniChart.defaultTooltipClass}-hidden`) < 0;
+            return classes.split(' ').indexOf(`${Sparkline.defaultTooltipClass}-hidden`) < 0;
         }
 
         return false;
     }
     updateClass(visible?: boolean, constrained?: boolean) {
-        const classList = [MiniChart.defaultTooltipClass];
+        const classList = [Sparkline.defaultTooltipClass];
 
         if (visible !== true) {
-            classList.push(`${MiniChart.defaultTooltipClass}-hidden`);
+            classList.push(`${Sparkline.defaultTooltipClass}-hidden`);
         }
 
         if (constrained !== true) {
-            classList.push(`${MiniChart.defaultTooltipClass}-arrow`);
+            classList.push(`${Sparkline.defaultTooltipClass}-arrow`);
         }
 
         this.element.setAttribute('class', classList.join(' '));
@@ -106,7 +107,7 @@ export class MiniChartTooltip extends Observable {
     private constrained = false;
     show(meta: TooltipMeta, html?: string) {
         const { element } = this;
-        
+
         if (html !== undefined) {
             element.innerHTML = html;
         } else if (!element.innerHTML) {
@@ -118,17 +119,17 @@ export class MiniChartTooltip extends Observable {
 
         this.constrained = false;
         const tooltipRect = element.getBoundingClientRect();
-        
+
         let minLeft = 0;
         let maxLeft = window.innerWidth - tooltipRect.width;
         let minTop = window.pageYOffset;
 
         if (this.container) {
             const containerRect = this.container.getBoundingClientRect();
-            
-            minLeft = containerRect.x;
+
+            minLeft = containerRect.left;
             maxLeft = containerRect.width - tooltipRect.width;
-            minTop = containerRect.y < 0 ?  window.pageYOffset : containerRect.y;
+            minTop = containerRect.top < 0 ?  window.pageYOffset : containerRect.top;
         }
 
         if (left < minLeft) {
@@ -144,7 +145,7 @@ export class MiniChartTooltip extends Observable {
             // top = meta.pageY + 20;
             this.updateClass(true, this.constrained = true);
         }
-        
+
         element.style.left = `${left}px`;
         element.style.top = `${top}px`;
 
