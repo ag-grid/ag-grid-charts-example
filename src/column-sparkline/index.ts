@@ -3,8 +3,8 @@ import { AgSparkline } from "../../sparklines/sparkline/agSparkline";
 
 const yData = [1, 2, 3, 4, 2, -2, -3, -4, 2, 3, 4];
 
-const sparkline = AgSparkline.create({
-    container: document.body, // TODO: doesn't work
+AgSparkline.create({
+    container: document.body,
     width: 200,
     stroke: 'black',
     strokeWidth: 7,
@@ -14,8 +14,6 @@ const sparkline = AgSparkline.create({
         strokeWidth: 7
     }
 });
-
-document.body.appendChild(sparkline.getCanvasElement());
 
 AgChart.create({
     container: document.body,
