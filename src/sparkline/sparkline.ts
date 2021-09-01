@@ -309,7 +309,7 @@ export abstract class Sparkline extends Observable {
         }
     }
 
-    protected formatDatum(datum: any) : string {
+    protected formatDatum(datum: any): string {
         return datum.toFixed(1);
     }
 
@@ -326,7 +326,7 @@ export abstract class Sparkline extends Observable {
         chartElement.removeEventListener('mouseout', this._onMouseOut);
     }
 
-    protected destroy() {
+    destroy() {
         this.tooltip.destroy();
         // remove tooltip instance
         Sparkline.tooltipInstances.delete(document);
