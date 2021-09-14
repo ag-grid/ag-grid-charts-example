@@ -12,16 +12,23 @@ export function makeChartResizeable(chart: Chart) {
         startY = e.offsetY;
         chartSize = [chart.width, chart.height];
         isDragging = true;
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
     });
-    scene.canvas.element.addEventListener('mousemove', (e: MouseEvent) => {
+
+    function onMouseMove(e: MouseEvent) {
         if (isDragging && e.shiftKey) {
             const dx = e.offsetX - startX;
             const dy = e.offsetY - startY;
             chart.width = chartSize[0] + dx;
             chart.height = chartSize[1] + dy;
         }
-    });
-    scene.canvas.element.addEventListener('mouseup', () => {
+    }
+
+    function onMouseUp(e: MouseEvent) {
         isDragging = false;
-    });
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
 }
