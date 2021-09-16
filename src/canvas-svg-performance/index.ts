@@ -1,7 +1,7 @@
 import { LinearScale } from "../../charts/scale/linearScale";
 import { BandScale } from "../../charts/scale/bandScale";
 import { createHdpiCanvas } from "../../charts/canvas/canvas";
-import { CanvasAxis } from "../../charts/canvasAxis";
+import { CanvasAxis } from "../../lib/canvasAxis";
 
 const gradientTheme = [
     ['#69C5EC', '#53AFD6'],

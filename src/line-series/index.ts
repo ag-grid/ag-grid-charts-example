@@ -636,42 +636,63 @@ function createBasicLineChartUsingFactory() {
         },
         data: [{
             quarter: '2015',
-            spending: 37
+            spending: 37,
+            y: 10
         }, {
             quarter: '2016',
-            spending: 40
+            spending: 40,
+            y: 15
         }, {
             quarter: '2017',
-            spending: 42
+            spending: 42,
+            y: 20
         }, {
             quarter: '2018',
-            spending: 43
+            spending: 43,
+            y: 25
         }],
         series: [{
             xKey: 'quarter',
-            yKey: 'spending'
-        }],
-        axes: [{
-            type: 'number',
-            position: 'left',
-            // min: 0,
-            // max: 50
-            // tick: {
-            //     count: 5
-            // }
-            label: {
-                formatter: (params: any) => {
-                    debugger;
-                    return '';
+            yKey: 'spending',
+            stroke: 'green',
+            strokeWidth: 1,
+            marker: {
+                strokeWidth: 0,
+                size: 12
+            },
+            highlightStyle: {
+                item: {
+                    strokeWidth: 3
+                },
+                series: {
+                    enabled: true,
+                    strokeWidth: 3
                 }
             }
         }, {
+            xKey: 'quarter',
+            yKey: 'y',
+            stroke: 'red',
+            marker: {
+                size: 12
+            },
+            highlightStyle: {
+                item: {
+                    strokeWidth: 5
+                },
+                series: {
+                    enabled: true,
+                    strokeWidth: 5
+                }
+            }
+        }],
+        axes: [{
+            type: 'number',
+            position: 'left'
+        }, {
             type: 'category',
             position: 'bottom'
-        }],
-        legend: {
-            enabled: false
-        }
+        }]
     });
 
     document.body.appendChild(document.createElement('br'));
@@ -999,13 +1020,13 @@ function createAllCategoryLineChart() {
 
 document.addEventListener('DOMContentLoaded', () => {
     createBasicLineChartUsingFactory();
-    // createGapChart();
-    // createTwoVerticalAxesLineChart();
-    // createCategoryLineChart();
-    // createLeftCategoryLineChart();
-    // createAllCategoryLineChart();
-    // createNumericLineChart();
-    // createTimeLineChart();
-    // createRealTimeChart();
-    // createMultiLineChart();
+    createGapChart();
+    createTwoVerticalAxesLineChart();
+    createCategoryLineChart();
+    createLeftCategoryLineChart();
+    createAllCategoryLineChart();
+    createNumericLineChart();
+    createTimeLineChart();
+    createRealTimeChart();
+    createMultiLineChart();
 });

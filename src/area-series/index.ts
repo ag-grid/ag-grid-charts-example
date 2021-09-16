@@ -13,7 +13,7 @@ import { Path } from "../../charts/scene/shape/path";
 import { DropShadow } from "../../charts/scene/dropShadow";
 import { Group } from "../../charts/scene/group";
 import { LegendPosition } from "../../charts/chart/legend";
-import { AgChart, Arc } from '../../charts/main';
+import { AgCartesianChartOptions, AgChart, Arc } from '../../charts/main';
 
 type Datum = {
     category: string,
@@ -272,57 +272,79 @@ function makeNuclearChartWithNumericX() {
         });
     }
 
-    const xAxis = new NumberAxis();
-    xAxis.position = ChartAxisPosition.Bottom;
-    xAxis.nice = false;
-    const yAxis = new NumberAxis();
-    yAxis.position = ChartAxisPosition.Left;
+    const chart = AgChart.create({
+        data,
+        container: document.body,
+        width: 900,
+        height: 400,
+        autoSize: false,
+        title: {
+            text: 'US and USSR nuclear stockpiles',
+        },
+        subtitle: {
+            text: 'Sources: thebulletin.org & armscontrol.org'
+        },
+        axes: [{
+            type: 'number',
+            position: 'bottom',
+            max: 2000,
+            nice: false
+        }, {
+            type: 'number',
+            position: 'left'
+        }],
+        series: [{
+            type: 'area',
+            xKey: 'year',
+            yKeys: ['usa'],
+            yNames: ['USA'],
+            fills: ['rgba(255, 0, 0, 0.9)'],
+            strokes: ['maroon'],
+            marker: {
+                size: 8
+            },
+            highlightStyle: {
+                item: {
+                    fill: 'green',
+                    stroke: 'gold',
+                    strokeWidth: 3
+                },
+                series: {
+                    dimOpacity: 0.3,
+                    strokeWidth: 4
+                }
+            }
+        }, {
+            type: 'area',
+            xKey: 'year',
+            yKeys: ['ussr'],
+            yNames: ['USSR/Russia'],
+            fills: ['rgba(0, 0, 255, 0.9)'],
+            strokes: ['darkblue'],
+            marker: {
+                size: 8
+            },
+            highlightStyle: {
+                item: {
+                    fill: 'green',
+                    stroke: 'gold',
+                    strokeWidth: 2
+                },
+                series: {
+                    dimOpacity: 0.3,
+                    strokeWidth: 12
+                }
+            }
+        }],
+        legend: {
+            position: 'bottom'
+        },
+        navigator: {
 
-    const chart = new CartesianChart();
-    chart.container = document.body;
-    chart.width = 1200;
-    chart.height = 400;
-    chart.axes = [xAxis, yAxis];
-
-    chart.title = new Caption();
-    chart.title.text = 'US and USSR nuclear stockpiles';
-    chart.title.fontWeight = 'bold';
-    chart.title.fontSize = 20;
-    chart.title.fontFamily = 'Verdana, sans-serif';
-
-    chart.subtitle = new Caption();
-    chart.subtitle.text = 'Sources: thebulletin.org & armscontrol.org';
-    chart.subtitle.fontSize = 12;
-    chart.subtitle.fontFamily = 'Verdana, sans-serif';
-    chart.subtitle.color = 'rgba(0, 0, 0, 0.6)';
+        }
+    });
 
     chart.scene.canvas.element.style.border = '1px solid black';
-
-    const usaArea = new AreaSeries();
-    usaArea.yNames = ['USA'];
-    usaArea.xKey = 'year';
-    usaArea.yKeys = ['usa'];
-    usaArea.data = data;
-    usaArea.fills = ['rgba(255, 0, 0, 0.7)'];
-    usaArea.strokes = ['maroon'];
-    usaArea.tooltip.enabled = true;
-
-    const ussrArea = new AreaSeries();
-    ussrArea.yNames = ['USSR/Russia'];
-    ussrArea.xKey = 'year';
-    ussrArea.yKeys = ['ussr'];
-    ussrArea.data = data;
-    ussrArea.fills = ['rgba(0, 0, 255, 0.7)'];
-    ussrArea.strokes = ['darkblue'];
-    ussrArea.tooltip.enabled = true;
-
-    chart.addSeries(usaArea);
-    chart.addSeries(ussrArea);
-
-    createButton('Serialize', () => {
-        const options = AgChart.save(chart);
-        console.log(JSON.stringify(options, null, 4));
-    });
 }
 
 function makeAlienChart() {
@@ -412,7 +434,7 @@ function makeAlienChart() {
                 arc.strokeOpacity -= 0.01;
                 if (arc.strokeOpacity > 0) {
                     requestAnimationFrame(animate);
-                } else {
+                } else if (arc.parent) {
                     arc.parent.removeChild(arc);
                 }
             }
@@ -769,10 +791,129 @@ function makeCategoryYAxisArea() {
     chart.addSeries(series);
 }
 
+function makeStackedArea() {
+    var options: any;
+    const chart = AgChart.create(options = {
+        container: document.body,
+        autoSize: false,
+        width: 800,
+        height: 400,
+        data: [
+            {
+                x: 1,
+                y1: 5,
+                y2: 3,
+                y3: 10
+            },
+            {
+                x: null,
+                y1: 7,
+                y2: 4,
+                y3: 15
+            },
+            {
+                x: 6,
+                y1: 9,
+                y2: 4,
+                y3: 16
+            },
+            {
+                x: 7,
+                y1: 8,
+                y2: 5,
+                y3: 17
+            },
+            {
+                x: 8,
+                y1: 6,
+                y2: 6,
+                y3: 18
+            },
+            {
+                x: 12,
+                y1: 4,
+                y2: 5,
+                y3: 19
+            },
+        ],
+        series: [
+            {
+                type: 'area',
+                xKey: 'x',
+                yKeys: ['y1', 'y2'],
+                marker: {
+                    size: 10
+                },
+                highlightStyle: {
+                    item: {
+
+                    },
+                    series: {
+                        enabled: true,
+                        dimOpacity: 0.1,
+                        strokeWidth: 6
+                    }
+                }
+            },
+            {
+                type: 'scatter',
+                xKey: 'x',
+                yKey: 'y3',
+                marker: {
+                    size: 10,
+                    strokeWidth: 1
+                },
+                highlightStyle: {
+                    item: {
+                        strokeWidth: 4
+                    },
+                    series: {
+                        enabled: true,
+                        dimOpacity: 0.1,
+                        strokeWidth: 2
+                    }
+                }
+            }
+        ],
+        axes: [{
+            type: 'number',
+            position: 'top',
+            max: 7
+        }, {
+            type: 'number',
+            position: 'right'
+        }],
+        // legend: {
+        //     spacing: 200
+        // },
+        navigator: {}
+    } as AgCartesianChartOptions);
+
+    chart.scene.canvas.element.style.border = '1px solid black';
+    document.body.appendChild(document.createElement('br'));
+
+    makeChartResizeable(chart);
+
+    createButton('Toggle area/column', () => {
+        options.series[0].type = options.series[0].type === 'column' ? 'area' : 'column';
+        AgChart.update(chart, options);
+    });
+
+    createButton('Update data', () => {
+        options.data.forEach((datum: any) => {
+            datum.y1 = Math.random() * 50 + 20,
+                datum.y2 = Math.random() * 30 + 10
+            datum.y3 = Math.random() * 70 + 20
+        });
+        AgChart.update(chart, options);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // makeAlienChart();
     // makeNuclearChart();
     // makeNumberYAxisArea();
-    makeCategoryYAxisArea();
+    // makeCategoryYAxisArea();
     // makeNuclearChartWithNumericX();
+    makeStackedArea();
 });

@@ -8,6 +8,7 @@ import { CartesianChart } from "../../charts/chart/cartesianChart";
 import { Caption } from "../../charts/caption";
 import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
 import { find } from "../../charts/util/array";
+import { LegendPosition } from '../../charts/chart/legend';
 
 type Datum = {
     category: string,
@@ -118,7 +119,7 @@ function generateData(n = 50, yKeyCount = 10) {
     return {
         data,
         xKey: 'category',
-        yKeys: yKeys
+        yKeys: [yKeys]
     };
 }
 
@@ -135,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.height = 500;
     chart.container = document.body;
     chart.axes = [xAxis, yAxis];
+    chart.navigator.enabled = true;
 
     chart.title = new Caption();
     chart.title.text = 'Beverage Expenses';
@@ -154,13 +156,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const barSeries = new BarSeries();
     addSeriesIf();
-    barSeries.yNames = ['Q1', 'Q2', 'Q3', 'Q4']; // bar labels
+    barSeries.yNames = {
+        'q1Actual': 'Q1',
+        'q2Actual': 'Q2',
+        'q3Actual': 'Q3',
+        'q4Actual': 'Q4',
+    }; // bar labels
     barSeries.xKey = 'category';
-    barSeries.yKeys = ['q1Actual'];
+    barSeries.yKeys = [['q1Actual']];
     barSeries.data = data;
-    barSeries.fills = material.fills;
-    barSeries.tooltipEnabled = true;
+    barSeries.fills = ['red', 'green', 'blue', 'magenta', 'gold', 'cyan'];
+    barSeries.tooltip.enabled = true;
     barSeries.label.enabled = false;
+
+    barSeries.highlightStyle.item.fill = 'cyan';
+    barSeries.highlightStyle.item.stroke = 'gold';
+    barSeries.highlightStyle.item.strokeWidth = 4;
+    barSeries.highlightStyle.series.enabled = true;
+    barSeries.highlightStyle.series.dimOpacity = 0.2;
+    barSeries.highlightStyle.series.strokeWidth = 2;
 
     document.body.appendChild(document.createElement('br'));
 
@@ -171,39 +185,39 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('1 y-key', () => {
         addSeriesIf();
         barSeries.xKey = 'category';
-        barSeries.yKeys = ['q1Actual'];
+        barSeries.yKeys = [['q1Actual']];
         barSeries.data = data;
     });
     createButton('2 y-keys', () => {
         addSeriesIf();
         barSeries.xKey = 'category';
-        barSeries.yKeys = ['q1Actual', 'q2Actual'];
+        barSeries.yKeys = [['q1Actual', 'q2Actual']];
         barSeries.data = data;
     });
     createButton('3 y-keys', () => {
         addSeriesIf();
         barSeries.xKey = 'category';
-        barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual'];
+        barSeries.yKeys = [['q1Actual', 'q2Actual', 'q3Actual']];
         barSeries.data = data;
     });
     createButton('4 y-keys', () => {
         addSeriesIf();
         barSeries.xKey = 'category';
-        barSeries.yKeys = ['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual'];
+        barSeries.yKeys = [['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual']];
         barSeries.data = data;
     });
 
     createButton('Grouped', () => {
-        barSeries.grouped = true;
+        barSeries.yKeys = [['q1Actual', 'q2Actual', 'q3Actual', 'q4Actual']];
     });
     createButton('Stacked', () => {
-        barSeries.grouped = false;
+        barSeries.yKeys = [['q1Actual'], ['q2Actual'], ['q3Actual'], ['q4Actual']];
     });
 
     createButton('Generate 50 points (stacked bars)', () => {
         addSeriesIf();
         const config = generateData();
-        barSeries.yNames = []; // don't show bar labels
+        barSeries.yNames = {}; // don't show bar labels
         barSeries.grouped = false;
         const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
         if (xAxis) {
@@ -216,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Generate 10 points (grouped bars)', () => {
         addSeriesIf();
         const config = generateData(10, 16);
-        barSeries.yNames = []; // don't show bar labels
+        barSeries.yNames = {}; // don't show bar labels
         barSeries.xKey = config.xKey;
         barSeries.yKeys = config.yKeys;
         barSeries.data = config.data;
@@ -235,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createButton('Data set #3', () => {
         barSeries.data = data3;
         barSeries.xKey = 'xKey';
-        barSeries.yKeys = ['yKey1', 'yKey2', 'yKey3'];
+        barSeries.yKeys = [['yKey1', 'yKey2', 'yKey3']];
     });
 
     createButton('Use label formatter', () => {
@@ -245,41 +259,26 @@ document.addEventListener('DOMContentLoaded', () => {
         barSeries.label.formatter = undefined;
     });
     createButton('Show tooltips', () => {
-        barSeries.tooltipEnabled = true;
+        barSeries.tooltip.enabled = true;
     });
     createButton('Hide tooltips', () => {
-        barSeries.tooltipEnabled = false;
+        barSeries.tooltip.enabled = false;
     });
     createButton('Custom tooltip class', () => {
-        chart.tooltipClass = 'my-tooltip';
+        chart.tooltip.class = 'my-tooltip';
     });
     createButton('Use tooltip renderer', () => {
-        barSeries.tooltipRenderer = params => {
+        barSeries.tooltip.renderer = params => {
             return `<div style="background-color: #d4d1d6; padding: 5px;">
                 X: ${params.datum[params.xKey]}<br>Y: ${params.datum[params.yKey]}
             </div>`;
         };
     });
     createButton('Remove tooltip renderer', () => {
-        barSeries.tooltipRenderer = undefined;
+        barSeries.tooltip.renderer = undefined;
     });
     createButton('Remove all series', () => {
         chart.removeAllSeries();
-    });
-    createButton('Borneo colors', () => {
-        barSeries.fills = borneo.fills;
-    });
-    createButton('Material colors', () => {
-        barSeries.fills = material.fills;
-    });
-    createButton('Pastel colors', () => {
-        barSeries.fills = pastel.fills;
-    });
-    createButton('Bright colors', () => {
-        barSeries.fills = bright.fills;
-    });
-    createButton('Flat colors', () => {
-        barSeries.fills = flat.fills;
     });
     createButton('Light theme', () => {
         const xAxis = find(chart.axes, axis => axis.position === ChartAxisPosition.Bottom);
@@ -302,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis.update();
         }
 
-        chart.legend.color = 'black';
+        chart.legend.item.label.color = 'black';
 
         if (chart.title) {
             chart.title.color = 'black';

@@ -103,6 +103,8 @@ function createHeightWeightGenderChart() {
     chart.legend.item.paddingY = 15;
     chart.tooltip.tracking = true;
     chart.axes = [xAxis, yAxis];
+    chart.navigator.enabled = true;
+    chart.scene.debug.renderFrameIndex = true;
 
     createButton('Benchmark', () => {
         // 555 layouts in 10000 without using webworkers, 8.6% self-time for placeLabels
@@ -131,8 +133,35 @@ function createHeightWeightGenderChart() {
         changeHeight();
     });
 
+    const highlightStyle = {
+        item: {
+            fill: 'yellow',
+            stroke: 'red',
+            strokeWidth: 4
+        },
+        series: {
+            enabled: true,
+            dimOpacity: 0.2,
+            strokeWidth: 2
+        }
+    } as any;
+
     const maleSeries = new ScatterSeries();
     const femaleSeries = new ScatterSeries();
+
+    maleSeries.highlightStyle.item.fill = 'yellow';
+    maleSeries.highlightStyle.item.stroke = 'red';
+    maleSeries.highlightStyle.item.strokeWidth = 4;
+    maleSeries.highlightStyle.series.enabled = true;
+    maleSeries.highlightStyle.series.dimOpacity = 0.2;
+    maleSeries.highlightStyle.series.strokeWidth = 2;
+
+    femaleSeries.highlightStyle.item.fill = 'yellow';
+    femaleSeries.highlightStyle.item.stroke = 'red';
+    femaleSeries.highlightStyle.item.strokeWidth = 4;
+    femaleSeries.highlightStyle.series.enabled = true;
+    femaleSeries.highlightStyle.series.dimOpacity = 0.2;
+    femaleSeries.highlightStyle.series.strokeWidth = 2;
 
     const maleData: any[] = [];
     const femaleData: any[] = [];
@@ -188,7 +217,7 @@ function createHeightWeightGenderChart() {
         chart.scene.download('chart');
     });
 
-    createSlider('Marker type', [Circle, Square, Diamond, Cross, Plus, Triangle], v => {
+    createSlider('Marker type', [Square, Circle, Diamond, Cross, Plus, Triangle], v => {
         maleSeries.marker.shape = v;
     });
 
@@ -201,7 +230,7 @@ function createHeightWeightGenderChart() {
     });
 
     createSlider('Marker stroke width', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], v => {
-        maleSeries.strokeWidth = v;
+        maleSeries.marker.strokeWidth = v;
     });
 
     maleSeries.marker.addPropertyListener('size', event => {
