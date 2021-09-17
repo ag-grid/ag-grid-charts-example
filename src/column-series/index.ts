@@ -165,12 +165,23 @@ document.addEventListener('DOMContentLoaded', () => {
     barSeries.xKey = 'category';
     barSeries.yKeys = [['q1Actual']];
     barSeries.data = data;
-    barSeries.fills = ['red', 'green', 'blue', 'magenta', 'gold', 'cyan'];
+    barSeries.fills = [
+        '#f3622d',
+        '#fba71b',
+        '#57b757',
+        '#41a9c9',
+        '#4258c9',
+        '#9a42c8',
+        '#c84164',
+        '#888888'
+    ];
+    barSeries.strokeWidth = 1;
+    barSeries.strokes = ['black'];
     barSeries.tooltip.enabled = true;
     barSeries.label.enabled = false;
 
-    barSeries.highlightStyle.item.fill = 'cyan';
-    barSeries.highlightStyle.item.stroke = 'gold';
+    barSeries.highlightStyle.item.fill = 'yellow';
+    barSeries.highlightStyle.item.stroke = 'red';
     barSeries.highlightStyle.item.strokeWidth = 4;
     barSeries.highlightStyle.series.enabled = true;
     barSeries.highlightStyle.series.dimOpacity = 0.2;
