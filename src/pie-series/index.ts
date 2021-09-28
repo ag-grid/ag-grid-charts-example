@@ -52,14 +52,17 @@ function createPieChart() {
     pieSeries.title.text = 'Mobile OSes';
     pieSeries.title.fontSize = 14;
     pieSeries.title.fontWeight = 'bold';
-    pieSeries.strokeWidth = 2;
     pieSeries.callout.strokeWidth = 1;
     pieSeries.shadow = new DropShadow();
     pieSeries.shadow.color = 'rgba(0,0,0,0.2)';
     pieSeries.shadow.blur = 15;
-    pieSeries.highlightStyle.strokeWidth = 5;
-    pieSeries.highlightStyle.stroke = 'red';
-    pieSeries.highlightStyle.fill = 'orange';
+
+    pieSeries.highlightStyle.item.fill = 'yellow';
+    pieSeries.highlightStyle.item.stroke = 'red';
+    pieSeries.highlightStyle.item.strokeWidth = 5;
+    pieSeries.highlightStyle.series.enabled = true;
+    pieSeries.highlightStyle.series.dimOpacity = 0.2;
+    pieSeries.highlightStyle.series.strokeWidth = 3;
 
     const pieSeries2 = new PieSeries();
     pieSeries2.data = data2;
@@ -73,7 +76,14 @@ function createPieChart() {
     pieSeries2.labelKey = 'label';
     pieSeries2.label.enabled = true;
 
-    chart.series = [pieSeries]; //, pieSeries2];
+    pieSeries2.highlightStyle.item.fill = 'yellow';
+    pieSeries2.highlightStyle.item.stroke = 'red';
+    pieSeries2.highlightStyle.item.strokeWidth = 5;
+    pieSeries2.highlightStyle.series.enabled = true;
+    pieSeries2.highlightStyle.series.dimOpacity = 0.2;
+    pieSeries2.highlightStyle.series.strokeWidth = 3;
+
+    chart.series = [pieSeries, pieSeries2];
 
     chart.title = new Caption();
     chart.title.text = 'Market Share of Mobile Operating Systems';

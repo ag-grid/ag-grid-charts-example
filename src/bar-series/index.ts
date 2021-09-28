@@ -10,8 +10,9 @@ import { Circle } from "../../charts/chart/marker/circle";
 import { AgChart } from "../../charts/chart/agChart";
 import { Padding } from "../../charts/util/padding";
 import { LogScale } from "../../charts/scale/logScale";
-import { LinearScale, LineSeries } from "../../charts/main";
 import * as d3 from "d3";
+import { LinearScale } from "../../charts/scale/linearScale";
+import { AgCartesianAxisType, AgCartesianChartOptions } from "../../charts/chart/agChartOptions";
 
 type Datum = {
     category: string,
@@ -543,7 +544,7 @@ function createGroupedAndStackedColumnChart() {
     return chart;
 }
 
-function createGalleryBarChart(axisType: string = 'number', base: number = 10) {
+function createGalleryBarChart(axisType: AgCartesianAxisType = 'number', base: number = 10) {
     const data = [
         { type: 'Managers, directors & senior officials', earnings: 954, },
         { type: 'Professional occupations', earnings: 844, },
@@ -556,7 +557,11 @@ function createGalleryBarChart(axisType: string = 'number', base: number = 10) {
         { type: 'Caring, leisure & other services', earnings: 358, },
     ];
 
-    const options: any = {
+    function log(x: number) {
+        return Math.log(x) / Math.log(base);
+    }
+
+    const options: AgCartesianChartOptions = {
         container: document.body,
         data,
         height: 600,
@@ -573,13 +578,26 @@ function createGalleryBarChart(axisType: string = 'number', base: number = 10) {
             {
                 type: axisType,
                 position: 'bottom',
-                min: 100,
-                base
+                // min: Math.pow(Math.E, 4),
+                min: 64,
+                base,
+                label: {
+                    formatter: params => {
+                        const power = log(params.value);
+                        if (Number.isInteger(power)) {
+                            return `${base === Math.E ? 'e' : String(base)}^${log(params.value)}`;
+                        }
+                        return params.value;
+                    }
+                }
             }
         ],
         legend: {
             enabled: false,
         },
+        navigator: {
+            enabled: true
+        }
     };
 
     AgChart.create(options);
@@ -648,26 +666,164 @@ function hello() {
     var chart = AgChart.create(options);
 }
 
+function createAllTheThings() {
+    const data = [
+        {
+            x: 'A',
+            y1: 10,
+            y2: 20,
+            y3: 30,
+            y4: -10,
+            y5: -20,
+            y6: -30
+        },
+        {
+            x: 'B',
+            y1: 10,
+            y2: 20,
+            y3: 30,
+            y4: -10,
+            y5: 20,
+            y6: -30
+        },
+        {
+            x: 'C',
+            y1: 10,
+            y2: -20,
+            y3: -30,
+            y4: -10,
+            y5: -20,
+            y6: 30
+        }
+    ];
+
+    const common = {
+        container: document.body,
+        autoSize: false,
+        width: 500,
+        height: 300,
+        navigator: {
+            enabled: true
+        }
+    };
+
+    AgChart.create({
+        ...common,
+        series: [{
+            type: 'column',
+            xKey: 'x',
+            yKeys: [['y1', 'y2', 'y3', 'y4', 'y5', 'y6']],
+            data
+        }]
+    });
+
+    AgChart.create({
+        ...common,
+        axes: [{
+            type: 'number',
+            position: 'bottom',
+            min: 30
+        }, {
+            type: 'category',
+            position: 'left'
+        }],
+        series: [{
+            type: 'bar',
+            xKey: 'x',
+            yKeys: [['y1', 'y2', 'y3', 'y4', 'y5', 'y6']],
+            data
+        }]
+    });
+
+    {
+        const chart = AgChart.create({
+            ...common,
+            axes: [{
+                type: 'number',
+                position: 'bottom',
+                min: 30
+            }, {
+                type: 'number',
+                position: 'left'
+            }],
+            series: [{
+                type: 'area',
+                xKey: 'x',
+                yKeys: ['y1', 'y2', 'y3', 'y4', 'y5', 'y6'],
+                data: (() => {
+                    const data: any[] = [];
+                    for (let x = 0; x < 51; x++) {
+                        data.push({
+                            x,
+                            y1: 50 + Math.random() * 100,
+                            y2: 50 + Math.random() * 100,
+                            y3: 50 + Math.random() * 100,
+                            y4: -(50 + Math.random() * 100),
+                            y5: -(50 + Math.random() * 100),
+                            y6: -(50 + Math.random() * 100),
+                        });
+                    }
+                    return data;
+                })()
+            }]
+        });
+        chart.scene.debug.renderFrameIndex = true;
+        makeChartResizeable(chart);
+    }
+
+    {
+        const chart = AgChart.create({
+            ...common,
+            axes: [{
+                type: 'number',
+                position: 'bottom',
+                // min: 30
+            }, {
+                type: 'number',
+                position: 'left'
+            }],
+            series: [{
+                type: 'line',
+                xKey: 'x',
+                yKey: 'y',
+                data: (() => {
+                    const data: any[] = [];
+                    for (let x = 0; x < 50; x++) {
+                        data.push({
+                            x,
+                            y: 50 + Math.random() * 100
+                        });
+                    }
+                    return data;
+                })()
+            }]
+        });
+        makeChartResizeable(chart);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    createButton('Create Column Chart', () => {
-        const groupedStackedChart = createGroupedAndStackedColumnChart();
-        makeChartResizeable(groupedStackedChart);
-    });
+    // createButton('Create Column Chart', () => {
+    //     const groupedStackedChart = createGroupedAndStackedColumnChart();
+    //     makeChartResizeable(groupedStackedChart);
+    // });
 
-    createButton('Create Bar Chart (number)', () => {
-        createGalleryBarChart('number');
-    });
-    createButton('Create Bar Chart (log, 10)', () => {
-        createGalleryBarChart('log', 10);
-    });
+    // createButton('Create Bar Chart (number)', () => {
+    //     createGalleryBarChart('number');
+    // });
+    // createButton('Create Bar Chart (log, 10)', () => {
+    //     createGalleryBarChart('log', 10);
+    // });
 
-    createButton('Create Bar Chart (log, E)', () => {
-        createGalleryBarChart('log', Math.E);
-    });
+    // createButton('Create Bar Chart (log, E)', () => {
+    //     createGalleryBarChart('log', Math.E);
+    // });
 
-    createButton('Create Bar Chart (log, 2)', () => {
-        createGalleryBarChart('log', 2);
-    });
+    // createButton('Create Bar Chart (log, 2)', () => {
+    //     createGalleryBarChart('log', 2);
+    // });
+
+    createAllTheThings();
 
     // const groupedStackedChart = createGroupedAndStackedColumnChart();
     // makeChartResizeable(groupedStackedChart);

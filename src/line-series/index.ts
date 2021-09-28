@@ -12,6 +12,7 @@ import { AreaSeries } from "../../charts/chart/series/cartesian/areaSeries";
 import { AgChart } from "../../charts/chart/agChart";
 import second from "../../charts/util/time/second";
 import { BarSeries } from "../../charts/chart/series/cartesian/barSeries";
+import minute from "../../charts/util/time/minute";
 
 type CategoryDatum = {
     category: string,
@@ -842,6 +843,34 @@ function createGapChart() {
 function createTimeLineChart() {
     AgChart.create({
         container: document.body,
+        theme: {
+            overrides: {
+                cartesian: {
+                    axes: {
+                        time: {
+                            tick: {
+                                count: minute.every(2)
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        axes: [{
+            type: 'time',
+            position: 'bottom',
+            // tick: {
+            //     count: minute.every(2)
+            // }
+        }, {
+            type: 'number',
+            position: 'left',
+            label: {
+                formatter: (params: any) => {
+                    return params.value + ' C°';
+                }
+            }
+        }],
         series: [{
             data: [{
                 time: new Date('01 Jan 2020 13:25:30 GMT'),
@@ -906,18 +935,6 @@ function createTimeLineChart() {
             marker: {
                 fill: '#8bc24a',
                 stroke: '#658d36'
-            }
-        }],
-        axes: [{
-            type: 'time',
-            position: 'bottom',
-        }, {
-            type: 'number',
-            position: 'left',
-            label: {
-                formatter: (params: any) => {
-                    return params.value + ' C°';
-                }
             }
         }],
         legend: {
