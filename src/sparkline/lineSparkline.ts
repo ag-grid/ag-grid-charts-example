@@ -1,18 +1,23 @@
 import { BandScale } from '../../charts/scale/bandScale';
-import { LinearScale } from '../../charts/scale/linearScale';
 import { Group } from '../../charts/scene/group';
 import { Path } from '../../charts/scene/shape/path';
 import { Observable, reactive } from '../../charts/util/observable';
+import { extent } from '../../charts/util/array';
+import { isNumber } from '../../charts/util/value'
 import { Marker } from './marker';
 import { Sparkline, Point, SeriesNodeDatum } from './sparkline';
 import { Selection } from '../../charts/scene/selection';
 import { toTooltipHtml } from './sparklineTooltip';
-import { getMarkerShape } from './util';
+import { getMarker } from './util';
 
 export interface MarkerFormatterParams {
     datum: any;
     xValue: any;
     yValue: any;
+    min?: boolean;
+    max?: boolean;
+    first?: boolean;
+    last?: boolean;
     fill?: string;
     stroke?: string;
     strokeWidth: number;
@@ -49,8 +54,6 @@ export class LineSparkline extends Sparkline {
 
     private lineSparklineGroup: Group = new Group();
     protected linePath: Path = new Path();
-    protected yScale: LinearScale = new LinearScale();
-    protected xScale: BandScale<number | undefined> = new BandScale<number | undefined>();
     private markers: Group = new Group();
     private markerSelection: Selection<Marker, Group, LineNodeDatum, any> = Selection.select(this.markers).selectAll<Marker>();
     private markerSelectionData: LineNodeDatum[] = [];
@@ -64,8 +67,8 @@ export class LineSparkline extends Sparkline {
         this.rootGroup.append(this.lineSparklineGroup);
         this.lineSparklineGroup.append([this.linePath, this.markers]);
 
-        this.marker.addEventListener('update', this.updateMarkers, this);
-        this.marker.addPropertyListener('enabled', this.updateMarkers, this);
+        this.marker.addEventListener('update', this.updateNodes, this);
+        this.marker.addPropertyListener('enabled', this.updateNodes, this);
         this.marker.addPropertyListener('shape', this.onMarkerShapeChange, this);
         this.line.addEventListener('update', this.updateLine, this);
     }
@@ -74,6 +77,9 @@ export class LineSparkline extends Sparkline {
         return this.markerSelectionData;
     }
 
+    /**
+     * If marker shape is changed, this method should be called to remove the previous marker nodes selection.
+     */
     private onMarkerShapeChange() {
         this.markerSelection = this.markerSelection.setData([]);
         this.markerSelection.exit.remove();
@@ -81,63 +87,51 @@ export class LineSparkline extends Sparkline {
     }
 
     protected update(): void {
-        this.updateXScale();
-        this.updateYScaleRange();
-        this.updateYScaleDomain();
-
         const nodeData = this.generateNodeData();
+
+        if (!nodeData) {
+            return;
+        }
+
         this.markerSelectionData = nodeData;
 
-        this.updateMarkerSelection(nodeData);
-        this.updateMarkers();
+        this.updateSelection(nodeData);
+        this.updateNodes();
 
         this.updateLine();
-    }
-
-    protected updateYScaleRange(): void {
-        const { yScale, seriesRect } = this;
-        yScale.range = [seriesRect.height, 0];
     }
 
     protected updateYScaleDomain(): void {
         const { yData, yScale } = this;
 
-        const extent = this.findMinAndMax(yData);
-        let minY;
-        let maxY;
+        const yMinMax = extent(yData, isNumber);
 
-        if (!extent) {
-            minY = 0;
-            maxY = 1;
-        } else {
-            minY = extent[0];
-            maxY = extent[1];
+        let yMin = 0;
+        let yMax= 1;
+
+        if (yMinMax !== undefined) {
+            yMin = this.min = yMinMax[0] as number;
+            yMax = this.max = yMinMax[1] as number;
         }
 
-        if (minY === maxY) {
-            // if all values in the data are the same, minY and maxY will be equal, need to adjust the domain with some padding.
-            const padding = Math.abs(minY * 0.01);
-            minY -= padding;
-            maxY += padding;
+        if (yMin === yMax) {
+            // if all values in the data are the same, yMin and yMax will be equal, need to adjust the domain with some padding
+            const padding = Math.abs(yMin * 0.01);
+            yMin -= padding;
+            yMax += padding;
         }
 
-        yScale.domain = [minY, maxY];
+        yScale.domain = [yMin, yMax];
     }
 
-    protected updateXScale(): void {
-        const { xScale, seriesRect, xData } = this;
-        xScale.range = [0, seriesRect.width];
-        xScale.domain = xData;
-    }
-
-    protected generateNodeData(): LineNodeDatum[] {
-        const { yData, xData, data, xScale, yScale } = this;
+    protected generateNodeData(): LineNodeDatum[] | undefined {
+        const { data, yData, xData, xScale, yScale } = this;
 
         if (!data) {
-            return [];
+            return;
         }
 
-        const offsetX = xScale.bandwidth / 2;
+        const offsetX = xScale instanceof BandScale ? xScale.bandwidth / 2 : 0;
 
         const nodeData: LineNodeDatum[] = [];
 
@@ -149,7 +143,7 @@ export class LineSparkline extends Sparkline {
                 continue;
             }
 
-            const x = xScale.convert(i) + offsetX;
+            const x = xScale.convert(xDatum) + offsetX;
             const y = yScale.convert(yDatum);
 
             nodeData.push({
@@ -160,10 +154,10 @@ export class LineSparkline extends Sparkline {
         return nodeData;
     }
 
-    private updateMarkerSelection(selectionData: LineNodeDatum[]): void {
+    private updateSelection(selectionData: LineNodeDatum[]): void {
         const { marker } = this;
 
-        const shape = getMarkerShape(marker.shape);
+        const shape = getMarker(marker.shape);
 
         let updateMarkerSelection = this.markerSelection.setData(selectionData);
         let enterMarkerSelection = updateMarkerSelection.enter.append(shape);
@@ -173,12 +167,12 @@ export class LineSparkline extends Sparkline {
         this.markerSelection = updateMarkerSelection.merge(enterMarkerSelection);
     }
 
-    private updateMarkers(): void {
-        const { highlightedDatum, highlightStyle, marker } = this;
+    protected updateNodes(): void {
+        const { highlightedDatum, highlightStyle, marker, min, max } = this;
         const { size: highlightSize, fill: highlightFill, stroke: highlightStroke, strokeWidth: highlightStrokeWidth } = highlightStyle;
         const markerFormatter = marker.formatter;
 
-        this.markerSelection.each((node, datum) => {
+        this.markerSelection.each((node, datum, index) => {
             const highlighted = datum === highlightedDatum;
             const markerFill = highlighted && highlightFill !== undefined ? highlightFill : marker.fill;
             const markerStroke = highlighted && highlightStroke !== undefined ? highlightStroke : marker.stroke;
@@ -190,10 +184,19 @@ export class LineSparkline extends Sparkline {
             const { seriesDatum, point } = datum;
 
             if (markerFormatter) {
+                const first = index === 0;
+                const last = index === this.markerSelectionData.length - 1;
+                const min = seriesDatum.y === this.min;
+                const max = seriesDatum.y === this.max;
+
                 markerFormat = markerFormatter({
                     datum,
                     xValue: seriesDatum.x,
                     yValue: seriesDatum.y,
+                    min,
+                    max,
+                    first,
+                    last,
                     fill: markerFill,
                     stroke: markerStroke,
                     strokeWidth: markerStrokeWidth,
@@ -202,14 +205,14 @@ export class LineSparkline extends Sparkline {
                 });
             }
 
-            node.size = markerFormat && markerFormat.size || markerSize;
-            node.fill = markerFormat && markerFormat.fill || markerFill;
-            node.stroke = markerFormat && markerFormat.stroke || markerStroke;
-            node.strokeWidth = markerFormat && markerFormat.strokeWidth || markerStrokeWidth;
+            node.size = markerFormat && markerFormat.size != undefined ? markerFormat.size : markerSize;
+            node.fill = markerFormat && markerFormat.fill != undefined ? markerFormat.fill : markerFill;
+            node.stroke = markerFormat && markerFormat.stroke != undefined ? markerFormat.stroke : markerStroke;
+            node.strokeWidth = markerFormat && markerFormat.strokeWidth != undefined ? markerFormat.strokeWidth : markerStrokeWidth;
 
             node.translationX = point.x;
             node.translationY = point.y;
-            node.visible = markerFormat && markerFormat.enabled || marker.enabled && node.size > 0;
+            node.visible = markerFormat && markerFormat.enabled != undefined ? markerFormat.enabled : marker.enabled && node.size > 0;
         });
     }
 
@@ -222,7 +225,7 @@ export class LineSparkline extends Sparkline {
 
         const path = linePath.path;
         const n = yData.length;
-        const offsetX = xScale.bandwidth / 2;
+        const offsetX = xScale instanceof BandScale ? xScale.bandwidth / 2 : 0;
         let moveTo = true;
 
         path.clear();
@@ -251,36 +254,25 @@ export class LineSparkline extends Sparkline {
         linePath.strokeWidth = line.strokeWidth;
     }
 
-    private highlightedDatum?: SeriesNodeDatum;
-    protected highlightDatum(closestDatum: SeriesNodeDatum): void {
-        this.highlightedDatum = closestDatum;
-        this.updateMarkers();
-    }
-
-    protected dehighlightDatum(): void {
-        this.highlightedDatum = undefined;
-        this.updateMarkers();
-    }
-
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
-        const { title, marker } = this;
+        const {  marker, dataType } = this;
         const { seriesDatum } = datum;
         const yValue = seriesDatum.y;
         const xValue = seriesDatum.x;
         const backgroundColor = marker.fill;
-        const content = typeof xValue !== 'number' ? `${this.formatDatum(seriesDatum.x)}: ${this.formatDatum(seriesDatum.y)}` : `${this.formatDatum(seriesDatum.y)}`;
+        const content = this.formatNumericDatum(yValue);
+        const title = dataType === 'array' || dataType === 'object' ? this.formatDatum(xValue) : undefined;
 
         const defaults = {
             backgroundColor,
-            title,
-            content
+            content,
+            title
         }
 
         if (this.tooltip.renderer) {
             return toTooltipHtml(this.tooltip.renderer({
+                context: this.context,
                 datum: seriesDatum,
-                title,
-                backgroundColor,
                 yValue,
                 xValue,
             }), defaults);

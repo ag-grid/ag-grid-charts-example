@@ -1,7 +1,8 @@
 import { BandScale } from '../../charts/scale/bandScale';
-import { LinearScale } from '../../charts/scale/linearScale';
 import { Group } from '../../charts/scene/group';
 import { Line } from '../../charts/scene/shape/line';
+import { extent } from '../../charts/util/array';
+import { isNumber } from '../../charts/util/value'
 import { Selection } from '../../charts/scene/selection';
 import { Sparkline, SeriesNodeDatum } from './sparkline';
 import { toTooltipHtml } from './sparklineTooltip';
@@ -22,6 +23,10 @@ export interface ColumnFormatterParams {
     yValue: any;
     width: number;
     height: number;
+    min?: boolean;
+    max?: boolean;
+    first?: boolean;
+    last?: boolean;
     fill?: string;
     stroke?: string;
     strokeWidth: number;
@@ -37,8 +42,6 @@ export class ColumnSparkline extends Sparkline {
     static className = 'ColumnSparkline';
 
     private columnSparklineGroup: Group = new Group();
-    private yScale: LinearScale = new LinearScale();
-    private xScale: BandScale<number | undefined> = new BandScale<number | undefined>();
     private xAxisLine: Line = new Line();
     private columns: Group = new Group();
     private columnSelection: Selection<Rectangle, Group, ColumnNodeDatum, ColumnNodeDatum> = Selection.select(this.columns).selectAll<Rectangle>();
@@ -62,91 +65,94 @@ export class ColumnSparkline extends Sparkline {
         this.xAxisLine.lineCap = 'round';
     }
 
-    protected getNodeData() : ColumnNodeDatum[] {
+    protected getNodeData(): ColumnNodeDatum[] {
         return this.columnSelectionData;
     }
 
     protected update() {
-        this.updateYScale();
-        this.updateXScale();
-        this.updateXAxisLine();
-
         const nodeData = this.generateNodeData();
+
+        if (!nodeData) {
+            return;
+        }
+
         this.columnSelectionData = nodeData;
 
-        this.updateRectNodesSelection(nodeData);
-        this.updateRectNodes();
+        this.updateSelection(nodeData);
+        this.updateNodes();
     }
 
-    private updateYScale() {
-        const { yScale, seriesRect, yData, yScaleDomain } = this;
+    protected updateYScaleDomain() {
+        const { yScale, yData, yScaleDomain } = this;
 
-        yScale.range = [seriesRect.height, 0];
+        const yMinMax = extent(yData, isNumber);
 
-        // TODO: fix this up
-        const extent = this.findMinAndMax(yData);
-        let minY;
-        let maxY;
+        let yMin = 0;
+        let yMax = 1;
 
-        if (!extent) {
-            minY = 0;
-            maxY = 1;
-        } else {
-            minY = extent[0];
-            maxY = extent[1];
+        if (yMinMax !== undefined) {
+            yMin = this.min = yMinMax[0] as number;
+            yMax = this.max = yMinMax[1] as number;
         }
 
-        minY = minY < 0 ? minY : 0;
+        // if yMin is positive, set yMin to 0
+        yMin = yMin < 0 ? yMin : 0;
 
-        if (minY === maxY) {
-            // if minY and maxY are equal and negative, maxY should be set to 0?
-            const padding = Math.abs(minY * 0.01);
-            minY -= padding;
-            maxY = 0 + padding;
-        }
+        // if yMax is negative, set yMax to 0
+        yMax = yMax < 0 ? 0 : yMax;
 
         if (yScaleDomain) {
-            if (yScaleDomain[1] < maxY) {
-                yScaleDomain[1] = maxY;
+            if (yScaleDomain[1] < yMax) {
+                yScaleDomain[1] = yMax;
             }
-            if (yScaleDomain[0] > minY) {
-                yScaleDomain[0] = minY;
+            if (yScaleDomain[0] > yMin) {
+                yScaleDomain[0] = yMin;
             }
         }
 
-        yScale.domain = yScaleDomain ? yScaleDomain : [minY, maxY];
+        yScale.domain = yScaleDomain ? yScaleDomain : [yMin, yMax];
     }
 
-    private updateXScale() {
-        const { xScale, seriesRect, xData, paddingOuter, paddingInner } = this;
-
-        xScale.range = [0, seriesRect.width];
-        xScale.domain = xData;
-        xScale.paddingInner = paddingInner;
-        xScale.paddingOuter = paddingOuter;
+    protected updateXScaleRange() {
+        const { xScale, seriesRect, paddingOuter, paddingInner, data } = this;
+        if (xScale instanceof BandScale) {
+            xScale.range = [0, seriesRect.width];
+            xScale.paddingInner = paddingInner;
+            xScale.paddingOuter = paddingOuter;
+        } else {
+            // last column will be clipped if the scale is not a band scale
+            // subtract maximum possible column width from the range so that the last column is not clipped
+            xScale.range = [0, seriesRect.width - (seriesRect.width / data!.length)];
+        }
     }
 
-    private updateXAxisLine() {
-        const { xScale, yScale, axis, xAxisLine } = this;
+    protected updateXAxisLine() {
+        const { yScale, axis, xAxisLine, seriesRect } = this;
         const { strokeWidth } = axis;
 
-        xAxisLine.x1 = xScale.range[0];
-        xAxisLine.x2 = xScale.range[1];
+        xAxisLine.x1 = 0;
+        xAxisLine.x2 = seriesRect.width;
         xAxisLine.y1 = xAxisLine.y2 = 0;
         xAxisLine.stroke = axis.stroke;
-        xAxisLine.strokeWidth = strokeWidth;
+        xAxisLine.strokeWidth = strokeWidth + (strokeWidth % 2 === 1 ? 1 : 0);
 
         const yZero: number = yScale.convert(0);
-        xAxisLine.translationY = yZero - (strokeWidth % 2 === 1 ? 0.5 : 0);
+        xAxisLine.translationY = yZero;
     }
 
-    protected generateNodeData(): ColumnNodeDatum[] {
-        const { yData, xData, xScale, yScale, fill, stroke, strokeWidth } = this;
+    protected generateNodeData(): ColumnNodeDatum[] | undefined {
+        const { data, yData, xData, xScale, yScale, fill, stroke, strokeWidth } = this;
+
+        if (!data) {
+            return;
+        }
 
         const nodeData: ColumnNodeDatum[] = [];
 
-        const yZero: number = yScale.convert(0);
-        const width: number = xScale.bandwidth;
+        const yZero = yScale.convert(0);
+
+        // if the scale is a band scale, the width of the columns will be the bandwidth, otherwise the width of the columns will be the range / number of items in the data
+        const width = xScale instanceof BandScale ? xScale.bandwidth : (Math.abs(xScale.range[1] - xScale.range[0]) / data.length);
 
         for (let i = 0, n = yData.length; i < n; i++) {
             let yDatum = yData[i];
@@ -183,7 +189,7 @@ export class ColumnSparkline extends Sparkline {
         return nodeData;
     }
 
-    private updateRectNodesSelection(selectionData: ColumnNodeDatum[]) {
+    private updateSelection(selectionData: ColumnNodeDatum[]) {
         const updateColumnsSelection = this.columnSelection.setData(selectionData);
 
         const enterColumnsSelection = updateColumnsSelection.enter.append(Rectangle);
@@ -193,11 +199,11 @@ export class ColumnSparkline extends Sparkline {
         this.columnSelection = updateColumnsSelection.merge(enterColumnsSelection);
     }
 
-    private updateRectNodes() {
+    protected updateNodes() {
         const { highlightedDatum, formatter: columnFormatter, fill, stroke, strokeWidth } = this;
         const { fill: highlightFill, stroke: highlightStroke, strokeWidth: highlightStrokeWidth } = this.highlightStyle;
 
-        this.columnSelection.each((column, datum) => {
+        this.columnSelection.each((column, datum, index) => {
             const highlighted = datum === highlightedDatum;
             const columnFill = highlighted && highlightFill !== undefined ? highlightFill : fill;
             const columnStroke = highlighted && highlightStroke !== undefined ? highlightStroke : stroke;
@@ -208,12 +214,21 @@ export class ColumnSparkline extends Sparkline {
             const { x, y, width, height, seriesDatum } = datum;
 
             if (columnFormatter) {
+                const first = index === 0;
+                const last = index === this.columnSelectionData.length - 1;
+                const min = seriesDatum.y === this.min;
+                const max = seriesDatum.y === this.max;
+
                 columnFormat = columnFormatter({
                     datum,
                     xValue: seriesDatum.x,
                     yValue: seriesDatum.y,
                     width: width,
                     height: height,
+                    min,
+                    max,
+                    first,
+                    last,
                     fill: columnFill,
                     stroke: columnStroke,
                     strokeWidth: columnStrokeWidth,
@@ -238,36 +253,25 @@ export class ColumnSparkline extends Sparkline {
         });
     }
 
-    private highlightedDatum?: SeriesNodeDatum;
-    protected highlightDatum(closestDatum: SeriesNodeDatum): void {
-        this.highlightedDatum = closestDatum;
-        this.updateRectNodes();
-    }
-
-    protected dehighlightDatum(): void {
-        this.highlightedDatum = undefined;
-        this.updateRectNodes();
-    }
-
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
-        const { title, fill } = this;
+        const { fill, dataType } = this;
         const { seriesDatum } = datum;
         const yValue = seriesDatum.y;
         const xValue = seriesDatum.x;
         const backgroundColor = fill;
-        const content = typeof xValue !== 'number' ? `${this.formatDatum(seriesDatum.x)}: ${this.formatDatum(seriesDatum.y)}` : `${this.formatDatum(seriesDatum.y)}`;
+        const content = this.formatNumericDatum(yValue);
+        const title = dataType === 'array' || dataType === 'object' ? this.formatDatum(xValue) : undefined;
 
         const defaults = {
             backgroundColor,
-            title,
-            content
+            content,
+            title
         }
 
         if (this.tooltip.renderer) {
             return toTooltipHtml(this.tooltip.renderer({
+                context: this.context,
                 datum: seriesDatum,
-                title,
-                backgroundColor,
                 yValue,
                 xValue,
             }), defaults);

@@ -1,18 +1,21 @@
-import { Sparkline, SeriesNodeDatum } from './sparkline';
+import { Sparkline, SeriesNodeDatum, Point } from './sparkline';
 import { Marker } from './marker';
 import { toTooltipHtml } from './sparklineTooltip';
-import { getMarkerShape } from './util';
+import { getMarker} from './util';
+import { extent } from '../../charts/util/array';
+import { isNumber } from '../../charts/util/value'
 import { Observable, reactive } from '../../charts/util/observable';
 import { Group } from '../../charts/scene/group';
 import { Path } from '../../charts/scene/shape/path';
 import { Line } from '../../charts/scene/shape/line';
 import { Selection } from '../../charts/scene/selection';
-import { LinearScale } from '../../charts/scale/linearScale';
 import { BandScale } from '../../charts/scale/bandScale';
 
 interface AreaNodeDatum extends SeriesNodeDatum { }
 
-interface AreaPathDatum extends SeriesNodeDatum { }
+interface PathDatum extends SeriesNodeDatum {
+    point: Point;
+}
 
 class SparklineMarker extends Observable {
     @reactive() enabled: boolean = true;
@@ -33,6 +36,10 @@ export interface MarkerFormatterParams {
     datum: any;
     xValue: any;
     yValue: any;
+    min?: boolean;
+    max?: boolean;
+    first?: boolean;
+    last?: boolean;
     fill?: string;
     stroke?: string;
     strokeWidth: number;
@@ -58,10 +65,9 @@ export class AreaSparkline extends Sparkline {
     private areaSparklineGroup: Group = new Group();
     protected strokePath: Path = new Path();
     protected fillPath: Path = new Path();
-    private areaPathData: AreaPathDatum[] = [];
+    private fillPathData: PathDatum[] = [];
+    private strokePathData: PathDatum[] = [];
     private xAxisLine: Line = new Line();
-    protected yScale: LinearScale = new LinearScale();
-    protected xScale: BandScale<number | undefined> = new BandScale<number | undefined>();
     private markers: Group = new Group();
     private markerSelection: Selection<Marker, Group, AreaNodeDatum, any> = Selection.select(this.markers).selectAll<Marker>();
     private markerSelectionData: AreaNodeDatum[] = [];
@@ -76,8 +82,8 @@ export class AreaSparkline extends Sparkline {
         this.rootGroup.append(this.areaSparklineGroup);
         this.areaSparklineGroup.append([this.fillPath, this.xAxisLine, this.strokePath, this.markers]);
 
-        this.marker.addEventListener('update', this.updateMarkers, this);
-        this.marker.addPropertyListener('enabled', this.updateMarkers, this);
+        this.marker.addEventListener('update', this.updateNodes, this);
+        this.marker.addPropertyListener('enabled', this.updateNodes, this);
         this.marker.addPropertyListener('shape', this.onMarkerShapeChange, this);
         this.line.addEventListener('update', this.scheduleLayout, this);
     }
@@ -86,6 +92,9 @@ export class AreaSparkline extends Sparkline {
         return this.markerSelectionData;
     }
 
+    /**
+    * If marker shape is changed, this method should be called to remove the previous marker nodes selection.
+    */
     private onMarkerShapeChange() {
         this.markerSelection = this.markerSelection.setData([]);
         this.markerSelection.exit.remove();
@@ -93,124 +102,130 @@ export class AreaSparkline extends Sparkline {
     }
 
     protected update(): void {
-        this.updateXScale();
-        this.updateYScaleRange();
-        this.updateYScaleDomain();
-
-        this.updateXAxisLine();
-
         const data = this.generateNodeData();
+
         if (!data) {
             return;
         }
 
-        const { nodeData, areaData } = data;
+        const { nodeData, fillData, strokeData } = data;
 
         this.markerSelectionData = nodeData;
-        this.areaPathData = areaData;
+        this.fillPathData = fillData;
+        this.strokePathData = strokeData;
 
-        this.updateMarkerSelection(nodeData);
-        this.updateMarkers();
+        this.updateSelection(nodeData);
+        this.updateNodes();
 
-        this.updateStroke(nodeData);
-        this.updateFill(areaData);
-    }
-
-    protected updateYScaleRange(): void {
-        const { yScale, seriesRect } = this;
-        yScale.range = [seriesRect.height, 0];
+        this.updateStroke(strokeData);
+        this.updateFill(fillData);
     }
 
     protected updateYScaleDomain(): void {
         const { yData, yScale } = this;
-        let extent = this.findMinAndMax(yData);
-        let minY, maxY
 
-        if (!extent) {
-            minY = 0;
-            maxY = 1;
-        } else {
-            minY = extent[0]
-            maxY = extent[1]
+        let yMinMax = extent(yData, isNumber);
+
+        let yMin = 0;
+        let yMax = 1;
+
+        if (yMinMax !== undefined) {
+            yMin = this.min = yMinMax[0] as number;
+            yMax = this.max = yMinMax[1] as number;
         }
 
         if (yData.length > 1) {
-            // if minY is positive, set minY to 0.
-            minY = minY < 0 ? minY : 0;
+            // if yMin is positive, set yMin to 0
+            yMin = yMin < 0 ? yMin : 0;
 
-            // if minY and maxY are equal and negative, maxY should be set to 0?
-            if (minY === maxY) {
-                const padding = Math.abs(minY * 0.01);
-                maxY = 0 + padding;
-                minY -= padding;
-            }
+            // if yMax is negative, set yMax to 0
+            yMax = yMax < 0 ? 0 : yMax;
         }
 
-        yScale.domain = [minY, maxY];
+        yScale.domain = [yMin, yMax];
     }
 
-    protected updateXScale(): void {
-        const { xScale, seriesRect, xData } = this;
-        xScale.range = [0, seriesRect.width];
-        xScale.domain = xData;
-    }
-
-    protected generateNodeData(): { nodeData: AreaNodeDatum[], areaData: AreaPathDatum[] } | undefined {
-        const { yData, xData, data, xScale, yScale } = this;
+    protected generateNodeData(): { nodeData: AreaNodeDatum[], fillData: PathDatum[], strokeData: PathDatum[] } | undefined {
+        const { data, yData, xData, xScale, yScale } = this;
 
         if (!data) {
             return;
         }
 
-        const offsetX = xScale.bandwidth / 2;
+        const offsetX = xScale instanceof BandScale ? xScale.bandwidth / 2 : 0;
         const n = yData.length;
 
         const nodeData: AreaNodeDatum[] = [];
-        const areaData: AreaPathDatum[] = [];
+        const fillData: PathDatum[] = [];
+        const strokeData: PathDatum[] = [];
+
+        let firstValidX;
+        let lastValidX;
+
+        let previousX;
+        let nextX;
+
+        const yZero = yScale.convert(0);
 
         for (let i = 0; i < n; i++) {
             let yDatum = yData[i];
             let xDatum = xData[i];
 
-            const invalidYDatum = yDatum === undefined;
-            const invalidXDatum = xDatum === undefined;
-
-            if (invalidYDatum) {
-                yDatum = 0;
-            }
-
-            if (invalidXDatum) {
-                xDatum = 0;
-            }
-
             const x = xScale.convert(xDatum) + offsetX;
             const y = yScale.convert(yDatum);
 
-            nodeData.push({
-                seriesDatum: { x: invalidXDatum ? undefined : xDatum, y: invalidYDatum ? undefined : yDatum },
+            // if this iteration is not the last, set nextX using the next value in the data array
+            if ((i + 1) < n) {
+                nextX = xScale.convert(xData[i + 1]) + offsetX;
+            }
+
+            // set stroke data regardless of missing/ undefined values. Undefined values will be handled in the updateStroke() method
+            strokeData.push({
+                seriesDatum: { x: xDatum, y: yDatum },
                 point: { x, y }
             });
 
-            areaData.push({
-                seriesDatum: { x: invalidXDatum ? undefined : xDatum, y: invalidYDatum ? undefined : yDatum },
-                point: { x, y }
-            });
+            if (yDatum === undefined) {
+                if (!previousX) {
+                    // if yDatum is undefined and there is no previous x value, continue to next iteration
+                    continue;
+                } else {
+                    // if yDatum is undefined and there is a valid previous data point, add a phantom point at yZero
+                    // if a next data point exists, add a phantom point at yZero at the next X
+                    fillData.push({ seriesDatum: undefined, point: { x: previousX, y: yZero } });
+                    if (nextX) {
+                        fillData.push({ seriesDatum: undefined, point: { x: nextX, y: yZero } });
+                    }
+                }
+            } else {
+                fillData.push({
+                    seriesDatum: { x: xDatum, y: yDatum },
+                    point: { x, y }
+                });
+
+                // set node data only if yDatum is not not undefined. These values are used in the updateSelection() method to update markers
+                nodeData.push({
+                    seriesDatum: { x: xDatum, y: yDatum },
+                    point: { x, y }
+                });
+
+                firstValidX = firstValidX || x;
+                lastValidX = x;
+            }
+
+            previousX = x;
         }
 
-        // Phantom points for creating closed area
-        const yZero = yScale.convert(0);
-        const firstX = xScale.convert(xData[0]) + offsetX;
-        const lastX = xScale.convert(xData[n-1]) + offsetX;
-
-        areaData.push(
-            { seriesDatum: undefined, point: { x: lastX, y: yZero} },
-            { seriesDatum: undefined, point: { x: firstX, y: yZero} }
+        // phantom points for creating closed area
+        fillData.push(
+            { seriesDatum: undefined, point: { x: lastValidX, y: yZero } },
+            { seriesDatum: undefined, point: { x: firstValidX, y: yZero } }
         );
 
-        return { nodeData, areaData };
+        return { nodeData, fillData, strokeData };
     }
 
-    private updateXAxisLine() {
+    protected updateXAxisLine() {
         const { xScale, yScale, axis, xAxisLine } = this;
 
         xAxisLine.x1 = xScale.range[0];
@@ -223,10 +238,10 @@ export class AreaSparkline extends Sparkline {
         xAxisLine.translationY = yZero;
     }
 
-    private updateMarkerSelection(selectionData: AreaNodeDatum[]): void {
+    private updateSelection(selectionData: AreaNodeDatum[]): void {
         const { marker } = this;
 
-        const shape = getMarkerShape(marker.shape);
+        const shape = getMarker(marker.shape);
 
         let updateMarkerSelection = this.markerSelection.setData(selectionData);
         let enterMarkerSelection = updateMarkerSelection.enter.append(shape);
@@ -236,12 +251,12 @@ export class AreaSparkline extends Sparkline {
         this.markerSelection = updateMarkerSelection.merge(enterMarkerSelection);
     }
 
-    private updateMarkers(): void {
-        const { highlightedDatum, highlightStyle,  marker } = this;
+    protected updateNodes(): void {
+        const { highlightedDatum, highlightStyle, marker } = this;
         const { size: highlightSize, fill: highlightFill, stroke: highlightStroke, strokeWidth: highlightStrokeWidth } = highlightStyle;
         const markerFormatter = marker.formatter;
 
-        this.markerSelection.each((node, datum) => {
+        this.markerSelection.each((node, datum, index) => {
             const { point, seriesDatum } = datum;
 
             if (!point) {
@@ -257,10 +272,19 @@ export class AreaSparkline extends Sparkline {
             let markerFormat: MarkerFormat | undefined = undefined;
 
             if (markerFormatter) {
+                const first = index === 0;
+                const last = index === this.markerSelectionData.length - 1;
+                const min = seriesDatum.y === this.min;
+                const max = seriesDatum.y === this.max;
+
                 markerFormat = markerFormatter({
                     datum,
                     xValue: seriesDatum.x,
                     yValue: seriesDatum.y,
+                    min,
+                    max,
+                    first,
+                    last,
                     fill: markerFill,
                     stroke: markerStroke,
                     strokeWidth: markerStrokeWidth,
@@ -269,43 +293,46 @@ export class AreaSparkline extends Sparkline {
                 });
             }
 
-            node.size = markerFormat && markerFormat.size || markerSize;
-            node.fill = markerFormat && markerFormat.fill || markerFill;
-            node.stroke = markerFormat && markerFormat.stroke || markerStroke;
-            node.strokeWidth = markerFormat && markerFormat.strokeWidth || markerStrokeWidth;
+            node.size = markerFormat && markerFormat.size != undefined ? markerFormat.size : markerSize;
+            node.fill = markerFormat && markerFormat.fill != undefined ? markerFormat.fill : markerFill;
+            node.stroke = markerFormat && markerFormat.stroke != undefined ? markerFormat.stroke : markerStroke;
+            node.strokeWidth = markerFormat && markerFormat.strokeWidth != undefined ? markerFormat.strokeWidth : markerStrokeWidth;
 
             node.translationX = point.x;
             node.translationY = point.y;
-            node.visible = markerFormat && markerFormat.enabled || marker.enabled && node.size > 0;
+            node.visible = markerFormat && markerFormat.enabled != undefined ? markerFormat.enabled : marker.enabled && node.size > 0;
         });
     }
 
-    updateStroke(nodeData: SeriesNodeDatum[]) {
+    updateStroke(strokeData: PathDatum[]) {
         const { strokePath, yData, line } = this;
-
-        const path = strokePath.path;
-        const n = yData.length;
-
-        path.clear();
 
         if (yData.length < 2) {
             return;
         }
 
+        const path = strokePath.path;
+        const n = strokeData.length;
+
+        let moveTo = true;
+
+        path.clear();
+
         for (let i = 0; i < n; i++) {
-            const { point } = nodeData[i];
+            const { point, seriesDatum } = strokeData[i];
 
-            if (!point) {
-                return;
-            }
+            const x = point.x;
+            const y = point.y;
 
-            let x = point.x;
-            let y = point.y;
-
-            if (i > 0) {
-                path.lineTo(x, y);
+            if (seriesDatum.y == undefined) {
+                moveTo = true;
             } else {
-                path.moveTo(x, y);
+                if (moveTo) {
+                    path.moveTo(x, y);
+                    moveTo = false;
+                } else {
+                    path.lineTo(x, y);
+                }
             }
         }
 
@@ -315,7 +342,7 @@ export class AreaSparkline extends Sparkline {
         strokePath.strokeWidth = line.strokeWidth;
     }
 
-    updateFill(areaData: SeriesNodeDatum[]) {
+    updateFill(areaData: PathDatum[]) {
         const { fillPath, yData, fill } = this;
 
         const path = fillPath.path;
@@ -329,10 +356,6 @@ export class AreaSparkline extends Sparkline {
 
         for (let i = 0; i < n; i++) {
             const { point } = areaData[i];
-
-            if (!point) {
-                return;
-            }
 
             const x = point.x;
             const y = point.y;
@@ -351,36 +374,25 @@ export class AreaSparkline extends Sparkline {
         fillPath.fill = fill;
     }
 
-    private highlightedDatum?: SeriesNodeDatum;
-    protected highlightDatum(closestDatum: SeriesNodeDatum): void {
-        this.highlightedDatum = closestDatum;
-        this.updateMarkers();
-    }
-
-    protected dehighlightDatum(): void {
-        this.highlightedDatum = undefined;
-        this.updateMarkers();
-    }
-
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {
-        const { title, marker } = this;
+        const { marker, dataType } = this;
         const { seriesDatum } = datum;
         const yValue = seriesDatum.y;
         const xValue = seriesDatum.x;
         const backgroundColor = marker.fill;
-        const content = typeof xValue !== 'number' ? `${this.formatDatum(seriesDatum.x)}: ${this.formatDatum(seriesDatum.y)}` : `${this.formatDatum(seriesDatum.y)}`;
+        const content = this.formatNumericDatum(yValue);
+        const title = dataType === 'array' || dataType === 'object' ? this.formatDatum(xValue) : undefined;
 
         const defaults = {
             backgroundColor,
-            title,
-            content
+            content,
+            title
         }
 
         if (this.tooltip.renderer) {
             return toTooltipHtml(this.tooltip.renderer({
+                context: this.context,
                 datum: seriesDatum,
-                title,
-                backgroundColor,
                 yValue,
                 xValue,
             }), defaults);

@@ -9,6 +9,7 @@ export interface TooltipMeta {
 }
 
 export interface TooltipRendererResult {
+    enabled?: boolean;
     content?: string;
     title?: string;
     color?: string;
@@ -18,6 +19,7 @@ export interface TooltipRendererResult {
 
 export interface TooltipRendererParams {
     readonly datum: any;
+    readonly context?: any;
     readonly title?: string;
     readonly backgroundColor?: string;
     readonly xValue: any;
