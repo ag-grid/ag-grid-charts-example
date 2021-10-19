@@ -3,9 +3,9 @@ import { Component, Grid, GridOptions, ICellRendererParams } from 'ag-grid-commu
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
-import { AreaSparkline } from '../sparkline/areaSparkline';
-import { LineSparkline } from '../sparkline/lineSparkline';
-import { ColumnSparkline } from '../sparkline/columnSparkline';
+import { AreaSparkline } from '../sparkline/area/areaSparkline';
+import { LineSparkline } from '../sparkline/line/lineSparkline';
+import { ColumnSparkline } from '../sparkline/bar-column/columnSparkline';
 
 const symbols: string[] = [
     'AAPL',

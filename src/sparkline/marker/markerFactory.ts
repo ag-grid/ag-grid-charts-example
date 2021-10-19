@@ -14,13 +14,3 @@ export function getMarker(shape: string) {
             return Circle;
     }
 }
-
-export function isNumber(n: any): boolean {
-    const type = typeof n;
-    if (type === 'string') {
-        return false;
-    } else if (type !== 'number') {
-        return false;
-    }
-    return n - n < 1;;
-}

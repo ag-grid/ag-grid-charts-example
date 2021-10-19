@@ -1,7 +1,7 @@
 
-import { Color } from "../../charts/util/color";
-import { Observable, reactive } from "../../charts/util/observable";
-import { Sparkline } from "./sparkline";
+import { Color } from "../../../charts/util/color";
+import { Observable, reactive } from "../../../charts/util/observable";
+import { Sparkline } from "../sparkline";
 
 export interface TooltipMeta {
     pageX: number;

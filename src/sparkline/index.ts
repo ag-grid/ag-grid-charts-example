@@ -2,9 +2,11 @@ import { Padding } from '../../charts/main';
 import { createButton, createSlider } from '../../lib/ui';
 import { gemStones } from '../mana/gemStonesData';
 import { Cardioid } from './cardioid';
-import { AreaSparkline } from './areaSparkline';
-import { ColumnSparkline } from './columnSparkline';
-import { LineSparkline } from './lineSparkline';
+import { AreaSparkline } from './area/areaSparkline';
+import { ColumnSparkline } from './bar-column/columnSparkline';
+import { LineSparkline } from './line/lineSparkline';
+import { line } from 'd3-shape';
+import { BarSparkline } from './bar-column/barSparkline';
 
 const lineSparkline = new LineSparkline();
 const chartContainer = document.createElement('div');
@@ -32,6 +34,7 @@ lineSparkline.title = 'mana';
 lineSparkline.tooltip.container = chartContainer;
 // lineSparkline.marker.enabled = false;
 // lineSparkline.padding = new Padding(5);
+lineSparkline.padding.bottom = 30
 lineSparkline.tooltip.renderer = (params) => {
     return {
         content: params.yValue,
@@ -71,6 +74,13 @@ createButton('toggle marker', () => {
 
 createSlider('marker shape', ['circle', 'square', 'diamond'], v => {
     lineSparkline.marker.shape = v;
+});
+
+createSlider('sparkline padding', [4, 8, 15, 20, 25], v => {
+    lineSparkline.padding.top = v;
+    lineSparkline.padding.right = v;
+    lineSparkline.padding.bottom = v;
+    lineSparkline.padding.left = v;
 });
 
 createSlider('marker fill + stroke and line stroke', ['lavender', 'olive', 'cyan', 'mediumVioletRed'], v =>{
@@ -177,6 +187,16 @@ createSlider('highlight fill', ['orange', 'orangeRed', 'plum', 'seaGreen'], v =>
 });
 
 
+// mini bar chart
+const barSparkline = new BarSparkline();
+barSparkline.container = document.body
+barSparkline.width = 100;
+barSparkline.height = 50;
+barSparkline.data = [1, 3, 5, 9 ,2, - 3, - 5];
+barSparkline.formatter = (params) => {
+    const { yValue, highlighted } = params;
+    return { fill: !highlighted ? yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)' : undefined }
+}
 
 
 const areaSparkline = new AreaSparkline();

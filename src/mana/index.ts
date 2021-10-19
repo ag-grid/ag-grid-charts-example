@@ -6,7 +6,7 @@ import { Text } from "../../charts/scene/shape/text"
 import { Coordinates } from "./types";
 import { VanCleefChart } from "./vanCleefChart";
 import { createButton, createSlider } from "../../lib/ui";
-import { Circle } from "../sparkline/circle";
+import { Circle } from "../sparkline/marker/circle";
 
 const vanCleefChart = new VanCleefChart()
 

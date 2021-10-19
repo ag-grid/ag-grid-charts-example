@@ -1,15 +1,15 @@
-import { Sparkline, SeriesNodeDatum, Point } from './sparkline';
-import { Marker } from './marker';
-import { toTooltipHtml } from './sparklineTooltip';
-import { getMarker} from './util';
-import { extent } from '../../charts/util/array';
-import { isNumber } from '../../charts/util/value'
-import { Observable, reactive } from '../../charts/util/observable';
-import { Group } from '../../charts/scene/group';
-import { Path } from '../../charts/scene/shape/path';
-import { Line } from '../../charts/scene/shape/line';
-import { Selection } from '../../charts/scene/selection';
-import { BandScale } from '../../charts/scale/bandScale';
+import { Sparkline, SeriesNodeDatum, Point } from '../sparkline';
+import { Marker } from '../marker/marker';
+import { toTooltipHtml } from '../tooltip/sparklineTooltip';
+import { getMarker} from '../marker/markerFactory';
+import { extent } from '../../../charts/util/array';
+import { isNumber } from '../../../charts/util/value'
+import { Observable, reactive } from '../../../charts/util/observable';
+import { Group } from '../../../charts/scene/group';
+import { Path } from '../../../charts/scene/shape/path';
+import { Line } from '../../../charts/scene/shape/line';
+import { Selection } from '../../../charts/scene/selection';
+import { BandScale } from '../../../charts/scale/bandScale';
 
 interface AreaNodeDatum extends SeriesNodeDatum { }
 

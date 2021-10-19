@@ -4,8 +4,8 @@ import { Scene } from '../../charts/scene/scene';
 import { createId } from '../../charts/util/id';
 import { Observable, reactive } from '../../charts/util/observable';
 import { Padding } from '../../charts/util/padding';
-import { defaultTooltipCss } from './defaultTooltipCss';
-import { SparklineTooltip } from './sparklineTooltip';
+import { defaultTooltipCss } from './tooltip/defaultTooltipCss';
+import { SparklineTooltip } from './tooltip/sparklineTooltip';
 import { isContinuous, isDate, isNumber, isString, isStringObject } from '../../charts/util/value';
 import { LinearScale } from '../../charts/scale/linearScale';
 import { TimeScale } from '../../charts/scale/timeScale';
@@ -31,11 +31,10 @@ interface SeriesRect {
 }
 
 type Container = HTMLElement | undefined | null;
-// type Data = number[] | [number | string | Date | { toString: () => string }, number][] | { [key: string]: any }[] | undefined | null;
 type Data = any[] | undefined | null;
 type DataType = 'number' | 'array' | 'object' | undefined;
 type AxisType = 'number' | 'category' | 'time';
-type ScaleType = LinearScale | TimeScale | BandScale<string>;
+export type ScaleType = LinearScale | TimeScale | BandScale<string>;
 
 export interface HighlightStyle {
     size?: number;
@@ -80,8 +79,8 @@ export abstract class Sparkline extends Observable {
         return this._context;
     }
 
-    private _container: HTMLElement | undefined | null = undefined;
-    set container(value: HTMLElement | undefined | null) {
+    private _container: Container = undefined;
+    set container(value: Container) {
         if (this._container !== value) {
             const { parentNode } = this.canvasElement;
 
@@ -96,13 +95,13 @@ export abstract class Sparkline extends Observable {
             this._container = value;
         }
     }
-    get container(): HTMLElement | undefined | null {
+    get container(): Container {
         return this._container;
     }
 
-    @reactive() data?: number[] = undefined;
+    @reactive() data?: Data = undefined;
     @reactive() title?: string = undefined;
-    @reactive() padding: Padding = new Padding(3);
+    padding: Padding = new Padding(3);
 
     xKey: string = 'x';
     yKey: string = 'y';
@@ -163,7 +162,7 @@ export abstract class Sparkline extends Observable {
         }
 
         this.addPropertyListener('data', this.processData, this);
-        this.addPropertyListener('padding', this.scheduleLayout, this);
+        this.padding.addEventListener('padding', this.scheduleLayout, this);
         this.axis.addEventListener('update', this.scheduleLayout, this);
         this.tooltip.addEventListener('change', this.update, this);
 
@@ -264,13 +263,13 @@ export abstract class Sparkline extends Observable {
         }
     }
 
-    // Update x axis line.
-    protected updateXAxisLine() { }
+    // Update axis line.
+    protected updateAxisLine() { }
 
     protected updateAxes() {
         this.updateYScale();
         this.updateXScale();
-        this.updateXAxisLine();
+        this.updateAxisLine();
     }
 
     // Using processed data, generate data that backs visible nodes.
@@ -480,8 +479,8 @@ export abstract class Sparkline extends Observable {
             this.updateXScaleRange();
             this.updateYScaleRange();
 
-            // update x-axis line
-            this.updateXAxisLine();
+            // update axis line
+            this.updateAxisLine();
 
             // produce data joins and update selection's nodes
             this.update();

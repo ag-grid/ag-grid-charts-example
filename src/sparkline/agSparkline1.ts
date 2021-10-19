@@ -1,6 +1,6 @@
-import { AreaSparkline } from "./areaSparkline";
-import { ColumnSparkline } from "./columnSparkline";
-import { LineSparkline } from "./lineSparkline";
+import { AreaSparkline } from "./area/areaSparkline";
+import { ColumnSparkline } from "./bar-column/columnSparkline";
+import { LineSparkline } from "./line/lineSparkline";
 
 import {
     SparklineOptions,

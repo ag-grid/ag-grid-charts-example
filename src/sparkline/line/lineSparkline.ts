@@ -1,14 +1,14 @@
-import { BandScale } from '../../charts/scale/bandScale';
-import { Group } from '../../charts/scene/group';
-import { Path } from '../../charts/scene/shape/path';
-import { Observable, reactive } from '../../charts/util/observable';
-import { extent } from '../../charts/util/array';
-import { isNumber } from '../../charts/util/value'
-import { Marker } from './marker';
-import { Sparkline, Point, SeriesNodeDatum } from './sparkline';
-import { Selection } from '../../charts/scene/selection';
-import { toTooltipHtml } from './sparklineTooltip';
-import { getMarker } from './util';
+import { BandScale } from '../../../charts/scale/bandScale';
+import { Group } from '../../../charts/scene/group';
+import { Path } from '../../../charts/scene/shape/path';
+import { Observable, reactive } from '../../../charts/util/observable';
+import { extent } from '../../../charts/util/array';
+import { isNumber } from '../../../charts/util/value'
+import { Marker } from '../marker/marker';
+import { Sparkline, Point, SeriesNodeDatum } from '../sparkline';
+import { Selection } from '../../../charts/scene/selection';
+import { toTooltipHtml } from '../tooltip/sparklineTooltip';
+import { getMarker } from '../marker/markerFactory';
 
 export interface MarkerFormatterParams {
     datum: any;

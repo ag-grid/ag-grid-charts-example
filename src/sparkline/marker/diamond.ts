@@ -1,13 +1,13 @@
-import { Marker } from "./marker";
+import { Marker } from './marker';
 
-export class Square extends Marker {
+export class Diamond extends Marker {
 
-    static className = "Square";
-    
+    static className = 'Diamond';
+
     isPointInStroke(x: number, y: number): boolean {
         return false;
     }
-    
+
     isPointInPath(x: number, y: number): boolean {
         return false;
     }
@@ -19,15 +19,16 @@ export class Square extends Marker {
         this.matrix.toContext(ctx);
 
         let { x, y, size } = this;
+
         const hs = size / 2;
 
         ctx.beginPath();
+        ctx.moveTo(x, y -= hs);
 
-        ctx.moveTo(x -= hs, y -= hs);
-        ctx.lineTo(x += size, y);
-        ctx.lineTo(x, y += size);
-        ctx.lineTo(x -= size, y);
-        ctx.lineTo(x, y -= size);
+        ctx.lineTo(x += hs, y += hs);
+        ctx.lineTo(x -= hs, y += hs);
+        ctx.lineTo(x -= hs, y -= hs);
+        ctx.lineTo(x += hs, y -= hs);
 
         ctx.closePath();
 
