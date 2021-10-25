@@ -161,10 +161,10 @@ export abstract class Sparkline extends Observable {
             this.tooltip = Sparkline.tooltipInstances.get(document)!;
         }
 
-        this.addPropertyListener('data', this.processData, this);
+        this.addPropertyListener('data', this.scheduleData, this);
         this.padding.addEventListener('padding', this.scheduleLayout, this);
         this.axis.addEventListener('update', this.scheduleLayout, this);
-        this.tooltip.addEventListener('change', this.update, this);
+        this.tooltip.addEventListener('change', this.scheduleUpdate, this);
 
         this.setupDomEventListeners(this.scene.canvas.element);
     }
@@ -403,7 +403,7 @@ export abstract class Sparkline extends Observable {
         this.updateAxes();
 
         // produce data joins and update selection's nodes
-        this.update();
+        this.scheduleUpdate();
     }
 
     /**
@@ -488,6 +488,16 @@ export abstract class Sparkline extends Observable {
             this.layoutId = 0;
         })
     }
+
+    protected scheduleUpdate() {
+        this.update();
+    }
+
+    protected scheduleData() {
+        this.processData();
+    }
+
+    protected  onYScaleDomainChange() {}
 
     /**
      * Return the closest data point to x/y canvas coordinates.

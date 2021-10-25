@@ -7,6 +7,7 @@ import { ColumnSparkline } from './bar-column/columnSparkline';
 import { LineSparkline } from './line/lineSparkline';
 import { line } from 'd3-shape';
 import { BarSparkline } from './bar-column/barSparkline';
+import { BarColumnLabelPlacement } from './bar-column/barColumnSparkline';
 
 const lineSparkline = new LineSparkline();
 const chartContainer = document.createElement('div');
@@ -102,11 +103,20 @@ const columnSparkline = new ColumnSparkline();
 columnSparkline.container = document.body;
 columnSparkline.width = 100;
 columnSparkline.height = 50;
-columnSparkline.data = [-10, 10, 20, -20, -35, 50, 26, undefined, -70, undefined, 56, 23] as any;
+columnSparkline.data = [0,-10, 10, 20, -20, -35, 50, 26, undefined, -70, undefined, 56, 23] as any;
 // columnSparkline.data = [7, 8.3, undefined, -9, '9.2', null, 5.5, Infinity, 6.75, -11.9, NaN, -Infinity, 5, 4, null, {}, 6, []] as any;
 // columnSparkline.data = [5, 10, 20, 50, 26, 40, 56, 23];
 columnSparkline.axis.strokeWidth = 1;
-columnSparkline.yScaleDomain = [0, 50];
+columnSparkline.valueAxisDomain = [-70, 56];
+columnSparkline.label.enabled = true;
+columnSparkline.label.fontSize = 2;
+columnSparkline.label.fontWeight = 'bold';
+columnSparkline.label.formatter = (params) =>  {
+    const { value } = params;
+    return `${value}%`
+}
+columnSparkline.label.color = 'black';
+// columnSparkline.label.placement = BarColumnLabelPlacement.Outside;
 columnSparkline.formatter = (params) => {
     return {
         fill: !params.highlighted ? params.yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)' : undefined,
@@ -197,7 +207,61 @@ barSparkline.formatter = (params) => {
     const { yValue, highlighted } = params;
     return { fill: !highlighted ? yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)' : undefined }
 }
+barSparkline.label.enabled = true;
+barSparkline.label.fontSize = 3;
+barSparkline.label.fontWeight = "bold";
+barSparkline.label.formatter =(params) => {
+    const { value } = params;
+    return `${value}`
+}
+barSparkline.label.color = '#fac858'
+barSparkline.label.placement = BarColumnLabelPlacement.Outside;
 
+// // mini bar chart with only one data point - setting yScale domain
+const barSparkline2 = new BarSparkline();
+barSparkline2.container = document.body
+barSparkline2.width = 100;
+barSparkline2.height = 50;
+barSparkline2.data = [1];
+barSparkline2.formatter = (params) => {
+    const { yValue, highlighted } = params;
+    return { fill: !highlighted ? yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)' : undefined }
+}
+barSparkline2.valueAxisDomain = [-5, 9]
+
+barSparkline2.label.enabled = true;
+barSparkline2.label.fontSize = 10;
+barSparkline2.label.fontWeight = "bold";
+barSparkline2.label.formatter =(params) => {
+    const { value } = params;
+    return `${value}%`
+}
+barSparkline2.label.color = '#fac858'
+barSparkline2.label.placement =  BarColumnLabelPlacement.Outside;
+barSparkline2.padding.right = 20;
+
+
+const barSparkline3 = new BarSparkline();
+barSparkline3.container = document.body
+barSparkline3.width = 100;
+barSparkline3.height = 50;
+barSparkline3.data = [-3];
+barSparkline3.formatter = (params) => {
+    const { yValue, highlighted } = params;
+    return { fill: !highlighted ? yValue < 0 ? 'rgb(145, 0, 0)' : 'rgb(124, 181, 236)' : undefined }
+}
+barSparkline3.valueAxisDomain= [-5, 9];
+
+barSparkline3.padding.left = 25;
+barSparkline3.label.enabled = true;
+barSparkline3.label.fontSize = 10;
+barSparkline3.label.fontWeight = "bold";
+barSparkline3.label.formatter =(params) => {
+    const { value } = params;
+    return `${value}%`
+}
+barSparkline3.label.color = '#fac858'
+barSparkline3.label.placement =  BarColumnLabelPlacement.Outside;
 
 const areaSparkline = new AreaSparkline();
 areaSparkline.container = document.body;
