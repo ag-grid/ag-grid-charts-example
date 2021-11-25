@@ -12,11 +12,14 @@ import { Selection } from '../../../charts/scene/selection';
 import { BandScale } from '../../../charts/scale/bandScale';
 
 interface AreaNodeDatum extends SeriesNodeDatum { }
-
 interface PathDatum extends SeriesNodeDatum {
     point: Point;
 }
-
+export interface CrosshairLineOptions {
+    enabled?: boolean;
+    stroke?: string;
+    strokeWidth?: number;
+}
 class SparklineMarker extends Observable {
     @reactive() enabled: boolean = true;
     @reactive() shape: string = 'circle';
@@ -26,10 +29,18 @@ class SparklineMarker extends Observable {
     @reactive('update') strokeWidth: number = 1;
     @reactive('update') formatter?: (params: MarkerFormatterParams) => MarkerFormat;
 }
-
 class SparklineLine extends Observable {
     @reactive('update') stroke: string = 'rgb(124, 181, 236)';
     @reactive('update') strokeWidth: number = 1;
+}
+class SparklineCrosshairs extends Observable {
+    private static crosshairLineOptions = {
+        enabled: false,
+        stroke: 'rgba(0,0,0, 0.54)',
+        strokeWidth: 1
+    }
+    @reactive('update') xLine: CrosshairLineOptions = Object.create(SparklineCrosshairs.crosshairLineOptions);
+    @reactive('update') yLine: CrosshairLineOptions = Object.create(SparklineCrosshairs.crosshairLineOptions);
 }
 
 export interface MarkerFormatterParams {
@@ -62,11 +73,16 @@ export class AreaSparkline extends Sparkline {
 
     @reactive('update') fill: string = 'rgba(124, 181, 236, 0.25)';
 
-    private areaSparklineGroup: Group = new Group();
     protected strokePath: Path = new Path();
     protected fillPath: Path = new Path();
+
     private fillPathData: PathDatum[] = [];
     private strokePathData: PathDatum[] = [];
+
+    protected xCrosshairLine: Line = new Line();
+    protected yCrosshairLine: Line = new Line();
+
+    private areaSparklineGroup: Group = new Group();
     private xAxisLine: Line = new Line();
     private markers: Group = new Group();
     private markerSelection: Selection<Marker, Group, AreaNodeDatum, any> = Selection.select(this.markers).selectAll<Marker>();
@@ -74,18 +90,20 @@ export class AreaSparkline extends Sparkline {
 
     readonly marker = new SparklineMarker();
     readonly line = new SparklineLine();
+    readonly crosshairs = new SparklineCrosshairs();
 
     constructor() {
         super();
 
         this.addEventListener('update', this.scheduleLayout, this);
         this.rootGroup.append(this.areaSparklineGroup);
-        this.areaSparklineGroup.append([this.fillPath, this.xAxisLine, this.strokePath, this.markers]);
+        this.areaSparklineGroup.append([this.fillPath, this.xAxisLine, this.strokePath, this.xCrosshairLine, this.yCrosshairLine, this.markers]);
 
         this.marker.addEventListener('update', this.updateNodes, this);
         this.marker.addPropertyListener('enabled', this.updateNodes, this);
         this.marker.addPropertyListener('shape', this.onMarkerShapeChange, this);
         this.line.addEventListener('update', this.scheduleLayout, this);
+        this.crosshairs.addEventListener('update', this.updateCrosshairs, this);
     }
 
     protected getNodeData(): AreaNodeDatum[] {
@@ -372,6 +390,42 @@ export class AreaSparkline extends Sparkline {
         fillPath.lineJoin = 'round';
         fillPath.stroke = undefined;
         fillPath.fill = fill;
+    }
+
+    protected updateXCrosshairLine(): void {
+        const { yScale, xCrosshairLine, highlightedDatum, crosshairs: { xLine } } = this;
+
+        if (!xLine.enabled || highlightedDatum == undefined) {
+            xCrosshairLine.strokeWidth = 0;
+            return;
+        }
+
+        xCrosshairLine.y1 = yScale.range[0];
+        xCrosshairLine.y2 = yScale.range[1];
+        xCrosshairLine.x1 = xCrosshairLine.x2 = 0;
+        xCrosshairLine.stroke = xLine.stroke;
+        xCrosshairLine.strokeWidth = xLine.strokeWidth || 1;
+        // xCrosshairLine.lineDash = [3, 1];
+
+        xCrosshairLine.translationX = highlightedDatum.point!.x;
+    }
+
+    protected updateYCrosshairLine() {
+        const { xScale, yCrosshairLine, highlightedDatum, crosshairs: { yLine } } = this;
+
+        if (!yLine.enabled || highlightedDatum == undefined) {
+            yCrosshairLine.strokeWidth = 0;
+            return;
+        }
+
+        yCrosshairLine.x1 = xScale.range[0];
+        yCrosshairLine.x2 = xScale.range[1];
+        yCrosshairLine.y1 = yCrosshairLine.y2 = 0;
+        yCrosshairLine.stroke = yLine.stroke;
+        yCrosshairLine.strokeWidth = yLine.strokeWidth || 1;
+        yCrosshairLine.lineDash = [1, 1];
+
+        yCrosshairLine.translationY = highlightedDatum.point!.y;
     }
 
     getTooltipHtml(datum: SeriesNodeDatum): string | undefined {

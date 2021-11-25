@@ -26,7 +26,7 @@ export interface TooltipRendererParams {
     readonly yValue: any;
 }
 
-export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: TooltipRendererResult) : string {
+export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: TooltipRendererResult): string {
     if (typeof input === 'string') {
         return input;
     }
@@ -36,30 +36,29 @@ export function toTooltipHtml(input: string | TooltipRendererResult, defaults?: 
     const {
         content = defaults.content || '',
         title = defaults.title || undefined,
-        color = defaults.color || 'black',
-        backgroundColor = defaults.backgroundColor || 'rgb(136, 136, 136)',
-        opacity = defaults.opacity || 0.2
+        color = defaults.color || 'rgba(0,0,0, 0.67)',
+        backgroundColor = defaults.backgroundColor || 'rgb(255, 255, 255)',
+        opacity = defaults.opacity || 1
     } = input;
 
-    const titleBgColor = Color.fromString(backgroundColor.toLowerCase());
-    const { r, g, b, a } = titleBgColor;
+    const bgColor = Color.fromString(backgroundColor.toLowerCase());
+    const { r, g, b, a } = bgColor;
 
     // TODO: combine a and opacity for alpha?
     const alpha = opacity;
 
-    const titleBgColorWithAlpha = Color.fromArray([r, g, b, alpha]);
-    const titleBgColorRgbaString = titleBgColorWithAlpha.toRgbaString();
+    const bgColorWithAlpha = Color.fromArray([r, g, b, alpha]);
+    const bgColorRgbaString = bgColorWithAlpha.toRgbaString();
 
+    // TODO: allow title color to be customisable?
+    const titleHtml = title ? `<span class="${Sparkline.defaultTooltipClass}-title";
+    style="color: ${color}">${title}</span>` : '';
 
-    const contentBgColor = `rgba(244, 244, 244, ${opacity})`;
-
-    const titleHtml = title ? `<div class="${Sparkline.defaultTooltipClass}-title";
-    style="color: ${color}; background-color: ${titleBgColorRgbaString}">${title}</div>` : '';
-
-    return `${titleHtml}<div class="${Sparkline.defaultTooltipClass}-content" style="background-color: ${contentBgColor}">${content}</div>`;
-
+    return `<div class="${Sparkline.defaultTooltipClass}-content" style="background-color: ${bgColorRgbaString}">
+                ${titleHtml}
+                <span style="color: ${color}">${content}</span>
+            </div>`;
 }
-
 export class SparklineTooltip extends Observable {
     chart: Sparkline;
     element: HTMLElement = document.createElement('div');
@@ -67,6 +66,8 @@ export class SparklineTooltip extends Observable {
     @reactive() class: string = Sparkline.defaultTooltipClass;
     @reactive() enabled: boolean = true;
     @reactive() container?: HTMLElement;
+    @reactive() xOffset: number = 10;
+    @reactive() yOffset: number = 0;
     @reactive('change') renderer?: (params: TooltipRendererParams) => string | TooltipRendererResult;
 
     constructor(chart: Sparkline) {
@@ -92,22 +93,20 @@ export class SparklineTooltip extends Observable {
 
         return false;
     }
-    updateClass(visible?: boolean, constrained?: boolean) {
+
+    updateClass(visible?: boolean) {
         const classList = [Sparkline.defaultTooltipClass];
 
         if (visible !== true) {
             classList.push(`${Sparkline.defaultTooltipClass}-hidden`);
         }
 
-        if (constrained !== true) {
-            classList.push(`${Sparkline.defaultTooltipClass}-arrow`);
-        }
-
         this.element.setAttribute('class', classList.join(' '));
     }
 
-    private constrained = false;
     show(meta: TooltipMeta, html?: string) {
+        this.toggle(false);
+
         const { element } = this;
 
         if (html !== undefined) {
@@ -116,46 +115,31 @@ export class SparklineTooltip extends Observable {
             return;
         }
 
-        let left = meta.pageX - element.clientWidth / 2;
-        let top = meta.pageY - element.clientHeight - 6;
+        let left = meta.pageX + this.xOffset;
+        let top = meta.pageY + this.yOffset;
 
-        this.constrained = false;
         const tooltipRect = element.getBoundingClientRect();
 
-        let minLeft = 0;
         let maxLeft = window.innerWidth - tooltipRect.width;
-        let minTop = window.pageYOffset;
 
         if (this.container) {
             const containerRect = this.container.getBoundingClientRect();
 
-            minLeft = containerRect.left;
-            maxLeft = containerRect.width - tooltipRect.width;
-            minTop = containerRect.top < 0 ?  window.pageYOffset : containerRect.top;
+            maxLeft = containerRect.left + (containerRect.width - tooltipRect.width);
         }
 
-        if (left < minLeft) {
-            left = minLeft;
-            this.updateClass(true, this.constrained = true);
-        } else if (left > maxLeft) {
-            left = maxLeft;
-            this.updateClass(true, this.constrained = true);
+        if (left > maxLeft) {
+            left = meta.pageX - element.clientWidth - this.xOffset;
         }
 
-        if (top < minTop) {
-            top = minTop;
-            // top = meta.pageY + 20;
-            this.updateClass(true, this.constrained = true);
-        }
-
-        element.style.left = `${left}px`;
-        element.style.top = `${top}px`;
+        element.style.left = `${Math.round(left)}px`;
+        element.style.top = `${Math.round(top)}px`;
 
         this.toggle(true);
     }
 
     toggle(visible?: boolean) {
-        this.updateClass(visible, this.constrained);
+        this.updateClass(visible);
     }
 
     destroy() {

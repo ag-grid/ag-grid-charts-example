@@ -272,6 +272,12 @@ export abstract class Sparkline extends Observable {
         this.updateAxisLine();
     }
 
+    // Update horizontal and vertical crosshair lines.
+    protected updateCrosshairs(): void {
+        this.updateXCrosshairLine();
+        this.updateYCrosshairLine();
+    }
+
     // Using processed data, generate data that backs visible nodes.
     protected generateNodeData(): { nodeData: SeriesNodeDatum[], fillData: SeriesNodeDatum[], strokeData: SeriesNodeDatum[] } | SeriesNodeDatum[] | undefined { return []; }
 
@@ -280,6 +286,12 @@ export abstract class Sparkline extends Observable {
 
     // Update the selection's nodes.
     protected updateNodes(): void { }
+
+    // Update the vertical crosshair line.
+    protected updateXCrosshairLine(): void { }
+
+    // Update the horizontal crosshair line.
+    protected updateYCrosshairLine(): void { }
 
     // Efficiently update sparkline nodes on hightlight changes.
     protected highlightedDatum?: SeriesNodeDatum;
@@ -290,6 +302,7 @@ export abstract class Sparkline extends Observable {
     protected dehighlightDatum(): void {
         this.highlightedDatum = undefined;
         this.updateNodes();
+        this.updateCrosshairs();
     }
 
     abstract getTooltipHtml(datum: SeriesNodeDatum): string | undefined;
@@ -313,9 +326,11 @@ export abstract class Sparkline extends Observable {
         if ((this.highlightedDatum && !oldHighlightedDatum) ||
             (this.highlightedDatum && oldHighlightedDatum && this.highlightedDatum !== oldHighlightedDatum)) {
             this.highlightDatum(closestDatum);
-            if (this.tooltip.enabled) {
-                this.handleTooltip(closestDatum);
-            }
+            this.updateCrosshairs();
+        }
+
+        if (this.tooltip.enabled) {
+            this.handleTooltip(event, closestDatum);
         }
     }
 
@@ -497,7 +512,7 @@ export abstract class Sparkline extends Observable {
         this.processData();
     }
 
-    protected  onYScaleDomainChange() {}
+    protected onYScaleDomainChange() { }
 
     /**
      * Return the closest data point to x/y canvas coordinates.
@@ -531,17 +546,21 @@ export abstract class Sparkline extends Observable {
      * calculate x/y coordinates for tooltip based on coordinates of highlighted datum, position of canvas and page offset.
      * @param datum
      */
-    private handleTooltip(datum: SeriesNodeDatum): void {
+    private handleTooltip(event: MouseEvent, datum: SeriesNodeDatum): void {
         const { seriesDatum } = datum;
         const { canvasElement } = this;
-        const canvasRect = canvasElement.getBoundingClientRect();
+        const { clientX, clientY } = event;
         const { pageXOffset, pageYOffset } = window;
-        // pickClosestSeriesNodeDatum only returns datum with point
-        const point = this.rootGroup.inverseTransformPoint(datum.point!.x, datum.point!.y);
+
+
+        // confine tooltip to sparkline width if tooltip container not provided.
+        if (this.tooltip.container == undefined) {
+            this.tooltip.container = canvasElement;
+        }
 
         const meta = {
-            pageX: (point.x + canvasRect.left + pageXOffset),
-            pageY: (point.y + canvasRect.top + pageYOffset)
+            pageX: clientX + pageXOffset,
+            pageY: clientY + pageYOffset
         }
 
         const yValue = seriesDatum.y;
@@ -552,6 +571,7 @@ export abstract class Sparkline extends Observable {
 
         if (this.tooltip.renderer) {
             let tooltipRendererResult = this.tooltip.renderer({
+                context: this.context,
                 datum: seriesDatum,
                 yValue,
                 xValue,

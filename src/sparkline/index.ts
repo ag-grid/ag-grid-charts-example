@@ -11,36 +11,37 @@ import { BarColumnLabelPlacement } from './bar-column/barColumnSparkline';
 
 const lineSparkline = new LineSparkline();
 const chartContainer = document.createElement('div');
-chartContainer.style.width = '100px';
-chartContainer.style.height = '50px';
+chartContainer.style.width = '200px';
+chartContainer.style.height = '100px';
 chartContainer.style.border = '1px solid black';
-chartContainer.style.padding = '50px';
+chartContainer.style.padding = '20px';
 chartContainer.style.backgroundColor = '#343334';
 
 document.body.appendChild(chartContainer)
 
 chartContainer.appendChild(lineSparkline.getCanvasElement());
 // document.body.appendChild(lineSparkline.getCanvasElement());
-lineSparkline.width = 100;
-lineSparkline.height = 50;
+lineSparkline.width = 200;
+lineSparkline.height = 100;
 lineSparkline.data = [7, 8.3, 6.5, 9, 12, 10, 6, 6.75, 11.9, -25, -3, 0, 2, -8];
 // lineSparkline.data = [7, 8.3, undefined, 9, '9.2', null, 5.5, Infinity, 6.75, 11.9, NaN, -Infinity, 5, 4, null, {}, 6] as any;
 lineSparkline.marker.fill = 'skyblue';
 lineSparkline.marker.stroke = 'skyblue';
 lineSparkline.line.stroke = 'skyblue';
 lineSparkline.highlightStyle.size = 7;
-lineSparkline.marker.shape = 'diamond';
+lineSparkline.marker.shape = 'circle';
 lineSparkline.marker.size = 3;
 lineSparkline.title = 'mana';
 lineSparkline.tooltip.container = chartContainer;
 // lineSparkline.marker.enabled = false;
-// lineSparkline.padding = new Padding(5);
-lineSparkline.padding.bottom = 30
+lineSparkline.padding = new Padding(5);
+// lineSparkline.padding.bottom = 30;
 lineSparkline.tooltip.renderer = (params) => {
     return {
         content: params.yValue,
-        color: 'black',
-        backgroundColor: params.backgroundColor,
+        // color: 'black',
+        title: 'title',
+        backgroundColor: 'rgb(255, 255, 255)',
         opacity: 0.8
     }
 }
@@ -51,6 +52,10 @@ lineSparkline.marker.formatter = (params) => {
         stroke: !params.highlighted ? params.yValue < 0 ? 'green' : 'skyblue' : undefined
     }
 }
+lineSparkline.crosshairs.xLine.enabled = true;
+lineSparkline.crosshairs.xLine.stroke = 'white';
+lineSparkline.crosshairs.yLine.enabled = true;
+lineSparkline.crosshairs.yLine.stroke = 'white';
 
 let animateLine: boolean = false;
 let lineIntervalId: number;
