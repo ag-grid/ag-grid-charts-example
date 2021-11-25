@@ -16,6 +16,7 @@ chartContainer.style.height = '100px';
 chartContainer.style.border = '1px solid black';
 chartContainer.style.padding = '20px';
 chartContainer.style.backgroundColor = '#343334';
+chartContainer.style.backgroundColor = 'white';
 
 document.body.appendChild(chartContainer)
 
@@ -53,9 +54,22 @@ lineSparkline.marker.formatter = (params) => {
     }
 }
 lineSparkline.crosshairs.xLine.enabled = true;
-lineSparkline.crosshairs.xLine.stroke = 'white';
+lineSparkline.crosshairs.xLine.stroke = 'black';
+// lineSparkline.crosshairs.xLine.stroke = 'pink';
+
 lineSparkline.crosshairs.yLine.enabled = true;
-lineSparkline.crosshairs.yLine.stroke = 'white';
+lineSparkline.crosshairs.yLine.stroke = 'pink';
+lineSparkline.crosshairs.yLine.stroke = 'black';
+
+createSlider('crosshair dash style', ['solid', 'dash', 'dashDot', 'dashDotDot', 'dot', 'longDash' , 'longDashDot', 'longDashDotDot', 'shortDash',  'shortDashDot', 'shortDashDotDot', 'shortDot'], v => {
+    lineSparkline.crosshairs.xLine.lineDash = v;
+    lineSparkline.crosshairs.yLine.lineDash = v;
+});
+
+createSlider('crosshair line cap', ['round', 'square', 'butt'], v  => {
+    lineSparkline.crosshairs.xLine.lineCap = v as "round" | "square" | "butt" | undefined;
+    lineSparkline.crosshairs.yLine.lineCap = v as "round" | "square" | "butt" | undefined;
+});
 
 let animateLine: boolean = false;
 let lineIntervalId: number;
@@ -282,6 +296,9 @@ areaSparkline.marker.size = 2;
 // areaSparkline.marker.fill = 'pink';
 // areaSparkline.marker.stroke = 'pink';
 // areaSparkline.fill = undefined;
+
+areaSparkline.crosshairs.xLine.enabled = true;
+areaSparkline.crosshairs.xLine.stroke = 'black';
 
 let animateArea: boolean = false;
 let areaIntervalId: number;

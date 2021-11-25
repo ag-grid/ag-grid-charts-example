@@ -10,6 +10,7 @@ import { Path } from '../../../charts/scene/shape/path';
 import { Line } from '../../../charts/scene/shape/line';
 import { Selection } from '../../../charts/scene/selection';
 import { BandScale } from '../../../charts/scale/bandScale';
+import { getLineDash } from '../util/lineDash';
 
 interface AreaNodeDatum extends SeriesNodeDatum { }
 interface PathDatum extends SeriesNodeDatum {
@@ -19,6 +20,8 @@ export interface CrosshairLineOptions {
     enabled?: boolean;
     stroke?: string;
     strokeWidth?: number;
+    lineDash?: 'dash' | 'dashDot' | 'dashDotDot' | 'dot' | 'longDash' | 'longDashDot' | 'longDashDotDot' | 'shortDash' | 'shortDashDot' | 'shortDashDotDot' | 'shortDot' | 'solid' | string | number[];
+    lineCap?: 'round'| 'square' | 'butt';
 }
 class SparklineMarker extends Observable {
     @reactive() enabled: boolean = true;
@@ -37,7 +40,9 @@ class SparklineCrosshairs extends Observable {
     private static crosshairLineOptions = {
         enabled: false,
         stroke: 'rgba(0,0,0, 0.54)',
-        strokeWidth: 1
+        strokeWidth: 1,
+        lineDash: 'solid',
+        lineCap: 'round'
     }
     @reactive('update') xLine: CrosshairLineOptions = Object.create(SparklineCrosshairs.crosshairLineOptions);
     @reactive('update') yLine: CrosshairLineOptions = Object.create(SparklineCrosshairs.crosshairLineOptions);
@@ -405,7 +410,11 @@ export class AreaSparkline extends Sparkline {
         xCrosshairLine.x1 = xCrosshairLine.x2 = 0;
         xCrosshairLine.stroke = xLine.stroke;
         xCrosshairLine.strokeWidth = xLine.strokeWidth || 1;
-        // xCrosshairLine.lineDash = [3, 1];
+
+        xCrosshairLine.lineCap = xLine.lineCap === 'round' || xLine.lineCap === 'square' ? xLine.lineCap : undefined;
+
+        const { lineDash } = xLine;
+        xCrosshairLine.lineDash = Array.isArray(lineDash) ? lineDash : getLineDash(xCrosshairLine.lineCap, xLine.lineDash as string);
 
         xCrosshairLine.translationX = highlightedDatum.point!.x;
     }
@@ -423,7 +432,11 @@ export class AreaSparkline extends Sparkline {
         yCrosshairLine.y1 = yCrosshairLine.y2 = 0;
         yCrosshairLine.stroke = yLine.stroke;
         yCrosshairLine.strokeWidth = yLine.strokeWidth || 1;
-        yCrosshairLine.lineDash = [1, 1];
+
+        yCrosshairLine.lineCap = yLine.lineCap === 'round' || yLine.lineCap === 'square' ? yLine.lineCap : undefined;
+
+        const { lineDash } = yLine;
+        yCrosshairLine.lineDash = Array.isArray(lineDash) ? lineDash : getLineDash(yCrosshairLine.lineCap, yLine.lineDash as string);
 
         yCrosshairLine.translationY = highlightedDatum.point!.y;
     }
