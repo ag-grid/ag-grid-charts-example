@@ -1,5 +1,6 @@
 import { BandScale } from '../../../charts/scale/bandScale';
 import { isNumber } from '../../../charts/util/value';
+import { Point } from '../sparkline';
 import { BarColumnLabelPlacement, BarColumnSparkline, RectNodeDatum } from './barColumnSparkline';
 
 export interface BarNodeDatum extends RectNodeDatum {}
@@ -133,5 +134,9 @@ export class BarSparkline extends BarColumnSparkline {
             });
         }
         return nodeData;
+    }
+
+    protected getDistance(p1: Point, p2: Point): number {
+        return Math.abs(p1.y - p2.y);
     }
 }
