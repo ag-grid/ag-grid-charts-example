@@ -1,18 +1,29 @@
-import { Scene } from "../../charts/scene/scene";
-import { Group } from "../../charts/scene/group";
-import { Sector } from "../../charts/scene/shape/sector";
-import { toRadians } from "../../charts/util/angle";
-import { Path } from "../../charts/scene/shape/path";
-import { Line } from "../../charts/scene/shape/line";
-import { LinearScale } from "../../charts/scale/linearScale";
-import { BandScale } from "../../charts/scale/bandScale";
-import { Rect } from "../../charts/scene/shape/rect";
-import { ClipRect } from "../../charts/scene/clipRect";
-import { Arc } from "../../charts/scene/shape/arc";
-import { Shape } from "../../charts/scene/shape/shape";
-import { AgChartThemePalette } from "../../charts/main";
+import { Scene } from '../../charts/scene/scene';
+import { Group } from '../../charts/scene/group';
+import { Sector } from '../../charts/scene/shape/sector';
+import { toRadians } from '../../charts/util/angle';
+import { Path } from '../../charts/scene/shape/path';
+import { Line } from '../../charts/scene/shape/line';
+import { LinearScale } from '../../charts/scale/linearScale';
+import { BandScale } from '../../charts/scale/bandScale';
+import { Rect } from '../../charts/scene/shape/rect';
+import { ClipRect } from '../../charts/scene/clipRect';
+import { Arc } from '../../charts/scene/shape/arc';
+import { Shape } from '../../charts/scene/shape/shape';
+import { AgChartThemePalette } from '../../charts/main';
+import {
+    chartTheme,
+    materialDark,
+    materialLight,
+    pastelDark,
+    pastelLight,
+    solarLight,
+} from './themes';
 
-function createButton(text: string, action: EventListenerOrEventListenerObject): HTMLButtonElement {
+function createButton(
+    text: string,
+    action: EventListenerOrEventListenerObject
+): HTMLButtonElement {
     const button = document.createElement('button');
     button.textContent = text;
     document.body.appendChild(button);
@@ -25,7 +36,7 @@ export abstract class MiniChart {
     protected readonly padding = 5;
     protected readonly root = new Group();
     protected readonly scene: Scene = (() => {
-        const scene = new Scene()
+        const scene = new Scene();
         scene.resize(this.size, this.size);
         scene.root = this.root;
         return scene;
@@ -43,13 +54,13 @@ export class MiniPie extends MiniChart {
         [toRadians(120), toRadians(180)],
         [toRadians(180), toRadians(210)],
         [toRadians(210), toRadians(240)],
-        [toRadians(240), toRadians(270)]
+        [toRadians(240), toRadians(270)],
     ];
 
     private readonly radius = (this.size - this.padding * 2) / 2;
     private readonly center = this.radius + this.padding;
 
-    private readonly sectors = MiniPie.angles.map(pair => {
+    private readonly sectors = MiniPie.angles.map((pair) => {
         const sector = new Sector();
         sector.centerX = this.center;
         sector.centerY = this.center;
@@ -81,7 +92,7 @@ export class MiniDonut extends MiniChart {
     private readonly radius = (this.size - this.padding * 2) / 2;
     private readonly center = this.radius + this.padding;
 
-    private readonly sectors = MiniPie.angles.map(pair => {
+    private readonly sectors = MiniPie.angles.map((pair) => {
         const sector = new Sector();
         sector.centerX = this.center;
         sector.centerY = this.center;
@@ -131,7 +142,7 @@ class MiniLine extends MiniChart {
         const data = [
             [9, 7, 8, 5, 6],
             [5, 6, 3, 4, 1],
-            [1, 3, 4, 8, 7]
+            [1, 3, 4, 8, 7],
         ];
 
         const axisOvershoot = 3;
@@ -152,13 +163,16 @@ class MiniLine extends MiniChart {
         bottomAxis.stroke = 'gray';
         bottomAxis.strokeWidth = 1;
 
-        this.lines = data.map(series => {
+        this.lines = data.map((series) => {
             const line = new Path();
             line.strokeWidth = 3;
             line.lineCap = 'round';
             line.fill = undefined;
             series.forEach((datum, i) => {
-                line.path[i > 0 ? 'lineTo' : 'moveTo'](xScale.convert(i), yScale.convert(datum));
+                line.path[i > 0 ? 'lineTo' : 'moveTo'](
+                    xScale.convert(i),
+                    yScale.convert(datum)
+                );
             });
             return line;
         });
@@ -198,8 +212,18 @@ class MiniScatter extends MiniChart {
 
         // [x, y] pairs
         const data = [
-            [[0.3, 3], [1.1, 0.9], [2, 0.4], [3.4, 2.4]],
-            [[0, 0.3], [1, 2], [2.4, 1.4], [3, 0]]
+            [
+                [0.3, 3],
+                [1.1, 0.9],
+                [2, 0.4],
+                [3.4, 2.4],
+            ],
+            [
+                [0, 0.3],
+                [1, 2],
+                [2.4, 1.4],
+                [3, 0],
+            ],
         ];
 
         const xScale = new LinearScale();
@@ -308,7 +332,7 @@ class MiniBar extends MiniChart {
         (this as any).axes = [leftAxis, bottomAxis];
 
         const rectLineWidth = 1;
-        const alignment = Math.floor(rectLineWidth) % 2 / 2;
+        const alignment = (Math.floor(rectLineWidth) % 2) / 2;
 
         const bottom = yScale.convert(0);
         this.bars = data.map((datum, i) => {
@@ -319,8 +343,9 @@ class MiniBar extends MiniChart {
             rect.y = Math.floor(top) + alignment;
             const width = xScale.bandwidth;
             const height = bottom - top;
-            rect.width = Math.floor(width) + Math.floor(rect.x % 1 + width % 1);
-            rect.height = Math.floor(height) + Math.floor(rect.y % 1 + height % 1);
+            rect.width = Math.floor(width) + Math.floor((rect.x % 1) + (width % 1));
+            rect.height =
+                Math.floor(height) + Math.floor((rect.y % 1) + (height % 1));
             return rect;
         });
 
@@ -354,7 +379,7 @@ class MiniStackedBar extends MiniChart {
         const data = [
             [8, 12, 16],
             [6, 9, 12],
-            [2, 3, 4]
+            [2, 3, 4],
         ];
 
         const xScale = new BandScale<number>();
@@ -386,10 +411,10 @@ class MiniStackedBar extends MiniChart {
         bottomAxis.strokeWidth = 1;
 
         const rectLineWidth = 1;
-        const alignment = Math.floor(rectLineWidth) % 2 / 2;
+        const alignment = (Math.floor(rectLineWidth) % 2) / 2;
 
         const bottom = yScale.convert(0);
-        this.bars = data.map(series => {
+        this.bars = data.map((series) => {
             return series.map((datum, i) => {
                 const top = yScale.convert(datum);
                 const rect = new Rect();
@@ -398,8 +423,9 @@ class MiniStackedBar extends MiniChart {
                 rect.y = Math.floor(top) + alignment;
                 const width = xScale.bandwidth;
                 const height = bottom - top;
-                rect.width = Math.floor(width) + Math.floor(rect.x % 1 + width % 1);
-                rect.height = Math.floor(height) + Math.floor(rect.y % 1 + height % 1);
+                rect.width = Math.floor(width) + Math.floor((rect.x % 1) + (width % 1));
+                rect.height =
+                    Math.floor(height) + Math.floor((rect.y % 1) + (height % 1));
                 return rect;
             });
         });
@@ -414,10 +440,10 @@ class MiniStackedBar extends MiniChart {
 
     updateColors(fills: string[], strokes: string[]) {
         this.bars.forEach((series, i) => {
-            series.forEach(bar => {
+            series.forEach((bar) => {
                 bar.fill = fills[i];
                 bar.stroke = strokes[i];
-            })
+            });
         });
     }
 }
@@ -436,7 +462,7 @@ class MiniNormalizedBar extends MiniChart {
         const data = [
             [10, 10, 10],
             [6, 7, 8],
-            [2, 4, 6]
+            [2, 4, 6],
         ];
 
         const xScale = new BandScale<number>();
@@ -468,10 +494,10 @@ class MiniNormalizedBar extends MiniChart {
         bottomAxis.strokeWidth = 1;
 
         const rectLineWidth = 1;
-        const alignment = Math.floor(rectLineWidth) % 2 / 2;
+        const alignment = (Math.floor(rectLineWidth) % 2) / 2;
 
         const bottom = yScale.convert(0);
-        this.bars = data.map(series => {
+        this.bars = data.map((series) => {
             return series.map((datum, i) => {
                 const top = yScale.convert(datum);
                 const rect = new Rect();
@@ -480,8 +506,9 @@ class MiniNormalizedBar extends MiniChart {
                 rect.y = Math.floor(top) + alignment;
                 const width = xScale.bandwidth;
                 const height = bottom - top;
-                rect.width = Math.floor(width) + Math.floor(rect.x % 1 + width % 1);
-                rect.height = Math.floor(height) + Math.floor(rect.y % 1 + height % 1);
+                rect.width = Math.floor(width) + Math.floor((rect.x % 1) + (width % 1));
+                rect.height =
+                    Math.floor(height) + Math.floor((rect.y % 1) + (height % 1));
                 return rect;
             });
         });
@@ -496,10 +523,10 @@ class MiniNormalizedBar extends MiniChart {
 
     updateColors(fills: string[], strokes: string[]) {
         this.bars.forEach((series, i) => {
-            series.forEach(bar => {
+            series.forEach((bar) => {
                 bar.fill = fills[i];
                 bar.stroke = strokes[i];
-            })
+            });
         });
     }
 }
@@ -510,10 +537,15 @@ class MiniArea extends MiniChart {
     static readonly data = [
         [2, 3, 2],
         [3, 6, 5],
-        [6, 2, 2]
+        [6, 2, 2],
     ];
 
-    constructor(container: HTMLElement, fills: string[], strokes: string[], data: number[][] = MiniArea.data) {
+    constructor(
+        container: HTMLElement,
+        fills: string[],
+        strokes: string[],
+        data: number[][] = MiniArea.data
+    ) {
         super();
 
         this.scene.container = container;
@@ -551,7 +583,7 @@ class MiniArea extends MiniChart {
 
         const xCount = data.length;
         const last = xCount * 2 - 1;
-        const pathData: { x: number, y: number }[][] = [];
+        const pathData: { x: number; y: number }[][] = [];
 
         for (let i = 0; i < xCount; i++) {
             const yDatum = data[i];
@@ -568,18 +600,18 @@ class MiniArea extends MiniChart {
 
                 points[i] = {
                     x,
-                    y
+                    y,
                 };
                 points[last - i] = {
                     x,
-                    y: yScale.convert(prev) // bottom y
+                    y: yScale.convert(prev), // bottom y
                 };
 
                 prev += curr;
             }
         }
 
-        this.areas = pathData.map(points => {
+        this.areas = pathData.map((points) => {
             const area = new Path();
             area.strokeWidth = 1;
             const path = area.path;
@@ -612,22 +644,121 @@ class MiniArea extends MiniChart {
 }
 
 class MiniNormalizedArea extends MiniArea {
-    static readonly data = MiniArea.data.map(stack => {
+    static readonly data = MiniArea.data.map((stack) => {
         const sum = stack.reduce((p, c) => p + c, 0);
-        return stack.map(v => v / sum * 16);
+        return stack.map((v) => (v / sum) * 16);
     });
 
-    constructor(parent: HTMLElement, fills: string[], strokes: string[], data: number[][] = MiniNormalizedArea.data) {
+    constructor(
+        parent: HTMLElement,
+        fills: string[],
+        strokes: string[],
+        data: number[][] = MiniNormalizedArea.data
+    ) {
         super(parent, fills, strokes, data);
     }
 }
 
-const palettesArray: AgChartThemePalette[] = [];
+class CustomCombo extends MiniChart {
+    private readonly bars: Rect[];
+    private readonly penIcon: Path;
+
+    constructor(container: HTMLElement, fills: string[], strokes: string[]) {
+        super();
+
+        this.scene.container = container;
+
+        const size = this.size;
+        const padding = this.padding;
+
+        const barData = [8, 5, 3, 9];
+
+        const xScale = new BandScale<number>();
+        xScale.domain = [0, 1, 2, 3];
+        xScale.range = [padding, size - padding];
+        xScale.paddingInner = 0.3;
+        xScale.paddingOuter = 0.3;
+
+        const yScale = new LinearScale();
+        yScale.domain = [0, 10];
+        yScale.range = [size - padding, padding];
+
+        const axisOvershoot = 3;
+
+        const leftAxis = new Line();
+        leftAxis.x1 = padding;
+        leftAxis.y1 = padding;
+        leftAxis.x2 = padding;
+        leftAxis.y2 = size - padding + axisOvershoot;
+        leftAxis.stroke = 'gray';
+        leftAxis.strokeWidth = 1;
+
+        const bottomAxis = new Line();
+        bottomAxis.x1 = padding - axisOvershoot;
+        bottomAxis.y1 = size - padding;
+        bottomAxis.x2 = size - padding;
+        bottomAxis.y2 = size - padding;
+        bottomAxis.stroke = 'gray';
+        bottomAxis.strokeWidth = 1;
+        (this as any).axes = [leftAxis, bottomAxis];
+
+        const rectLineWidth = 1;
+        const alignment = (Math.floor(rectLineWidth) % 2) / 2;
+
+        const bottom = yScale.convert(0);
+        this.bars = barData.map((datum, i) => {
+            const top = yScale.convert(datum);
+            const rect = new Rect();
+            rect.strokeWidth = rectLineWidth;
+            rect.x = Math.floor(xScale.convert(i)) + alignment;
+            rect.y = Math.floor(top) + alignment;
+            const width = xScale.bandwidth;
+            const height = bottom - top;
+            rect.width = Math.floor(width) + Math.floor((rect.x % 1) + (width % 1));
+            rect.height =
+                Math.floor(height) + Math.floor((rect.y % 1) + (height % 1));
+            return rect;
+        });
+
+        this.penIcon = new Path();
+        // penIcon.svgPath = 'M66.52,30a8.43,8.43,0,0,0-6,2.51L28,65l-.13.64L25.64,77,25,80l3-.64,11.31-2.25L40,77,72.49,44.46a8.49,8.49,0,0,0-6-14.46Zm0,3.92A4.36,4.36,0,0,1,69.6,35.4c2,2,2,4.17,0,6.17L68.12,43,62,36.88l1.41-1.48A4.38,4.38,0,0,1,66.52,33.92Zm-7.39,5.85,6.1,6.1L40.36,70.75a14,14,0,0,0-6.11-6.11ZM31.62,68a9.74,9.74,0,0,1,5.4,5.4l-6.75,1.35Z';
+        this.penIcon.svgPath = 'M26.57,59.46l13.65,14m34.39-48a9.71,9.71,0,0,0-13.82,0L26.17,60l-.17.16L22.74,76.36,22.5,77.5,39.81,74l34.8-34.79a9.71,9.71,0,0,0,0-13.82ZM57.46,28.72,71.25,42.57m-15-12.09,13.65,14';
+        this.penIcon.stroke = '#D6D6D6';
+        this.penIcon.strokeWidth = 1;
+        this.penIcon.fill = fills[fills.length - 1];
+
+        const root = this.root;
+        root.append(this.bars);
+        root.append(leftAxis);
+        root.append(bottomAxis);
+        root.append(this.penIcon);
+
+        this.updateColors(fills, strokes);
+    }
+
+    updateColors(fills: string[], strokes: string[]) {
+        this.bars.forEach((bar, i) => {
+            bar.fill = fills[i];
+            bar.stroke = strokes[i];
+        });
+        this.penIcon.fill = fills[fills.length - 1];
+    }
+}
+
+const palettesArray: AgChartThemePalette[] = [
+    chartTheme,
+    materialLight,
+    pastelLight,
+    solarLight,
+    materialDark,
+    pastelDark,
+];
 
 // palettes.forEach(p => palettesArray.push(p)); // TODO: update this
 
 const { fills, strokes } = palettesArray[0];
 
+const customCombo = new CustomCombo(document.body, fills, strokes);
 const miniPie = new MiniPie(document.body, fills, strokes);
 const miniDonut = new MiniDonut(document.body, fills, strokes);
 const miniLine = new MiniLine(document.body, fills, strokes);
@@ -635,7 +766,11 @@ const miniBar = new MiniBar(document.body, fills, strokes);
 const miniStackedBar = new MiniStackedBar(document.body, fills, strokes);
 const miniNormalizedBar = new MiniNormalizedBar(document.body, fills, strokes);
 const miniArea = new MiniArea(document.body, fills, strokes);
-const miniNormalizedArea = new MiniNormalizedArea(document.body, fills, strokes);
+const miniNormalizedArea = new MiniNormalizedArea(
+    document.body,
+    fills,
+    strokes
+);
 const miniScatter = new MiniScatter(document.body, fills, strokes);
 
 document.body.appendChild(document.createElement('br'));
@@ -649,6 +784,7 @@ createButton('Next', () => {
     }
 
     const { fills, strokes } = palettesArray[i];
+    customCombo.updateColors(fills, strokes);
     miniPie.updateColors(fills, strokes);
     miniDonut.updateColors(fills, strokes);
     miniLine.updateColors(fills, strokes);
@@ -661,12 +797,17 @@ createButton('Next', () => {
 });
 
 function createSwatches() {
-    return palettesArray.map(palette => {
-        let divs = palette.fills.slice(0, 6).map(color => {
-            return `<div style="width: 24px; height: 24px; background: ${color}; margin: 2px;"></div>`;
-        }).join('');
-        return `<div class="swatch" style="padding: 5px; border: 1px solid gray; border-radius: 4px; margin: 5px; display: inline-flex;">${divs}</div>`;
-    }).join('');
+    return palettesArray
+        .map((palette) => {
+            let divs = palette.fills
+                .slice(0, 6)
+                .map((color) => {
+                    return `<div style='width: 24px; height: 24px; background: ${color}; margin: 2px;'></div>`;
+                })
+                .join('');
+            return `<div class='swatch' style='padding: 5px; border: 1px solid gray; border-radius: 4px; margin: 5px; display: inline-flex;'>${divs}</div>`;
+        })
+        .join('');
 }
 
 const swatchesDiv = document.createElement('div');
