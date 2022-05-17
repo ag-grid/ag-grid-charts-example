@@ -1,9 +1,0 @@
-{
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "[typescript]": {
-        "editor.autoClosingBrackets": "always"
-    },
-    "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE": "/Users/vitaliikravchenko/bin/vcpkg/scripts/buildsystems/vcpkg.cmake"
-    }
-}
